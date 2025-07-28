@@ -2,8 +2,8 @@
 
 export function Summary() {
   return (
-    <div className='w-full lg:px-[160px] lg:py-[84px] md:py-[40px] md:px-[56px] xs:px-[16px] xs:py-[56px] xl:px-[240px] xl:py-[84px] bg-white flex justify-center items-center'>
-      <div className='flex flex-col justify-between items-start w-full lg:gap-[266px] md:gap-[88px] xs:gap-[20px] xl:gap-auto xs:flex-col md:flex-row'>
+    <div className='w-full  px-[16px] py-[56px] lg:px-[160px] lg:py-[84px] md:py-[40px] md:px-[56px] xl:px-[240px] xl:py-[84px] bg-white flex justify-center items-center'>
+      <div className='flex flex-col justify-between items-start w-full gap-[20px] lg:gap-[266px] md:gap-[88px] xl:gap-auto flex-col md:flex-row'>
         <svg xmlns='http://www.w3.org/2000/svg' className='w-auto h-[40px] md:h-[60px] lg:h-[74px] xl:h-[72.321px]' viewBox='0 0 187 40' fill='none'>
           <path d='M77.001 36.5623H78.0891V39H78.9146V36.5623H80.001V36H77.001V36.5623Z' fill='#222222' />
           <path
@@ -20,19 +20,19 @@ export function Summary() {
           />
         </svg>
 
-        <div className='flex-1 flex flex-col xs:gap-[16px] lg:gap-[16px]'>
-          <div className='flex flex-col xs:gap-[36px] md:gap-[8px] lg:gap-[16px]'>
+        <div className='flex-1 flex flex-col gap-[16px] lg:gap-[16px]'>
+          <div className='flex flex-col gap-[36px] md:gap-[8px] lg:gap-[16px]'>
             <div className='flex flex-col'>
-              <h1 className='text-neutral-800 xs:text-[28px] md:text-[24px] lg:text-[28px] font-bold leading-tight'>
+              <h1 className='text-neutral-800 text-[28px] md:text-[24px] lg:text-[28px] font-bold leading-tight'>
                 슬랙
               </h1>
-              <h2 className='text-neutral-800 xs:text-[28px] md:text-[24px] lg:text-[28px] font-bold leading-tight'>
+              <h2 className='text-neutral-800 text-[28px] md:text-[24px] lg:text-[28px] font-bold leading-tight'>
                 Slate for Own Scene
               </h2>
             </div>
 
             <div className='w-full'>
-              <p className='text-neutral-800 text-base xs:text-[17px] md:text-[18px] lg:text-[22px] font-medium leading-relaxed'>
+              <p className='text-neutral-800 text-base text-[17px] md:text-[18px] lg:text-[22px] font-medium leading-relaxed'>
                 Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를
                 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼
                 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!
@@ -41,7 +41,7 @@ export function Summary() {
           </div>
 
           <div className='w-full'>
-            <p className='text-zinc-600 text-sm md:text-base opacity-70 xs:text-[14px] md:text-[14px] lg:text-[18px]'>
+            <p className='text-zinc-600 text-sm md:text-base opacity-70 text-[14px] md:text-[14px] lg:text-[18px]'>
               김민채, 김민채, 김민채, 김민채, 김민채
             </p>
           </div>

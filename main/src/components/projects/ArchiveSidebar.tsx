@@ -34,7 +34,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
 
   return (
     <>
-      {/* tab ~ desktop */}
+      {/* Desktop & Tablet (768px 이상) */}
       <motion.div
         initial={{ opacity: 0, x: 100 }}
         animate={{
@@ -44,7 +44,13 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
         }}
         exit={{ opacity: 0, x: 100 }}
         transition={{ duration: 0.3 }}
-        className={`hidden md:flex w-fit h-full md:h-[80vh] lg:h-full bg-white fixed bottom-0 right-0 z-20  flex-col items-center justify-center`}
+        className={`hidden md:flex w-fit h-[calc(100vh-80px)] bg-white fixed right-0 z-[000] flex-col items-center justify-center`}
+        style={{
+          position: 'fixed',
+          top: '80px',
+          right: '0',
+          height: 'calc(100vh - 80px)',
+        }}
       >
         {!isExpanded ? (
           <div
@@ -58,7 +64,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
         ) : (
           <div className='w-full h-full overflow-y-scroll flex flex-col items-center justify-between'>
             {/* Header */}
-            <div className='w-full h-fit lg:mt-[80px] sticky z-10 top-0 bg-white flex flex-row items-center justify-between px-4 py-5'>
+            <div className='w-full h-fit lg:mt-[0px] sticky z-10 top-0 bg-white flex flex-row items-center justify-between px-4 py-5'>
               <span className=' text-black text-lg font-semibold leading-[1.5] tracking-[]'>Process Archive</span>
               <button
                 onClick={handleClose}
@@ -77,26 +83,27 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
                 </svg>
               </button>
             </div>
+            {/* Content */}
             <div className='w-full h-fit flex flex-col gap-1 items-start p-4'>
-              {currentPoint.images.map((image, index) => (
+              {currentPoint?.images?.map((image, index) => (
                 <div
                   key={index}
                   className={`w-full h-fit flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
                 >
-                  <HoverImageCard key={index} index={index} src={image} />
+                  <HoverImageCard index={index} src={image} />
                 </div>
               ))}
             </div>
           </div>
         )}
       </motion.div>
-      {/* mobile */}
+
+      {/* Mobile (768px 미만) */}
       <motion.div
         ref={mobileScrollRef}
         initial={{
           opacity: 0,
           y: 100,
-          height: 'auto',
         }}
         animate={{
           opacity: isVisible ? 1 : 0,
@@ -106,10 +113,9 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
         exit={{
           opacity: 0,
           y: 100,
-          height: 'auto',
         }}
         transition={{ duration: 0.3 }}
-        className={`md:hidden w-full bg-white overflow-y-scroll fixed bottom-0 left-0 z-20 flex flex-col items-center justify-start `}
+        className='md:hidden w-full bg-white overflow-y-scroll fixed bottom-0 left-0 z-20 flex flex-col items-center justify-start '
       >
         {/* Header */}
         <div className='w-full h-fit sticky z-10 top-0 bg-white flex flex-row items-center justify-between px-4 py-5'>
@@ -134,14 +140,16 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
             )}
           </button>
         </div>
+
+        {/* Content */}
         {isExpanded && (
           <div className='w-full h-fit flex flex-col gap-1 items-start p-4'>
-            {currentPoint.images.map((image, index) => (
+            {currentPoint?.images?.map((image, index) => (
               <div
                 key={index}
                 className={`w-full h-fit flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
               >
-                <HoverImageCard key={index} index={index} src={image} />
+                <HoverImageCard index={index} src={image} />
               </div>
             ))}
           </div>
@@ -153,7 +161,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
 
 const HoverImageCard = ({ index, src }: { index: number; src: string }) => {
   return (
-    <div key={index} className={`w-[90%] h-auto cursor-pointer relative group`}>
+    <div className='w-[90%] h-auto cursor-pointer relative group'>
       {/* hover overlay dim */}
       <div className='absolute inset-0 opacity-0 bg-black/50 transition-opacity duration-300 ease-in-out group-hover:opacity-100'>
         <div className='absolute flex flex-row justify-center items-center gap-2 top-10 right-4'>
