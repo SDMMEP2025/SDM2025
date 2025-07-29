@@ -9,7 +9,7 @@ export default function TimeUnit({ value }: { value: number }) {
   return (
     <div className="flex text-center justify-center text-neutral-800 font-english font-normal leading-[288.20px] mx-2 lg:text-[18vw] font-bold tracking-[-0.02em]">
       {digits.map((digit, index) => {
-        const delay = index === 0 ? 0.2 : 0
+        const delay = index === 0 ? 0.6 : 0
         
         return (
           <div key={index} className='relative w-[10vw] lg:h-[18vw] flex items-center justify-center '>
