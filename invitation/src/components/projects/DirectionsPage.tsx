@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/navigation'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -12,30 +11,37 @@ export default function DirectionsPage({ onBackClick }) {
     'https://map.naver.com/p/directions/-/14140088.4127782,4504149.1985135,%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90%20%EC%84%9C%EC%9A%B8R%26D%EC%BA%A0%ED%8D%BC%EC%8A%A4A%ED%83%80%EC%9B%8C,1564943394,PLACE_POI/-/transit?c=15.00,0,0,0,dh'
 
   const handleCopyAddress = async () => {
-    try {
-      await navigator.clipboard.writeText(address)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('주소 복사 실패:', err)
-      const textArea = document.createElement('textarea')
-      textArea.value = address
-      document.body.appendChild(textArea)
-      textArea.focus()
-      textArea.select()
+    // navigator.clipboard가 없는 환경 대비
+    if (navigator?.clipboard?.writeText) {
       try {
-        document.execCommand('copy')
+        await navigator.clipboard.writeText(address)
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
-      } catch (fallbackErr) {
-        console.error('폴백 복사도 실패:', fallbackErr)
+        return
+      } catch (err) {
+        console.error('Clipboard API 실패:', err)
       }
-      document.body.removeChild(textArea)
     }
+
+    const textArea = document.createElement('textarea')
+    textArea.value = address
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (fallbackErr) {
+      console.error('폴백 복사도 실패:', fallbackErr)
+    }
+
+    document.body.removeChild(textArea)
   }
 
   return (
-    <div className='absolute top-0 min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
+    <div className='absolute top-0 h-full w-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
       <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[70px] md:gap-[83px] md:landscape:gap-[75px] lg:gap-[69px]'>
         <h1 className='justify-center text-neutral-800 text-xl font-medium leading-loose'>Directions</h1>
 
