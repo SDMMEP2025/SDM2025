@@ -33,6 +33,7 @@ export default {
       },
       screens: {
         xs: '390px',
+        'md-landscape': { 'raw': '(max-width: 768px) and (orientation: landscape)' },
         lg: '1440px',
         xl: '1920px',
       },
