@@ -24,7 +24,7 @@ export default function ProjectsGrid() {
     },
     {
       id: '3TF',
-      title: 'Politik',
+      title: 'Potrik',
       thumbnail: '/images/projects/test.png',
     },
     {
@@ -39,7 +39,7 @@ export default function ProjectsGrid() {
     },
     {
       id: '6TF',
-      title: 'LavCon',
+      title: 'Lay.On',
       thumbnail: '/images/projects/test.png',
     },
     {
