@@ -48,7 +48,7 @@ export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, is
           <div className='flex flex-col justify-start gap-0'>
             {[
               { label: 'About', path: '/about' },
-              { label: 'Project', path: '/projects' },
+              { label: 'Projects', path: '/projects' },
               { label: 'Movement', path: '/movement' },
             ].map(({ label, path }) => {
               const isCurrentPage = pathname === path
@@ -57,7 +57,7 @@ export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, is
               let textColorClass = 'text-zinc-600'
 
               if (isClicked && isCurrentPage) {
-                textColorClass = 'text-neutral-800'
+                textColorClass = 'text-[#222222]'
               } else if (isClicked && !isCurrentPage) {
                 textColorClass = 'text-pink-400'
               }
