@@ -20,15 +20,11 @@ export default function AboutPage() {
       <Header />
       <MainImage />
       <HeaderBody
-        title={['We don’t Follow tracks.', 'We form them.']}
-        description='2025 MEP 《New Formative》는 완성된 형태보다 ‘형성되어가는 과정’에 주목하며, 디자이너가 각자의 감각과 질문을 따라 자신만의 트랙을 개척해나가는 여정을 담은 전시입니다.'
-      />
-      <TitleBody
-        title='What is New Formative?'
-        text='우리는 주어진 길을 따르기보다, 낯선 질문과 실험을 통해 새로운 방향성과 정체성의 궤적을 만들어갑니다. 2025 MEP 전시 《New Formative》는 이러한 능동적이고 탐색적인 실천의 흐름이 서로 교차하고 확장되며 새로운 미래의 풍경을 만들어가는 과정을 보여주고자 합니다.'
+        title={['What is New Formative?']}
+        description='새로움을 만드는 데 필요한 것은 대단한 변화나 특별한 순간이 아닌, 자신만의 방향을 탐색하며 꾸준히 움직이는 에너지입니다. 2025 MEP 〈New Formative〉는 새로운 형성을 위해 나아가며  각자의 에너지가 만들어내는 꾸준한 움직임의 과정을 담고 있습니다.'
       />
       <Image src='' />
-      <Divide title='Problems' number='01' />
+      <Divide title='Behind Formative' number='01' />
       <TitleBody
         title='Value of Formative'
         text="AI, 기후 위기, 정체성의 다원화, 불확실한 미래 등 복합적인 현안 앞에서, 고정된 기준이나 기존의 해법은 더 이상 유효하지 않습니다. 빠르게 진화하는 AI 기술이 정체성과 창작의 경계를 흐리고, 기후 변화가 미래의 삶의 방식 자체를 새롭게 설계하도록 요구하며, 성별, 국적, 정체성을 둘러싼 정의들이 다양해지고 유동적이 되는 등, 우리는 기존의 '하나의 해석', '하나의 길'로는 더 이상 설명할 수 없는 세계가 되었기 때문입니다."

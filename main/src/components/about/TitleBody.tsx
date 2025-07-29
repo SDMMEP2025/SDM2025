@@ -11,12 +11,12 @@ export function TitleBody({
 }: TitleBody) {
 
   return (
-  <div className='w-full px-[3.90vw] py-[13.66vw] md:px-[5.21vw] md:py-[7.29vw] lg:px-[11.11vw] lg:py-84 bg-white flex flex-col justify-start items-start overflow-hidden xs:overflow-visible md:overflow-hidden lg:overflow-hidden'>
-      <div className='flex flex-col xs:flex-col md:flex-row lg:flex-row justify-between gap-4 xs:gap-4 md:gap-20 lg:gap-52'>
-        <div className='xs:w-full text-neutral-800 text-[36px] md:text-[24px] lg:text-[40px] font-semibold leading-[0.95] md:leading-[0.9] lg:leading-10'>
+  <div className='w-full px-[3.90vw] py-[13.66vw] md:px-[5.21vw] md:py-[7.29vw] lg:px-[11.11vw] lg:py-84 bg-white flex flex-col justify-start items-start overflow-visible md:overflow-hidden lg:overflow-hidden'>
+      <div className='flex flex-col md:flex-row lg:flex-row justify-between gap-4 md:gap-20 lg:gap-52'>
+        <div className='w-full text-neutral-800 text-[36px] md:text-[24px] lg:text-[40px] font-semibold leading-[0.95] md:leading-[0.9] lg:leading-10'>
           {title}
         </div>
-        <div className='w-full text-neutral-800 text-[17px] lg:text-[18px] font-normal xs:font-normal md:font-medium lg:font-medium leading-7 xs:leading-7 md:leading-relaxed lg:leading-relaxed'>
+        <div className='w-full text-neutral-800 text-[17px] lg:text-[18px] font-normal md:font-medium lg:font-medium leading-7 md:leading-relaxed lg:leading-relaxed'>
           {text}
         </div>
       </div>

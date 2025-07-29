@@ -96,7 +96,7 @@ export default function ProjectCard({
         flex: isExpanded ? flexValues.expanded : flexValues.collapsed,
         height: isExpanded ? 'auto' : undefined,
       }}
-      transition={{ duration: 1.0, ease: 'easeInOut' }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
       <Link href={`/projects/${project.id}`} aria-label={project.title}>
         <div className='relative w-full h-full'>
@@ -105,12 +105,11 @@ export default function ProjectCard({
               isExpanded ? 'opacity-100' : 'opacity-0'
             }`}
             style={{
-              backgroundImage: `url(${project.thumbnail})`,
-              filter: 'brightness(0.8)',
+              backgroundImage: `url(${project.thumbnail})`
             }}
           />
           <div
-            className={`absolute inset-0 bg-zinc-600 bg-opacity-20 transition-opacity duration-500 ${
+            className={`absolute inset-0 bg-zinc-600 bg-opacity-0 transition-opacity duration-500 ${
               isExpanded ? 'opacity-100' : 'opacity-0'
             }`}
           />
