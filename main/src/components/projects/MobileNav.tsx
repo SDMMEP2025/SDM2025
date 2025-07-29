@@ -48,7 +48,7 @@ export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, is
           <div className='flex flex-col justify-start gap-0'>
             {[
               { label: 'About', path: '/about' },
-              { label: 'Project', path: '/project' },
+              { label: 'Project', path: '/projects' },
               { label: 'Movement', path: '/movement' },
             ].map(({ label, path }) => {
               const isCurrentPage = pathname === path

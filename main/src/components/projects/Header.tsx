@@ -142,7 +142,7 @@ export function Header() {
         <div className='justify-start items-center gap-40 hidden lg:flex'>
           <div className='flex justify-start items-center gap-[26px]'>
             <AnimatedNavItem label='About,' href='/about' />
-            <AnimatedNavItem label='Project,' href='/project' />
+            <AnimatedNavItem label='Project,' href='/projects' />
             <AnimatedNavItem label='Movement' href='/movement' />
           </div>
 

@@ -8,15 +8,30 @@ export function Footer() {
         <span className="hidden md:inline"> </span>All rights reserved
       </div>
       <div className='w-fit h-6 left-[1089px] top-[28px] inline-flex justify-center items-center gap-10'>
-        <div className="justify-start text-white text-sm font-medium underline uppercase text-nowrap leading-tight">
+        <a 
+          href="https://www.design.samsung.com/kr/contents/sdm/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="justify-start text-white text-sm font-medium underline uppercase text-nowrap leading-tight hover:opacity-80 transition-opacity"
+        >
           Official Page
-        </div>
-        <div className="justify-start text-white text-sm font-medium underline uppercase leading-tight">
+        </a>
+        <a 
+          href="https://www.instagram.com/samsungdesignmembership/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="justify-start text-white text-sm font-medium underline uppercase leading-tight hover:opacity-80 transition-opacity"
+        >
           Instagram
-        </div>
-        <div className="justify-start text-white text-sm font-medium underline uppercase leading-tight">
+        </a>
+        <a 
+          href="https://www.behance.net/Samsung_Design_Mem" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="justify-start text-white text-sm font-medium underline uppercase leading-tight hover:opacity-80 transition-opacity"
+        >
           Behance
-        </div>
+        </a>
       </div>
     </div>
   )
