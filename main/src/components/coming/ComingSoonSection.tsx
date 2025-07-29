@@ -46,7 +46,7 @@ export default function ComingSoonSection() {
   const seconds = secondsLeft % 60
 
   return (
-    <section className='relative isolate w-[100vw] h-[100vh] bg-[#FFF790] text-black text-center overflow-hidden'>
+    <section className='relative isolate w-[100dvw] h-[100dvh] bg-[#FFF790] text-black text-center overflow-hidden'>
       <CountdownBars />
 
       <div className='absolute bottom-0 mix-blend-difference left-0 w-full z-10 pointer-events-none'>
@@ -57,7 +57,7 @@ export default function ComingSoonSection() {
         <Header />
       </div>
 
-      <div className='absolute h-fit top-1/2 rotate-90 landscape:md:rotate-0 lg:top-[39.87%] lg:rotate-0 left-1/2 transform -translate-y-1/2 landscape:md:tranform -translate-x-1/2 lg:tranform -translate-x-1/2 transform -translate-x-1/2 text-[18vw] font-bold flex items-center justify-center m-0'>
+      <div className='absolute h-fit font-english top-1/2 rotate-90 landscape:md:rotate-0 lg:top-[39.87%] lg:rotate-0 left-1/2 transform -translate-y-1/2 landscape:md:tranform -translate-x-1/2 lg:tranform -translate-x-1/2 transform -translate-x-1/2 text-[18vw] font-bold flex items-center justify-center m-0'>
         <TimeUnit value={days} />
         <Colon className='h-[8vw] w-auto pb-[1.5vw] aspect-[28/122]' />
         <TimeUnit value={hours} />
