@@ -3,7 +3,7 @@ import { METADATA } from "./metadata";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { pretendard } from "@/theme/font";
 import "@/styles/globals.css";
-import { Layout } from "@/components/projects/Layout";
+import { Layout } from "@/components/projects/Layout"
 
 export const metadata: Metadata = {
   alternates: {

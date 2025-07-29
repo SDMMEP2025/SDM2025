@@ -129,6 +129,17 @@
     background: #555;
     /* 스크롤바 호버 색상 */
   }
+
+  iframe {
+    border: none !important;
+    outline: none !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 }
 
 @layer utilities {
