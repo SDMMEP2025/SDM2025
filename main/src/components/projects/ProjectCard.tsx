@@ -96,7 +96,7 @@ export default function ProjectCard({
         flex: isExpanded ? flexValues.expanded : flexValues.collapsed,
         height: isExpanded ? 'auto' : undefined,
       }}
-      transition={{ duration: 0.6, ease: 'easeInOut' }}
+      transition={{ duration: 1.0, ease: 'easeInOut' }}
     >
       <Link href={`/projects/${project.id}`} aria-label={project.title}>
         <div className='relative w-full h-full'>
