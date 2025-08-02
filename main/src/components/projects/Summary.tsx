@@ -1,10 +1,14 @@
-//components/projects/Summary.tsx
-
 'use client'
 
 import classNames from 'classnames'
 
-export function Summary() {
+interface SummaryProps {
+  title: string[]
+  description: string
+  credits: string
+}
+
+export function Summary({ title, description, credits }: SummaryProps) {
   return (
     <div
       className={classNames(
@@ -76,7 +80,7 @@ export function Summary() {
           )}
         >
           <div className='flex flex-col'>
-            {['슬랙', 'Slate for Own Scene'].map((text, index) => (
+            {title.map((text, index) => (
               <span
                 key={index}
                 className={classNames(
@@ -109,9 +113,7 @@ export function Summary() {
               'xl:text-[22px] xl:leading-[1.5] xl:tracking-[-0.44px] xl:font-medium xl:mt-0',
             )}
           >
-            Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장
-            가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼
-            변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!
+            {description}
           </p>
 
           <p
@@ -127,7 +129,7 @@ export function Summary() {
               'xl:text-[18px] xl:leading-[1.5] xl:tracking-[-0.36px] xl:mt-0',
             )}
           >
-            김민채, 김민채, 김민채, 김민채, 김민채
+            {credits}
           </p>
         </div>
       </div>

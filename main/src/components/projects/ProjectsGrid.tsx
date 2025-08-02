@@ -13,33 +13,33 @@ export default function ProjectsGrid() {
 
   const projects: Project[] = [
     {
-      id: '1TF',
+      id: '5TF',
       title: 'Cruise',
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: '2TF',
+      id: '3TF',
       title: 'Simul',
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: '3TF',
+      id: '9TF',
       title: 'Potrik',
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: '4TF',
-      title: 'Hotcake',
-      thumbnail: '/images/projects/test.png',
-    },
-    {
-      id: '5TF',
+      id: '8TF',
       title: 'Newbe',
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: '6TF',
+      id: '2TF',
       title: 'Lay.On',
+      thumbnail: '/images/projects/test.png',
+    },
+    {
+      id: '1TF',
+      title: 'Hotcake',
       thumbnail: '/images/projects/test.png',
     },
     {
@@ -48,13 +48,13 @@ export default function ProjectsGrid() {
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: '8TF',
-      title: 'Mizi',
+      id: '4TF',
+      title: 'Autonomy Practice',
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: '9TF',
-      title: 'Autonomy Practice',
+      id: '6TF',
+      title: 'Mizi',
       thumbnail: '/images/projects/test.png',
     },
   ]

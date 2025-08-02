@@ -6,9 +6,10 @@ import classNames from 'classnames'
 
 interface MidTitleProps {
   align?: 'center' | 'left' | 'right'
+  text ?: string
 }
 
-export function MidTitle({ align = 'center' }: MidTitleProps) {
+export function MidTitle({ align = 'center', text }: MidTitleProps) {
   return (
     <div
       className={classNames(
@@ -37,7 +38,7 @@ export function MidTitle({ align = 'center' }: MidTitleProps) {
           'xl:text-[28px] xl:leading-[1.4] xl:tracking-[-0.56px] xl:font-bold',
         )}
       >
-        '나의 순간'에 몰입하는 방법
+        {text}
       </div>
     </div>
   )
