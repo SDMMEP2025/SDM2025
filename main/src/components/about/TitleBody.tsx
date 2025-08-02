@@ -49,7 +49,7 @@ export function TitleBody({
             //tablet
             'md:w-[30%] md:text-[24px] md:tracking-[-0.48px] md:leading-[1.1] md:whitespace-pre-line',
             //desktop
-            'lg:w-[30%] lg:text-[40px] lg:tracking-[-0.8px] lg:leading-[1.1] lg:whitespace-pre-line',
+            'lg:w-[36%] lg:text-[40px] lg:tracking-[-0.8px] lg:leading-[1.1] lg:whitespace-pre-line',
           )}
         >
           {title}
