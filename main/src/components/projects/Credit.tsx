@@ -1,4 +1,8 @@
+//components/projects/Credit.tsx
+
 'use client'
+
+import classNames from 'classnames'
 
 interface TeamMember {
   name: string
@@ -25,7 +29,19 @@ export function Credit({ title = 'Designed By', members }: CreditProps) {
   }
 
   return (
-    <div className='w-full px-4 py-14 xs:px-4 xs:py-14 md:px-[40px] md:py-[56px] lg:px-[235px] lg:py-[84px] xl:px-[240px] bg-white flex flex-col justify-start items-start gap-2.5'>
+    <div
+      className={classNames(
+        'w-full bg-white flex flex-col justify-start items-start gap-2.5',
+        //mobile
+        'px-[4.10vw] py-14',
+        //tablet
+        'md:px-[5.2vw] md:py-[56px]',
+        //desktop
+        'lg:px-[16.32vw] lg:py-[84px]',
+        //extra large
+        'xl:px-[16.67vw]',
+      )}
+    >
       <div className='w-full flex flex-col justify-start items-start xs:gap-[22px] md:gap-[16px] lg:gap-[24px]'>
         {/* 제목 */}
         <div className='text-neutral-800 text-base xs:text-base md:text-base lg:text-lg font-bold leading-[1.6] xs:leading-[1.6] md:leading-[1.5] lg:leading-[1.5] tracking-[-0.02em]'>
@@ -153,7 +169,7 @@ export function Credit({ title = 'Designed By', members }: CreditProps) {
                             <rect x='3.45148' y='4.25142' width='16.2971' height='16.2971' fill='white' />
                             <path
                               d='M11.6001 0C4.75177 0 -0.799805 5.55157 -0.799805 12.3999C-0.799805 19.2483 4.75177 24.7999 11.6001 24.7999C18.4485 24.7999 24.0002 19.2483 24.0002 12.3999C24.0002 5.55157 18.4484 0 11.6001 0ZM8.29182 18.3947H5.5693V9.59896H8.29182V18.3947ZM6.91754 8.44715C6.02843 8.44715 5.30755 7.72048 5.30755 6.82414C5.30755 5.9278 6.02843 5.20114 6.91754 5.20114C7.80665 5.20114 8.52742 5.9278 8.52742 6.82414C8.52742 7.72048 7.80665 8.44715 6.91754 8.44715ZM18.4945 18.3947H15.7851V13.7777C15.7851 12.5114 15.3042 11.8045 14.3028 11.8045C13.213 11.8045 12.6437 12.5407 12.6437 13.7777V18.3947H10.0326V9.59896H12.6437V10.7836C12.6437 10.7836 13.4292 9.33059 15.2943 9.33059C17.1594 9.33059 18.4945 10.4694 18.4945 12.8253V18.3947Z'
-                               fill='currentColor'
+                              fill='currentColor'
                             />
                           </g>
                           <defs>

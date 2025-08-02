@@ -1,16 +1,36 @@
+//app/about/page.tsx
+
 'use client'
 import { Header, Footer, MainImage, Divide, MidBody, CreditThanksTo } from '@/components/projects'
 import { HeaderBody, Credit, SolutionSentence, TitleBody, Image } from '@/components/about'
+import classNames from 'classnames'
 
 export default function AboutPage() {
   const thankstoData = [
     {
+      title: 'Advisory \nProfessor',
+      tutors: [
+        { name: '김지헌', englishName: 'Kim Chiheon' },
+        { name: '이문환', englishName: 'Lee Moonhwan' },
+      ],
+    },
+    {
+      title: 'ID tutor',
+      tutors: [{ name: '홍길동1', englishName: 'Gildong Hong' }],
+    },
+    {
+      title: 'UX tutor',
+      tutors: [
+        { name: '홍길동2', englishName: 'Gildong Hong' },
+        { name: '홍길동3', englishName: 'Gildong Hong' },
+        { name: '홍길동4', englishName: 'Gildong Hong' },
+      ],
+    },
+    {
       title: 'VD tutor',
       tutors: [
-        { name: '박민수', englishName: 'Minsu Park' },
-        { name: '최지은', englishName: 'Jieun Choi' },
-        { name: '최지은', englishName: 'Jieun Choi' },
-        { name: '최지은', englishName: 'Jieun Choi' },
+        { name: '홍길동5', englishName: 'Gildong Hong' },
+        { name: '홍길동6', englishName: 'Gildong Hong' },
       ],
     },
   ]
@@ -23,68 +43,100 @@ export default function AboutPage() {
         title={['What is New Formative?']}
         description='새로움을 만드는 데 필요한 것은 대단한 변화나 특별한 순간이 아닌, 자신만의 방향을 탐색하며 꾸준히 움직이는 에너지입니다. 2025 MEP 〈New Formative〉는 새로운 형성을 위해 나아가며  각자의 에너지가 만들어내는 꾸준한 움직임의 과정을 담고 있습니다.'
       />
-      <Image src='' />
+      <Image src='' alt='main image' />
       <Divide title='Behind Formative' number='01' />
       <TitleBody
-        title='Value of Formative'
-        text="AI, 기후 위기, 정체성의 다원화, 불확실한 미래 등 복합적인 현안 앞에서, 고정된 기준이나 기존의 해법은 더 이상 유효하지 않습니다. 빠르게 진화하는 AI 기술이 정체성과 창작의 경계를 흐리고, 기후 변화가 미래의 삶의 방식 자체를 새롭게 설계하도록 요구하며, 성별, 국적, 정체성을 둘러싼 정의들이 다양해지고 유동적이 되는 등, 우리는 기존의 '하나의 해석', '하나의 길'로는 더 이상 설명할 수 없는 세계가 되었기 때문입니다."
+        title={'Value of \nNew Formative'}
+        text={
+          '우리는 이미 완료된 수많은 혁신들 사이에서 다양한 것들을 수용하고, 적응하는 데 익숙해져 있습니다. 하지만 변화의 속도는 점점 더 빨라지고, 새로운 것이 등장하는 주기 역시 짧아지고 있죠. 이러한 흐름 속에서 단순히 수용하고 적응하는 데에만 머물러도 괜찮을까요?'
+        }
       />
-      <Image src='' />
-      <Divide title='Solutions' number='01' />
-      <MidBody content='이러한 복합적 변화 속에서, 우리는 완성된 해답이 아닌, 감각적이고 유연한 형성(Formative)의 과정을 하나의 해법으로 제안합니다.' />
-      <Image src='' />
-      <Divide title='System' number='01' />
+      <Image src='' alt='behind formative1' />
       <TitleBody
-        title='Track As A System'
-        text='우리가 제안하는 트랙은 세 가지 다른 방식의 시선과 실천을 담고 있습니다. 선을 따르는 것에서, 틈을 만들고, 공간을 수놓는 것까지 말이죠. 이는 고정된 길이 아니라, 형성되는 과정 자체를 구조화한 시스템입니다.'
+        text={
+          '2025 MEP 〈New Formative〉는 이 질문에서 출발해, 완성된 결과가 아닌 형성의 과정에 주목했습니다. 꾸준한 시도와 점진적인 움직임이야말로 진정한 새로움을 만드는 태도라 믿으며, 그 안의 가능성과 방향을 함께 나누고자 합니다.'
+        }
       />
-      <Image src='' />
-      <SolutionSentence text='Solution sentence' />
-      <Image src='' />
-      <Divide title='Archive' number='01' />
+      <Image src='' alt='behind formative2' />
+
+      <Divide title='Concept' number='02' />
       <TitleBody
-        title='Processual Track'
-        text='9개의 팀들이 자신만의 것들을 새롭게 형성해나가는 과정은 우리가 가시화한 트랙 속에 고스란히 녹아있죠. 개별 팀프로젝트 뿐 아니라 전시 공간에서도 우리의 과정이 녹아든 트랙을 확인해보세요!'
+        title={'Movement \nAs a System'}
+        text={
+          '점진적이고 멈추지 않는 우리의 움직임은 각기 다른 궤적으로 남아 시각화됩니다. 자신만의 방향을 탐색하며 꾸준히 움직이는 에너지는 끊임없이 나아갑니다.'
+        }
       />
-      <Image src='' />
-      <Image src='' />
-      <SolutionSentence
-        text='We captured the tracks of nine teams, 
-            each shaping their own sense of newness.'
-      />
-      <MainImage />
-      <MidBody content='우리는 이처럼 각자의 속도로, 각자만의 방식으로 길을 형성하며 미래를 그려나가고 있습니다. 이처럼 미래를 유동적으로 그려나가는 흐름의 단면을 이제, 공간 속에서 마주해보세요.' />
-      <Divide title='9Teams' number='01' />
-      <SolutionSentence text='Welcome to the living field of Newformative!' />
-      <Image src='' />
+      <Image src='' alt='movement1' />
+      <MidBody content='움직임은 경계를 확장하고, 변화시키며 조금씩 새로운 형태를 만들어냅니다.' />
+      <Image src='' alt='movement2' />
+      <SolutionSentence text={'Steady Movement \nFor Progress'} />
+      <Image src='' alt='movement3' />
+
+      <Divide title='Archive' number='03' />
       <TitleBody
-        title='Get your Insights from New Formative'
-        text='이 전시는 관람자에게 결과를 소비하는 감상이 아닌, 과정을 감각하고 해석하는 실천적 경험을 제안합니다. 각 팀이 형성한 트랙을 따라가며 우리는 정답이 아닌 질문과 마주하고, 익숙한 언어 대신 새로운 표현 방식을 탐색하게 됩니다.
-        이 전시를 관람하시는 여러분들도, 단순한 관찰자가 아니라 나아가 각자의 시선과 속도로 이 여정을 완성해가는 주체로 자리하며, ‘형성’이라는 태도가 어떻게 사고와 감각, 삶의 방식으로 확장될 수 있는지를 경험해보시길 바랍니다.'
+        title={'Archive \nMovement'}
+        text='전시 준비 과정에서 움직임의 궤적을 놓치지 않기 위해, 형성의 과정에서 만들어진 사진과 영상을 아카이빙합니다. 수많은 시도와 탐색의 과정은 물론, 멈칫하거나 전환되는 순간의 과정까지 움직임의 일부로 포착합니다.'
       />
+      <Image src='' alt='archive1' />
+
+      <Divide title='Identities' number='04' />
+      <SolutionSentence text={'Various Identities \nFrom Various Movements.'} />
+      <MidBody content='전시장에서는 9개의 팀과 개인들이 각자의 리듬과 방식으로 걸어온 형성의 과정들이 펼쳐집니다. 저마다의 궤적을 통해 새로운 방향을 실험하고, 그 움직임을 시각화합니다.' />
       <Image src='' />
-      <HeaderBody
-        title={'Sentence'}
-        description='2025 MEP 《New Formative》는 완성된 형태보다 ‘형성되어가는 과정’에 주목하며, 디자이너가 각자의 감각과 질문을 따라 자신만의 트랙을 개척해나가는 여정을 담은 전시입니다.'
-      />
-      <Image src='' />
-      <MidBody content='〈New Formative〉 전시는 정해진 해답을 찾기보다는, 형성 중인 질문과 실험의 과정을 따라가는 여정입니다. 전시는 집단의 비전과 태도를 드러내는 New Step을 시작으로, 다양한 분야가 교차하며 새로운 가능성을 모색하는 New Link, 각자의 고유한 문제의식을 바탕으로 전개된 New Focus, 마지막으로 감각적 실험이 응집된 New Crac 순으로 이어집니다. ' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
+      <SolutionSentence text='Welcome to New Formative!' />
       <TitleBody
-        title='Make your Track'
-        text='우리가 만들어간 트랙 시스템을 활용하여, 관람객분들도 직접 트랙을 만들어볼 수 있는 작은 창구를 마련했습니다. 직접 자신만의 길을 만들고 또 공유해보세요!'
+        title={'New Formative \nBegins Here'}
+        text='2025 MEP 〈New Formative〉 전시 공간에서는 여러분의 감각과 해석으로 완성되어 가는 여정을 경험할 수 있습니다. 형성이라는 태도가 우리의 사고와 감각으로 어떻게 확장될 수 있는지 이곳에서 함께 포착해보세요.'
       />
+      <Image src='' alt='new formative1' />
+      <MidBody content={'삼성디자인멤버십 회원들의 비전과 태도를 드러내는 ‘New Step’을 시작으로, 다양한 분야가 교차하며 새로운 가능성을 모색하는 ‘New Link’, 각자의 고유한 문제의식을 바탕으로 전개된 ‘New Focus’, 마지막으로 감각적 실험이 응집된 ‘New Spark’순으로 이어집니다.'} />
+      <Image src='' alt='new formative2' />
+      <Image src='' alt='new formative3' />
+      <Image src='' alt='new formative4' />
+      <SolutionSentence type='section' text='Web Exhibition' />
+      <Image src='' alt='web exhibition1' />
+      <Image src='' alt='web exhibition2' />
+      <Image src='' alt='web exhibition3' />
+      <TitleBody
+        title={'Make your \nMovement'}
+        text={'당신을 움직이게 하는 순간은 무엇인가요?\n 웹사이트에 이미지를 등록하고, 나만의 Formative Movement를 만들어 공유해보세요.'}
+      />
+      {/* CTA */}
+      <div
+        className={classNames(
+          'w-full flex justify-center items-center',
+          //mobile
+          'px-[4.10vw] pb-[56px]',
+          //tablet
+          'md:px-[5.2vw] md:pb-[56px]',
+          //desktop
+          'lg:px-[14.10vw] lg:pb-[84px]',
+        )}
+      >
+        <button
+          className={classNames(
+            'bg-black text-white rounded-full font-medium md:hover:opacity-80 active:scale-95 transition-all duration-300',
+            //mobile
+            'px-[20px] py-[6px] w-[210px] h-[56px] text-[17px] tracking-[-0.34px] leading-[1.3]',
+            //tablet
+            'md:px-[20px] md:py-[6px] md:w-[210px] md:h-[56px] md:text-[17px] md:tracking-[-0.34px]',
+            //desktop
+            'lg:px-[34.2px] lg:py-0 lg:w-fit lg:h-[68px] lg:text-[18px] lg:tracking-[-0.36px]  ',
+          )}
+        >
+          Movement 만들러 가기
+        </button>
+      </div>
       <Image src='' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
-      <Image src='' />
+      <SolutionSentence type='section' text='More Details' />
+      <Image src='' alt='detail1' />
+      <Image src='' alt='detail2' />
+      <Image src='' alt='detail3' />
+      <Image src='' alt='detail4' />
+      <Image src='' alt='detail5' />
+      <Image src='' alt='detail6' />
+      <Image src='' alt='detail7' />
+
       <Credit
         title='Designed By'
         members={[
@@ -156,3 +208,7 @@ export default function AboutPage() {
     </>
   )
 }
+
+
+
+

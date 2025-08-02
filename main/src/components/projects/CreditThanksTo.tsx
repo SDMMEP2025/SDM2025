@@ -1,4 +1,8 @@
+//components/projects/CreditThanksTo.tsx
+
 'use client'
+
+import classNames from 'classnames'
 
 interface Tutor {
   name: string
@@ -38,7 +42,19 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
   }
 
   return (
-    <div className='w-full px-[35px] pt-0 pb-[112px] md:px-[40px] md:pb-[112px] lg:px-[235px] lg:pb-[168px] xl:px-[240px] bg-white'>
+    <div
+      className={classNames(
+        'w-full bg-white',
+        //mobile
+        'px-[4.10vw] pt-0 pb-[112px]',
+        //tablet
+        'md:px-[5.2vw] md:pb-[112px]',
+        //desktop
+        'lg:px-[16.32vw] lg:pb-[168px]',
+        //extra large
+        'xl:px-[16.67vw]',
+      )}
+    >
       <div className='flex flex-col md:flex-row lg:justify-between'>
         {/* 제목 */}
         <div className='mb-9 lg:mb-0 w-[100%] md:w-[25%] lg:w-[20%]'>
@@ -54,7 +70,12 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
             {sections.flatMap((section) =>
               section.tutors.map((tutor, tutorIndex) => (
                 <div key={`${section.title}-${tutorIndex}`} className='flex justify-between gap-4'>
-                  <div className='w-full text-neutral-800 text-sm font-medium leading-[1.6] tracking-[-0.02em]'>
+                  <div
+                    style={{
+                      opacity: tutorIndex !== 0 ? 0 : 1, // 첫 번째 튜터만 제목 표시
+                    }}
+                    className='w-full text-neutral-800 text-sm font-medium leading-[1.6] tracking-[-0.02em]'
+                  >
                     {section.title}
                   </div>
                   <div className='w-full'>
@@ -73,23 +94,36 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
           {/* 태블릿: 세로 배치 */}
           <div className='hidden md:block lg:hidden'>
             <div className='grid grid-cols-2 gap-y-5'>
-              {sections.flatMap((section) =>
-                section.tutors.map((tutor, tutorIndex) => (
-                  <div key={`${section.title}-${tutorIndex}`} className='flex gap-5 min-h-[48px]'>
-                    <div className='w-full text-neutral-800 text-sm font-medium leading-[1.5] tracking-[-0.02em]'>
-                      {section.title}
-                    </div>
-                    <div className='w-full'>
-                      <div className='text-neutral-800 text-base font-bold leading-[1.5] tracking-[-0.02em]'>
-                        {tutor.name}
+              {sections.flatMap((section, index) => (
+                <div key={index + section.title} className='flex flex-col gap-5 min-h-[48px]'>
+                  {section.tutors.map((tutor, tutorIndex) => (
+                    <div key={tutorIndex}>
+                      <div key={`${section.title}-${tutorIndex}`} className='flex gap-5 min-h-[48px]'>
+                        <div
+                          style={{
+                            opacity: tutorIndex !== 0 ? 0 : 1, // 첫 번째 튜터만 제목 표시
+                          }}
+                          className='w-full text-neutral-800 text-sm font-medium leading-[1.5] tracking-[-0.02em]'
+                        >
+                          {section.title}
+                        </div>
+                        <div className='w-full'>
+                          <div className='text-neutral-800 text-base font-bold leading-[1.5] tracking-[-0.02em]'>
+                            {tutor.name}
+                          </div>
+                          <div className='text-zinc-600 text-sm font-medium leading-[1.5] tracking-[-0.02em]'>
+                            {tutor.englishName}
+                          </div>
+                        </div>
                       </div>
-                      <div className='text-zinc-600 text-sm font-medium leading-[1.5] tracking-[-0.02em]'>
-                        {tutor.englishName}
-                      </div>
+                      {/* section의 자식이 홀수인 경우 하나 더 넣어주기 */}
+                      {section.tutors.length % 2 !== 0 && tutorIndex === section.tutors.length - 1 && (
+                        <div key={`${section.title}-empty-${tutorIndex}`} className='w-full h-[48px]' />
+                      )}
                     </div>
-                  </div>
-                )),
-              )}
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -102,7 +136,7 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
                   <div key={rowIndex} className='flex flex-row gap-20'>
                     {desktopSections.slice(rowIndex * 2, rowIndex * 2 + 2).map((section, sectionIndex) => (
                       <div key={sectionIndex} className='flex-1 flex gap-20'>
-                        <div className='w-full text-neutral-800 text-sm font-medium leading-[1.5] tracking-[-0.02em]'>
+                        <div className='w-full text-neutral-800 text-lg font-normal leading-[1.5] tracking-[-0.02em]'>
                           {section.title}
                         </div>
                         <div className='w-full space-y-3.5'>
@@ -111,7 +145,7 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
                               <div className='text-neutral-800 text-lg font-bold leading-[1.5] tracking-[-0.02em]'>
                                 {tutor.name}
                               </div>
-                              <div className='text-zinc-600 text-sm font-medium leading-[1.5] tracking-[-0.02em]'>
+                              <div className='text-zinc-600 text-lg font-normal leading-[1.5] tracking-[-0.02em]'>
                                 {tutor.englishName}
                               </div>
                             </div>

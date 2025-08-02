@@ -24,7 +24,8 @@ import {
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useInView } from 'framer-motion'
 
 const tutorData = [
   {
@@ -78,6 +79,7 @@ const points = [
 
 export default function Page() {
   const [isMouseInRightThird, setIsMouseInRightThird] = useState(false)
+  const [isSidebarShown, setIsSidebarShown] = useState(true)
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
@@ -85,9 +87,21 @@ export default function Page() {
     points[0], // 초기값으로 첫 번째 포인트 설정
   )
 
-  const isAtBottom = useScrollAtBottom(10)
+  const designedByRef = useRef<HTMLDivElement>(null)
 
-  // 디바이스 타입 체크
+  const inView = useInView(designedByRef, {
+    amount: 0.1, // 10%가 보일 때 inView 상태 변경
+    once: false, // 한번만 감지하지 않도록 설정
+  })
+
+  useEffect(() => {
+    if (inView) {
+      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
+    } else {
+      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
+    }
+  }, [inView, setIsSidebarShown])
+
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
@@ -132,6 +146,7 @@ export default function Page() {
     setIsSidebarExpanded(expanded)
   }
 
+
   // 사이드바 표시 여부 결정:
   // - 모바일에서는 항상 true
   // - 테블릿에서는 항상 true (새로 추가된 조건)
@@ -150,105 +165,110 @@ export default function Page() {
       />
       <RightTitleBody />
       <RightBody />
-      <MidBody content="Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!" />
-      <MidTitle />
-      <LeftTitle />
+      <MidBody
+        align='left'
+        content="Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!"
+      />
+      <MidTitle align='center' />
+      <MidTitle align='left' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/844128999' alt='이곳에 비디오를' />
       <ImageGallery images={['/images/image1.jpeg', '/images/image2.jpeg', '/images/image3.jpeg']} />
-      <Credit
-        title='Designed By'
-        members={[
-          {
-            name: '유해리',
-            role: 'PL · ID',
-            englishName: 'Haeri Ryoo',
-            profileImage: '/images/profile/haeriryoo.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/haeriryoo',
-              instagram: 'https://instagram.com/gla_sun_ss',
+      <div ref={designedByRef}>
+        <Credit
+          title='Designed By'
+          members={[
+            {
+              name: '유해리',
+              role: 'PL · ID',
+              englishName: 'Haeri Ryoo',
+              profileImage: '/images/profile/haeriryoo.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/haeriryoo',
+                instagram: 'https://instagram.com/gla_sun_ss',
+              },
             },
-          },
-          {
-            name: '김민희',
-            role: 'ID',
-            englishName: 'Minhee Kim',
-            profileImage: '/images/profile/minheekim.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/lciminhei',
-              instagram: 'https://instagram.com/lciminhei',
+            {
+              name: '김민희',
+              role: 'ID',
+              englishName: 'Minhee Kim',
+              profileImage: '/images/profile/minheekim.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/lciminhei',
+                instagram: 'https://instagram.com/lciminhei',
+              },
             },
-          },
-          {
-            name: '김서현',
-            role: 'UX',
-            englishName: 'Seohyun Kim',
-            profileImage: '/images/profile/seohyunkim.png',
-            socialLinks: {
-              linkedin: 'https://www.linkedin.com/in/shmono',
-              behance: 'https://www.behance.net/shmono',
-              instagram: 'https://instagram.com/shmono',
+            {
+              name: '김서현',
+              role: 'UX',
+              englishName: 'Seohyun Kim',
+              profileImage: '/images/profile/seohyunkim.png',
+              socialLinks: {
+                linkedin: 'https://www.linkedin.com/in/shmono',
+                behance: 'https://www.behance.net/shmono',
+                instagram: 'https://instagram.com/shmono',
+              },
             },
-          },
-          {
-            name: '서유빈',
-            role: 'VD',
-            englishName: 'Yubin Seo',
-            profileImage: '/images/profile/yubinseo.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/seoyubin',
-              instagram: 'https://instagram.com/s_yubin__',
+            {
+              name: '서유빈',
+              role: 'VD',
+              englishName: 'Yubin Seo',
+              profileImage: '/images/profile/yubinseo.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/seoyubin',
+                instagram: 'https://instagram.com/s_yubin__',
+              },
             },
-          },
-          {
-            name: '최완혁',
-            role: 'ID',
-            englishName: 'Wanhyeok Choi',
-            profileImage: '/images/profile/wanhyeokchoi.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/choiwanhyeok',
-              instagram: 'https://instagram.com/0_0.10.15.d',
+            {
+              name: '최완혁',
+              role: 'ID',
+              englishName: 'Wanhyeok Choi',
+              profileImage: '/images/profile/wanhyeokchoi.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/choiwanhyeok',
+                instagram: 'https://instagram.com/0_0.10.15.d',
+              },
             },
-          },
-        ]}
-      />
-      <CreditTutor title='Tutor' sections={tutorData} />
-      <CreditThanksTo title='Thanks to' sections={thankstoData} />
-      <MobileNavigation
-        previousItem={{ label: 'Previous Project', url: '/projects/1TF' }}
-        nextItem={{ label: 'Next Project', url: '/projects/3TF' }}
-      />
-      <ProjectNavigation 
-        leftProject={{
-          id: '1',
-          title: 'Left Project',
-          imageUrl: '/images/previous_image.png',
-          englishName: 'MEET',
-          koreanName: '미트',
-          linkUrl: '/projects/1TF'
-        }}
-        rightProject={{
-          id: '2',
-          title: 'Right Project', 
-          imageUrl: '/images/next_image.png',
-          englishName: 'CONNECT',
-          koreanName: '연결',
-          linkUrl: '/projects/3TF'
-        }}
-      />
-      <AnimatePresence>
-        {shouldShowSidebar && (
-          <ArchiveSidebar
-            isVisible={!isAtBottom}
-            currentPoint={currentPoint}
-            onExpandedChange={handleSidebarExpandedChange}
-          />
-        )}
-      </AnimatePresence>
-      <Footer />
+          ]}
+        />
+        <CreditTutor title='Tutor' sections={tutorData} />
+        <CreditThanksTo title='Thanks to' sections={thankstoData} />
+        <MobileNavigation
+          previousItem={{ label: 'Previous Project', url: '/projects/1TF' }}
+          nextItem={{ label: 'Next Project', url: '/projects/3TF' }}
+        />
+        <ProjectNavigation
+          leftProject={{
+            id: '1',
+            title: 'Left Project',
+            imageUrl: '/images/previous_image.png',
+            englishName: 'MEET',
+            koreanName: '미트',
+            linkUrl: '/projects/1TF',
+          }}
+          rightProject={{
+            id: '2',
+            title: 'Right Project',
+            imageUrl: '/images/next_image.png',
+            englishName: 'CONNECT',
+            koreanName: '연결',
+            linkUrl: '/projects/3TF',
+          }}
+        />
+        <AnimatePresence>
+          {shouldShowSidebar && (
+            <ArchiveSidebar
+              isVisible={isSidebarShown}
+              currentPoint={currentPoint}
+              onExpandedChange={handleSidebarExpandedChange}
+            />
+          )}
+        </AnimatePresence>
+        <Footer />
+      </div>
     </>
   )
 }

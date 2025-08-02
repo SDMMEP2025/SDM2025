@@ -1,9 +1,42 @@
+//components/projects/MidTitle.tsx
+
 'use client'
 
-export function MidTitle() {
+import classNames from 'classnames'
+
+interface MidTitleProps {
+  align?: 'center' | 'left' | 'right'
+}
+
+export function MidTitle({ align = 'center' }: MidTitleProps) {
   return (
-    <div className="w-full px-[4.27vw] py-14 md:px-10 md:pt-14 md:pb-12 lg:px-40 lg:py-20 xl:px-[240px] xl:py-[84px] bg-white flex justify-center items-center gap-2">
-      <div className="text-center text-neutral-800 text-xl xs:text-xl md:text-xl lg:text-3xl font-bold font-['Pretendard'] leading-loose xs:leading-loose md:leading-loose lg:leading-10">
+    <div
+      className={classNames(
+        'w-full bg-white flex justify-center items-center gap-2',
+        //mobile
+        'px-[4.10vw] py-[56px]',
+        //tablet
+        'md:px-[5.2vw] md:py-[56px]',
+        //desktop
+        'lg:px-[14.10vw] lg:py-[84px]',
+        //large desktop
+        'xl:px-[12.5vw] xl:py-[84px]',
+      )}
+    >
+      <div
+        className={classNames(
+          'w-full',
+          align === 'center' ? 'text-center' : align === 'left' ? 'text-left' : 'text-right',
+          //mobile
+          'text-[20px] leading-[1.6] tracking-[-0.4px] font-normal',
+          //tablet
+          'md:text-[20px] md:leading-[1.5] md:tracking-[-0.4px] md:font-bold',
+          //desktop
+          'lg:text-[28px] lg:leading-[1.4] lg:tracking-[-0.56px] lg:font-bold',
+          //large desktop
+          'xl:text-[28px] xl:leading-[1.4] xl:tracking-[-0.56px] xl:font-bold',
+        )}
+      >
         '나의 순간'에 몰입하는 방법
       </div>
     </div>

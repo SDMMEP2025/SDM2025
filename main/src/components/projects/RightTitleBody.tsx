@@ -1,14 +1,100 @@
 'use client'
 
-export function RightTitleBody() {
+import classNames from 'classnames'
+
+interface RightTitleBodyProps {
+  title?: string
+  text?: string
+}
+
+export function RightTitleBody({
+  title = "'나의 순간'에 몰입하는 방법",
+  text = "Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!",
+}: RightTitleBodyProps) {
   return (
-    <div className="w-full px-[4.27vw] py-14 md:pl-[304px] md:pr-10 md:py-14 lg:pl-[635px] lg:pr-40 lg:py-[84px] xl:pl-[848px] xl:pr-[260px] bg-white flex flex-col justify-start items-start gap-2.5 overflow-hidden xs:overflow-visible md:overflow-hidden lg:overflow-hidden">
-      <div className="self-stretch flex flex-col justify-start items-start gap-4 xs:gap-4 md:gap-3 lg:gap-3">
-        <div className="self-stretch text-neutral-800 text-xl xs:text-xl md:text-xl lg:text-3xl font-bold font-['Pretendard'] leading-loose xs:leading-loose md:leading-loose lg:leading-10">
-          '나의 순간'에 몰입하는 방법
-        </div>
-        <div className="self-stretch text-neutral-800 text-base xs:text-base md:text-base lg:text-lg font-normal xs:font-normal md:font-medium lg:font-medium font-['Pretendard'] leading-7 xs:leading-7 md:leading-relaxed lg:leading-relaxed">
-          Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!
+    <div
+      className={classNames(
+        'w-full bg-white flex flex-col justify-center items-center',
+        //mobile
+        'px-[4.10vw] py-[56px]',
+        //tablet
+        'md:px-[5.2vw] md:py-[56px]',
+        //desktop
+        'lg:px-[14.10vw] lg:py-[84px]',
+        //large desktop
+        'xl:px-[12.5vw] xl:py-[84px]',
+      )}
+    >
+      <div
+        className={classNames(
+          'w-full flex',
+          !title ? 'gap-[0px]' : '',
+          //mobile
+          'flex-col gap-[20px] justify-start items-center',
+          //tablet
+          'md:flex-row md:gap-[80px] md:justify-between md:items-start',
+          //desktop
+          'lg:flex-row lg:gap-[210px] lg:justify-between lg:items-start',
+          //large desktop
+          'xl:flex-row xl:gap-[210px] xl:justify-between xl:items-start',
+        )}
+      >
+        <div
+          className={classNames(
+            '',
+            //mobile
+            'hidden',
+            //tablet
+            'md:w-[30%] md:block',
+            //desktop
+            'lg:w-[30%] lg:block',
+            //large desktop
+            'xl:w-[30%] xl:block',
+          )}
+        ></div>
+        <div
+          className={classNames(
+            'flex flex-col',
+            //mobile
+            'w-full gap-[20px]',
+            //tablet
+            'md:w-[70%] md:gap-[12px]',
+            //desktop
+            'lg:w-[70%] lg:gap-[12px]',
+            //large desktop
+            'xl:w-[70%] xl:gap-[12px]',
+          )}
+        >
+          <span
+            className={classNames(
+              'w-full',
+              //mobile
+              'text-[20px] tracking-[-0.4px] leading-[1.6] whitespace-nowrap font-normal',
+              //tablet
+              'md:text-[20px] md:tracking-[-0.4px] md:leading-[1.5] md:whitespace-pre-line md:font-bold',
+              //desktop
+              'lg:text-[28px] lg:tracking-[-0.56px] lg:leading-[1.4] lg:whitespace-pre-line lg:font-bold',
+              //large desktop
+              'xl:text-[28px] xl:tracking-[-0.56px] xl:leading-[1.4] xl:whitespace-pre-line xl:font-bold',
+            )}
+          >
+            {title}
+          </span>
+          <div
+            className={classNames(
+              'w-full',
+              //mobile
+              'text-[17px] tracking-[-0.34px] leading-[1.6] font-normal',
+              //tablet
+              'md:text-[17px] md:tracking-[-0.34px] md:leading-[1.5] md:font-medium',
+              //desktop
+              'lg:text-[18px] lg:tracking-[-0.36px] lg:leading-[1.5] lg:font-medium',
+              //large desktop
+              'xl:text-[18px] xl:tracking-[-0.36px] xl:leading-[1.5] xl:font-medium',
+            )}
+          >
+            {text}
+          </div>
         </div>
       </div>
     </div>

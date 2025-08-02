@@ -28,7 +28,7 @@ export default function ProjectCard({
 
   useEffect(() => {
     const checkIsLg = () => {
-      setIsLg(window.innerWidth >= 1440) // lg 기준 (1440px+)
+      setIsLg(window.innerWidth >= 1440)
     }
 
     checkIsLg()
@@ -37,7 +37,6 @@ export default function ProjectCard({
     return () => window.removeEventListener('resize', checkIsLg)
   }, [])
 
-  // md(768px~1439px)와 lg(1440px+)에서 다른 flex 값 사용
   const flexValues = isLg
     ? {
         expanded: '1 1 69.76%', // lg (1440px+ 데스크톱) 확장 비율
@@ -48,8 +47,7 @@ export default function ProjectCard({
         collapsed: '1 1 6.53%', // md (768px~1439px 태블릿) 축소 비율
       }
 
-  // border 클래스를 동적으로 생성하는 함수
-  // border 클래스를 동적으로 생성하는 함수
+
   const getBorderClasses = () => {
     if (isExpanded) {
       return 'rounded-[5px] border-none'

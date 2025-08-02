@@ -1,14 +1,40 @@
 'use client'
 
+import classNames from 'classnames'
+
 interface MidBodyProps {
   content: string
   className?: string
+  align?: 'center' | 'left' | 'right'
 }
 
-export function MidBody({ content, className = '' }: MidBodyProps) {
+export function MidBody({ content, className = '', align = 'center' }: MidBodyProps) {
   return (
-    <div className={`px-[4.27vw] py-14 md:px-32 md:py-14 lg:px-[160px] lg:py-[84px] xl:px-[240px] xl:py-[84px] bg-white flex justify-center items-center gap-2.5 overflow-hidden xs:overflow-visible md:overflow-hidden lg:overflow-hidden ${className}`}>
-      <div className="xs:w-full lg:w-[760px] text-center text-neutral-800 text-base xs:text-base md:text-base lg:text-lg font-normal xs:font-normal md:font-medium lg:font-medium leading-7 xs:leading-7 md:leading-relaxed lg:leading-relaxed">
+    <div
+      className={classNames(
+        'w-full h-fit bg-white flex flex-col justify-center items-center',
+        //mobile
+        'px-[4.10vw] py-[56px] gap-[12px]',
+        //tablet
+        'md:px-[5.2vw] md:py-[48px] md:gap-[20px]',
+        //desktop
+        'lg:px-[14.10vw] lg:py-[84px] lg:gap-[24px]',
+        className,
+      )}
+    >
+      <div
+        className={classNames(
+          'break-keep',
+          //mobile
+          'w-full text-[17px] leading-[1.6] tracking-[-0.34px] font-regular text-left',
+          //tablet
+          'md:w-[66.67vw] md:text-[17px] md:leading-[1.5] md:tracking-[-0.34px] md:font-medium',
+          align === 'center' ? 'md:text-center' : align === 'left' ? 'md:text-left' : 'md:text-right',
+          //desktop
+          'lg:w-[51.39vw] lg:text-[18px] lg:leading-[1.5] lg:tracking-[-0.36px] lg:font-medium',
+          align === 'center' ? 'lg:text-center' : align === 'left' ? 'lg:text-left' : 'lg:text-right',
+        )}
+      >
         {content}
       </div>
     </div>

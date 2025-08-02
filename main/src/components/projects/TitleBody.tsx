@@ -1,4 +1,8 @@
+//components/projects/TitleBody.tsx
+
 'use client'
+
+import classNames from 'classnames'
 
 interface TitleBody {
   title: string
@@ -9,14 +13,63 @@ export function TitleBody({
   title = "나의 순간'에 몰입하는 방법",
   text = "Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!",
 }: TitleBody) {
-
   return (
-    <div className='w-full px-[4.27vw] py-14 md:px-[5.21vw] md:py-14 lg:px-[15.63vw] lg:py-[84px] xl:px-[18.75vw] xl:py-[84px] bg-white flex flex-col justify-start items-start'>
-      <div className='self-stretch flex flex-col xs:flex-col md:flex-row lg:flex-row justify-between items-start gap-4 md:gap-20 lg:gap-auto'>
-        <div className='w-full xs:w-full md:w-[176px] lg:w-64 text-neutral-800 text-xl xs:text-xl md:text-xl lg:text-3xl font-bold leading-loose xs:leading-loose md:leading-[0.9] lg:leading-10'>
+    <div
+      className={classNames(
+        'w-full bg-white flex flex-col justify-center items-center',
+        //mobile
+        'px-[4.10vw] py-[56px]',
+        //tablet
+        'md:px-[5.2vw] md:py-[56px]',
+        //desktop
+        'lg:px-[14.10vw] lg:py-[84px]',
+        //large desktop
+        'xl:px-[12.5vw] xl:py-[84px]',
+      )}
+    >
+      <div
+        className={classNames(
+          'w-full flex',
+          !title ? 'gap-[0px]' : '',
+          //mobile
+          'flex-col gap-[20px] justify-start items-center',
+          //tablet
+          'md:flex-row md:gap-[80px] md:justify-between md:items-start',
+          //desktop
+          'lg:flex-row lg:gap-[210px] lg:justify-between lg:items-start',
+          //large desktop
+          'xl:flex-row xl:gap-[210px] xl:justify-between xl:items-start',
+        )}
+      >
+        <div
+          className={classNames(
+            '',
+            !title ? 'h-[0px]' : 'h-auto',
+            //mobile
+            'w-full text-[20px] tracking-[-0.4px] leading-[1.6] whitespace-nowrap font-normal',
+            //tablet
+            'md:w-[30%] md:text-[20px] md:tracking-[-0.4px] md:leading-[1.5] md:whitespace-pre-line md:font-bold',
+            //desktop
+            'lg:w-[30%] lg:text-[28px] lg:tracking-[-0.56px] lg:leading-[1.4] lg:whitespace-pre-line lg:font-bold',
+            //large desktop
+            'xl:w-[30%] xl:text-[28px] xl:tracking-[-0.56px] xl:leading-[1.4] xl:whitespace-pre-line xl:font-bold',
+          )}
+        >
           {title}
         </div>
-        <div className='w-full md:max-w-[424px] lg:max-w-[645px] text-neutral-800 text-base xs:text-base md:text-base lg:text-lg font-normal xs:font-normal md:font-medium lg:font-medium leading-7 xs:leading-7 md:leading-relaxed lg:leading-relaxed'>
+        <div
+          className={classNames(
+            '',
+            //mobile
+            'w-full text-[17px] tracking-[-0.34px] leading-[1.6] font-normal',
+            //tablet
+            'md:w-[70%] md:text-[17px] md:tracking-[-0.34px] md:leading-[1.5] md:font-medium',
+            //desktop
+            'lg:w-[70%] lg:text-[18px] lg:tracking-[-0.36px] lg:leading-[1.5] lg:font-medium',
+            //large desktop
+            'xl:w-[70%] xl:text-[18px] xl:tracking-[-0.36px] xl:leading-[1.5] xl:font-medium',
+          )}
+        >
           {text}
         </div>
       </div>

@@ -1,52 +1,147 @@
+//components/projects/Summary.tsx
+
 'use client'
+
+import classNames from 'classnames'
 
 export function Summary() {
   return (
-    <div className='w-full  px-[16px] py-[56px] lg:px-[160px] lg:py-[84px] md:py-[40px] md:px-[56px] xl:px-[240px] xl:py-[84px] bg-white flex justify-center items-center'>
-      <div className='flex flex-col justify-between items-start w-full gap-[20px] lg:gap-[266px] md:gap-[88px] xl:gap-auto flex-col md:flex-row'>
-        <svg xmlns='http://www.w3.org/2000/svg' className='w-auto h-[40px] md:h-[60px] lg:h-[74px] xl:h-[72.321px]' viewBox='0 0 187 40' fill='none'>
-          <path d='M77.001 36.5623H78.0891V39H78.9146V36.5623H80.001V36H77.001V36.5623Z' fill='#222222' />
-          <path
-            d='M82.358 36L81.7527 37.9027L81.1422 36H80.001V39H80.745V36.9305L81.3711 39H82.1239L82.7552 36.9291V39H83.501V36H82.358Z'
-            fill='#222222'
+    <div
+      className={classNames(
+        'w-full bg-white flex justify-center items-center ',
+        //mobile
+        'px-[4.10vw] py-[56px]',
+        //tablet
+        'md:px-[5.2vw] md:py-[56px] ',
+        //desktop
+        'lg:px-[11.1vw] lg:py-[84px]',
+        //large desktop
+        'xl:px-[12.5vw] xl:py-[84px]',
+      )}
+    >
+      <div
+        className={classNames(
+          'flex justify-between items-start w-full ',
+          //mobile
+          'flex-col gap-[20px]',
+          //tablet
+          'md:flex-row md:gap-0',
+          //desktop
+          'lg:flex-row lg:gap-0',
+          //large desktop
+          'xl:flex-row xl:gap-0',
+        )}
+      >
+        {/* Left */}
+        <div
+          className={classNames(
+            'h-full flex flex-col justify-start items-start ',
+            //mobile
+            'w-full',
+            //tablet
+            'md:w-[40%]',
+            //desktop
+            'lg:w-[40%]',
+            //large desktop
+            'xl:w-[35%]',
+          )}
+        >
+          <SVGLogo
+            className={classNames(
+              'w-auto aspect-[152/73] ',
+              //mobile
+              'h-[40px]',
+              //tablet
+              'md:h-[60px]',
+              //desktop
+              'lg:h-[74px]',
+              //large desktop
+              'xl:h-[72px]',
+            )}
           />
-          <path
-            d='M7.74999 40C12.6536 40 15.5 37.2398 15.5 32.4522V26.1974C15.5 22.3662 14.168 20.0574 10.8974 18.0851L7.62672 16.1129C5.87213 15.0419 5.20455 13.8592 5.20455 11.7186V8.0006C5.20455 5.2955 5.87213 4.28108 7.62672 4.28108C9.38131 4.28108 10.0489 5.2955 10.0489 8.0006V12.2832H15.0757V7.32581C15.0757 2.7051 12.2325 0 7.50825 0C2.78398 0 0 2.7051 0 7.32284V12.0001C0 15.8329 1.33356 18.1432 4.60421 20.1125L7.87326 22.0847C9.62785 23.1542 10.2954 24.3369 10.2954 26.4775V31.6613C10.2954 34.5898 9.56702 35.7174 7.63152 35.7174C5.69603 35.7174 5.02845 34.5913 5.02845 31.6613V25.8012H0.00160247V32.4507C0.00160247 37.2398 2.84962 40 7.75319 40H7.74999Z'
-            fill='#222222'
-          />
-          <path
-            d='M43.691 28.1004C46.7775 35.1975 54.7587 40 63.5533 40C72.9481 40 80.4263 34.309 83.6959 24.7321L83.828 24.3331C83.8646 24.2189 83.9044 24.1062 83.941 23.992L83.9999 23.8036H83.4491L82.7105 23.7992L82.6755 23.903C79.7832 32.4847 73.1646 37.8168 65.524 37.8168C61.2436 37.8168 55.8554 36.0503 52.8199 32.9727C49.3975 29.5035 47.5909 24.6728 47.5909 19.0055C47.5909 7.38181 56.4874 1.6493 64.6294 1.6493C70.7403 1.6493 73.2935 5.35133 72.8414 9.24321C72.3432 13.5311 70.7912 16.7111 70.4538 17.2865H72.0997L78.4716 5.17335L78.5082 5.0977L78.4557 5.03096C77.5945 3.88742 75.9932 2.75724 74.0576 1.92962C71.4996 0.835034 68.5006 0 65.1451 0C58.8528 0 52.5541 2.04679 48.4966 5.76514C45.1825 8.80122 43.0813 12.8459 42.4175 17.3755C42.3857 17.463 42.3459 17.4808 42.3045 17.291L40.2225 0.556194H33.2982L28.9987 35.1144H21.6797V0.556194H16.5V39.2629H33.4176L34.3806 30.2881H38.8376L39.8006 39.2629H45.0376L43.6512 28.1256M34.7356 26.1382L36.5438 5.94164H36.6632L38.4715 26.1382H34.7372H34.7356ZM43.6496 28.1256L43.6273 27.9462C43.648 27.9966 43.6687 28.0485 43.6894 28.1004'
-            fill='#222222'
-          />
-        </svg>
+        </div>
 
-        <div className='flex-1 flex flex-col gap-[16px] lg:gap-[16px]'>
-          <div className='flex flex-col gap-[36px] md:gap-[8px] lg:gap-[16px]'>
-            <div className='flex flex-col'>
-              <h1 className='text-neutral-800 text-[28px] md:text-[24px] lg:text-[28px] font-bold leading-tight'>
-                슬랙
-              </h1>
-              <h2 className='text-neutral-800 text-[28px] md:text-[24px] lg:text-[28px] font-bold leading-tight'>
-                Slate for Own Scene
-              </h2>
-            </div>
-
-            <div className='w-full'>
-              <p className='text-neutral-800 text-base text-[17px] md:text-[18px] lg:text-[22px] font-medium leading-relaxed'>
-                Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를
-                가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼
-                변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!
-              </p>
-            </div>
+        {/* Right */}
+        <div
+          className={classNames(
+            'flex flex-col ',
+            //mobile
+            'w-full gap-[16px]',
+            //tablet
+            'md:w-[60%] md:gap-[8px]',
+            //desktop
+            'lg:w-[60%] lg:gap-[16px]',
+            //large desktop
+            'xl:w-[65%] xl:gap-[16px]',
+          )}
+        >
+          <div className='flex flex-col'>
+            {['슬랙', 'Slate for Own Scene'].map((text, index) => (
+              <span
+                key={index}
+                className={classNames(
+                  'font-bold ',
+                  //mobile
+                  'text-[28px] leading-[1.4] tracking-[-0.56px]',
+                  //tablet
+                  'md:text-[24px] md:leading-[1.5] md:tracking-[-0.48px]',
+                  //desktop
+                  'lg:text-[28px] lg:leading-[1.4] lg:tracking-[-0.56px]',
+                  //large desktop
+                  'xl:text-[28px] xl:leading-[1.5] xl:tracking-[-0.56px]',
+                )}
+              >
+                {text}
+              </span>
+            ))}
           </div>
 
-          <div className='w-full'>
-            <p className='text-zinc-600 text-sm md:text-base opacity-70 text-[14px] md:text-[14px] lg:text-[18px]'>
-              김민채, 김민채, 김민채, 김민채, 김민채
-            </p>
-          </div>
+          <p
+            className={classNames(
+              '',
+              //mobile
+              'text-[17px] leading-[1.6] tracking-[-0.34px] font-normal mt-[20px]',
+              //tablet
+              'md:text-[18px] md:leading-[1.5] md:tracking-[-0.36px] md:font-medium md:mt-0',
+              //desktop
+              'lg:text-[22px] lg:leading-[1.5] lg:tracking-[-0.44px] lg:font-medium lg:mt-0',
+              //large desktop
+              'xl:text-[22px] xl:leading-[1.5] xl:tracking-[-0.44px] xl:font-medium xl:mt-0',
+            )}
+          >
+            Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장
+            가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼
+            변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!
+          </p>
+
+          <p
+            className={classNames(
+              'text-zinc-600 ',
+              //mobile
+              'text-[14px] leading-[1.6] tracking-[-0.28px] mt-0',
+              //tablet
+              'md:text-[14px] md:leading-[1.5] md:tracking-[-0.28px] md:mt-[8px]',
+              //desktop
+              'lg:text-[18px] lg:leading-[1.5] lg:tracking-[-0.36px] lg:mt-0',
+              //large desktop
+              'xl:text-[18px] xl:leading-[1.5] xl:tracking-[-0.36px] xl:mt-0',
+            )}
+          >
+            김민채, 김민채, 김민채, 김민채, 김민채
+          </p>
         </div>
       </div>
     </div>
+  )
+}
+
+const SVGLogo = ({ className }: { className?: string }) => {
+  return (
+    <svg xmlns='http://www.w3.org/2000/svg' className={className} viewBox='0 0 152 73' fill='currentColor'>
+      <path d='M139.217 66.1061H141.184V70.5135H142.677V66.1061H144.641V65.0894H139.217V66.1061Z' />
+      <path d='M148.902 65.0894L147.808 68.5295L146.704 65.0894H144.641V70.5135H145.986V66.7717L147.118 70.5135H148.479L149.62 66.7691V70.5135H150.969V65.0894H148.902Z' />
+      <path d='M14.0122 72.3214C22.8779 72.3214 28.0243 67.3308 28.0243 58.6748V47.3659C28.0243 40.4389 25.6161 36.2644 19.7027 32.6986L13.7893 29.1327C10.6169 27.1963 9.40995 25.0578 9.40995 21.1877V14.4654C9.40995 9.57445 10.6169 7.74035 13.7893 7.74035C16.9616 7.74035 18.1686 9.57445 18.1686 14.4654V22.2084H27.2573V13.2453C27.2573 4.89091 22.1167 0 13.5751 0C5.0335 0 0 4.89092 0 13.2399V21.6967C0 28.6264 2.4111 32.8036 8.32452 36.3641L14.235 39.9299C17.4074 41.8636 18.6144 44.0021 18.6144 47.8722V57.2447C18.6144 62.5396 17.2974 64.5784 13.798 64.5784C10.2986 64.5784 9.09155 62.5423 9.09155 57.2447V46.6495H0.0028973V58.6721C0.0028973 67.3308 5.15218 72.3214 14.018 72.3214H14.0122Z' />
+      <path d='M78.9954 50.8065C84.5759 63.6382 99.0061 72.3214 114.907 72.3214C131.893 72.3214 145.414 62.0319 151.325 44.7165L151.564 43.9951C151.63 43.7887 151.702 43.5849 151.768 43.3784L151.875 43.0378H150.879L149.544 43.0298L149.48 43.2175C144.251 58.7335 132.284 68.374 118.47 68.374C110.731 68.374 100.989 65.1802 95.5007 59.6158C89.313 53.3434 86.0465 44.6093 86.0465 34.3627C86.0465 13.3466 102.132 2.98199 116.853 2.98199C127.901 2.98199 132.518 9.6754 131.7 16.712C130.799 24.4647 127.993 30.2142 127.383 31.2547H130.359L141.88 9.3536L141.946 9.21683L141.851 9.09616C140.294 7.0286 137.399 4.98519 133.899 3.48883C129.274 1.50977 123.852 0 117.785 0C106.408 0 95.0201 3.70068 87.6841 10.4236C81.6921 15.9129 77.8932 23.2258 76.693 31.4155C76.6355 31.5738 76.5635 31.6059 76.4887 31.2627L72.7243 1.00562H60.205L52.4315 63.4881H39.1985V1.00562H29.8335V70.9887H60.4208L62.162 54.762H70.2204L71.9616 70.9887H81.4302L78.9235 50.8521M62.8038 47.2587L66.0732 10.7427H66.2891L69.5585 47.2587H62.8067H62.8038ZM78.9206 50.8521L78.8803 50.5277C78.9177 50.6189 78.9551 50.7127 78.9925 50.8065' />
+    </svg>
   )
 }

@@ -24,7 +24,8 @@ import {
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useInView } from 'framer-motion'
 
 const tutorData = [
   {
@@ -78,6 +79,7 @@ const points = [
 
 export default function Page() {
   const [isMouseInRightThird, setIsMouseInRightThird] = useState(false)
+  const [isSidebarShown, setIsSidebarShown] = useState(true)
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
@@ -85,9 +87,21 @@ export default function Page() {
     points[0], // 초기값으로 첫 번째 포인트 설정
   )
 
-  const isAtBottom = useScrollAtBottom(10)
+  const designedByRef = useRef<HTMLDivElement>(null)
 
-  // 디바이스 타입 체크
+  const inView = useInView(designedByRef, {
+    amount: 0.1, // 10%가 보일 때 inView 상태 변경
+    once: false, // 한번만 감지하지 않도록 설정
+  })
+
+  useEffect(() => {
+    if (inView) {
+      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
+    } else {
+      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
+    }
+  }, [inView, setIsSidebarShown])
+
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
@@ -150,105 +164,110 @@ export default function Page() {
       />
       <RightTitleBody />
       <RightBody />
-      <MidBody content="Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!" />
-      <MidTitle />
-      <LeftTitle />
+      <MidBody
+        align='left'
+        content="Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!"
+      />
+      <MidTitle align='center' />
+      <MidTitle align='left' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/844128999' alt='이곳에 비디오를' />
       <ImageGallery images={['/images/image1.jpeg', '/images/image2.jpeg', '/images/image3.jpeg']} />
-      <Credit
-        title='Designed By'
-        members={[
-          {
-            name: '윤여준',
-            role: 'PL · ID',
-            englishName: 'Yeojun Yun',
-            profileImage: '/images/profile/yeojunyun.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/yjydesign',
-              instagram: 'https://instagram.com/jun_e1ght',
+      <div ref={designedByRef}>
+        <Credit
+          title='Designed By'
+          members={[
+            {
+              name: '윤여준',
+              role: 'PL · ID',
+              englishName: 'Yeojun Yun',
+              profileImage: '/images/profile/yeojunyun.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/yjydesign',
+                instagram: 'https://instagram.com/jun_e1ght',
+              },
             },
-          },
-          {
-            name: '강형구',
-            role: 'ID',
-            englishName: 'HyungGoo Kang',
-            profileImage: '/images/profile/hyunggookang.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/mikekang',
-              instagram: 'https://instagram.com/imsii_id',
+            {
+              name: '강형구',
+              role: 'ID',
+              englishName: 'HyungGoo Kang',
+              profileImage: '/images/profile/hyunggookang.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/mikekang',
+                instagram: 'https://instagram.com/imsii_id',
+              },
             },
-          },
-          {
-            name: '권민지',
-            role: 'UX',
-            englishName: 'Minji Kwon',
-            profileImage: '/images/profile/minjikwon.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/noeyeono',
-              instagram: 'https://instagram.com/or.noey',
+            {
+              name: '권민지',
+              role: 'UX',
+              englishName: 'Minji Kwon',
+              profileImage: '/images/profile/minjikwon.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/noeyeono',
+                instagram: 'https://instagram.com/or.noey',
+              },
             },
-          },
-          {
-            name: '백채영',
-            role: 'VD',
-            englishName: 'Chaeyoung Baek',
-            profileImage: '/images/profile/chaeyoungbaek.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/baekchaeyoung',
-              instagram: 'https://instagram.com/100__chaeyoung',
+            {
+              name: '백채영',
+              role: 'VD',
+              englishName: 'Chaeyoung Baek',
+              profileImage: '/images/profile/chaeyoungbaek.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/baekchaeyoung',
+                instagram: 'https://instagram.com/100__chaeyoung',
+              },
             },
-          },
-          {
-            name: '정민서',
-            role: 'ID',
-            englishName: 'Minseo Jung',
-            profileImage: '/images/profile/minseojung.png',
-            socialLinks: {
-              linkedin: '',
-              behance: 'https://www.behance.net/msj',
-              instagram: 'https://instagram.com/mseo_119',
+            {
+              name: '정민서',
+              role: 'ID',
+              englishName: 'Minseo Jung',
+              profileImage: '/images/profile/minseojung.png',
+              socialLinks: {
+                linkedin: '',
+                behance: 'https://www.behance.net/msj',
+                instagram: 'https://instagram.com/mseo_119',
+              },
             },
-          },
-        ]}
-      />
-      <CreditTutor title='Tutor' sections={tutorData} />
-      <CreditThanksTo title='Thanks to' sections={thankstoData} />
-      <MobileNavigation
-        previousItem={{ label: 'Previous Project', url: '/projects/4TF' }}
-        nextItem={{ label: 'Next Project', url: '/projects/6TF' }}
-      />
-      <ProjectNavigation 
-        leftProject={{
-          id: '1',
-          title: 'Left Project',
-          imageUrl: '/images/previous_image.png',
-          englishName: 'MEET',
-          koreanName: '미트',
-          linkUrl: '/projects/4TF'
-        }}
-        rightProject={{
-          id: '2',
-          title: 'Right Project', 
-          imageUrl: '/images/next_image.png',
-          englishName: 'CONNECT',
-          koreanName: '연결',
-          linkUrl: '/projects/6TF'
-        }}
-      />
-      <AnimatePresence>
-        {shouldShowSidebar && (
-          <ArchiveSidebar
-            isVisible={!isAtBottom}
-            currentPoint={currentPoint}
-            onExpandedChange={handleSidebarExpandedChange}
-          />
-        )}
-      </AnimatePresence>
-      <Footer />
+          ]}
+        />
+        <CreditTutor title='Tutor' sections={tutorData} />
+        <CreditThanksTo title='Thanks to' sections={thankstoData} />
+        <MobileNavigation
+          previousItem={{ label: 'Previous Project', url: '/projects/4TF' }}
+          nextItem={{ label: 'Next Project', url: '/projects/6TF' }}
+        />
+        <ProjectNavigation
+          leftProject={{
+            id: '1',
+            title: 'Left Project',
+            imageUrl: '/images/previous_image.png',
+            englishName: 'MEET',
+            koreanName: '미트',
+            linkUrl: '/projects/4TF',
+          }}
+          rightProject={{
+            id: '2',
+            title: 'Right Project',
+            imageUrl: '/images/next_image.png',
+            englishName: 'CONNECT',
+            koreanName: '연결',
+            linkUrl: '/projects/6TF',
+          }}
+        />
+        <AnimatePresence>
+          {shouldShowSidebar && (
+            <ArchiveSidebar
+              isVisible={isSidebarShown}
+              currentPoint={currentPoint}
+              onExpandedChange={handleSidebarExpandedChange}
+            />
+          )}
+        </AnimatePresence>
+        <Footer />
+      </div>
     </>
   )
 }
