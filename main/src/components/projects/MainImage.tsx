@@ -1,12 +1,12 @@
 'use client'
 
 interface MainImageProps {
-  Image: string
+  Image?: string
   altText?: string
 }
 
 export function MainImage({ 
-  Image, 
+  Image = '/placeholder-image.jpg', 
   altText = "Main Image" 
 }: MainImageProps) {
   return (

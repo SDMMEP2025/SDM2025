@@ -3,12 +3,16 @@
 import classNames from 'classnames'
 
 interface SummaryProps {
-  title: string[]
-  description: string
-  credits: string
+  title?: string[]
+  description?: string
+  credits?: string
 }
 
-export function Summary({ title, description, credits }: SummaryProps) {
+export function Summary({ 
+  title = ['Default Title'], 
+  description = 'Default description text goes here.', 
+  credits = 'Default credits' 
+}: SummaryProps) {
   return (
     <div
       className={classNames(
