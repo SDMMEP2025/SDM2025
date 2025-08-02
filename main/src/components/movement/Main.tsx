@@ -31,7 +31,7 @@ export function Main({ onUpload, className = '' }: MainProps) {
           //tablet  
           'md:left-1/2 md:w-[427px] md:top-[16.66dvh] transform -translate-x-1/2',
           //desktop
-          'lg:left-1/2 lg:top-[15.31dvh] transform -translate-x-1/2'
+          'lg:left-1/2 lg:w-fit lg:top-[15.31dvh] transform -translate-x-1/2'
         )}
       >
         <div

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion, useInView } from 'framer-motion'
 
 interface ArchiveSidebarProps {
   isVisible?: boolean
@@ -17,19 +17,37 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
     onExpandedChange?.(isExpanded)
   }, [isExpanded, onExpandedChange])
 
-  // 모바일에서 확장될 때마다 스크롤 위치를 즉시 상단으로 초기화
-  useEffect(() => {
-    if (isExpanded && mobileScrollRef.current) {
-      mobileScrollRef.current.scrollTop = 0
-    }
-  }, [isExpanded])
-
   const handleClose = () => {
     setIsExpanded(false)
   }
 
   const handleExpand = () => {
     setIsExpanded(true)
+  }
+
+  //사이드바가 확장되면 사이트 전체 스크롤을 비활성화
+  useEffect(() => {
+    if (isExpanded) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isExpanded])
+
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  // 애니메이션 시작 전에 높이 미리 설정
+  const handleToggle = () => {
+    if (!isExpanded) {
+      setIsAnimating(true)
+      // 먼저 높이를 설정하고
+      setTimeout(() => {
+        setIsExpanded(true)
+        setIsAnimating(false)
+      }, 50)
+    } else {
+      setIsExpanded(false)
+    }
   }
 
   return (
@@ -108,7 +126,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
         animate={{
           opacity: isVisible ? 1 : 0,
           y: 0,
-          height: isExpanded ? 'calc(100dvh - 58px)' : 'auto',
+          maxHeight: isExpanded ? 'calc(100dvh - 58px)' : '80px',
         }}
         exit={{
           opacity: 0,
@@ -118,14 +136,14 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
         className='md:hidden w-full bg-white overflow-y-scroll fixed bottom-0 left-0 z-20 flex flex-col items-center justify-start '
       >
         {/* Header */}
-        <div className='w-full h-fit sticky z-10 top-0 bg-white flex flex-row items-center justify-between px-4 py-5'>
+        <div
+          onClick={() => setIsExpanded(!isExpanded)}
+          className='w-full h-fit sticky z-10 top-0 bg-white flex flex-row items-center justify-between px-4 py-5 cursor-pointer'
+        >
           <span className=' text-black text-[18px] font-semibold leading-[1.5] tracking-[-0.36px]'>
             Process Archive
           </span>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className='w-6 h-6 relative flex items-center justify-center cursor-pointer md:hover:opacity-70 active:scale-105 transition-all duration-300 ease-in-out'
-          >
+          <button className='w-6 h-6 relative flex items-center justify-center cursor-pointer md:hover:opacity-70 active:scale-105 transition-all duration-300 ease-in-out'>
             {isExpanded ? (
               <svg xmlns='http://www.w3.org/2000/svg' className='w-full aspect-square' viewBox='0 0 24 25' fill='none'>
                 <path
@@ -143,11 +161,11 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
 
         {/* Content */}
         {isExpanded && (
-          <div className='w-full h-fit flex flex-col gap-1 items-start p-4'>
+          <div className='w-full flex flex-col gap-1 items-start p-4'>
             {currentPoint?.images?.map((image, index) => (
               <div
                 key={index}
-                className={`w-full h-fit flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
+                className={`w-full h-fit flex items-start ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
               >
                 <HoverImageCard index={index} src={image} />
               </div>
@@ -160,19 +178,48 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
 }
 
 const HoverImageCard = ({ index, src }: { index: number; src: string }) => {
+  const [isHover, setIsHover] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, {
+    amount: 0.1, // 10%가 보일 때 inView 상태 변경
+    once: false, // 한번만 감지하지 않도록 설정
+  })
+
   return (
-    <div className='w-[90%] h-auto cursor-pointer relative group'>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isInView ? 1 : 0 }}
+      transition={{ duration: 0.3 }}
+      ref={ref}
+      onHoverStart={() => {
+        setIsHover(true)
+      }}
+      onHoverEnd={() => {
+        setIsHover(false)
+      }}
+      className='w-[90%] h-auto cursor-pointer z-0 relative group overflow-hidden'
+    >
       {/* hover overlay dim */}
-      <div className='absolute inset-0 opacity-0 bg-black/50 transition-opacity duration-300 ease-in-out group-hover:opacity-100'>
-        <div className='absolute flex flex-row justify-center items-center gap-2 top-10 right-4'>
-          <div className='w-[18px] h-[18px] bg-white rounded-full' />
-          <div className='justify-start text-white text-lg font-semibold capitalize tracking-[-0.36px] leading-[1.5]'>
-            form study
-          </div>
-        </div>
-      </div>
+      <AnimatePresence>
+        {isHover && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className='absolute z-10 inset-0 bg-black/50 transition-opacity duration-300 ease-in-out'
+          >
+            <div className='absolute flex flex-row justify-center items-center gap-2 top-10 right-4'>
+              <div className='w-[18px] h-[18px] bg-white rounded-full' />
+              <div className='justify-start text-white text-lg font-semibold capitalize tracking-[-0.36px] leading-[1.5]'>
+                form study
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* image */}
-      <img src={src} alt={src} className='w-full h-auto' />
-    </div>
+      <img src={src} alt={src} className='w-full h-auto group-hover:scale-105 transition-all duration-200' />
+    </motion.div>
   )
 }
