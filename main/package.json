@@ -19,9 +19,15 @@
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.15.0",
+    "gyronorm": "^2.0.6",
     "next": "^15.1.7",
+    "node-vibrant": "^4.0.3",
+    "openai": "^5.11.0",
     "react": "^19.0.0",
+    "react-bootstrap-range-slider": "^3.0.8",
     "react-dom": "^19.0.0",
+    "react-range": "^1.10.0",
+    "react-range-slider-input": "^3.2.1",
     "styled-components": "^6.1.16"
   },
   "devDependencies": {

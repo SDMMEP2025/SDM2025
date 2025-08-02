@@ -58,7 +58,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
         animate={{
           opacity: isVisible ? 1 : 0,
           x: 0,
-          width: isExpanded ? '396px' : 'auto',
+          width: isExpanded ? '396px' : '54px',
         }}
         exit={{ opacity: 0, x: 100 }}
         transition={{ duration: 0.3 }}
@@ -72,7 +72,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
       >
         {!isExpanded ? (
           <div
-            className='w-fit h-full px-3.5 py-0 md:py-[18px] lg:py-0 cursor-pointer flex justify-center items-center md:items-start lg:items-center'
+            className='w-[54px] h-full px-3.5 py-0 md:py-[18px] lg:py-0 cursor-pointer flex justify-center items-center md:items-start lg:items-center'
             onClick={handleExpand}
           >
             <div className='writingMode-vertical-lr text-sm md:text-base lg:text-lg text-black font-semibold leading-relaxed md:hover:opacity-70 active:scale-105 transition-all'>
@@ -80,7 +80,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange }: Ar
             </div>
           </div>
         ) : (
-          <div className='w-full h-full overflow-y-scroll flex flex-col items-center justify-between'>
+          <div className='w-[396px] h-full overflow-y-scroll flex flex-col items-center justify-between'>
             {/* Header */}
             <div className='w-full h-fit lg:mt-[0px] sticky z-10 top-0 bg-white flex flex-row items-center justify-between px-4 py-5'>
               <span className=' text-black text-lg font-semibold leading-[1.5] tracking-[]'>Process Archive</span>

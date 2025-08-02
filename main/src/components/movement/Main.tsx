@@ -1,17 +1,43 @@
 'use client'
 
 import classNames from 'classnames'
+import { useRef } from 'react'
 
 interface MainProps {
-  onUpload?: () => void
+  onUpload?: (files: FileList | null) => void
   className?: string
 }
 
 export function Main({ onUpload, className = '' }: MainProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (onUpload) {
+      onUpload(files)
+    }
+    // 파일 선택 후 input을 리셋하여 같은 파일을 다시 선택할 수 있게 함
+    event.target.value = ''
+  }
+
   return (
     <div
-      className={classNames('absolute inset-0 w-full h-full flex flex-col justify-center items-center z-10', className)}
+      className={classNames('absolute inset-0 w-full h-full flex flex-col justify-center items-center z-10 bg-white', className)}
     >
+      {/* 숨겨진 파일 입력 */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept="image/*,video/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
+
       <div className='absolute inset-0 w-full h-full overflow-hidden -z-10'>
         <div className='animate-float-up'>
           <img src='images/movement/PC.svg' className='w-full h-auto block' />
@@ -36,7 +62,7 @@ export function Main({ onUpload, className = '' }: MainProps) {
       >
         <div
           className={classNames(
-            'text-center text-white font-semibold font-english capitalize',
+            'text-center text-[#E8E8E8] font-semibold font-english capitalize',
             //mobile
             'text-[34px] leading-[95%]',
             //tablet
@@ -102,7 +128,7 @@ export function Main({ onUpload, className = '' }: MainProps) {
         )}
       >
         <button
-          onClick={onUpload}
+          onClick={handleUploadClick}
           className={classNames(
             'mix-blend-normal bg-neutral-800 rounded-[100px] inline-flex justify-center items-center gap-[5.11px] overflow-hidden transition-all duration-200 hover:bg-neutral-700',
             //mobile
