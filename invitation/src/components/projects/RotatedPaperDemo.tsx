@@ -62,8 +62,13 @@ function FullscreenGyroSquares() {
     window.addEventListener('resize', updateScreenSize)
 
     // 모바일 기기인지 확인하고 자이로 버튼 표시
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    const userAgent = navigator.userAgent
+    const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(userAgent)
+    console.log('Mobile check:', isMobileDevice, userAgent) // 디버깅용
+    
+    if (isMobileDevice) {
       setShowGyroButton(true)
+      console.log('Gyro button should show') // 디버깅용
     }
 
     return () => {
@@ -129,44 +134,8 @@ function FullscreenGyroSquares() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
-      {/* 자이로 활성화 버튼 */}
-      {showGyroButton && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-50">
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-2xl text-center max-w-xs">
-            <div className="mb-4">
-              <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-pink-500 to-yellow-500 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                움직임 효과 활성화
-              </h3>
-              <p className="text-sm text-gray-600">
-                기기를 기울여 배경과 상호작용해보세요
-              </p>
-            </div>
-            <button
-              onClick={requestGyroPermission}
-              className="w-full bg-gradient-to-r from-pink-500 to-yellow-500 text-white py-3 px-6 rounded-xl font-medium hover:from-pink-600 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105"
-            >
-              활성화하기
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 권한 거부 메시지 */}
-      {gyroPermissionDenied && (
-        <div className="absolute top-4 left-4 pointer-events-auto z-50">
-          <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm">
-            자이로스코프 권한이 필요합니다
-          </div>
-        </div>
-      )}
-
       {/* 자이로스코프가 활성화된 경우 전체화면 사각형들 렌더링 */}
-      {(isGyroSupported || !showGyroButton) && screenSize.width > 0 && (
+      {isGyroSupported && screenSize.width > 0 && (
         <div className="absolute inset-0 overflow-hidden">
           {Array.from({ length: steps }).map((_, i) => {
             const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
@@ -204,7 +173,7 @@ function FullscreenGyroSquares() {
       
       {/* 자이로 상태 표시 (개발용) */}
       {isGyroSupported && (
-        <div className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-50">
+        <div className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[50]">
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
           <br />
           Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
@@ -230,32 +199,159 @@ export function RotatedPaper({ className = '' }) {
 
 export default function RotatedPaperDemo({ onDirectionsClick, displayName }: RotatedPaperDemoProps) {
   const [isMobile, setIsMobile] = useState(false)
+  const [isGyroSupported, setIsGyroSupported] = useState(false)
+  const [showGyroButton, setShowGyroButton] = useState(false)
+  const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
+  const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
+
+  const steps = 12
+  const brandColorHex = '#FF60B9'
+  const refinedColorHex = '#FBE870'
+  
+  // 화면 크기에 따른 사각형 크기 계산
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5
+  const stepReduction = maxSize / (steps + 2)
 
   useEffect(() => {
+    // 화면 크기 설정
+    const updateScreenSize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    updateScreenSize()
+    window.addEventListener('resize', updateScreenSize)
+
     // 실제 모바일 기기 감지 (User Agent 기반)
     const checkIfMobile = () => {
       const userAgent = navigator.userAgent
       const mobileRegex = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i
-      setIsMobile(mobileRegex.test(userAgent))
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      const isMobileDevice = mobileRegex.test(userAgent) || isTouch
+      
+      setIsMobile(isMobileDevice)
+      
+      if (isMobileDevice) {
+        setShowGyroButton(true)
+      }
     }
 
     checkIfMobile()
     
     // 화면 크기 변경 시에도 체크 (필요시)
     window.addEventListener('resize', checkIfMobile)
-    return () => window.removeEventListener('resize', checkIfMobile)
+    return () => {
+      window.removeEventListener('resize', updateScreenSize)
+      window.removeEventListener('resize', checkIfMobile)
+    }
   }, [])
+
+  // 자이로스코프 권한 요청 함수
+  const requestGyroPermission = async () => {
+    const DeviceOrientationEventConstructor = DeviceOrientationEvent as DeviceOrientationEventConstructor
+
+    if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEventConstructor.requestPermission) {
+      try {
+        const permission = await DeviceOrientationEventConstructor.requestPermission()
+        if (permission === 'granted') {
+          setIsGyroSupported(true)
+          setShowGyroButton(false)
+        } else {
+          setGyroPermissionDenied(true)
+          setShowGyroButton(false)
+        }
+      } catch (error) {
+        console.log('자이로스코프 권한 요청 실패:', error)
+        setGyroPermissionDenied(true)
+        setShowGyroButton(false)
+      }
+    } else if (window.DeviceOrientationEvent) {
+      setIsGyroSupported(true)
+      setShowGyroButton(false)
+    } else {
+      setGyroPermissionDenied(true)
+      setShowGyroButton(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!isGyroSupported) return
+
+    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+      const { beta, gamma } = event
+      if (beta !== null && gamma !== null) {
+        setOrientation({
+          beta: Math.max(-45, Math.min(45, beta)),
+          gamma: Math.max(-45, Math.min(45, gamma))
+        })
+      }
+    }
+
+    window.addEventListener('deviceorientation', handleDeviceOrientation)
+    return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
+  }, [isGyroSupported])
+
+  // 자이로 값에 따른 이동 거리 계산
+  const getMovement = () => {
+    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
+    const moveX = (orientation.gamma / 45) * maxMovement
+    const moveY = (orientation.beta / 45) * maxMovement
+    return { moveX, moveY }
+  }
+
+  const { moveX, moveY } = getMovement()
 
   return (
     <>
       {/* 모바일에서만 자이로 반응 사각형들 표시 - 가장 아래 레이어 */}
-      {isMobile && <FullscreenGyroSquares />}
+      {isMobile && (
+        <div className="fixed inset-0 pointer-events-none z-0">
+          {/* 자이로스코프가 활성화된 경우 전체화면 사각형들 렌더링 */}
+          {isGyroSupported && screenSize.width > 0 && (
+            <div className="absolute inset-0 overflow-hidden">
+              {Array.from({ length: steps }).map((_, i) => {
+                const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
+                const size = maxSize - stepReduction * i
+                const color = interpolateColor(brandColorHex, refinedColorHex, factor)
+                
+                const movementMultiplier = 1 + (i * 0.15)
+                const currentMoveX = moveX * movementMultiplier
+                const currentMoveY = moveY * movementMultiplier
+                
+                return (
+                  <div
+                    key={i}
+                    className="absolute transition-transform duration-100 ease-out"
+                    style={{
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: color,
+                      borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
+                      opacity: 0.6 + (i * 0.04),
+                      top: '50%',
+                      left: '50%',
+                      transform: `
+                        translate(-50%, -50%) 
+                        translate(${currentMoveX}px, ${currentMoveY}px)
+                      `,
+                      boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none'
+                    }}
+                  />
+                )
+              })}
+            </div>
+          )}
+        </div>
+      )}
       
-      {/* 초대장 종이 - 가장 위 레이어 */}
-      <div className='fixed inset-0 flex items-center justify-center z-[9999] overflow-hidden'>
+      {/* 초대장 종이 - 중간 레이어 */}
+      <div className='fixed inset-0 flex items-center justify-center z-[100] overflow-hidden'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper />
-          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[10000] transform rotate-6'>
+          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[110] transform rotate-6'>
             <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
               <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
@@ -284,6 +380,53 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
           </div>
         </div>
       </div>
+
+      {/* 자이로 활성화 버튼 - 가장 상단 레이어 */}
+      {isMobile && showGyroButton && (
+        <div className="fixed inset-0 flex items-center justify-center z-[1000] pointer-events-none">
+          <div className="pointer-events-auto">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl text-center max-w-xs border-2 border-pink-200">
+              <div className="mb-4">
+                <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-pink-500 to-yellow-500 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  움직임 효과 활성화
+                </h3>
+                <p className="text-sm text-gray-600">
+                  기기를 기울여 배경과 상호작용해보세요
+                </p>
+              </div>
+              <button
+                onClick={requestGyroPermission}
+                className="w-full bg-gradient-to-r from-pink-500 to-yellow-500 text-white py-3 px-6 rounded-xl font-medium hover:from-pink-600 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105 active:scale-95"
+              >
+                활성화하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 권한 거부 메시지 */}
+      {isMobile && gyroPermissionDenied && (
+        <div className="fixed top-4 left-4 z-[1000] pointer-events-auto">
+          <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm">
+            자이로스코프 권한이 필요합니다
+          </div>
+        </div>
+      )}
+
+      {/* 자이로 상태 표시 (개발용) */}
+      {isMobile && isGyroSupported && (
+        <div className="fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]">
+          β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
+          <br />
+          Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
+        </div>
+      )}
     </>
   )
 }
