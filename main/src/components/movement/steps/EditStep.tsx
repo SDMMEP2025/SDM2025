@@ -123,7 +123,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
             </div>
           </div>
 
-          <div className='flex flex-col justify-center items-center gap-[28dvh] md:gap-[10dvh]  lg:gap-[14.54dvh]'>
+          <div className='flex flex-col justify-center items-center gap-[20dvh] md:gap-[10dvh]  lg:gap-[14.54dvh]'>
             <div className='relative'>
               <textarea
                 value={text}

@@ -117,10 +117,8 @@ function ConcentricSquares({
     onPositionsChange(positions)
   }, [positions, onPositionsChange])
 
-  // 마우스 이동 → target만 업데이트 (dragSmoothing 파라미터 적용)
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!dragRef.current) return
-
+  // 마우스/터치 위치 계산 공통 함수
+  const getPointerPosition = (clientX: number, clientY: number) => {
     const lastIdx = steps - 1
     const smallestWidth = maxWidth - stepReduction * lastIdx
     const smallestHeight = maxHeight - stepReduction * lastIdx
@@ -129,18 +127,50 @@ function ConcentricSquares({
 
     const centerX = window.innerWidth / 2
     const centerY = window.innerHeight / 2
-    let x = (e.clientX - centerX) / motionParams.dragSmoothing // dragSmoothing 적용
-    let y = (e.clientY - centerY) / motionParams.dragSmoothing
+    let x = (clientX - centerX) / motionParams.dragSmoothing // dragSmoothing 적용
+    let y = (clientY - centerY) / motionParams.dragSmoothing
 
     // 🔹 가장 작은 사각형 기준 영역 제한
     x = Math.max(-maxX, Math.min(maxX, x))
     y = Math.max(-maxY, Math.min(maxY, y))
 
+    return { x, y }
+  }
+
+  // 마우스 이벤트 핸들러
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!dragRef.current) return
+    const { x, y } = getPointerPosition(e.clientX, e.clientY)
     targetRef.current = { x, y }
   }
 
   const handleMouseDown = () => (dragRef.current = true)
   const handleMouseUp = () => (dragRef.current = false)
+
+  // 터치 이벤트 핸들러
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!dragRef.current) return
+    e.preventDefault() // 스크롤 방지
+    const touch = e.touches[0]
+    if (touch) {
+      const { x, y } = getPointerPosition(touch.clientX, touch.clientY)
+      targetRef.current = { x, y }
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault() // 기본 터치 동작 방지
+    dragRef.current = true
+    const touch = e.touches[0]
+    if (touch) {
+      const { x, y } = getPointerPosition(touch.clientX, touch.clientY)
+      targetRef.current = { x, y }
+    }
+  }
+
+  const handleTouchEnd = () => {
+    dragRef.current = false
+  }
 
   // requestAnimationFrame으로 부드럽게 보간 (모션 파라미터 적용)
   useEffect(() => {
@@ -198,12 +228,18 @@ function ConcentricSquares({
     return () => cancelAnimationFrame(frame)
   }, [steps, maxWidth, maxHeight, stepReduction, motionParams])
 
+  // 이벤트 리스너 등록
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp)
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchmove', handleTouchMove, { passive: false })
+    window.addEventListener('touchend', handleTouchEnd)
+    
     return () => {
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchend', handleTouchEnd)
     }
   }, [steps, maxWidth, maxHeight, stepReduction, motionParams.dragSmoothing])
 
@@ -222,6 +258,7 @@ function ConcentricSquares({
             key={i}
             className='absolute'
             onMouseDown={isSmallest ? handleMouseDown : undefined}
+            onTouchStart={isSmallest ? handleTouchStart : undefined}
             style={{
               width: `${width}px`,
               height: `${height}px`,
@@ -231,6 +268,7 @@ function ConcentricSquares({
               left: '50%',
               transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
               cursor: isSmallest ? 'grab' : 'default',
+              touchAction: isSmallest ? 'none' : 'auto', // 터치 시 기본 동작 방지
             }}
           />
         )
@@ -289,7 +327,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
       />
       
       <div className='flex flex-col justify-between items-center gap-[8dvh]'>
-        <div className='flex flex-col justify-center items-center gap-[3.68dvh]'>
+        <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:mt-[2dvh] md-landscape:mt-[4dvh]'>
           <div className='left-1/2 transform hidden md:block'>
             <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
               <circle cx='4' cy='4.5' r='4' fill='#222222' />

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react';
 
 interface InteractMotionControlPanelProps {
@@ -79,7 +81,8 @@ export function InteractMotionControlPanel({ onMotionParamsChange, isVisible, on
       {isVisible && (
         <div className="fixed top-16 right-4 w-80 bg-white border border-gray-300 rounded-lg shadow-xl z-40 max-h-[80vh] overflow-y-auto">
           <div className="p-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800">컨트롤 패널</h3>
+            <h3 className="text-lg font-semibold text-gray-800">3D Motion Controls</h3>
+            <p className="text-sm text-gray-600">실시간으로 3D 인터랙션 조절</p>
           </div>
 
           <div className="p-4 space-y-4">
@@ -120,6 +123,46 @@ export function InteractMotionControlPanel({ onMotionParamsChange, isVisible, on
               <div className="flex justify-between text-xs text-gray-500">
                 <span>독립적 (0.1)</span>
                 <span>강한 연결 (2.0)</span>
+              </div>
+            </div>
+
+            {/* Follow Speed Offset */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Follow Speed Offset: {params.followSpeedOffset.toFixed(2)}
+              </label>
+              <input
+                type="range"
+                min="0.1"
+                max="3.0"
+                step="0.1"
+                value={params.followSpeedOffset}
+                onChange={(e) => handleParamChange('followSpeedOffset', parseFloat(e.target.value))}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>균등함 (0.1)</span>
+                <span>차등 강함 (3.0)</span>
+              </div>
+            </div>
+
+            {/* Gyro Sensitivity */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Gyro Sensitivity: {params.gyroSensitivity.toFixed(2)}
+              </label>
+              <input
+                type="range"
+                min="0.1"
+                max="3.0"
+                step="0.1"
+                value={params.gyroSensitivity}
+                onChange={(e) => handleParamChange('gyroSensitivity', parseFloat(e.target.value))}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>둔감 (0.1)</span>
+                <span>민감 (3.0)</span>
               </div>
             </div>
 
@@ -180,26 +223,6 @@ export function InteractMotionControlPanel({ onMotionParamsChange, isVisible, on
               <div className="flex justify-between text-xs text-gray-500">
                 <span>평면 (0)</span>
                 <span>역동적 (45)</span>
-              </div>
-            </div>
-
-            {/* Gyro Sensitivity */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Gyro Sensitivity: {params.gyroSensitivity.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="0.1"
-                max="3.0"
-                step="0.1"
-                value={params.gyroSensitivity}
-                onChange={(e) => handleParamChange('gyroSensitivity', parseFloat(e.target.value))}
-                className="w-full"
-              />
-              <div className="flex justify-between text-xs text-gray-500">
-                <span>둔감 (0.1)</span>
-                <span>민감 (3.0)</span>
               </div>
             </div>
 
@@ -283,7 +306,6 @@ export function InteractMotionControlPanel({ onMotionParamsChange, isVisible, on
               </div>
             </div>
           </div>
-
 
           {/* Action Buttons */}
           <div className="p-4 border-t border-gray-200 flex gap-2">
