@@ -1,9 +1,143 @@
 'use client'
 import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void;
-  displayName: string; // 새로 추가
+  displayName: string;
+}
+
+// 색상 보간 함수
+function interpolateColor(color1: string, color2: string, factor: number): string {
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null
+  }
+  const rgbToHex = (r: number, g: number, b: number) =>
+    '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+
+  const rgb1 = hexToRgb(color1)
+  const rgb2 = hexToRgb(color2)
+  if (!rgb1 || !rgb2) return color1
+
+  const r = Math.round(rgb1.r + factor * (rgb2.r - rgb1.r))
+  const g = Math.round(rgb1.g + factor * (rgb2.g - rgb1.g))
+  const b = Math.round(rgb1.b + factor * (rgb2.b - rgb1.b))
+  return rgbToHex(r, g, b)
+}
+
+// 모바일 자이로 ConcentricSquares 컴포넌트
+function MobileGyroSquares() {
+  const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
+  const [isGyroSupported, setIsGyroSupported] = useState(false)
+  const requestedPermission = useRef(false)
+
+  const steps = 8
+  const brandColorHex = '#FF6B6B'
+  const refinedColorHex = '#4ECDC4'
+  const maxWidth = 280
+  const maxHeight = 210
+  const stepReduction = 20
+
+  useEffect(() => {
+    // 자이로스코프 지원 확인 및 권한 요청
+    const requestGyroPermission = async () => {
+      if (requestedPermission.current) return
+      requestedPermission.current = true
+
+      // iOS 13+ 권한 요청을 위한 타입 단언
+      const DeviceOrientationEventAny = DeviceOrientationEvent as any
+
+      if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEventAny.requestPermission) {
+        try {
+          const permission = await DeviceOrientationEventAny.requestPermission()
+          if (permission === 'granted') {
+            setIsGyroSupported(true)
+          }
+        } catch (error) {
+          console.log('자이로스코프 권한 요청 실패:', error)
+        }
+      } else if (window.DeviceOrientationEvent) {
+        setIsGyroSupported(true)
+      }
+    }
+
+    // 모바일에서만 자이로스코프 활성화
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      requestGyroPermission()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isGyroSupported) return
+
+    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+      const { beta, gamma } = event
+      if (beta !== null && gamma !== null) {
+        setOrientation({
+          beta: Math.max(-30, Math.min(30, beta)), // -30도 ~ 30도로 제한
+          gamma: Math.max(-30, Math.min(30, gamma)) // -30도 ~ 30도로 제한
+        })
+      }
+    }
+
+    window.addEventListener('deviceorientation', handleDeviceOrientation)
+    return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
+  }, [isGyroSupported])
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0">
+      <div 
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        style={{
+          width: `${maxWidth}px`,
+          height: `${maxHeight}px`,
+          transform: `translate(-50%, -50%) rotateX(${orientation.beta * 0.5}deg) rotateY(${orientation.gamma * 0.5}deg)`
+        }}
+      >
+        {Array.from({ length: steps }).map((_, i) => {
+          const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
+          const width = maxWidth - stepReduction * i
+          const height = maxHeight - stepReduction * i
+          const color = interpolateColor(brandColorHex, refinedColorHex, factor)
+          
+          // 각 사각형마다 다른 회전 강도 적용
+          const rotationMultiplier = 1 + i * 0.1
+          
+          return (
+            <div
+              key={i}
+              className="absolute"
+              style={{
+                width: `${width}px`,
+                height: `${height}px`,
+                backgroundColor: color,
+                borderRadius: i === 0 ? '12px' : '8px',
+                opacity: 0.7 + (i * 0.03), // 뒤쪽 사각형일수록 약간 더 투명
+                top: '50%',
+                left: '50%',
+                transform: `
+                  translate(-50%, -50%) 
+                  rotateX(${orientation.beta * rotationMultiplier * 0.3}deg) 
+                  rotateY(${orientation.gamma * rotationMultiplier * 0.3}deg)
+                  translateZ(${i * 2}px)
+                `,
+                transformStyle: 'preserve-3d',
+                boxShadow: i === 0 ? '0 10px 30px rgba(0,0,0,0.1)' : 'none'
+              }}
+            />
+          )
+        })}
+      </div>
+      
+      {/* 자이로 상태 표시 (개발용 - 나중에 제거 가능) */}
+      {isGyroSupported && (
+        <div className="absolute top-4 left-4 bg-black/50 text-white p-2 rounded text-xs">
+          β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function RotatedPaper({ className = '' }) {
@@ -21,38 +155,60 @@ export function RotatedPaper({ className = '' }) {
 }
 
 export default function RotatedPaperDemo({ onDirectionsClick, displayName }: RotatedPaperDemoProps) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    // 실제 모바일 기기 감지 (User Agent 기반)
+    const checkIfMobile = () => {
+      const userAgent = navigator.userAgent
+      const mobileRegex = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i
+      setIsMobile(mobileRegex.test(userAgent))
+    }
+
+    checkIfMobile()
+    
+    // 화면 크기 변경 시에도 체크 (필요시)
+    window.addEventListener('resize', checkIfMobile)
+    return () => window.removeEventListener('resize', checkIfMobile)
+  }, [])
+
   return (
-    <div className='fixed inset-0 flex items-center justify-center z-10 overflow-hidden'>
-      <div className='relative transform -rotate-6'>
-        <RotatedPaper />
-        <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[400] transform rotate-6'>
-          <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
-            <p className='leading-relaxed break-keep'>안녕하세요.</p>
-                <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
-            <p>
-              전시는 8월 22일부터 27일까지, 삼성전자 서울 R&D 캠퍼스 A타워 2층, 이노베이션 스튜디오에서 진행됩니다.
-              <br className='md:block landscape:md:hidden lg:hidden' />
-              소중한 발걸음으로 자리를 빛내주세요.
-            </p>
-          </div>
-          <div className='inline-flex flex-col justify-center items-center gap-3 text-[17px] md:text-[18px]'>
-            <button
-              onClick={onDirectionsClick}
-              className="text-zinc-600 text-base lg:text-lg font-medium underline leading-relaxed hover:text-zinc-800 transition-colors"
-            >
-              오시는 길
-            </button>
-            <a
-              href='https://www.newformative.com/'
-              target='_blank'
-              rel='noopener noreferrer'
-              className="text-zinc-600 text-base lg:text-lg font-medium underline leading-relaxed hover:text-zinc-800 transition-colors"
-            >
-              웹사이트 보러가기
-            </a>
+    <>
+      {/* 모바일에서만 자이로 반응 사각형들 표시 */}
+      {isMobile && <MobileGyroSquares />}
+      
+      <div className='fixed inset-0 flex items-center justify-center z-10 overflow-hidden'>
+        <div className='relative transform -rotate-6'>
+          <RotatedPaper />
+          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[400] transform rotate-6'>
+            <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
+              <p className='leading-relaxed break-keep'>안녕하세요.</p>
+              <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
+              <p>
+                전시는 8월 22일부터 27일까지, 삼성전자 서울 R&D 캠퍼스 A타워 2층, 이노베이션 스튜디오에서 진행됩니다.
+                <br className='md:block landscape:md:hidden lg:hidden' />
+                소중한 발걸음으로 자리를 빛내주세요.
+              </p>
+            </div>
+            <div className='inline-flex flex-col justify-center items-center gap-3 text-[17px] md:text-[18px]'>
+              <button
+                onClick={onDirectionsClick}
+                className="text-zinc-600 text-base lg:text-lg font-medium underline leading-relaxed hover:text-zinc-800 transition-colors"
+              >
+                오시는 길
+              </button>
+              <a
+                href='https://www.newformative.com/'
+                target='_blank'
+                rel='noopener noreferrer'
+                className="text-zinc-600 text-base lg:text-lg font-medium underline leading-relaxed hover:text-zinc-800 transition-colors"
+              >
+                웹사이트 보러가기
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

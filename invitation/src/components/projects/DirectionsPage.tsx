@@ -41,7 +41,7 @@ export default function DirectionsPage({ onBackClick }) {
   }
 
   return (
-    <div className='absolute top-0 h-full w-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
+    <div className='absolute top-0 h-[100dvh] w-[100vw] flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
       <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[70px] md:gap-[83px] md:landscape:gap-[75px] lg:gap-[69px]'>
         <h1 className='justify-center text-neutral-800 text-xl font-medium leading-loose'>Directions</h1>
 
@@ -97,6 +97,12 @@ export default function DirectionsPage({ onBackClick }) {
             >
               길 찾기
             </a>
+            <button
+              onClick={onBackClick}
+              className='absolute top-2 left-2 text-center justify-start text-neutral-800 text-base lg:text-lg font-normal md:font-medium leading-7'
+            >
+              돌아가기
+            </button>
           </div>
         </div>
       </div>

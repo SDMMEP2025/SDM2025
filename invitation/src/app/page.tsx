@@ -14,6 +14,20 @@ import backgroundAnimation from '@/animation/main.json'
 export default function Page() {
   const [showDirections, setShowDirections] = useState(false)
   const [displayName, setDisplayName] = useState('김삼성') // 기본값
+  const [isMobile, setIsMobile] = useState(false)
+
+  // 모바일 기기 감지
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const userAgent = navigator.userAgent
+      const mobileRegex = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i
+      setIsMobile(mobileRegex.test(userAgent))
+    }
+
+    checkIfMobile()
+    window.addEventListener('resize', checkIfMobile)
+    return () => window.removeEventListener('resize', checkIfMobile)
+  }, [])
 
   // URL 파라미터에서 이름 읽기
   useEffect(() => {
@@ -63,13 +77,15 @@ export default function Page() {
           left: 0
         }}
       >
-        {/* Lottie 배경 */}
-        <LottieBackground 
-          animationData={backgroundAnimation}
-          loop={true}
-          autoplay={true}
-          rotateOnMobile={true}
-        />
+        {/* Lottie 배경 - 모바일이 아닐 때만 표시 */}
+        {!isMobile && (
+          <LottieBackground 
+            animationData={backgroundAnimation}
+            loop={true}
+            autoplay={true}
+            rotateOnMobile={true}
+          />
+        )}
         
         {/* 컨텐츠들을 z-index로 앞으로 */}
         <div className="relative z-10">
@@ -83,7 +99,7 @@ export default function Page() {
               >
                 <RotatedPaperDemo 
                   onDirectionsClick={() => setShowDirections(true)} 
-                  displayName={displayName} // 동적 이름 전달
+                  displayName={displayName} 
                 />
               </motion.div>
             ) : (
