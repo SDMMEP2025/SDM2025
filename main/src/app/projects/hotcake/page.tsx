@@ -237,8 +237,8 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous Project', url: '/projects/9TF' }}
-          nextItem={{ label: 'Next Project', url: '/projects/2TF' }}
+          previousItem={{ label: 'Previous Project', url: '/projects/potrik' }}
+          nextItem={{ label: 'Next Project', url: '/projects/layon' }}
         />
         <ProjectNavigation
           leftProject={{
@@ -247,7 +247,7 @@ export default function Page() {
             imageUrl: '/images/previous_image.png',
             englishName: 'MEET',
             koreanName: '미트',
-            linkUrl: '/projects/9TF',
+            linkUrl: '/projects/potrik',
           }}
           rightProject={{
             id: '2',
@@ -255,7 +255,7 @@ export default function Page() {
             imageUrl: '/images/next_image.png',
             englishName: 'CONNECT',
             koreanName: '연결',
-            linkUrl: '/projects/2TF',
+            linkUrl: '/projects/layon',
           }}
         />
         <AnimatePresence>

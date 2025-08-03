@@ -167,53 +167,53 @@ export default function Page() {
         description='자율주행 5단계 시대, 운전의 개념이 사라지고 모든 탑승자가 네비게이터가 되는 변화 속에서, CRUISE는 이동을 능동적이고 역동적인 공유 경험으로 재정의하는 인터랙션 디바이스입니다. 소셜 미디어 속 디깅에 익숙한 이동 혁신 세대의 탐색 방식을 차 안으로 가져와, 모든 탑승자가 끊임없이 ‘움직이는 탐색’을 통해 경험을 공유하고 확장하게 하며, 일상에 새로운 가치와 영감을 더합니다. CRUISE와 함께 새로운 이동 경험을 만나보세요!'
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
       />
-      <MainImage Image='/images/projects/5TF/image1.png' />
+      <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='Background' number='01' />
       <TitleBody
         title='삶의 모든 순간을 채우는 이동'
         text='매일 아침의 출근길, 바쁜 일상 속 짧은 이동, 설레는 주말여행, 그리고 예상치 못한 만남까지, 우리는 삶의 대부분을 이동 속에서 살아갑니다. 이처럼 이동은 우리의 시간과 경험의 큰 비중을 차지하는, 일상에서 결코 분리될 수 없는 중요한 일부입니다.'
       />
-      <MainImage Image='/images/projects/5TF/image1.png' />
+      <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='Target' number='02' />
       <TitleBody
         title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
         text='자율주행 안정화 시대의 도래로, 오랫동안 우리와 함께해왔던 조향 장치인 핸들조차 사라진 미래에서 이동은 더 이상 단순한 공간의 변화만을 의미하지 않습니다. 운전자와 동승자라는 전형적인 구분은 사라지고, 모든 탑승자는 운전의 책임에서 해방됩니다. 이는 곧, 개개인이 자신의 이동 경험을 스스로 만들고, 탐험을 즐기는 네비게이터가 될 새로운 가능성이 열리는 것이죠.'
       />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
       <RightTitleBody
         title='수동적인 승객이 아닌 경험을 개척하는 CRUISER'
         text={
           '우리가 정의하는 이동 혁신 세대는 과거와 본질적으로 다릅니다. 이들은 콘텐츠를 일방적으로 소비하기보다, 소셜 미디어 속에서 끊임없이 디깅하고 탐색하며 자신만의 취향을 능동적으로 스타일링합니다. 나아가, 발견한 것을 공유하며 새로운 가치를 창조하는 데 익숙하죠. \n\n▶ A detailed story of their background'
         }
       ></RightTitleBody>
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
 
       <MidBody
         align='left'
         content='CRUISE는 이러한 삶의 방식을 이동 경험으로 확장합니다. 이들에게 이동은 이제, 세상의 모든 순간을 자신만의 취향으로 엮어내고, 친구들과 역동적으로 교감하는 하나의 플랫폼이 됩니다. 도로는 생생한 피드로, 차량은 손안에서 자유롭게 상호작용하는 디바이스로 변화합니다. 이를 통해 탑승자 모두가 이동 경험의 주체이자 경험 에디터가 되는 새로운 미래가 펼쳐집니다. 마치 ‘한 배를 탄 듯이’ 말이죠.'
       />
       <Divide title='Concept' number='03' />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
       <MidTitle align='center' text='도로, 경험을 공유하는 FEED가 되다.' />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
       <MidBody
         content={'Style Our Mile, Drive Our Life!\n이제 CRUISE가 우리의 이동을 어떻게 바꿔나갈지 함께 살펴볼까요?'}
       />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
       <Divide title='CRUISE Product' number='04' />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
 
       <RightTitleBody
         title='CRUISE - Handle'
         text='CRUISE의 Handle은 새롭게 도래할 자율주행 시대에 기존 핸들을 대체할 새로운 인터랙션 디바이스입니다. 소셜 미디어에 익숙한 세대에게 직관적인 조작 방식으로 구성되어 빠르고 자연스럽게 주변과 상호작용을 가능하게 합니다.'
       />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
 
       <RightTitleBody
         title='CRUISE - Dash'
         text='CRUISE의 Dash는 내장된 AI 카메라로 사용자를 인식하여 CRUISE 경험을 보조합니다. Handle 미사용 시에는 지정된 슬롯에 간편하게 수납할 수 있죠. 무엇보다 Dash는 기능을 유지하면서도 센서 등의 구성요소를 최소화해 다양한 형태와 목적의 차량에 확장 적용이 가능하도록 설계되어, CRUISE가 선사할 새로운 이동 경험이 정해진 규격에 얽매이지 않도록 합니다.'
       />
-      <MainImage Image='/images/projects/5TF/image2.png' />
+      <MainImage Image='/images/projects/cruise/image2.png' />
 
       <RightBody text='부담 없이 아늑한 2인승부터, 친구들 모두가 같이 여행을 떠날 수 있는 다인승까지, CRUISE는 그 어떤 차량 공간 안이라도 자연스럽게 녹아듭니다. 가장 편안한 자세에서 지나가는 외부 공간과 Dash의 정보를 동시에 확인할 수 있고, Handle을 언제든지 꺼내 들고 조작할 수 있죠.' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/844128999' alt='이곳에 비디오를' />
@@ -315,8 +315,8 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous Project', url: '/projects/4TF' }}
-          nextItem={{ label: 'Next Project', url: '/projects/6TF' }}
+          previousItem={{ label: 'Previous Project', url: '/projects/autonomy-practice' }}
+          nextItem={{ label: 'Next Project', url: '/projects/mizi' }}
         />
         <ProjectNavigation
           leftProject={{
@@ -325,7 +325,7 @@ export default function Page() {
             imageUrl: '/images/previous_image.png',
             englishName: 'MEET',
             koreanName: '미트',
-            linkUrl: '/projects/4TF',
+            linkUrl: '/projects/autonomy-practice',
           }}
           rightProject={{
             id: '2',
@@ -333,7 +333,7 @@ export default function Page() {
             imageUrl: '/images/next_image.png',
             englishName: 'CONNECT',
             koreanName: '연결',
-            linkUrl: '/projects/6TF',
+            linkUrl: '/projects/mizi',
           }}
         />
         <AnimatePresence>

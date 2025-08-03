@@ -38,7 +38,7 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-      <MainImage Image='/5TF/'/>
+      <MainImage Image='/cruise/'/>
       <HeaderBody
         title={['What is New Formative?']}
         description='새로움을 만드는 데 필요한 것은 대단한 변화나 특별한 순간이 아닌, 자신만의 방향을 탐색하며 꾸준히 움직이는 에너지입니다. 2025 MEP 〈New Formative〉는 새로운 형성을 위해 나아가며  각자의 에너지가 만들어내는 꾸준한 움직임의 과정을 담고 있습니다.'
