@@ -236,7 +236,7 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous Project', url: '/projects/simul' }}
+          previousItem={{ label: 'Previous Project', url: '/projects/silmul' }}
           nextItem={{ label: 'Next Project', url: '/projects/cruise' }}
         />
         <ProjectNavigation
@@ -246,7 +246,7 @@ export default function Page() {
             imageUrl: '/images/previous_image.png',
             englishName: 'MEET',
             koreanName: '미트',
-            linkUrl: '/projects/simul',
+            linkUrl: '/projects/silmul',
           }}
           rightProject={{
             id: '2',

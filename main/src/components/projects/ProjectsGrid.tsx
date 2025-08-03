@@ -18,8 +18,8 @@ export default function ProjectsGrid() {
       thumbnail: '/images/projects/test.png',
     },
     {
-      id: 'simul',
-      title: 'Simul',
+      id: 'silmul',
+      title: 'Silmul',
       thumbnail: '/images/projects/test.png',
     },
     {

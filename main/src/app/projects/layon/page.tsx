@@ -238,7 +238,7 @@ export default function Page() {
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
           previousItem={{ label: 'Previous Project', url: '/projects/hotcake' }}
-          nextItem={{ label: 'Next Project', url: '/projects/simul' }}
+          nextItem={{ label: 'Next Project', url: '/projects/silmul' }}
         />
         <ProjectNavigation
           leftProject={{
@@ -255,7 +255,7 @@ export default function Page() {
             imageUrl: '/images/next_image.png',
             englishName: 'CONNECT',
             koreanName: '연결',
-            linkUrl: '/projects/simul',
+            linkUrl: '/projects/silmul',
           }}
         />
         <AnimatePresence>
