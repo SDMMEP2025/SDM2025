@@ -227,7 +227,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
       {/* 모바일에서만 자이로 반응 사각형들 표시 */}
       {isMobile && <MobileGyroSquares />}
       
-      <div className='fixed inset-0 flex items-center justify-center z-10 overflow-hidden'>
+      <div className='fixed inset-0 flex items-center justify-center z-100 overflow-hidden'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper />
           <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[400] transform rotate-6'>
