@@ -58,15 +58,18 @@ function FloatingConcentricSquares({
   refinedColorHex: string
   interactionData: InteractPageProps['interactionData']
 }) {
-  const maxWidth = 420
-  const maxHeight = 316
-  const stepReduction = 25
+  // 기본 크기 (디자인 기준)
+  const baseMaxWidth = 420
+  const baseMaxHeight = 316
+  const baseStepReduction = 25
+
   const containerRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(1)
 
   const [floatOffset, setFloatOffset] = useState({ x: 0, y: 0 })
   const [tiltOffset, setTiltOffset] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
-  
+
   // 마우스 따라 움직이는 positions
   const [currentPositions, setCurrentPositions] = useState(positions)
   const targetRef = useRef({ x: 0, y: 0 })
@@ -77,35 +80,78 @@ function FloatingConcentricSquares({
   const [gyroStatus, setGyroStatus] = useState<'pending' | 'granted' | 'denied' | 'error'>('pending')
   const [isListening, setIsListening] = useState(false)
   const [sensorData, setSensorData] = useState<{ beta: string; gamma: string }>({ beta: '0.0', gamma: '0.0' })
-  
+
   // 센서 리스닝 상태 추적
   const listeningRef = useRef(false)
   const cleanupRef = useRef<(() => void) | null>(null)
 
-  // 모바일 환경 감지 및 초기 지원 확인
+  // 부모 크기 기반 스케일 계산
+  useEffect(() => {
+    const updateScale = () => {
+      if (!containerRef.current?.parentElement) return
+
+      const parent = containerRef.current.parentElement
+      const parentRect = parent.getBoundingClientRect()
+
+      // 부모의 크기에서 여백을 제외한 사용 가능한 공간
+      const availableWidth = parentRect.width * 0.8 // 부모 너비의 80%
+      const availableHeight = parentRect.height * 0.6 // 부모 높이의 60%
+
+      // 가로/세로 비율을 유지하면서 맞는 스케일 계산
+      const widthScale = availableWidth / baseMaxWidth
+      const heightScale = availableHeight / baseMaxHeight
+
+      // 더 작은 스케일을 선택해서 부모를 벗어나지 않게 함
+      const newScale = Math.min(widthScale, heightScale, 2) // 최대 2배까지만
+
+      setScale(Math.max(0.3, newScale)) // 최소 0.3배는 유지
+    }
+
+    // ResizeObserver로 부모 크기 변화 감지 (더 정확함)
+    let resizeObserver: ResizeObserver | null = null
+
+    if (containerRef.current?.parentElement) {
+      resizeObserver = new ResizeObserver(updateScale)
+      resizeObserver.observe(containerRef.current.parentElement)
+    }
+
+    // 초기 스케일 설정
+    updateScale()
+
+    // window resize도 같이 감지 (혹시 모를 경우)
+    window.addEventListener('resize', updateScale)
+
+    return () => {
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+      }
+      window.removeEventListener('resize', updateScale)
+    }
+  }, [])
+
+  // 스케일에 따른 실제 크기들
+  const maxWidth = baseMaxWidth * scale
+  const maxHeight = baseMaxHeight * scale
+  const stepReduction = baseStepReduction * scale
+
+  // 모바일 환경 감지
   useEffect(() => {
     const checkMobile = () => {
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
       const userAgent = navigator.userAgent
       const isIOS = /iPad|iPhone|iPod/.test(userAgent)
-      const isHTTPS = window.location.protocol === 'https:'
-      
+
       setIsMobile(isTouchDevice)
-      
-      console.log('디바이스 정보:', { isTouchDevice, isIOS, isHTTPS })
-      
+
       if (isTouchDevice && typeof DeviceOrientationEvent !== 'undefined') {
-        console.log('✅ DeviceOrientationEvent 지원됨')
-        // iOS가 아니면 자동으로 granted 처리
         if (!isIOS) {
           setGyroStatus('granted')
         }
       } else if (isTouchDevice) {
-        console.log('❌ DeviceOrientationEvent 지원되지 않음')
         setGyroStatus('error')
       }
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
@@ -120,7 +166,7 @@ function FloatingConcentricSquares({
     }
   }, [gyroStatus, isMobile])
 
-  // 부유 애니메이션
+  // 부유 애니메이션 (스케일에 비례)
   useEffect(() => {
     let frame: number
     let time = 0
@@ -128,15 +174,15 @@ function FloatingConcentricSquares({
     const animate = () => {
       time += 0.02
       setFloatOffset({
-        x: Math.sin(time) * 15,
-        y: Math.cos(time * 0.8) * 10,
+        x: Math.sin(time) * 15 * scale,
+        y: Math.cos(time * 0.8) * 10 * scale,
       })
       frame = requestAnimationFrame(animate)
     }
 
     frame = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frame)
-  }, [])
+  }, [scale])
 
   // 마우스 따라 움직이는 애니메이션
   useEffect(() => {
@@ -144,24 +190,22 @@ function FloatingConcentricSquares({
     const speedBase = 0.08
 
     const animate = () => {
-      setCurrentPositions(prev => {
+      setCurrentPositions((prev) => {
         const newPositions = [...prev]
         const target = targetRef.current
 
         const lastIdx = steps - 1
         if (lastIdx >= 0 && mouseActiveRef.current) {
-          // 마지막 사각형이 마우스 위치를 따라감 (더 여유롭게)
           const last = newPositions[lastIdx]
           const newX = last.x + (target.x - last.x) * speedBase
           const newY = last.y + (target.y - last.y) * speedBase
           newPositions[lastIdx] = { x: newX, y: newY }
         }
 
-        // 나머지 사각형들이 앞의 사각형을 따라오게 (3D 효과를 위해 더 자유롭게)
         for (let i = lastIdx - 1; i >= 0; i--) {
           const current = newPositions[i]
           const next = newPositions[i + 1]
-          const speed = speedBase * (0.4 + i / steps) // 더 부드럽게
+          const speed = speedBase * (0.4 + i / steps)
           const newX = current.x + (next.x - current.x) * speed
           const newY = current.y + (next.y - current.y) * speed
           newPositions[i] = { x: newX, y: newY }
@@ -179,27 +223,20 @@ function FloatingConcentricSquares({
 
   // 권한 요청 함수
   const requestPermission = async () => {
-    console.log('권한 요청 시작...')
     try {
       if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        console.log('iOS 권한 요청 중...')
         const permissionResult = await (DeviceOrientationEvent as any).requestPermission()
-        console.log(`권한 결과: ${permissionResult}`)
         setGyroStatus(permissionResult)
       } else {
-        console.log('직접 센서 활성화 시도...')
         setGyroStatus('granted')
       }
     } catch (error: any) {
-      console.error('권한 요청 실패:', error)
       setGyroStatus('denied')
     }
   }
 
-  // 자이로스코프 활성화 & 클린업 반환
+  // 자이로스코프 활성화
   const enableGyroscope = () => {
-    console.log('센서 리스너 등록 중...')
-
     const handleOrientation = (event: DeviceOrientationEvent) => {
       const beta = event.beta ?? 0
       const gamma = event.gamma ?? 0
@@ -210,34 +247,26 @@ function FloatingConcentricSquares({
         listeningRef.current = true
         setIsListening(true)
         mouseActiveRef.current = true
-        console.log('✅ 센서 데이터 수신 시작')
       }
 
-      // 참고 코드처럼 -0.5 ~ 0.5로 정규화하고 더 넓은 범위로 적용
-      const normalizedX = Math.max(-0.5, Math.min(0.5, gamma / 90))  // gamma: 좌우 기울기
-      const normalizedY = Math.max(-0.5, Math.min(0.5, beta / 180))  // beta: 앞뒤 기울기
+      const normalizedX = Math.max(-0.5, Math.min(0.5, gamma / 90))
+      const normalizedY = Math.max(-0.5, Math.min(0.5, beta / 180))
 
-      // 틸트 효과 (더 부드럽게)
-      const maxTilt = 15
-      const tiltX = normalizedY * maxTilt * 2  // 앞뒤 기울기 → X축 틸트
-      const tiltY = normalizedX * maxTilt * 2  // 좌우 기울기 → Y축 틸트
+      // 틸트 효과 (스케일에 비례)
+      const maxTilt = 15 * scale
+      const tiltX = normalizedY * maxTilt * 2
+      const tiltY = normalizedX * maxTilt * 2
       setTiltOffset({ x: tiltX, y: tiltY })
 
-      // 움직임 효과 (더 넓은 범위로)
-      const moveRange = 150
+      // 움직임 효과 (스케일에 비례)
+      const moveRange = 150 * scale
       const moveX = normalizedX * moveRange * 2
       const moveY = normalizedY * moveRange * 2
       targetRef.current = { x: moveX, y: moveY }
-
-      // 간헐적으로 로그 출력
-      if (Math.random() < 0.005) {
-        console.log('센서 데이터:', { beta: beta.toFixed(1), gamma: gamma.toFixed(1), normalizedX, normalizedY })
-      }
     }
 
     window.addEventListener('deviceorientation', handleOrientation, true)
-    
-    // 3초 후에도 데이터를 받지 못하면 안내
+
     const timeoutId = window.setTimeout(() => {
       if (!listeningRef.current) {
         console.log('센서 데이터를 받지 못함. 기기를 움직여보세요.')
@@ -250,7 +279,6 @@ function FloatingConcentricSquares({
       listeningRef.current = false
       setIsListening(false)
       mouseActiveRef.current = false
-      console.log('🛑 센서 리스너 해제됨')
     }
   }
 
@@ -259,25 +287,22 @@ function FloatingConcentricSquares({
     return () => {
       if (cleanupRef.current) {
         cleanupRef.current()
-        console.log('🛑 자이로 센서 정리됨')
       }
     }
   }, [])
 
-  // 자이로 센서 활성화 버튼 핸들러
   const handleGyroActivation = async () => {
     if (gyroStatus === 'pending' || gyroStatus === 'error' || gyroStatus === 'denied') {
       await requestPermission()
     }
   }
 
-  // 위치 리셋 함수
   const resetPosition = () => {
     targetRef.current = { x: 0, y: 0 }
     setTiltOffset({ x: 0, y: 0 })
   }
 
-  // 마우스 호버 틸트 효과 + 마우스 따라가기 (데스크톱만)
+  // 마우스 호버 효과 (스케일에 비례)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isMobile || !containerRef.current) return
 
@@ -288,27 +313,27 @@ function FloatingConcentricSquares({
     const mouseX = e.clientX - centerX
     const mouseY = e.clientY - centerY
 
-    // 틸트 효과
-    const maxTilt = 15
+    // 틸트 효과 (스케일에 비례)
+    const maxTilt = 15 * scale
     const tiltX = (mouseY / (rect.height / 2)) * maxTilt
     const tiltY = (-mouseX / (rect.width / 2)) * maxTilt
     setTiltOffset({ x: tiltX, y: tiltY })
 
-    // 마우스 따라가기 (더 넓은 범위로)
-    const moveRange = 80 // 움직임 범위를 더 넓게
+    // 마우스 따라가기 (스케일에 비례)
+    const moveRange = 80 * scale
     const moveX = (mouseX / (rect.width / 2)) * moveRange
     const moveY = (mouseY / (rect.height / 2)) * moveRange
     targetRef.current = { x: moveX, y: moveY }
   }
 
   const handleMouseEnter = () => {
-    if (isMobile) return // 모바일에서는 호버 효과 비활성화
+    if (isMobile) return
     setIsHovered(true)
     mouseActiveRef.current = true
   }
-  
+
   const handleMouseLeave = () => {
-    if (isMobile) return // 모바일에서는 호버 효과 비활성화
+    if (isMobile) return
     setIsHovered(false)
     mouseActiveRef.current = false
     setTiltOffset({ x: 0, y: 0 })
@@ -317,89 +342,32 @@ function FloatingConcentricSquares({
 
   return (
     <>
-      {/* 자이로 센서 활성화 버튼 (모바일에서만 표시) */}
+      {/* 센서 UI들 */}
       {isMobile && gyroStatus === 'pending' && (
-        <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-50'>
+        <div className='absolute bottom-[22vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
           <button
             onClick={handleGyroActivation}
-            className={classNames(
-              'px-6 py-3 rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
-              'bg-[#222222] hover:bg-[#333333] text-white font-medium',
-              'shadow-lg border border-gray-200'
-            )}
+            className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
           >
-            <div className='text-[16px]'>📱 기기를 기울여 움직이기</div>
+            <div className='text-[14px]'>디바이스로 움직이기</div>
           </button>
         </div>
       )}
 
-      {/* 센서 활성화됨 상태 */}
       {isMobile && isListening && (
-        <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-50'>
-          <div className='flex flex-col items-center gap-2'>
-            <div className='px-4 py-2 rounded-lg bg-green-100 text-green-800 text-sm'>
-              🟢 센서 활성화됨 - 기기를 기울여보세요!
-            </div>
-            <div className='text-xs text-gray-600'>
-              β: {sensorData.beta}° γ: {sensorData.gamma}°
-            </div>
-            <button
+        <div className='absolute bottom-[22vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
+          <div className='text-black font-semibold text-sm animate-pulse'>● 디바이스 움직임 감지 중</div>
+
+          {/* <button
               onClick={resetPosition}
               className='px-3 py-1 rounded-lg bg-gray-500 text-white text-xs hover:bg-gray-600'
             >
               🔄 위치 리셋
-            </button>
-          </div>
+            </button> */}
         </div>
       )}
 
-      {/* 센서 대기 중 */}
-      {isMobile && gyroStatus === 'granted' && !isListening && (
-        <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-50'>
-          <div className='px-4 py-2 rounded-lg bg-yellow-100 text-yellow-800 text-sm'>
-            🟡 센서 대기 중... 기기를 움직여보세요
-          </div>
-        </div>
-      )}
-
-      {/* 권한 거부 상태 안내 */}
-      {isMobile && gyroStatus === 'denied' && (
-        <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-50'>
-          <div className='flex flex-col items-center gap-3'>
-            <div className='px-4 py-2 rounded-lg bg-red-100 text-red-800 text-sm text-center'>
-              자이로 센서 권한이 거부되었습니다
-              <br />
-              <span className='text-xs'>브라우저 설정에서 모션 센서를 허용해주세요</span>
-            </div>
-            <button
-              onClick={handleGyroActivation}
-              className='px-4 py-2 rounded-lg bg-blue-500 text-white text-sm hover:bg-blue-600'
-            >
-              다시 시도
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 에러 상태 안내 */}
-      {isMobile && gyroStatus === 'error' && (
-        <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-50'>
-          <div className='flex flex-col items-center gap-3'>
-            <div className='px-4 py-2 rounded-lg bg-red-100 text-red-800 text-sm text-center'>
-              자이로 센서를 사용할 수 없습니다
-              <br />
-              <span className='text-xs'>기기에서 모션 센서를 지원하지 않을 수 있습니다</span>
-            </div>
-            <button
-              onClick={handleGyroActivation}
-              className='px-4 py-2 rounded-lg bg-blue-500 text-white text-sm hover:bg-blue-600'
-            >
-              다시 시도
-            </button>
-          </div>
-        </div>
-      )}
-
+      {/* 메인 컨테이너 - 부모 크기에 맞게 자동 스케일링 */}
       <div
         ref={containerRef}
         className='relative transition-all duration-500 ease-out'
@@ -434,16 +402,16 @@ function FloatingConcentricSquares({
                 width: `${width}px`,
                 height: `${height}px`,
                 backgroundColor: color,
-                borderRadius: i === 0 ? '8px' : '0px',
+                borderRadius: i === 0 ? `${8 * scale}px` : '0px',
                 top: '50%',
                 left: '50%',
                 transform: `
                   translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))
-                  translateZ(${i * 4}px)
+                  translateZ(${i * 4 * scale}px)
                 `,
                 boxShadow: isHovered
-                  ? `0 ${15 + i * 8}px ${30 + i * 8}px rgba(0,0,0,0.15)`
-                  : `0 ${5 + i * 2}px ${10 + i * 2}px rgba(0,0,0,0.05)`,
+                  ? `0 ${(15 + i * 8) * scale}px ${(30 + i * 8) * scale}px rgba(0,0,0,0.15)`
+                  : `0 ${(5 + i * 2) * scale}px ${(10 + i * 2) * scale}px rgba(0,0,0,0.05)`,
               }}
             />
           )
@@ -459,37 +427,35 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
   const [isSharing, setIsSharing] = useState(false)
 
   // 로컬 이미지 생성 함수
-  const generateShareImageLocally = async (
-    interactionData: InteractPageProps['interactionData']
-  ): Promise<string> => {
+  const generateShareImageLocally = async (interactionData: InteractPageProps['interactionData']): Promise<string> => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')!
-    
+
     // 인스타그램 스토리 사이즈 (9:16 비율)
     canvas.width = 1080
     canvas.height = 1920
-    
+
     // 배경색 (흰색)
     ctx.fillStyle = '#ffffff'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
-    
+
     // 상단 "New Formative" 텍스트
     ctx.fillStyle = '#6B7280'
     ctx.font = '36px "Saans TRIAL", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
     ctx.fillText('New Formative', canvas.width / 2, 120)
-    
+
     // "Your Movement" 대형 텍스트
     ctx.fillStyle = '#000000'
     ctx.font = 'bold 182px "Saans TRIAL", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
-    
+
     // "Your" 텍스트
     ctx.fillText('Your', canvas.width / 2, 280)
-    
-    // "Movement" 텍스트  
+
+    // "Movement" 텍스트
     ctx.fillText('Movement', canvas.width / 2, 420)
-    
+
     // ConcentricSquares 그리기
     const scale = 2.2
     const maxWidth = 420
@@ -497,20 +463,20 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     const stepReduction = 25
     const centerX = canvas.width / 2
     const centerY = 842 // 중앙 위치
-    
+
     for (let i = 0; i < interactionData.steps; i++) {
       const factor = interactionData.steps > 1 ? Math.pow(i / (interactionData.steps - 1), 0.9) : 0
       const width = (maxWidth - stepReduction * i) * scale
       const height = (maxHeight - stepReduction * i) * scale
-      
+
       const color = interpolateColor(interactionData.brandColorHex, interactionData.refinedColorHex, factor)
-      
+
       const position = interactionData.positions[i] || { x: 0, y: 0 }
       const x = centerX + position.x * scale - width / 2
       const y = centerY + position.y * scale - height / 2
-      
+
       ctx.fillStyle = color
-      
+
       if (i === 0) {
         // 첫 번째 사각형은 둥근 모서리
         ctx.beginPath()
@@ -529,20 +495,20 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         ctx.fillRect(x, y, width, height)
       }
     }
-    
+
     // 하단 "Is New Formative" 텍스트
     ctx.fillStyle = '#000000'
     ctx.font = 'bold 182px "Saans TRIAL", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
-    
+
     ctx.fillText('Is New', canvas.width / 2, 1480)
     ctx.fillText('Formative', canvas.width / 2, 1620)
-    
+
     ctx.fillStyle = '#6B7280'
     ctx.font = '37px "Saans TRIAL", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
     ctx.fillText('©2025 Samsung Design Membership Emergence Project', canvas.width / 2, 1800)
-    
+
     return canvas.toDataURL('image/png')
   }
 
@@ -564,11 +530,22 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
 
   return (
     <div className='w-full h-full bg-white'>
-      <h3 className='absolute text-[34px] whitespace-nowrap left-1/2 transform -translate-x-1/2 text-center text-[160px] font-semibold text-gray-800 mt-4 font-english'>
-        Your Movement
-      </h3>
+      <div className='absolute top-[4vh] lg:top-0 z-20 md:z-0 left-1/2 transform -translate-x-1/2 w-full h-fit flex flex-col items-center justify-center relative'>
+        <h3 className=' text-[34px] md:text-[96px] md-landscape:text-[132px] lg:text-[160px] whitespace-nowrap text-center font-semibold text-gray-800 font-english'>
+          Your Movement
+        </h3>
+        <div className='block md:hidden'>{interactionData.text}</div>
+      </div>
 
-      <div className='absolute mt-2 flex top-1/2 left-1/2 transform -translate-y-1/2 transform -translate-x-1/2 tems-center justify-center'>
+      <div
+        className=' flex items-center justify-center w-full h-full md:h-[50vh] md-landscape:h-[60vh] lg:h-[80vh]'
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
         <FloatingConcentricSquares
           steps={steps}
           positions={positions}
@@ -578,14 +555,28 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         />
       </div>
 
-      <div className='absolute top-1/2 w-full'>
-        <div className='flex items-center justify-between mx-[160px]'>
-          <p className='font-medium w-56 text-3xl text-black text-center leading-relaxed'>{text}</p>
-          <div className='font-medium text-center'>
-            <div className='text-3xl'>{brandColorName}</div>
-            <div className='text-3xl'>{hexToRgb(brandColorHex)}</div>
-          </div>
-        </div>
+      {/* left */}
+      <div
+        className={classNames(
+          'absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
+          'font-medium text-white text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
+        )}
+      >
+        <p className='block md:hidden break-keep'>{brandColorName}</p>
+        <p className='hidden md:block break-keep'>{text}</p>
+      </div>
+
+      {/* right */}
+      <div
+        className={classNames(
+          'absolute top-1/2 -translate-y-1/2 right-4 md:right-12 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
+          'font-medium text-white text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px]  leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
+        )}
+      >
+        <div className='block md:hidden'>Rgb</div>
+        <div className='block md:hidden'>{hexToRgb(brandColorHex).replace('rgb(', '').replace(')', '')}</div>
+        <div className='hidden md:block whitespace-nowrap'>{brandColorName}</div>
+        <div className='hidden md:block whitespace-nowrap'>{hexToRgb(brandColorHex)}</div>
       </div>
 
       <div className='absolute flex gap-3 bottom-20 left-1/2 transform -translate-x-1/2'>
