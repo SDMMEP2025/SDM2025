@@ -42,7 +42,7 @@ function MobileGyroSquares() {
 
   const steps = 8
   const brandColorHex = '#FF60B9'
-  const refinedColorHex = '#FF5E1F'
+  const refinedColorHex = '#FBE870'
   const maxWidth = 280
   const maxHeight = 210
   const stepReduction = 20
@@ -230,7 +230,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
       <div className='fixed inset-0 flex items-center justify-center z-100 overflow-hidden'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper />
-          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[400] transform rotate-6'>
+          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-600 transform rotate-6'>
             <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
               <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
