@@ -98,7 +98,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
 
         <div className='flex flex-col justify-between items-center gap-[19dvh] lg:gap-[11.8dvh]'>
           <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:gap-[0.4dvh]'>
-            <div className='left-1/2 transform hidden md:block md:mt-[3dvh] md-landscape:mt-[3dvh] lg:mt-[0dvh]'>
+            <div className='left-1/2 transform hidden md:block lg:mt-[0dvh]'>
               <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
                 <circle cx='4' cy='4.5' r='4' fill='#222222' />
                 <circle cx='15.7344' cy='4.5' r='4' fill='#E8E8E8' />

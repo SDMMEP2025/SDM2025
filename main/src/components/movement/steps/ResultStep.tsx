@@ -327,7 +327,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
       />
       
       <div className='flex flex-col justify-between items-center gap-[8dvh]'>
-        <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:mt-[2dvh] md-landscape:mt-[4dvh]'>
+        <div className='flex flex-col justify-center items-center gap-[3.68dvh]'>
           <div className='left-1/2 transform hidden md:block'>
             <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
               <circle cx='4' cy='4.5' r='4' fill='#222222' />
