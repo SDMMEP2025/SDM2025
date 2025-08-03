@@ -2,6 +2,13 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 
+// iOS 13+ DeviceOrientationEvent 타입 확장
+declare global {
+  interface DeviceOrientationEventConstructor {
+    requestPermission?: () => Promise<'granted' | 'denied'>
+  }
+}
+
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void;
   displayName: string;
@@ -30,7 +37,8 @@ function interpolateColor(color1: string, color2: string, factor: number): strin
 function MobileGyroSquares() {
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   const [isGyroSupported, setIsGyroSupported] = useState(false)
-  const requestedPermission = useRef(false)
+  const [showGyroButton, setShowGyroButton] = useState(false)
+  const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
 
   const steps = 8
   const brandColorHex = '#FF6B6B'
@@ -40,33 +48,36 @@ function MobileGyroSquares() {
   const stepReduction = 20
 
   useEffect(() => {
-    // 자이로스코프 지원 확인 및 권한 요청
-    const requestGyroPermission = async () => {
-      if (requestedPermission.current) return
-      requestedPermission.current = true
-
-      // iOS 13+ 권한 요청을 위한 타입 단언
-      const DeviceOrientationEventAny = DeviceOrientationEvent as any
-
-      if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEventAny.requestPermission) {
-        try {
-          const permission = await DeviceOrientationEventAny.requestPermission()
-          if (permission === 'granted') {
-            setIsGyroSupported(true)
-          }
-        } catch (error) {
-          console.log('자이로스코프 권한 요청 실패:', error)
-        }
-      } else if (window.DeviceOrientationEvent) {
-        setIsGyroSupported(true)
-      }
-    }
-
-    // 모바일에서만 자이로스코프 활성화
+    // 모바일 기기인지 확인하고 자이로 버튼 표시
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      requestGyroPermission()
+      setShowGyroButton(true)
     }
   }, [])
+
+  // 자이로스코프 권한 요청 함수
+  const requestGyroPermission = async () => {
+    const DeviceOrientationEventConstructor = DeviceOrientationEvent as DeviceOrientationEventConstructor
+
+    if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEventConstructor.requestPermission) {
+      try {
+        const permission = await DeviceOrientationEventConstructor.requestPermission()
+        if (permission === 'granted') {
+          setIsGyroSupported(true)
+          setShowGyroButton(false)
+        } else {
+          setGyroPermissionDenied(true)
+        }
+      } catch (error) {
+        console.log('자이로스코프 권한 요청 실패:', error)
+        setGyroPermissionDenied(true)
+      }
+    } else if (window.DeviceOrientationEvent) {
+      setIsGyroSupported(true)
+      setShowGyroButton(false)
+    } else {
+      setGyroPermissionDenied(true)
+    }
+  }
 
   useEffect(() => {
     if (!isGyroSupported) return
@@ -87,52 +98,91 @@ function MobileGyroSquares() {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
-      <div 
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-        style={{
-          width: `${maxWidth}px`,
-          height: `${maxHeight}px`,
-          transform: `translate(-50%, -50%) rotateX(${orientation.beta * 0.5}deg) rotateY(${orientation.gamma * 0.5}deg)`
-        }}
-      >
-        {Array.from({ length: steps }).map((_, i) => {
-          const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
-          const width = maxWidth - stepReduction * i
-          const height = maxHeight - stepReduction * i
-          const color = interpolateColor(brandColorHex, refinedColorHex, factor)
-          
-          // 각 사각형마다 다른 회전 강도 적용
-          const rotationMultiplier = 1 + i * 0.1
-          
-          return (
-            <div
-              key={i}
-              className="absolute"
-              style={{
-                width: `${width}px`,
-                height: `${height}px`,
-                backgroundColor: color,
-                borderRadius: i === 0 ? '12px' : '8px',
-                opacity: 0.7 + (i * 0.03), // 뒤쪽 사각형일수록 약간 더 투명
-                top: '50%',
-                left: '50%',
-                transform: `
-                  translate(-50%, -50%) 
-                  rotateX(${orientation.beta * rotationMultiplier * 0.3}deg) 
-                  rotateY(${orientation.gamma * rotationMultiplier * 0.3}deg)
-                  translateZ(${i * 2}px)
-                `,
-                transformStyle: 'preserve-3d',
-                boxShadow: i === 0 ? '0 10px 30px rgba(0,0,0,0.1)' : 'none'
-              }}
-            />
-          )
-        })}
-      </div>
+      {/* 자이로 활성화 버튼 */}
+      {showGyroButton && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-50">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-2xl text-center max-w-xs">
+            <div className="mb-4">
+              <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                움직임 효과 활성화
+              </h3>
+              <p className="text-sm text-gray-600">
+                기기를 기울여 배경과 상호작용해보세요
+              </p>
+            </div>
+            <button
+              onClick={requestGyroPermission}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
+            >
+              활성화하기
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 권한 거부 메시지 */}
+      {gyroPermissionDenied && (
+        <div className="absolute top-4 left-4 pointer-events-auto z-50">
+          <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm">
+            자이로스코프 권한이 필요합니다
+          </div>
+        </div>
+      )}
+
+      {/* 자이로스코프가 활성화된 경우 사각형들 렌더링 */}
+      {isGyroSupported && (
+        <div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: `${maxWidth}px`,
+            height: `${maxHeight}px`,
+            transform: `translate(-50%, -50%) rotateX(${orientation.beta * 0.5}deg) rotateY(${orientation.gamma * 0.5}deg)`
+          }}
+        >
+          {Array.from({ length: steps }).map((_, i) => {
+            const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
+            const width = maxWidth - stepReduction * i
+            const height = maxHeight - stepReduction * i
+            const color = interpolateColor(brandColorHex, refinedColorHex, factor)
+            
+            // 각 사각형마다 다른 회전 강도 적용
+            const rotationMultiplier = 1 + i * 0.1
+            
+            return (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  width: `${width}px`,
+                  height: `${height}px`,
+                  backgroundColor: color,
+                  borderRadius: i === 0 ? '12px' : '8px',
+                  opacity: 0.7 + (i * 0.03), // 뒤쪽 사각형일수록 약간 더 투명
+                  top: '50%',
+                  left: '50%',
+                  transform: `
+                    translate(-50%, -50%) 
+                    rotateX(${orientation.beta * rotationMultiplier * 0.3}deg) 
+                    rotateY(${orientation.gamma * rotationMultiplier * 0.3}deg)
+                    translateZ(${i * 2}px)
+                  `,
+                  transformStyle: 'preserve-3d',
+                  boxShadow: i === 0 ? '0 10px 30px rgba(0,0,0,0.1)' : 'none'
+                }}
+              />
+            )
+          })}
+        </div>
+      )}
       
       {/* 자이로 상태 표시 (개발용 - 나중에 제거 가능) */}
       {isGyroSupported && (
-        <div className="absolute top-4 left-4 bg-black/50 text-white p-2 rounded text-xs">
+        <div className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto">
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
         </div>
       )}
