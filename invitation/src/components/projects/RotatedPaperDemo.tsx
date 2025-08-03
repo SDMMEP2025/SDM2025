@@ -33,24 +33,41 @@ function interpolateColor(color1: string, color2: string, factor: number): strin
   return rgbToHex(r, g, b)
 }
 
-// 모바일 자이로 ConcentricSquares 컴포넌트
-function MobileGyroSquares() {
+// 전체화면 자이로 반응형 사각형 배경
+function FullscreenGyroSquares() {
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   const [isGyroSupported, setIsGyroSupported] = useState(false)
   const [showGyroButton, setShowGyroButton] = useState(false)
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
 
-  const steps = 8
+  const steps = 12
   const brandColorHex = '#FF60B9'
   const refinedColorHex = '#FBE870'
-  const maxWidth = 280
-  const maxHeight = 210
-  const stepReduction = 20
+  
+  // 화면 크기에 따른 사각형 크기 계산
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5 // 화면보다 큰 크기로
+  const stepReduction = maxSize / (steps + 2) // 단계별 크기 감소량
 
   useEffect(() => {
+    // 화면 크기 설정
+    const updateScreenSize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    updateScreenSize()
+    window.addEventListener('resize', updateScreenSize)
+
     // 모바일 기기인지 확인하고 자이로 버튼 표시
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       setShowGyroButton(true)
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateScreenSize)
     }
   }, [])
 
@@ -86,8 +103,8 @@ function MobileGyroSquares() {
       const { beta, gamma } = event
       if (beta !== null && gamma !== null) {
         setOrientation({
-          beta: Math.max(-30, Math.min(30, beta)), // -30도 ~ 30도로 제한
-          gamma: Math.max(-30, Math.min(30, gamma)) // -30도 ~ 30도로 제한
+          beta: Math.max(-45, Math.min(45, beta)), // -45도 ~ 45도로 제한
+          gamma: Math.max(-45, Math.min(45, gamma)) // -45도 ~ 45도로 제한
         })
       }
     }
@@ -96,14 +113,28 @@ function MobileGyroSquares() {
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
+  // 자이로 값에 따른 이동 거리 계산
+  const getMovement = () => {
+    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3 // 화면 크기의 30%까지 이동
+    
+    // gamma: 좌우 기울기 (-45 ~ 45도)
+    // beta: 앞뒤 기울기 (-45 ~ 45도)
+    const moveX = (orientation.gamma / 45) * maxMovement
+    const moveY = (orientation.beta / 45) * maxMovement
+
+    return { moveX, moveY }
+  }
+
+  const { moveX, moveY } = getMovement()
+
   return (
-    <div className="fixed inset-0 pointer-events-none z-50">
+    <div className="fixed inset-0 pointer-events-none z-0">
       {/* 자이로 활성화 버튼 */}
       {showGyroButton && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-50">
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-2xl text-center max-w-xs">
             <div className="mb-4">
-              <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-pink-500 to-yellow-500 rounded-full flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
@@ -117,7 +148,7 @@ function MobileGyroSquares() {
             </div>
             <button
               onClick={requestGyroPermission}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
+              className="w-full bg-gradient-to-r from-pink-500 to-yellow-500 text-white py-3 px-6 rounded-xl font-medium hover:from-pink-600 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105"
             >
               활성화하기
             </button>
@@ -134,45 +165,36 @@ function MobileGyroSquares() {
         </div>
       )}
 
-      {/* 자이로스코프가 활성화된 경우 사각형들 렌더링 */}
-      {isGyroSupported && (
-        <div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          style={{
-            width: `${maxWidth}px`,
-            height: `${maxHeight}px`,
-            transform: `translate(-50%, -50%) rotateX(${orientation.beta * 0.5}deg) rotateY(${orientation.gamma * 0.5}deg)`
-          }}
-        >
+      {/* 자이로스코프가 활성화된 경우 전체화면 사각형들 렌더링 */}
+      {(isGyroSupported || !showGyroButton) && screenSize.width > 0 && (
+        <div className="absolute inset-0 overflow-hidden">
           {Array.from({ length: steps }).map((_, i) => {
             const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
-            const width = maxWidth - stepReduction * i
-            const height = maxHeight - stepReduction * i
+            const size = maxSize - stepReduction * i
             const color = interpolateColor(brandColorHex, refinedColorHex, factor)
             
-            // 각 사각형마다 다른 회전 강도 적용
-            const rotationMultiplier = 1 + i * 0.1
+            // 각 사각형마다 다른 이동 강도 적용 (작은 사각형일수록 더 많이 움직임)
+            const movementMultiplier = 1 + (i * 0.15)
+            const currentMoveX = moveX * movementMultiplier
+            const currentMoveY = moveY * movementMultiplier
             
             return (
               <div
                 key={i}
-                className="absolute"
+                className="absolute transition-transform duration-100 ease-out"
                 style={{
-                  width: `${width}px`,
-                  height: `${height}px`,
+                  width: `${size}px`,
+                  height: `${size}px`,
                   backgroundColor: color,
-                  borderRadius: i === 0 ? '12px' : '8px',
-                  opacity: 0.7 + (i * 0.03), // 뒤쪽 사각형일수록 약간 더 투명
+                  borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
+                  opacity: 0.6 + (i * 0.04), // 뒤쪽 사각형일수록 약간 더 투명
                   top: '50%',
                   left: '50%',
                   transform: `
                     translate(-50%, -50%) 
-                    rotateX(${orientation.beta * rotationMultiplier * 0.3}deg) 
-                    rotateY(${orientation.gamma * rotationMultiplier * 0.3}deg)
-                    translateZ(${i * 2}px)
+                    translate(${currentMoveX}px, ${currentMoveY}px)
                   `,
-                  transformStyle: 'preserve-3d',
-                  boxShadow: i === 0 ? '0 10px 30px rgba(0,0,0,0.1)' : 'none'
+                  boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none'
                 }}
               />
             )
@@ -180,10 +202,12 @@ function MobileGyroSquares() {
         </div>
       )}
       
-      {/* 자이로 상태 표시 (개발용 - 나중에 제거 가능) */}
+      {/* 자이로 상태 표시 (개발용) */}
       {isGyroSupported && (
-        <div className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto">
+        <div className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-50">
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
+          <br />
+          Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
         </div>
       )}
     </div>
@@ -224,13 +248,14 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
 
   return (
     <>
-      {/* 모바일에서만 자이로 반응 사각형들 표시 */}
-      {isMobile && <MobileGyroSquares />}
+      {/* 모바일에서만 자이로 반응 사각형들 표시 - 가장 아래 레이어 */}
+      {isMobile && <FullscreenGyroSquares />}
       
-      <div className='fixed inset-0 flex items-center justify-center z-100 overflow-hidden'>
+      {/* 초대장 종이 - 가장 위 레이어 */}
+      <div className='fixed inset-0 flex items-center justify-center z-[9999] overflow-hidden'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper />
-          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-600 transform rotate-6'>
+          <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[10000] transform rotate-6'>
             <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
               <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
