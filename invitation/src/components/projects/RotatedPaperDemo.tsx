@@ -41,8 +41,8 @@ function MobileGyroSquares() {
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
 
   const steps = 8
-  const brandColorHex = '#FF6B6B'
-  const refinedColorHex = '#4ECDC4'
+  const brandColorHex = '#FF60B9'
+  const refinedColorHex = '#FF5E1F'
   const maxWidth = 280
   const maxHeight = 210
   const stepReduction = 20
