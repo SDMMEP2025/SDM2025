@@ -564,7 +564,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
 
   return (
     <div className='w-full h-full bg-white'>
-      <h3 className='absolute whitespace-nowrap left-1/2 transform -translate-x-1/2 text-center text-[160px] font-semibold text-gray-800 mt-4 font-english'>
+      <h3 className='absolute text-[34px] whitespace-nowrap left-1/2 transform -translate-x-1/2 text-center text-[160px] font-semibold text-gray-800 mt-4 font-english'>
         Your Movement
       </h3>
 

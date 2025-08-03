@@ -24,9 +24,7 @@ interface ResultStepProps {
 function interpolateColor(color1: string, color2: string, factor: number): string {
   const hexToRgb = (hex: string) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return result
-      ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) }
-      : null
+    return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null
   }
   const rgbToHex = (r: number, g: number, b: number) =>
     '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
@@ -52,19 +50,55 @@ function ConcentricSquares({
   refinedColorHex: string
   onPositionsChange: (positions: Array<{ x: number; y: number }>) => void
 }) {
-  const maxWidth = 420
-  const maxHeight = 316
-  const stepReduction = 25
+  // 반응형 사이즈 계산
+  const getResponsiveSize = () => {
+    if (typeof window === 'undefined') return { maxWidth: 420, maxHeight: 316 }
+    
+    const width = window.innerWidth
+    const height = window.innerHeight
+    
+    // 화면 크기에 따른 maxWidth 설정
+    let maxWidth: number
+    let maxHeight: number
+    
+    if (width >= 1024) {
+      // 데스크톱 (lg 이상)
+      maxWidth = 420
+      maxHeight = 316
+    } else if (width >= 768) {
+      // 태블릿 (md 이상)
+      maxWidth = Math.min(360, width * 0.8)
+      maxHeight = Math.min(270, height * 0.35)
+    } else {
+      // 모바일
+      maxWidth = Math.min(280, width * 0.75)
+      maxHeight = Math.min(210, height * 0.3)
+    }
+    
+    return { maxWidth, maxHeight }
+  }
 
-  const [positions, setPositions] = useState(
-    Array.from({ length: steps }, () => ({ x: 0, y: 0 }))
-  )
+  const [dimensions, setDimensions] = useState(getResponsiveSize())
+  const { maxWidth, maxHeight } = dimensions
+  const stepReduction = Math.max(15, maxWidth * 0.06) // 반응형 step reduction
+
+  const [positions, setPositions] = useState(Array.from({ length: steps }, () => ({ x: 0, y: 0 })))
   const targetRef = useRef({ x: 0, y: 0 })
   const dragRef = useRef(false)
 
+  // 화면 크기 변경 감지
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions(getResponsiveSize())
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   // steps가 바뀌면 positions 크기 맞추기
   useEffect(() => {
-    setPositions(prev => Array.from({ length: steps }, (_, i) => prev[i] || { x: 0, y: 0 }))
+    setPositions((prev) => Array.from({ length: steps }, (_, i) => prev[i] || { x: 0, y: 0 }))
   }, [steps])
 
   // positions가 변경될 때마다 부모에게 알림
@@ -103,7 +137,7 @@ function ConcentricSquares({
     const speedBase = 0.08 // 기본 속도
 
     const animate = () => {
-      setPositions(prev => {
+      setPositions((prev) => {
         const newPositions = [...prev]
         const target = targetRef.current
 
@@ -152,7 +186,7 @@ function ConcentricSquares({
 
     frame = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frame)
-  }, [steps])
+  }, [steps, maxWidth, maxHeight, stepReduction])
 
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp)
@@ -161,7 +195,7 @@ function ConcentricSquares({
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [steps])
+  }, [steps, maxWidth, maxHeight, stepReduction])
 
   return (
     <div className='relative' style={{ width: `${maxWidth}px`, height: `${maxHeight}px` }}>
@@ -214,15 +248,15 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
       brandColorHex: colorAnalysis.brandColor.hex,
       refinedColorName: colorAnalysis.refinedColor.name || 'Refined Color',
       refinedColorHex: colorAnalysis.refinedColor.hex,
-      text: text
+      text: text,
     })
   }
 
   return (
     <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
       <div className='flex flex-col justify-between items-center gap-[8dvh]'>
-        <div className='flex flex-col justify-center items-center gap-[3.68dvh]'>
-          <div className='left-1/2 transform '>
+        <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:mt-[2dvh] md-landscape:mt-[4dvh]'>
+          <div className='left-1/2 transform hidden md:block md:mt-[10dvh] md-landscape:mt-[4dvh] lg:mt-[0dvh]'>
             <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
               <circle cx='4' cy='4.5' r='4' fill='#222222' />
               <circle cx='15.7344' cy='4.5' r='4' fill='#222222' />
@@ -234,7 +268,8 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
             <h2
               className={classNames(
                 'text-center text-[#222222] font-semibold font-english',
-                'text-[24px] md:text-[28px] lg:text-[32px]',
+                'text-[34px] md:text-[28px] lg:text-[32px]',
+                'mt-[36px]'
               )}
             >
               Move Your Movement
@@ -245,7 +280,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
           </div>
         </div>
 
-        <div className='flex flex-col justify-center items-center gap-[4dvh]'>
+        <div className='flex flex-col justify-center items-center gap-[14dvh] md:gap-[8dvh]'>
           <div className='flex flex-col justify-center items-center gap-[2dvh]'>
             <div className='flex justify-center items-center'>
               <ConcentricSquares
@@ -308,6 +343,15 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
             </div>
           </div>
 
+          <div className='flex flex-col justify-center items-center gap-[4dvh]'>
+            <div className='left-1/2 transform md:hidden'>
+            <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
+              <circle cx='4' cy='4.5' r='4' fill='#222222' />
+              <circle cx='15.7344' cy='4.5' r='4' fill='#222222' />
+              <circle cx='27.4688' cy='4.5' r='4' fill='#E8E8E8' />
+            </svg>
+          </div>
+
           <button
             onClick={handleSubmit}
             className={classNames(
@@ -317,6 +361,9 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
           >
             <div className='text-[18px] text-white font-medium'>Done</div>
           </button>
+          </div>
+
+          
         </div>
       </div>
     </div>

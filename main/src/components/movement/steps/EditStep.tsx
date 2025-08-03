@@ -96,9 +96,9 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
           {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>}
         </div>
 
-        <div className='flex flex-col justify-between items-center gap-[11.8dvh]'>
-          <div className='flex flex-col justify-center items-center gap-[3.68dvh]'>
-            <div className='left-1/2 transform '>
+        <div className='flex flex-col justify-between items-center gap-[19dvh] lg:gap-[11.8dvh]'>
+          <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:gap-[0.4dvh]'>
+            <div className='left-1/2 transform hidden md:block md:mt-[2dvh] md-landscape:mt-[10dvh] lg:mt-[0dvh]'>
               <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
                 <circle cx='4' cy='4.5' r='4' fill='#222222' />
                 <circle cx='15.7344' cy='4.5' r='4' fill='#E8E8E8' />
@@ -107,11 +107,12 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
             </div>
 
             {/* 타이틀 */}
-            <div className='flex flex-col justify-center items-center gap-[2.13dvh]'>
+            <div className='flex flex-col justify-center items-center gap-[2.13dvh] md:gap-[0.4dvh]'>
               <h2
                 className={classNames(
                   'text-center text-[#222222] font-semibold font-english',
-                  'text-[24px] md:text-[28px] lg:text-[32px]',
+                  'text-[34px] w-[237px] md:w-fit text-[28px] md:text-[40px] lg:text-[32px]',
+                  'pt-[36px]'
                 )}
               >
                 Tell Us Your Movement
@@ -122,13 +123,13 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
             </div>
           </div>
 
-          <div className='flex flex-col justify-center items-center gap-[14.54dvh]'>
+          <div className='flex flex-col justify-center items-center gap-[28dvh] md:gap-[10dvh]  lg:gap-[14.54dvh]'>
             <div className='relative'>
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder={isAnalyzing ? 'AI 분석 중...' : '나를 움직이게 하는 이 순간에 대해 적어보세요...'}
-                className='w-[983px] py-[77px] bg-[#F6F6F6] text-center rounded-lg text-[#AEB1B6] text-[42px] placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none'
+                placeholder={isAnalyzing ? '이미지 분석 중...' : '나를 움직이게 하는 이 순간에 대해 적어보세요...'}
+                className='w-[380px] md:w-[688px] lg: w-[983px] py-[22px] md:py-[84px] lg:py-[77px] bg-[#F6F6F6] text-center rounded-lg text-[#AEB1B6] text-[18px] md:text-[32px]  lg:text-[42px] placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none'
                 maxLength={200}
                 disabled={isAnalyzing}
                 rows={1}
@@ -137,19 +138,47 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
                 <span>{text.length}/22</span>
               </div>
             </div>
-            <button
-              onClick={handleSubmit}
-              disabled={!text.trim() || !colorAnalysis || isAnalyzing}
-              className={classNames(
-                'w-[150px] rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
-                'h-[44px] px-[36px]',
-                text.trim() && colorAnalysis && !isAnalyzing
-                  ? 'bg-neutral-800 hover:bg-neutral-700 text-white'
-                  : 'bg-neutral-600 text-gray-400 cursor-not-allowed',
-              )}
-            >
-              <div className='text-[18px] font-medium'>Next</div>
-            </button>
+
+
+            <div className='flex flex-col justify-center items-center gap-[32px]'>
+              <div className='left-1/2 transform md:hidden'>
+                <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
+                  <circle cx='4' cy='4.5' r='4' fill='#222222' />
+                  <circle cx='15.7344' cy='4.5' r='4' fill='#E8E8E8' />
+                  <circle cx='27.4688' cy='4.5' r='4' fill='#E8E8E8' />
+                </svg>
+              </div>
+              <button
+                onClick={handleSubmit}
+                disabled={!text.trim() || !colorAnalysis || isAnalyzing}
+                className={classNames(
+                  'mix-blend-normal bg-neutral-800 rounded-[100px] inline-flex justify-center items-center gap-[5.11px] overflow-hidden transition-all duration-200 hover:bg-neutral-700',
+                  //mobile
+                  'w-[128px] h-[40px] px-[32px]',
+                  //tablet
+                  'md:w-[136px] md:h-[42px] md:px-[36px]',
+                  //desktop
+                  'lg:w-[144px] lg:h-[44px] lg:px-[36px]',
+                  text.trim() && colorAnalysis && !isAnalyzing
+                    ? 'bg-neutral-800 hover:bg-neutral-700 text-white'
+                    : 'bg-neutral-600 text-gray-400 cursor-not-allowed',
+                )}
+              >
+                <div
+                  className={classNames(
+                    'text-white font-medium',
+                    //mobile
+                    'text-[16px]',
+                    //tablet
+                    'md:text-[17px]',
+                    //desktop
+                    'lg:text-[18px]',
+                  )}
+                >
+                  Next
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
