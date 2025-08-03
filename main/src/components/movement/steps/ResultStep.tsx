@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames'
 import { ColorAnalysisResult } from '@/types/color'
 import { Range, getTrackBackground } from 'react-range'
+import { MotionControlPanel, MotionParams } from '../MotionControlPanel' 
 
 interface ResultStepProps {
   imageUrl: string
@@ -44,11 +45,21 @@ function ConcentricSquares({
   brandColorHex,
   refinedColorHex,
   onPositionsChange,
+  motionParams = {
+    speedBase: 0.08,
+    followSpeedMultiplier: 0.5,
+    followSpeedOffset: 1.0,
+    colorInterpolationPower: 0.9,
+    stepReductionRatio: 0.06,
+    borderRadiusOuter: 8,
+    dragSmoothing: 1.0,
+  }
 }: {
   steps: number
   brandColorHex: string
   refinedColorHex: string
   onPositionsChange: (positions: Array<{ x: number; y: number }>) => void
+  motionParams?: MotionParams
 }) {
   // 반응형 사이즈 계산
   const getResponsiveSize = () => {
@@ -80,7 +91,7 @@ function ConcentricSquares({
 
   const [dimensions, setDimensions] = useState(getResponsiveSize())
   const { maxWidth, maxHeight } = dimensions
-  const stepReduction = Math.max(15, maxWidth * 0.06) // 반응형 step reduction
+  const stepReduction = Math.max(15, maxWidth * motionParams.stepReductionRatio) // 모션 파라미터 적용
 
   const [positions, setPositions] = useState(Array.from({ length: steps }, () => ({ x: 0, y: 0 })))
   const targetRef = useRef({ x: 0, y: 0 })
@@ -106,7 +117,7 @@ function ConcentricSquares({
     onPositionsChange(positions)
   }, [positions, onPositionsChange])
 
-  // 마우스 이동 → target만 업데이트
+  // 마우스 이동 → target만 업데이트 (dragSmoothing 파라미터 적용)
   const handleMouseMove = (e: MouseEvent) => {
     if (!dragRef.current) return
 
@@ -118,8 +129,8 @@ function ConcentricSquares({
 
     const centerX = window.innerWidth / 2
     const centerY = window.innerHeight / 2
-    let x = e.clientX - centerX
-    let y = e.clientY - centerY
+    let x = (e.clientX - centerX) / motionParams.dragSmoothing // dragSmoothing 적용
+    let y = (e.clientY - centerY) / motionParams.dragSmoothing
 
     // 🔹 가장 작은 사각형 기준 영역 제한
     x = Math.max(-maxX, Math.min(maxX, x))
@@ -131,10 +142,9 @@ function ConcentricSquares({
   const handleMouseDown = () => (dragRef.current = true)
   const handleMouseUp = () => (dragRef.current = false)
 
-  // requestAnimationFrame으로 부드럽게 보간
+  // requestAnimationFrame으로 부드럽게 보간 (모션 파라미터 적용)
   useEffect(() => {
     let frame: number
-    const speedBase = 0.08 // 기본 속도
 
     const animate = () => {
       setPositions((prev) => {
@@ -145,8 +155,8 @@ function ConcentricSquares({
         if (lastIdx >= 0) {
           // 🔹 마지막 사각형 lerp + 영역 제한
           const last = newPositions[lastIdx]
-          let newX = last.x + (target.x - last.x) * speedBase
-          let newY = last.y + (target.y - last.y) * speedBase
+          let newX = last.x + (target.x - last.x) * motionParams.speedBase
+          let newY = last.y + (target.y - last.y) * motionParams.speedBase
 
           // 영역 제한 적용 (드래그 가능한 가장 작은 사각형)
           const smallestWidth = maxWidth - stepReduction * lastIdx
@@ -159,11 +169,11 @@ function ConcentricSquares({
           newPositions[lastIdx] = { x: newX, y: newY }
         }
 
-        // 나머지 사각형들이 앞의 사각형을 따라오게
+        // 나머지 사각형들이 앞의 사각형을 따라오게 (모션 파라미터 적용)
         for (let i = lastIdx - 1; i >= 0; i--) {
           const current = newPositions[i]
           const next = newPositions[i + 1]
-          const speed = speedBase * (0.5 + i / steps) // 앞일수록 더 느리게
+          const speed = motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
           let newX = current.x + (next.x - current.x) * speed
           let newY = current.y + (next.y - current.y) * speed
 
@@ -186,7 +196,7 @@ function ConcentricSquares({
 
     frame = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frame)
-  }, [steps, maxWidth, maxHeight, stepReduction])
+  }, [steps, maxWidth, maxHeight, stepReduction, motionParams])
 
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp)
@@ -195,12 +205,12 @@ function ConcentricSquares({
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [steps, maxWidth, maxHeight, stepReduction])
+  }, [steps, maxWidth, maxHeight, stepReduction, motionParams.dragSmoothing])
 
   return (
     <div className='relative' style={{ width: `${maxWidth}px`, height: `${maxHeight}px` }}>
       {Array.from({ length: steps }).map((_, i) => {
-        const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
+        const factor = steps > 1 ? Math.pow(i / (steps - 1), motionParams.colorInterpolationPower) : 0
         const width = maxWidth - stepReduction * i
         const height = maxHeight - stepReduction * i
         const color = interpolateColor(brandColorHex, refinedColorHex, factor)
@@ -216,7 +226,7 @@ function ConcentricSquares({
               width: `${width}px`,
               height: `${height}px`,
               backgroundColor: color,
-              borderRadius: i === 0 ? '8px' : '0px',
+              borderRadius: i === 0 ? `${motionParams.borderRadiusOuter}px` : '0px', // 모션 파라미터 적용
               top: '50%',
               left: '50%',
               transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
@@ -232,12 +242,29 @@ function ConcentricSquares({
 export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onComplete }: ResultStepProps) {
   const [values, setValues] = React.useState([9])
   const [currentPositions, setCurrentPositions] = useState<Array<{ x: number; y: number }>>([])
+  
+  // 모션 컨트롤 관련 state 추가
+  const [motionParams, setMotionParams] = useState<MotionParams>({
+    speedBase: 0.08,
+    followSpeedMultiplier: 0.5,
+    followSpeedOffset: 1.0,
+    colorInterpolationPower: 0.9,
+    stepReductionRatio: 0.06,
+    borderRadiusOuter: 8,
+    dragSmoothing: 1.0,
+  })
+  const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(false)
+  
   const STEP = 1
   const MIN = 6
   const MAX = 13
 
   const handlePositionsChange = (positions: Array<{ x: number; y: number }>) => {
     setCurrentPositions(positions)
+  }
+
+  const handleMotionParamsChange = (params: MotionParams) => {
+    setMotionParams(params)
   }
 
   const handleSubmit = () => {
@@ -254,9 +281,16 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
 
   return (
     <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
+      {/* 모션 컨트롤 패널 추가 */}
+      <MotionControlPanel
+        onMotionParamsChange={handleMotionParamsChange}
+        isVisible={isMotionPanelVisible}
+        onToggle={() => setIsMotionPanelVisible(!isMotionPanelVisible)}
+      />
+      
       <div className='flex flex-col justify-between items-center gap-[8dvh]'>
-        <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:mt-[2dvh] md-landscape:mt-[4dvh]'>
-          <div className='left-1/2 transform hidden md:block md:mt-[10dvh] md-landscape:mt-[4dvh] lg:mt-[0dvh]'>
+        <div className='flex flex-col justify-center items-center gap-[3.68dvh]'>
+          <div className='left-1/2 transform hidden md:block'>
             <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
               <circle cx='4' cy='4.5' r='4' fill='#222222' />
               <circle cx='15.7344' cy='4.5' r='4' fill='#222222' />
@@ -269,7 +303,6 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
               className={classNames(
                 'text-center text-[#222222] font-semibold font-english',
                 'text-[34px] md:text-[28px] lg:text-[32px]',
-                'mt-[36px]'
               )}
             >
               Move Your Movement
@@ -288,9 +321,11 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
                 brandColorHex={colorAnalysis.brandColor.hex}
                 refinedColorHex={colorAnalysis.refinedColor.hex}
                 onPositionsChange={handlePositionsChange}
+                motionParams={motionParams} // 모션 파라미터 전달
               />
             </div>
 
+            {/* 기존 Range 컴포넌트는 그대로 유지 */}
             <div className='w-full max-w-[366px] px-4'>
               <Range
                 values={values}

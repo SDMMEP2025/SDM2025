@@ -26,7 +26,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
     const runAnalysis = async () => {
       try {
         // 환경변수로 AI 분석 제어
-        const isAiDisabled = process.env.NEXT_PUBLIC_DISABLE_AI === 'true'
+        const isAiDisabled = process.env.NEXT_PUBLIC_DISABLE_AI === 'false'
 
         if (isAiDisabled) {
           console.log('🛑 AI Analysis disabled for development')
@@ -98,7 +98,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
 
         <div className='flex flex-col justify-between items-center gap-[19dvh] lg:gap-[11.8dvh]'>
           <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:gap-[0.4dvh]'>
-            <div className='left-1/2 transform hidden md:block md:mt-[2dvh] md-landscape:mt-[10dvh] lg:mt-[0dvh]'>
+            <div className='left-1/2 transform hidden md:block md:mt-[3dvh] md-landscape:mt-[3dvh] lg:mt-[0dvh]'>
               <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
                 <circle cx='4' cy='4.5' r='4' fill='#222222' />
                 <circle cx='15.7344' cy='4.5' r='4' fill='#E8E8E8' />
@@ -129,7 +129,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={isAnalyzing ? '이미지 분석 중...' : '나를 움직이게 하는 이 순간에 대해 적어보세요...'}
-                className='w-[380px] md:w-[688px] lg: w-[983px] py-[22px] md:py-[84px] lg:py-[77px] bg-[#F6F6F6] text-center rounded-lg text-[#AEB1B6] text-[18px] md:text-[32px]  lg:text-[42px] placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none'
+                className='w-[380px] md:w-[688px] py-[22px] md:py-[84px] lg:py-[77px] bg-[#F6F6F6] text-center rounded-lg text-[#AEB1B6] text-[18px] md:text-[32px]  lg:text-[42px] placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none'
                 maxLength={200}
                 disabled={isAnalyzing}
                 rows={1}
