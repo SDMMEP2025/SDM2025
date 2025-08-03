@@ -1,6 +1,11 @@
 'use client'
 import { motion } from 'framer-motion'
 
+interface RotatedPaperDemoProps {
+  onDirectionsClick: () => void;
+  displayName: string; // 새로 추가
+}
+
 export function RotatedPaper({ className = '' }) {
   return (
     <div
@@ -15,7 +20,7 @@ export function RotatedPaper({ className = '' }) {
   )
 }
 
-export default function RotatedPaperDemo({ onDirectionsClick }) {
+export default function RotatedPaperDemo({ onDirectionsClick, displayName }: RotatedPaperDemoProps) {
   return (
     <div className='fixed inset-0 flex items-center justify-center z-10 overflow-hidden'>
       <div className='relative transform -rotate-6'>
@@ -23,7 +28,7 @@ export default function RotatedPaperDemo({ onDirectionsClick }) {
         <div className='absolute inset-0 flex flex-col items-center justify-center p-8 gap-[76px] md:gap-[82px] lg:gap-[88px] text-black z-[400] transform rotate-6'>
           <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
             <p className='leading-relaxed break-keep'>안녕하세요.</p>
-            <p className='break-keep'>2025 MEP 〈Newformative〉에 김삼성님을 초대합니다.</p>
+                <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
             <p>
               전시는 8월 22일부터 27일까지, 삼성전자 서울 R&D 캠퍼스 A타워 2층, 이노베이션 스튜디오에서 진행됩니다.
               <br className='md:block landscape:md:hidden lg:hidden' />
