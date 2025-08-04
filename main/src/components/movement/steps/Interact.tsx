@@ -177,8 +177,8 @@ function FloatingConcentricSquares({
     const animate = () => {
       time += motionParams.floatSpeed
       setFloatOffset({
-        x: Math.sin(time) * motionParams.floatAmplitude * scale,
-        y: Math.cos(time * 0.8) * motionParams.floatAmplitude * 0.67 * scale,
+        x: 0,
+        y: Math.cos(time * 0.8) * motionParams.floatAmplitude * 2.0 * scale,
       })
       frame = requestAnimationFrame(animate)
     }
@@ -323,7 +323,7 @@ function FloatingConcentricSquares({
 
     // 마우스 따라가기 (스케일에 비례)
     const moveRange = 80 * scale
-    const moveX = (mouseX / (rect.width / 2)) * moveRange
+    const moveX = (mouseX / (rect.width / 2)) * moveRange * 0.8
     const moveY = (mouseY / (rect.height / 2)) * moveRange
     targetRef.current = { x: moveX, y: moveY }
   }
