@@ -173,7 +173,7 @@ export default function Page() {
         title='삶의 모든 순간을 채우는 이동'
         text='매일 아침의 출근길, 바쁜 일상 속 짧은 이동, 설레는 주말여행, 그리고 예상치 못한 만남까지, 우리는 삶의 대부분을 이동 속에서 살아갑니다. 이처럼 이동은 우리의 시간과 경험의 큰 비중을 차지하는, 일상에서 결코 분리될 수 없는 중요한 일부입니다.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712396/954343a016'/>
+      <MediaContainer type='video' src='https://player.vimeo.com/video/1106711843?h=ba42ab53da'/>
       <Divide title='Target' number='02' />
       <TitleBody
         title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
