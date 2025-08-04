@@ -7,26 +7,9 @@ interface MediaContainerProps {
 }
 
 export function MediaContainer({ type = 'image', src, alt = 'Media content' }: MediaContainerProps) {
-  // Vimeo 공개/비공개 링크 자동 변환
-  const getEmbedSrc = (url?: string) => {
-    if (!url) return ''
-    // Vimeo 일반/비공개 링크 처리
-    if (url.includes('vimeo.com') && !url.includes('player.vimeo.com')) {
-      const parts = url.split('/')
-      const videoId = parts[3]         // https://vimeo.com/{id}/...
-      const hash = parts[4]            // 비공개 토큰 (없으면 undefined)
-      return hash
-        ? `https://player.vimeo.com/video/${videoId}?h=${hash}`
-        : `https://player.vimeo.com/video/${videoId}`
-    }
-    return url
-  }
-
-  const embedSrc = getEmbedSrc(src)
-
   return (
     <div className="w-full aspect-[16/9] relative bg-zinc-600 overflow-hidden">
-      {/* 실제 미디어 */}
+      {/* 실제 미디어가 있을 때 */}
       {src && (
         <>
           {type === 'image' ? (
@@ -38,12 +21,11 @@ export function MediaContainer({ type = 'image', src, alt = 'Media content' }: M
           ) : (
             <div className="w-full h-full">
               <iframe
-                src={`${embedSrc}?autoplay=1&loop=1&muted=1&playsinline=1&title=0&byline=0&portrait=0`}
+                src={`${src}?background=1&autoplay=1&loop=1&byline=0&title=0&portrait=0&muted=1`}
                 className="w-full h-full"
                 frameBorder="0"
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
-                referrerPolicy="strict-origin-when-cross-origin"
                 title={alt}
               />
             </div>
@@ -51,7 +33,7 @@ export function MediaContainer({ type = 'image', src, alt = 'Media content' }: M
         </>
       )}
       
-      {/* 플레이스홀더 */}
+      {/* 플레이스홀더 (미디어가 없을 때) */}
       {!src && (
         <>
           {/* 플레이 버튼 아이콘 */}
@@ -66,12 +48,12 @@ export function MediaContainer({ type = 'image', src, alt = 'Media content' }: M
             <div className="w-10 h-6 xs:w-6 xs:h-3.5 md:w-6 md:h-3.5 lg:w-10 lg:h-6 absolute top-[35px] left-[21px] xs:top-[22px] xs:left-[11px] md:top-[22] md:left-[11px] lg:top-[35px] lg:left-[21px] border-[5.25px] xs:border-[2.80px] md:border-[2.80px] lg:border-[5.25px] border-white" />
           </div>
           
-          {/* 해상도 텍스트 (PC) */}
+          {/* 해상도 텍스트 (PC에서만 표시) */}
           <div className="hidden lg:block absolute bottom-20 left-1/2 transform -translate-x-1/2 text-gray-400 text-4xl font-bold font-['Pretendard'] leading-10">
             1920*1080
           </div>
           
-          {/* 해상도 텍스트 (태블릿) */}
+          {/* 해상도 텍스트 (태블릿에서만 표시) */}
           <div className="hidden md:block lg:hidden absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-400 text-xl font-bold font-['Pretendard'] leading-normal">
             768*432
           </div>
