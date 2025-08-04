@@ -16,7 +16,7 @@ export function Divide({ title, number, className = '' }: DivideProps) {
       className={classNames(
         'w-full bg-white flex justify-between items-center overflow-hidden',
         //mobile
-        'px-[4.10vw] pt-[36px]',
+        'px-[4.10vw] py-[36px]',
         //tablet
         'md:px-[5.2vw] md:py-[56px]',
         //desktop
