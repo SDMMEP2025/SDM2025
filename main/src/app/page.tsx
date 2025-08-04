@@ -97,6 +97,8 @@ export default function Page() {
   return (
     <>
       <Header />
+      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712396/954343a016' />
+
       <Footer />
     </>
   )
