@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export interface MotionSettings {
@@ -61,31 +61,135 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
     min: number
     max: number
     step: number
-  }) => (
-    <div className='flex items-center gap-3 mb-4 touch-none'>
-      <div className='w-20 text-xs text-gray-700 flex-shrink-0'>{label}</div>
-      <input
-        type='range'
-        min={min}
-        max={max}
-        step={step}
-        value={settings[settingKey]}
-        onChange={(e) => handleSliderChange(settingKey, parseFloat(e.target.value))}
-        onTouchStart={(e) => e.stopPropagation()}
-        onTouchMove={(e) => e.stopPropagation()}
-        onTouchEnd={(e) => e.stopPropagation()}
-        className='flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider touch-auto'
-        style={{ 
-          WebkitAppearance: 'none',
-          MozAppearance: 'none',
-          touchAction: 'pan-x'
-        }}
-      />
-      <div className='w-12 text-xs text-gray-500 text-right flex-shrink-0'>
-        {settings[settingKey].toFixed(step < 1 ? 2 : 0)}
+  }) => {
+    const [isDragging, setIsDragging] = useState(false)
+    const sliderRef = useRef<HTMLDivElement>(null)
+
+    const calculateValue = (clientX: number) => {
+      if (!sliderRef.current) return settings[settingKey]
+      
+      const rect = sliderRef.current.getBoundingClientRect()
+      const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+      const rawValue = min + percentage * (max - min)
+      return Math.round(rawValue / step) * step
+    }
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+      setIsDragging(true)
+      const newValue = calculateValue(e.clientX)
+      handleSliderChange(settingKey, newValue)
+    }
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+      if (!isDragging) return
+      const newValue = calculateValue(e.clientX)
+      handleSliderChange(settingKey, newValue)
+    }
+
+    const handleMouseUp = () => {
+      setIsDragging(false)
+    }
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+      e.stopPropagation()
+      setIsDragging(true)
+      const touch = e.touches[0]
+      const newValue = calculateValue(touch.clientX)
+      handleSliderChange(settingKey, newValue)
+    }
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+      if (!isDragging) return
+      e.stopPropagation()
+      const touch = e.touches[0]
+      const newValue = calculateValue(touch.clientX)
+      handleSliderChange(settingKey, newValue)
+    }
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+      e.stopPropagation()
+      setIsDragging(false)
+    }
+
+    // 전역 이벤트 리스너 추가
+    useEffect(() => {
+      const handleGlobalMouseMove = (e: MouseEvent) => {
+        if (!isDragging) return
+        const newValue = calculateValue(e.clientX)
+        handleSliderChange(settingKey, newValue)
+      }
+
+      const handleGlobalMouseUp = () => {
+        setIsDragging(false)
+      }
+
+      const handleGlobalTouchMove = (e: TouchEvent) => {
+        if (!isDragging) return
+        e.preventDefault()
+        const touch = e.touches[0]
+        const newValue = calculateValue(touch.clientX)
+        handleSliderChange(settingKey, newValue)
+      }
+
+      const handleGlobalTouchEnd = () => {
+        setIsDragging(false)
+      }
+
+      if (isDragging) {
+        document.addEventListener('mousemove', handleGlobalMouseMove)
+        document.addEventListener('mouseup', handleGlobalMouseUp)
+        document.addEventListener('touchmove', handleGlobalTouchMove, { passive: false })
+        document.addEventListener('touchend', handleGlobalTouchEnd)
+      }
+
+      return () => {
+        document.removeEventListener('mousemove', handleGlobalMouseMove)
+        document.removeEventListener('mouseup', handleGlobalMouseUp)
+        document.removeEventListener('touchmove', handleGlobalTouchMove)
+        document.removeEventListener('touchend', handleGlobalTouchEnd)
+      }
+    }, [isDragging, settingKey, min, max, step])
+
+    const percentage = ((settings[settingKey] - min) / (max - min)) * 100
+
+    return (
+      <div className='mb-4'>
+        <div className='flex items-center gap-3 mb-2'>
+          <div className='w-20 text-xs text-gray-700 flex-shrink-0'>{label}</div>
+          <div className='w-12 text-xs text-gray-500 text-right flex-shrink-0'>
+            {settings[settingKey].toFixed(step < 1 ? 2 : 0)}
+          </div>
+        </div>
+        <div
+          ref={sliderRef}
+          className='relative h-10 flex items-center cursor-pointer select-none'
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* 슬라이더 트랙 */}
+          <div className='w-full h-2 bg-gray-200 rounded-full relative'>
+            {/* 활성 부분 */}
+            <div
+              className='h-full bg-gray-800 rounded-full'
+              style={{ width: `${percentage}%` }}
+            />
+            {/* 썸 */}
+            <div
+              className='absolute w-5 h-5 bg-gray-800 rounded-full transform -translate-y-1/2 -translate-x-1/2 top-1/2 shadow-md'
+              style={{ 
+                left: `${percentage}%`,
+                touchAction: 'none'
+              }}
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
 
 
@@ -97,7 +201,7 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
         className='fixed top-0 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
         style={{ zIndex: 10000 }}
       >
-        모션 패널
+     모션 패널
       </button>
 
       {/* Control Panel */}
@@ -244,72 +348,7 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
       </AnimatePresence>
 
       <style jsx>{`
-        .slider {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          background: transparent;
-          outline: none;
-          width: 100%;
-          height: 8px;
-        }
-
-        .slider::-webkit-slider-track {
-          height: 4px;
-          border-radius: 2px;
-          background: #e5e7eb;
-          border: none;
-          outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: #222222;
-          cursor: pointer;
-          border: none;
-          outline: none;
-          margin-top: -8px;
-          position: relative;
-          z-index: 1;
-        }
-
-        .slider::-moz-range-track {
-          height: 4px;
-          border-radius: 2px;
-          background: #e5e7eb;
-          border: none;
-          outline: none;
-        }
-
-        .slider::-moz-range-thumb {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: #222222;
-          cursor: pointer;
-          border: none;
-          outline: none;
-          margin-top: -8px;
-        }
-
-        /* 모바일 터치 개선 */
-        @media (pointer: coarse) {
-          .slider::-webkit-slider-thumb {
-            width: 24px;
-            height: 24px;
-            margin-top: -10px;
-          }
-          
-          .slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            margin-top: -10px;
-          }
-        }
+        /* 스타일은 이제 커스텀 슬라이더에서 인라인으로 처리 */
       `}</style>
     </>
   )

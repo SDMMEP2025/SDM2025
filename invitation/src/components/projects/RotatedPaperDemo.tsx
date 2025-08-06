@@ -299,7 +299,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         </div>
       </div>
 
-      {isMobile && isGyroSupported && (
+      { (
         <MotionControlPanel
           settings={motionSettings}
           onSettingsChange={setMotionSettings}
