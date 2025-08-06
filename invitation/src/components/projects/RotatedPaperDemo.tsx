@@ -43,7 +43,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   ]
   const colors = squareColors || defaultColors
 
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 2.2
   const stepReduction = maxSize / (steps + 2)
 
   useEffect(() => {
@@ -124,7 +124,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   }, [isGyroSupported])
 
   const getMovement = () => {
-    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
+    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.4
     
     const moveX = (orientation.gamma / 45) * maxMovement
     const moveY = (orientation.gamma / 45) * maxMovement
@@ -149,7 +149,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const currentMoveY = moveY * movementMultiplier
 
                 const rotationMultiplier = 1 + i * 0.15 
-                const rotationZ = -20 + (orientation.gamma / 45) * 20 * rotationMultiplier
+                const rotationZ = -20 - (orientation.gamma / 45) * 20 * rotationMultiplier
 
                 return (
                   <div
