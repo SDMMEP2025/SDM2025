@@ -126,10 +126,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const getMovement = () => {
     const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
     
-    // X축: 좌측 기울임시 왼쪽으로, 우측 기울임시 오른쪽으로
-    const moveX = (orientation.gamma / 45) * maxMovement
-    // Y축: 좌측 기울임시 위로, 우측 기울임시 아래로
-    const moveY = -(orientation.gamma / 45) * maxMovement
+    const moveX = -(orientation.gamma / 45) * maxMovement
+    const moveY = (orientation.gamma / 45) * maxMovement
     
     return { moveX, moveY }
   }
@@ -146,14 +144,11 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 레이어별로 다른 이동 배율 (상위 레이어일수록 더 많이 이동)
                 const movementMultiplier = 1 + i * 0.2
                 const currentMoveX = moveX * movementMultiplier
                 const currentMoveY = moveY * movementMultiplier
 
-                // 회전값 계산 - 좌측 기울임: 시계방향(양수), 우측 기울임: 시계반대방향(음수)
-                // 레이어별로 회전 정도가 다름 (상위 레이어일수록 더 많이 회전)
-                const rotationMultiplier = 1 + i * 0.15 // 상위 레이어일수록 더 많이 회전
+                const rotationMultiplier = 1 + i * 0.15 
                 const rotationZ = -20 + (orientation.gamma / 45) * 20 * rotationMultiplier
 
                 return (
@@ -162,7 +157,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                     className='absolute transition-transform duration-100 ease-out'
                     style={{
                       width: `${size}px`,
-                      height: `${size}px`,
+                      height: `${size*1.2}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
                       top: '50%',
