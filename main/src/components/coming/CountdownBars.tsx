@@ -5,11 +5,9 @@ import { useEffect, useState } from 'react'
 export function CountdownBars() {
   const barColors = ['#FFDF80', '#FF60B9', '#FF5E1F', '#FF8E3D']
   
-  // 작은 높이 (모바일 세로, 태블릿 가로, 데스크톱)
-  const largeHeights = [2, 3.5, 5, 7]
-  
-  // 큰 높이 (태블릿 세로만)
-  const smallHeights = [5, 7, 10, 14]
+  // 각 바의 상대적 크기 비율
+  const heightRatios = [2, 3.5, 5, 7] // 총 17.5 단위
+  const totalRatio = heightRatios.reduce((sum, ratio) => sum + ratio, 0)
   
   const [tick, setTick] = useState(0)
 
@@ -21,7 +19,7 @@ export function CountdownBars() {
   }, [])
 
   return (
-    <div className="absolute rotate-90 landscape:md:rotate-0 lg:rotate-0 bottom-0 left-0 w-[100vh] landscape:md:w-full landscape:md:h-[100vh] h-full pointer-events-none z-0">
+    <div className="w-full h-full pointer-events-none">
       <div className="relative w-full h-full flex flex-col justify-end">
         {Array.from({ length: 4 }, (_, position) => {
           const currentColorIndex = (position + tick) % barColors.length
@@ -29,13 +27,16 @@ export function CountdownBars() {
           const currentColor = barColors[currentColorIndex]
           const nextColor = barColors[nextColorIndex]
           
-          const smallHeight = smallHeights[position]
-          const largeHeight = largeHeights[position]
+          // 각 바의 높이를 컨테이너 높이의 비율로 계산
+          const heightPercentage = (heightRatios[position] / totalRatio) * 100
 
           return (
             <div
               key={position}
-              className={`w-full relative countdown-bar-${position}`}
+              className="w-full relative"
+              style={{
+                height: `${heightPercentage}%`,
+              }}
             >
               <div
                 className="absolute inset-0 transition-transform duration-1000 ease-out"
@@ -59,18 +60,6 @@ export function CountdownBars() {
                   }
                   to {
                     transform: translateY(0%);
-                  }
-                }
-                
-                /* 기본값: 모바일과 태블릿 세로는 큰 높이 */
-                .countdown-bar-${position} {
-                  height: ${largeHeight}vh;
-                }
-                
-                /* 태블릿 가로와 데스크톱만 작은 높이 */
-                @media (min-width: 768px) and (orientation: landscape) {
-                  .countdown-bar-${position} {
-                    height: ${smallHeight}vh;
                   }
                 }
               `}</style>

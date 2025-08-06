@@ -1,5 +1,5 @@
 'use client'
-import ProjectCard from '@/components/projects/ProjectCard'
+import { ProjectCard } from '@/components/projects/ProjectCard'
 import { useState } from 'react'
 
 interface Project {
@@ -9,7 +9,7 @@ interface Project {
 }
 
 export default function ProjectsGrid() {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(0)
+  const [expandedIndex, setExpandedIndex] = useState<number>(0)
 
   const projects: Project[] = [
     {
@@ -60,18 +60,10 @@ export default function ProjectsGrid() {
   ]
 
   return (
-    <div className="w-full flex-1 items-stretch min-h-0 px-[16px] md:px-[40px] lg:px-[48px] 
-                    flex flex-col md:flex-col md-landscape:flex-row lg:flex-row">
-      {projects.map((project, index) => (
-        <ProjectCard
-          key={project.id}
-          project={project}
-          isExpanded={expandedIndex === index}
-          isNextToExpanded={expandedIndex !== null && expandedIndex + 1 === index}
-          isPreviousToExpanded={expandedIndex !== null && expandedIndex - 1 === index}
-          onHover={() => setExpandedIndex(index)}
-        />
-      ))}
-    </div>
+    <>
+      <div className='w-full flex-1 min-h-0 px-[16px] md:px-[40px] lg:px-[48px] relative'>
+        <ProjectCard projects={projects} index={expandedIndex} setIndex={setExpandedIndex} />
+      </div>
+    </>
   )
 }

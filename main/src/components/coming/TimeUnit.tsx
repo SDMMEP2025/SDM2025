@@ -2,30 +2,40 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function TimeUnit({ value }: { value: number }) {
+interface TimeUnitProps {
+  value: number
+  className?: string
+}
+
+export default function TimeUnit({ value, className = '' }: TimeUnitProps) {
   const formattedValue = String(value).padStart(2, '0')
   const digits = formattedValue.split('')
 
   return (
-    <div className="flex text-center justify-center text-neutral-800 font-english font-normal leading-[288.20px] mx-2 lg:text-[18vw] font-bold tracking-[-0.02em]">
+    <div className={`relative flex text-neutral-800 font-english font-normal font-bold tracking-[-0.02em] ${className}`}>
       {digits.map((digit, index) => {
-        const delay = index === 0 ? 0.6 : 0
-        
+        // 일의 자리(index 1)가 먼저 애니메이션되고, 십의 자리(index 0)가 나중에 애니메이션되도록 지연시간 설정
+        const delay = index === 0 ? 0.1 : 0
+
         return (
-          <div key={index} className='relative w-[10vw] lg:h-[18vw] flex items-center justify-center '>
+          <div
+            key={index}
+            className={`relative flex w-[12vw] md-landscape-coming:w-[9vw] lg:w-[9vw] text-[22vw] md-landscape-coming:text-[17vw] lg:text-[17vw] p-0 m-0 ${index === 1 ? 'mr-[20%] md:mr-[20%] md-landscape-coming:ml-[10%] lg:ml-[10%] xl:ml-[10%]' : ''}`}
+          >
+            {' '}
             <AnimatePresence mode='wait'>
               <motion.div
                 key={`${index}-${digit}`}
-                initial={{ y: '-50%', opacity: 0 }}
+                initial={{ y: '-90%', opacity: 0 }}
                 animate={{ y: '0%', opacity: 1 }}
                 exit={{ y: '0%', opacity: 1 }}
                 transition={{
                   type: 'tween',
                   ease: [0.25, 0.46, 0.45, 0.94],
                   duration: 0.9,
-                  delay: delay,
+                  delay: delay
                 }}
-                className='absolute h-fit flex items-center justify-center'
+                className='leading-none p-0 m-0 w-full text-center'
               >
                 {digit}
               </motion.div>
