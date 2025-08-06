@@ -35,6 +35,16 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
+  
+  // 물리 시뮬레이션을 위한 상태
+  const [physics, setPhysics] = useState({
+    velocityX: 0,
+    velocityY: 0,
+    positionX: 0,
+    positionY: 0
+  })
+
+  const animationFrameRef = useRef<number | null>(null)
 
   const steps = 12
   const defaultColors = [
@@ -123,18 +133,73 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  const getMovement = () => {
-    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.4
-    
-    // X축: 좌측 기울임시 왼쪽으로, 우측 기울임시 오른쪽으로
-    const moveX = (orientation.gamma / 45) * maxMovement
-    // Y축: 좌측 기울임시 위로, 우측 기울임시 아래로
-    const moveY = -(orientation.gamma / 45) * maxMovement
-    
-    return { moveX, moveY }
-  }
+  // 물리 시뮬레이션 업데이트
+  useEffect(() => {
+    if (!isGyroSupported) return
 
-  const { moveX, moveY } = getMovement()
+    const updatePhysics = () => {
+      setPhysics(prevPhysics => {
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.4
+        
+        // 기울기를 -1 ~ 1 범위로 정규화
+        const normalizedGammaX = orientation.gamma / 45
+        const normalizedGammaY = orientation.gamma / 45
+        
+        // 기울기에 따른 가속도 계산 (제곱을 사용해서 작은 기울기에서는 느리게, 큰 기울기에서는 빠르게)
+        const accelerationMultiplier = 2.5 // 가속도 강도 조절
+        const nonLinearFactor = 2.2 // 비선형성 조절 (높을수록 더 급격한 변화)
+        
+        const accelX = Math.sign(normalizedGammaX) * Math.pow(Math.abs(normalizedGammaX), nonLinearFactor) * accelerationMultiplier
+        const accelY = Math.sign(normalizedGammaY) * Math.pow(Math.abs(normalizedGammaY), nonLinearFactor) * accelerationMultiplier
+        
+        // 속도 업데이트 (가속도 적용)
+        let newVelocityX = prevPhysics.velocityX + accelX
+        let newVelocityY = prevPhysics.velocityY + accelY
+        
+        // 마찰력 적용 (속도 감소)
+        const friction = 0.95
+        newVelocityX *= friction
+        newVelocityY *= friction
+        
+        // 속도 제한
+        const maxVelocity = 12
+        newVelocityX = Math.max(-maxVelocity, Math.min(maxVelocity, newVelocityX))
+        newVelocityY = Math.max(-maxVelocity, Math.min(maxVelocity, newVelocityY))
+        
+        // 위치 업데이트
+        let newPositionX = prevPhysics.positionX + newVelocityX
+        let newPositionY = prevPhysics.positionY + newVelocityY
+        
+        // 경계 제한 (반발 없이 부드럽게 멈춤)
+        const boundary = maxMovement
+        if (Math.abs(newPositionX) > boundary) {
+          newPositionX = Math.sign(newPositionX) * boundary
+          newVelocityX = 0 // 경계에서 멈춤
+        }
+        if (Math.abs(newPositionY) > boundary) {
+          newPositionY = Math.sign(newPositionY) * boundary
+          newVelocityY = 0 // 경계에서 멈춤
+        }
+        
+        return {
+          velocityX: newVelocityX,
+          velocityY: newVelocityY,
+          positionX: newPositionX,
+          positionY: newPositionY
+        }
+      })
+      
+      animationFrameRef.current = requestAnimationFrame(updatePhysics)
+    }
+    
+    animationFrameRef.current = requestAnimationFrame(updatePhysics)
+    
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [isGyroSupported, orientation, screenSize])
 
   return (
     <>
@@ -146,22 +211,24 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 가장 작은 사각형(마지막 레이어)의 움직임을 기준으로 계산
-                // 작은 사각형(높은 i값)일수록 더 많이 움직이고, 큰 사각형은 따라감
-                const leadMovementMultiplier = 1 + i * 0.15 // 작은 사각형일수록 더 많이 움직임
-                const currentMoveX = moveX * leadMovementMultiplier
-                const currentMoveY = moveY * leadMovementMultiplier
+                // 레이어별 움직임 차이 (작은 사각형일수록 더 많이 움직임)
+                const layerMultiplier = 1 + i * 0.15
+                const currentMoveX = physics.positionX * layerMultiplier
+                const currentMoveY = physics.positionY * layerMultiplier
 
-                // 회전도 마찬가지로 작은 사각형이 더 많이 회전하고 큰 사각형이 따라감
-                const rotationMultiplier = 1 + i * 0.12
-                const rotationZ = -20 + (orientation.gamma / 45) * 20 * rotationMultiplier
+                // 회전도 속도에 따라 조절 (움직임이 빠를수록 더 많이 회전)
+                const velocityMagnitude = Math.sqrt(physics.velocityX ** 2 + physics.velocityY ** 2)
+                const baseRotation = -20
+                const dynamicRotation = (orientation.gamma / 45) * 15 + velocityMagnitude * 2
+                const rotationMultiplier = 1 + i * 0.08
+                const rotationZ = baseRotation + dynamicRotation * rotationMultiplier
 
                 return (
                   <div
                     key={i}
-                    className='absolute transition-transform duration-100 ease-out'
+                    className='absolute transition-transform duration-75 ease-out'
                     style={{
-                      width: `${size}px`,
+                      width: `${size*1.2}px`,
                       height: `${size}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
@@ -247,9 +314,11 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
       {isMobile && isGyroSupported && (
         <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
-          β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
+          γ: {orientation.gamma.toFixed(1)}°
           <br />
-          Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
+          Vel: {physics.velocityX.toFixed(1)}, {physics.velocityY.toFixed(1)}
+          <br />
+          Pos: {physics.positionX.toFixed(0)}, {physics.positionY.toFixed(0)}
         </div>
       )}
     </>
