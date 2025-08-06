@@ -36,9 +36,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   
-  // 가속도와 관성을 위한 상태
+  // 바이킹 효과를 위한 상태
   const [momentum, setMomentum] = useState({ x: 0, y: 0, rotation: 0 })
   const [velocity, setVelocity] = useState({ x: 0, y: 0, rotation: 0 })
+  const [lastOrientation, setLastOrientation] = useState({ beta: 0, gamma: 0 })
   const animationFrameRef = useRef<number | null>(null)
 
   const steps = 12
@@ -117,10 +118,12 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta, gamma } = event
       if (beta !== null && gamma !== null) {
-        setOrientation({
+        const newOrientation = {
           beta: Math.max(-45, Math.min(45, beta)),
           gamma: Math.max(-45, Math.min(45, gamma)),
-        })
+        }
+        setLastOrientation(orientation)
+        setOrientation(newOrientation)
       }
     }
 
@@ -128,50 +131,58 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 물리 엔진 - 가속도와 관성 적용
+  // 바이킹 물리 엔진 - 누적 가속도!
   useEffect(() => {
     if (!isGyroSupported) return
 
     const animate = () => {
-      setMomentum(prev => {
-        setVelocity(prevVel => {
-          const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
-          
-          // 목표값 계산
-          const targetX = (orientation.gamma / 45) * maxMovement
-          const targetY = (orientation.beta / 45) * maxMovement
-          const targetRotation = -20 - (orientation.gamma / 45) * 15
-          
-          // 가속도 계산 (목표값과 현재값의 차이에 비례)
-          const accelerationX = (targetX - prev.x) * 0.15
-          const accelerationY = (targetY - prev.y) * 0.15
-          const accelerationRotation = (targetRotation - prev.rotation) * 0.12
-          
-          // 속도 업데이트 (가속도 적용)
-          const newVelX = (prevVel.x + accelerationX) * 0.85 // 마찰력으로 감속
-          const newVelY = (prevVel.y + accelerationY) * 0.85
-          const newVelRotation = (prevVel.rotation + accelerationRotation) * 0.82
-          
-          // 극한 속도 제한
-          const maxVel = maxMovement * 0.5
-          const limitedVelX = Math.max(-maxVel, Math.min(maxVel, newVelX))
-          const limitedVelY = Math.max(-maxVel, Math.min(maxVel, newVelY))
-          const limitedVelRotation = Math.max(-30, Math.min(30, newVelRotation))
-          
-          return {
-            x: limitedVelX,
-            y: limitedVelY,
-            rotation: limitedVelRotation
-          }
-        })
+      setVelocity(prevVel => {
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
         
-        // 위치 업데이트 (속도 적용)
+        // 기기 기울기 변화량 계산 (바이킹의 핵심!)
+        const deltaGamma = orientation.gamma - lastOrientation.gamma
+        const deltaBeta = orientation.beta - lastOrientation.beta
+        
+        // 같은 방향으로 계속 기울이면 가속도 누적
+        const gammaAcceleration = deltaGamma * 8 // 기울기 변화에 비례한 가속도
+        const betaAcceleration = deltaBeta * 8
+        
+        // 현재 속도와 같은 방향이면 더 빨라지고, 반대면 브레이킹
+        const currentGammaDirection = Math.sign(prevVel.rotation)
+        const currentGammaInput = Math.sign(orientation.gamma)
+        
+        // 바이킹 효과: 같은 방향이면 부스터, 반대면 브레이크
+        const rotationBoost = currentGammaDirection === currentGammaInput ? 1.3 : 0.7
+        
+        // 새로운 속도 계산
+        let newVelX = prevVel.x + gammaAcceleration * 0.3
+        let newVelY = prevVel.y + betaAcceleration * 0.3
+        let newVelRotation = (prevVel.rotation + (orientation.gamma * 0.8)) * rotationBoost
+        
+        // 마찰력 (공기저항)
+        newVelX *= 0.92
+        newVelY *= 0.92
+        newVelRotation *= 0.94
+        
+        // 최대 속도 제한 (바이킹도 한계가 있으니까)
+        const maxVel = maxMovement * 1.2 // 기존보다 더 빠르게!
+        newVelX = Math.max(-maxVel, Math.min(maxVel, newVelX))
+        newVelY = Math.max(-maxVel, Math.min(maxVel, newVelY))
+        newVelRotation = Math.max(-50, Math.min(50, newVelRotation))
+        
         return {
-          x: prev.x + velocity.x,
-          y: prev.y + velocity.y,
-          rotation: prev.rotation + velocity.rotation
+          x: newVelX,
+          y: newVelY,
+          rotation: newVelRotation
         }
       })
+
+      // 위치 업데이트
+      setMomentum(prev => ({
+        x: prev.x + velocity.x,
+        y: prev.y + velocity.y,
+        rotation: prev.rotation + velocity.rotation
+      }))
 
       animationFrameRef.current = requestAnimationFrame(animate)
     }
@@ -183,7 +194,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [isGyroSupported, orientation, velocity.x, velocity.y, velocity.rotation, screenSize])
+  }, [isGyroSupported, orientation, lastOrientation, velocity, screenSize])
 
   return (
     <>
@@ -195,14 +206,16 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 레이어마다 다른 관성 효과
-                const layerMultiplier = 1 + i * 0.08
-                const currentMoveX = momentum.x * layerMultiplier
-                const currentMoveY = momentum.y * layerMultiplier
+                // 바이킹 효과: 각 레이어마다 다른 관성과 오버슈팅
+                const layerInertia = 1 + i * 0.12
+                const overshoot = Math.sin(Date.now() * 0.003 + i) * (Math.abs(momentum.rotation) * 0.02)
                 
-                // 회전도 각 레이어마다 다르게 적용
-                const rotationMultiplier = 1.2 - i * 0.05
-                const currentRotation = momentum.rotation * rotationMultiplier + (i * 2) // 기본 오프셋
+                const currentMoveX = momentum.x * layerInertia + overshoot
+                const currentMoveY = momentum.y * layerInertia
+                
+                // 회전은 더 과격하게!
+                const rotationInertia = 1.5 - i * 0.08
+                const currentRotation = momentum.rotation * rotationInertia + (i * 3) + overshoot * 2
 
                 return (
                   <div
