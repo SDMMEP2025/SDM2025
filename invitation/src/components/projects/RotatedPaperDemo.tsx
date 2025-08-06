@@ -31,8 +31,18 @@ export function RotatedPaper({ className = '', isMobile = false }) {
 export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
-    '#FF79B3', '#FF92AB', '#FFABA3', '#FFC59D', '#FEDE96', '#FFF790',
-    '#FFDC7E', '#FFC46C', '#FDAB58', '#FF9246', '#FE7832', '#FF5E1E'
+    '#FF79B3',
+    '#FF92AB',
+    '#FFABA3',
+    '#FFC59D',
+    '#FEDE96',
+    '#FFF790',
+    '#FFDC7E',
+    '#FFC46C',
+    '#FDAB58',
+    '#FF9246',
+    '#FE7832',
+    '#FF5E1E',
   ]
   const colors = squareColors || defaultColors
 
@@ -42,19 +52,19 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
-  
+
   // 각 사각형의 물리 상태
   const [physics, setPhysics] = useState({
     velocityX: 0,
     velocityY: 0,
     positionX: 0,
     positionY: 0,
-    tilt: 0 // 기울기 값
+    tilt: 0, // 기울기 값
   })
 
   const animationFrameRef = useRef<number | null>(null)
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 2.0 // 1.8에서 2.0으로 증가
-  const stepReduction = maxSize / (steps + 3) // steps + 4에서 steps + 3으로 조정
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.2
+  const stepReduction = maxSize / (steps + 3)
 
   useEffect(() => {
     const updateScreenSize = () => {
@@ -138,29 +148,31 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     if (!isGyroSupported) return
 
     const updatePhysics = () => {
-      setPhysics(prevPhysics => {
-        // 직접 gamma 값 사용 (더 단순하게)
-        const tiltValue = orientation.gamma / 2 // -22.5 ~ +22.5 범위로 조정 (더 넓은 범위)
+      setPhysics((prevPhysics) => {
+        const tiltValue = orientation.gamma / 4
+
+        // 기울기에 따른 기본 이동량 - 제곱으로 급격히 증가
+        const baseTilt = Math.abs(tiltValue)
+        const acceleratedMovement = (baseTilt ** 2) * 0.05 // 기울기 제곱으로 가속
         
-        // 오른쪽 기울이면 오른쪽 아래로, 왼쪽 기울이면 왼쪽 위로 (범위 크게 증가)
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.6 // 0.3에서 0.6으로 두 배 증가
-        const moveX = tiltValue * maxMovement / 22.5 // 오른쪽/왼쪽 (방향 수정)
-        const moveY = tiltValue * maxMovement / 30 // 아래/위 (오른쪽=아래, 왼쪽=위)
-        
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * acceleratedMovement
+        const moveX = (tiltValue * maxMovement) / 22.5 // 오른쪽/왼쪽
+        const moveY = (tiltValue * maxMovement) / 30 // 아래/위
+
         return {
           velocityX: 0,
           velocityY: 0,
           positionX: moveX,
           positionY: moveY,
-          tilt: tiltValue
+          tilt: tiltValue,
         }
       })
-      
+
       animationFrameRef.current = requestAnimationFrame(updatePhysics)
     }
-    
+
     animationFrameRef.current = requestAnimationFrame(updatePhysics)
-    
+
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
@@ -170,6 +182,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
   return (
     <>
+      {/* 모바일용 배경 효과 */}
       {isMobile && (
         <div className='fixed inset-0 pointer-events-none z-0'>
           {isGyroSupported && screenSize.width > 0 && (
@@ -178,33 +191,33 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 레이어별 회전각도: 작은 사각형(높은 i)이 -20도, 큰 사각형으로 갈수록 -5도씩 증가
-                const baseRotation = -20 + (i * 5) // i=11이면 -20+55=35도
-                
-                // 기울기에 따른 추가 회전: 오른쪽 기울이면 반시계방향(+), 왼쪽 기울이면 시계방향(-)
-                const tiltRotation = physics.tilt * 1.5 // 기울기에 비례한 회전각 (부호 수정)
-                const finalRotation = baseRotation + tiltRotation
-                
-                // 스프링 간격: 기울기가 클수록 사각형들 사이의 간격이 더 크게 늘어남
-                const springGap = Math.abs(physics.tilt) * 4 // 2에서 4로 증가 (더 큰 간격)
+                // 기울기에 따른 회전각도: 왼쪽 기울이면 시계방향(+), 오른쪽 기울이면 반시계방향(-)
+                const tiltRotation = -physics.tilt * 1.5 // 기울기 반전 후 강도 조절
+                const baseRotation = -10 + i * 2 + tiltRotation
+
+                const baseGap = 0.0 // 초기 아주 좁은 간격
+                const springGap = baseGap + Math.abs(physics.tilt) ** 2 * 0.15
                 const layerOffset = i * springGap // 큰 사각형(낮은 i)부터의 거리로 변경
+
+                // 레이어별 움직임 차이: 큰 사각형(낮은 i)일수록 덜 움직임
+                const layerMovementMultiplier = (i * 0.08) // i=0이면 1.0, i=11이면 0.12
                 
                 // 기울기 방향에 따른 오프셋 계산 (더 강한 효과)
                 const offsetDirection = physics.tilt > 0 ? 1 : -1 // 방향을 원래대로 복구
                 const offsetX = offsetDirection * layerOffset * 1.2 // 0.7에서 1.2로 증가
                 const offsetY = offsetDirection * layerOffset * 0.8 // 0.5에서 0.8로 증가
-                
-                // 최종 위치 계산 (작은 사각형이 리드하도록 수정)
-                const finalX = physics.positionX + offsetX
-                const finalY = physics.positionY + offsetY
+
+                // 최종 위치 계산: 기본 이동 + 스프링 오프셋 + 레이어별 차등 적용
+                const finalX = physics.positionX * layerMovementMultiplier + offsetX
+                const finalY = physics.positionY * layerMovementMultiplier + offsetY
 
                 return (
                   <div
                     key={i}
                     className='absolute transition-transform duration-100 ease-out'
                     style={{
-                      width: `${size*1.15}px`, // 1.1에서 1.15로 조금 증가
-                      height: `${size*0.95}px`, // 0.9에서 0.95로 조금 증가
+                      width: `${size * 1.5}px`,
+                      height: `${size}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
                       top: '50%',
@@ -212,10 +225,9 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       transform: `
                         translate(-50%, -50%) 
                         translate(${finalX}px, ${finalY}px)
-                        rotate(${finalRotation}deg)
+                        rotate(${baseRotation}deg)
                       `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
-                      zIndex: steps - i, // z-index 추가로 레이어 순서 명확히
                     }}
                   />
                 )
@@ -285,16 +297,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
           <div className='bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm'>
             자이로스코프 권한이 필요합니다
           </div>
-        </div>
-      )}
-
-      {isMobile && isGyroSupported && (
-        <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
-          γ: {orientation.gamma.toFixed(1)}°
-          <br />
-          Tilt: {physics.tilt.toFixed(1)}
-          <br />
-          Gap: {(Math.abs(physics.tilt) * 4).toFixed(1)}
         </div>
       )}
     </>
