@@ -11,24 +11,7 @@ declare global {
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void
   displayName: string
-}
-
-function interpolateColor(color1: string, color2: string, factor: number): string {
-  const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null
-  }
-  const rgbToHex = (r: number, g: number, b: number) =>
-    '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
-
-  const rgb1 = hexToRgb(color1)
-  const rgb2 = hexToRgb(color2)
-  if (!rgb1 || !rgb2) return color1
-
-  const r = Math.round(rgb1.r + factor * (rgb2.r - rgb1.r))
-  const g = Math.round(rgb1.g + factor * (rgb2.g - rgb1.g))
-  const b = Math.round(rgb1.b + factor * (rgb2.b - rgb1.b))
-  return rgbToHex(r, g, b)
+  squareColors?: string[]
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
@@ -45,7 +28,7 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   )
 }
 
-export default function RotatedPaperDemo({ onDirectionsClick, displayName }: RotatedPaperDemoProps) {
+export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors }: RotatedPaperDemoProps) {
   const [isMobile, setIsMobile] = useState(false)
   const [isGyroSupported, setIsGyroSupported] = useState(false)
   const [showGyroButton, setShowGyroButton] = useState(false)
@@ -54,15 +37,16 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
 
   const steps = 12
-  const brandColorHex = '#FF60B9'
-  const refinedColorHex = '#FF5E1F'
+  const defaultColors = [
+    '#FF60B9', '#FF6BB3', '#FF77AD', '#FF82A7', '#FF8EA1', '#FF999B',
+    '#FFA595', '#FFB08F', '#FFBC89', '#FFC783', '#FFD37D', '#FBE870'
+  ]
+  const colors = squareColors || defaultColors
 
-  // 화면 크기에 따른 사각형 크기 계산
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 2.0
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5
   const stepReduction = maxSize / (steps + 2)
 
   useEffect(() => {
-    // 화면 크기 설정
     const updateScreenSize = () => {
       setScreenSize({
         width: window.innerWidth,
@@ -73,7 +57,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
     updateScreenSize()
     window.addEventListener('resize', updateScreenSize)
 
-    // 실제 모바일 기기 감지 (User Agent 기반)
     const checkIfMobile = () => {
       const userAgent = navigator.userAgent
       const mobileRegex = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i
@@ -89,7 +72,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
 
     checkIfMobile()
 
-    // 화면 크기 변경 시에도 체크 (필요시)
     window.addEventListener('resize', checkIfMobile)
     return () => {
       window.removeEventListener('resize', updateScreenSize)
@@ -97,7 +79,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
     }
   }, [])
 
-  // 자이로스코프 권한 요청 함수
   const requestGyroPermission = async () => {
     const DeviceOrientationEventConstructor = DeviceOrientationEvent as DeviceOrientationEventConstructor
 
@@ -142,7 +123,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 자이로 값에 따른 이동 거리 계산
   const getMovement = () => {
     const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
     const moveX = (orientation.gamma / 45) * maxMovement
@@ -159,16 +139,15 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
           {isGyroSupported && screenSize.width > 0 && (
             <div className='absolute inset-0 overflow-hidden'>
               {Array.from({ length: steps }).map((_, i) => {
-                const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
                 const size = maxSize - stepReduction * i
-                const color = interpolateColor(brandColorHex, refinedColorHex, factor)
+                const color = colors[i] || colors[colors.length - 1]
 
                 const movementMultiplier = 1 + i * 0.15
                 const currentMoveX = moveX * movementMultiplier
                 const currentMoveY = moveY * movementMultiplier
 
                 const rotationMultiplier = 1.5 - i * 0.1
-                const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 30 * rotationMultiplier
+                const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 15 * rotationMultiplier
 
                 return (
                   <div
@@ -179,14 +158,13 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
                       height: `${size}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
-                      opacity: 1,
                       top: '50%',
                       left: '50%',
                       transform: `
-                    translate(-50%, -50%) 
-                    translate(${currentMoveX}px, ${currentMoveY}px)
-                    rotate(${rotationZ}deg)
-                  `,
+                        translate(-50%, -50%) 
+                        translate(${currentMoveX}px, ${currentMoveY}px)
+                        rotate(${rotationZ}deg)
+                      `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
                     }}
                   />
@@ -197,7 +175,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
         </div>
       )}
 
-      {/* 초대장 종이 - 중간 레이어 */}
       <div className='fixed inset-0 flex items-center justify-center z-[100] overflow-hidden'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper isMobile={isMobile} />
