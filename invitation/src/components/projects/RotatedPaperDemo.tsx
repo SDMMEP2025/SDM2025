@@ -35,6 +35,11 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
+  
+  // 가속도와 관성을 위한 상태
+  const [momentum, setMomentum] = useState({ x: 0, y: 0, rotation: 0 })
+  const [velocity, setVelocity] = useState({ x: 0, y: 0, rotation: 0 })
+  const animationFrameRef = useRef<number | null>(null)
 
   const steps = 12
   const defaultColors = [
@@ -123,14 +128,62 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  const getMovement = () => {
-    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
-    const moveX = (orientation.gamma / 45) * maxMovement
-    const moveY = (orientation.beta / 45) * maxMovement
-    return { moveX, moveY }
-  }
+  // 물리 엔진 - 가속도와 관성 적용
+  useEffect(() => {
+    if (!isGyroSupported) return
 
-  const { moveX, moveY } = getMovement()
+    const animate = () => {
+      setMomentum(prev => {
+        setVelocity(prevVel => {
+          const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
+          
+          // 목표값 계산
+          const targetX = (orientation.gamma / 45) * maxMovement
+          const targetY = (orientation.beta / 45) * maxMovement
+          const targetRotation = -20 - (orientation.gamma / 45) * 15
+          
+          // 가속도 계산 (목표값과 현재값의 차이에 비례)
+          const accelerationX = (targetX - prev.x) * 0.15
+          const accelerationY = (targetY - prev.y) * 0.15
+          const accelerationRotation = (targetRotation - prev.rotation) * 0.12
+          
+          // 속도 업데이트 (가속도 적용)
+          const newVelX = (prevVel.x + accelerationX) * 0.85 // 마찰력으로 감속
+          const newVelY = (prevVel.y + accelerationY) * 0.85
+          const newVelRotation = (prevVel.rotation + accelerationRotation) * 0.82
+          
+          // 극한 속도 제한
+          const maxVel = maxMovement * 0.5
+          const limitedVelX = Math.max(-maxVel, Math.min(maxVel, newVelX))
+          const limitedVelY = Math.max(-maxVel, Math.min(maxVel, newVelY))
+          const limitedVelRotation = Math.max(-30, Math.min(30, newVelRotation))
+          
+          return {
+            x: limitedVelX,
+            y: limitedVelY,
+            rotation: limitedVelRotation
+          }
+        })
+        
+        // 위치 업데이트 (속도 적용)
+        return {
+          x: prev.x + velocity.x,
+          y: prev.y + velocity.y,
+          rotation: prev.rotation + velocity.rotation
+        }
+      })
+
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animate)
+    
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [isGyroSupported, orientation, velocity.x, velocity.y, velocity.rotation, screenSize])
 
   return (
     <>
@@ -142,17 +195,19 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                const movementMultiplier = 1 + i * 0.15
-                const currentMoveX = moveX * movementMultiplier
-                const currentMoveY = moveY * movementMultiplier + (orientation.gamma / 45) * 50
-
-                const rotationMultiplier = 1.5 - i * 0.1
-                const rotationZ = -20 - (orientation.gamma / 45) * 15 * rotationMultiplier
+                // 레이어마다 다른 관성 효과
+                const layerMultiplier = 1 + i * 0.08
+                const currentMoveX = momentum.x * layerMultiplier
+                const currentMoveY = momentum.y * layerMultiplier
+                
+                // 회전도 각 레이어마다 다르게 적용
+                const rotationMultiplier = 1.2 - i * 0.05
+                const currentRotation = momentum.rotation * rotationMultiplier + (i * 2) // 기본 오프셋
 
                 return (
                   <div
                     key={i}
-                    className='absolute transition-transform duration-100 ease-out'
+                    className='absolute'
                     style={{
                       width: `${size}px`,
                       height: `${size}px`,
@@ -163,9 +218,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       transform: `
                         translate(-50%, -50%) 
                         translate(${currentMoveX}px, ${currentMoveY}px)
-                        rotate(${rotationZ}deg)
+                        rotate(${currentRotation}deg)
                       `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
+                      transition: 'none', // 부드러운 애니메이션을 위해 transition 제거
                     }}
                   />
                 )
@@ -242,7 +298,9 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
           <br />
-          Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
+          Momentum: {momentum.x.toFixed(0)}, {momentum.y.toFixed(0)}, {momentum.rotation.toFixed(1)}°
+          <br />
+          Velocity: {velocity.x.toFixed(1)}, {velocity.y.toFixed(1)}
         </div>
       )}
     </>
