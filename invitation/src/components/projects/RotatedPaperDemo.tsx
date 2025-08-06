@@ -31,153 +31,6 @@ function interpolateColor(color1: string, color2: string, factor: number): strin
   return rgbToHex(r, g, b)
 }
 
-// 전체화면 자이로 반응형 사각형 배경
-function FullscreenGyroSquares() {
-  const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
-  const [isGyroSupported, setIsGyroSupported] = useState(false)
-  const [showGyroButton, setShowGyroButton] = useState(false)
-  const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
-  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
-
-  const steps = 12
-  const brandColorHex = '#FF60B9'
-  const refinedColorHex = '#FBE870'
-
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5 
-  const stepReduction = maxSize / (steps + 2) 
-
-  useEffect(() => {
-    const updateScreenSize = () => {
-      setScreenSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      })
-    }
-
-    updateScreenSize()
-    window.addEventListener('resize', updateScreenSize)
-
-    const userAgent = navigator.userAgent
-    const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(userAgent)
-    // console.log('Mobile check:', isMobileDevice, userAgent) 
-
-    if (isMobileDevice) {
-      setShowGyroButton(true)
-    }
-
-    return () => {
-      window.removeEventListener('resize', updateScreenSize)
-    }
-  }, [])
-
-  const requestGyroPermission = async () => {
-    const DeviceOrientationEventConstructor = DeviceOrientationEvent as DeviceOrientationEventConstructor
-
-    if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEventConstructor.requestPermission) {
-      try {
-        const permission = await DeviceOrientationEventConstructor.requestPermission()
-        if (permission === 'granted') {
-          setIsGyroSupported(true)
-          setShowGyroButton(false)
-        } else {
-          setGyroPermissionDenied(true)
-        }
-      } catch (error) {
-        console.log('자이로스코프 권한 요청 실패:', error)
-        setGyroPermissionDenied(true)
-      }
-    } else if (window.DeviceOrientationEvent) {
-      setIsGyroSupported(true)
-      setShowGyroButton(false)
-    } else {
-      setGyroPermissionDenied(true)
-    }
-  }
-
-  useEffect(() => {
-    if (!isGyroSupported) return
-
-    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, gamma } = event
-      if (beta !== null && gamma !== null) {
-        setOrientation({
-          beta: Math.max(-45, Math.min(45, beta)),
-          gamma: Math.max(-45, Math.min(45, gamma)),
-        })
-      }
-    }
-
-    window.addEventListener('deviceorientation', handleDeviceOrientation)
-    return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
-  }, [isGyroSupported])
-
-  const getMovement = () => {
-    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
-    const moveX = (orientation.gamma / 45) * maxMovement
-    const moveY = (orientation.beta / 45) * maxMovement
-
-    return { moveX, moveY }
-  }
-
-  const { moveX, moveY } = getMovement()
-
-  return (
-    <div className='fixed inset-0 pointer-events-none z-0'>
-      {isGyroSupported && screenSize.width > 0 && (
-        <div className='absolute inset-0 overflow-hidden'>
-          {Array.from({ length: steps }).map((_, i) => {
-            const factor = steps > 1 ? Math.pow(i / (steps - 1), 0.9) : 0
-            const size = maxSize - stepReduction * i
-            const color = interpolateColor(brandColorHex, refinedColorHex, factor)
-
-            const movementMultiplier = 1 + i * 0.15
-            const currentMoveX = moveX * movementMultiplier
-            const currentMoveY = moveY * movementMultiplier
-
-            const rotationMultiplier = 1.5 - i * 0.1 
-            const rotationX = (orientation.beta / 45) * 20 * rotationMultiplier 
-            const rotationY = (orientation.gamma / 45) * 20 * rotationMultiplier
-            const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 3 * rotationMultiplier 
-
-            return (
-              <div
-                key={i}
-                className='absolute transition-transform duration-100 ease-out'
-                style={{
-                  width: `${size}px`,
-                  height: `${size}px`,
-                  backgroundColor: color,
-                  borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
-                  opacity: 1,
-                  top: '50%',
-                  left: '50%',
-                  transform: `
-                    translate(-50%, -50%) 
-                    translate(${currentMoveX}px, ${currentMoveY}px)
-                    rotateX(${rotationX}deg)
-                    rotateY(${rotationY}deg)
-                    rotateZ(${rotationZ}deg)
-                  `,
-                  boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
-                }}
-              />
-            )
-          })}
-        </div>
-      )}
-
-      {/* 자이로 상태 표시 (개발용) */}
-      {isGyroSupported && (
-        <div className='absolute top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[50]'>
-          β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
-          <br />
-          Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export function RotatedPaper({ className = '', isMobile = false }) {
   return (
     <div
@@ -314,6 +167,9 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
                 const currentMoveX = moveX * movementMultiplier
                 const currentMoveY = moveY * movementMultiplier
 
+                const rotationMultiplier = 1.5 - i * 0.1
+                const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 30 * rotationMultiplier
+
                 return (
                   <div
                     key={i}
@@ -323,13 +179,14 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
                       height: `${size}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
-                      opacity: 0.6 + i * 0.04,
+                      opacity: 1,
                       top: '50%',
                       left: '50%',
                       transform: `
-                        translate(-50%, -50%) 
-                        translate(${currentMoveX}px, ${currentMoveY}px)
-                      `,
+                    translate(-50%, -50%) 
+                    translate(${currentMoveX}px, ${currentMoveY}px)
+                    rotate(${rotationZ}deg)
+                  `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
                     }}
                   />
