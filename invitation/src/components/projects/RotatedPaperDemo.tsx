@@ -149,85 +149,63 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         
         const newSpine = [...prevSpine]
         
-        // 가장 작은 사각형(마지막 인덱스, 척추의 머리)이 자이로 입력을 직접 받음
-        const headIndex = steps - 1 // 가장 작은 사각형
+        // 가장 작은 사각형(마지막 인덱스)이 자이로 입력을 직접 받음
+        const headIndex = steps - 1
         const accelerationMultiplier = 1.8
         const nonLinearFactor = 2.2
         
         const accelX = Math.sign(normalizedGammaX) * Math.pow(Math.abs(normalizedGammaX), nonLinearFactor) * accelerationMultiplier
         const accelY = Math.sign(normalizedGammaY) * Math.pow(Math.abs(normalizedGammaY), nonLinearFactor) * accelerationMultiplier
         
-        // 머리 사각형 (가장 작은) 물리 업데이트
+        // 머리 사각형 물리 업데이트
         newSpine[headIndex].velocityX += accelX
         newSpine[headIndex].velocityY += accelY
         
-        // 마찰력 적용
         const friction = 0.96
         newSpine[headIndex].velocityX *= friction
         newSpine[headIndex].velocityY *= friction
         
-        // 속도 제한
         const maxVelocity = 8
         newSpine[headIndex].velocityX = Math.max(-maxVelocity, Math.min(maxVelocity, newSpine[headIndex].velocityX))
         newSpine[headIndex].velocityY = Math.max(-maxVelocity, Math.min(maxVelocity, newSpine[headIndex].velocityY))
         
-        // 위치 업데이트
         newSpine[headIndex].positionX += newSpine[headIndex].velocityX
         newSpine[headIndex].positionY += newSpine[headIndex].velocityY
         
-        // 나머지 사각형들은 다음 작은 사각형을 따라감 (작은 것 → 큰 것 순서)
+        // 나머지 사각형들은 단순하게 앞의 사각형을 따라감 (큰 사각형 순으로)
         for (let i = steps - 2; i >= 0; i--) {
-          const targetIndex = i + 1 // 바로 다음 작은 사각형을 타겟으로 함
+          const followIndex = i + 1 // 바로 앞(더 작은) 사각형
           
-          // 스프링 시스템: 더 작은 사각형 위치를 따라가려는 힘
-          const followDistance = steps - 1 - i // 머리로부터의 거리
-          const springStrength = 0.12 - (followDistance * 0.008) // 머리에서 멀수록 약간 느려짐
-          const damping = 0.88 + (followDistance * 0.01) // 머리에서 멀수록 더 많은 댐핑
+          // 단순한 따라가기: 목표 위치를 향해 일정 비율로 이동
+          const followStrength = 0.08 // 따라가는 강도
+          const damping = 0.92 // 감속
           
-          // 타겟 위치와의 차이 계산
-          const deltaX = newSpine[targetIndex].positionX - newSpine[i].positionX
-          const deltaY = newSpine[targetIndex].positionY - newSpine[i].positionY
+          // 목표 위치로 향하는 벡터
+          const targetX = newSpine[followIndex].positionX
+          const targetY = newSpine[followIndex].positionY
           
-          // 스프링 힘 적용
-          newSpine[i].velocityX += deltaX * springStrength
-          newSpine[i].velocityY += deltaY * springStrength
+          // 현재 위치에서 목표 위치로 조금씩 이동
+          newSpine[i].positionX += (targetX - newSpine[i].positionX) * followStrength
+          newSpine[i].positionY += (targetY - newSpine[i].positionY) * followStrength
           
-          // 댐핑 적용
+          // 속도도 업데이트 (부드러운 움직임을 위해)
+          newSpine[i].velocityX = (targetX - newSpine[i].positionX) * followStrength
+          newSpine[i].velocityY = (targetY - newSpine[i].positionY) * followStrength
           newSpine[i].velocityX *= damping
           newSpine[i].velocityY *= damping
-          
-          // 위치 업데이트
-          newSpine[i].positionX += newSpine[i].velocityX
-          newSpine[i].positionY += newSpine[i].velocityY
         }
         
-        // 모든 사각형에 대해 경계 처리
+        // 경계 처리
         newSpine.forEach(segment => {
           const boundary = maxMovement
-          const dampingZone = boundary * 0.8
           
-          // X축 경계 처리
-          if (Math.abs(segment.positionX) > dampingZone) {
-            const overDistance = Math.abs(segment.positionX) - dampingZone
-            const dampingRatio = Math.max(0.4, 1 - (overDistance / (boundary - dampingZone)) * 0.6)
-            segment.velocityX *= dampingRatio
-            
-            if (Math.abs(segment.positionX) > boundary) {
-              segment.positionX = Math.sign(segment.positionX) * boundary
-              segment.velocityX = Math.max(0, Math.abs(segment.velocityX) - 1.5) * Math.sign(segment.velocityX)
-            }
+          if (Math.abs(segment.positionX) > boundary) {
+            segment.positionX = Math.sign(segment.positionX) * boundary
+            segment.velocityX *= 0.5
           }
-          
-          // Y축 경계 처리
-          if (Math.abs(segment.positionY) > dampingZone) {
-            const overDistance = Math.abs(segment.positionY) - dampingZone
-            const dampingRatio = Math.max(0.4, 1 - (overDistance / (boundary - dampingZone)) * 0.6)
-            segment.velocityY *= dampingRatio
-            
-            if (Math.abs(segment.positionY) > boundary) {
-              segment.positionY = Math.sign(segment.positionY) * boundary
-              segment.velocityY = Math.max(0, Math.abs(segment.velocityY) - 1.5) * Math.sign(segment.velocityY)
-            }
+          if (Math.abs(segment.positionY) > boundary) {
+            segment.positionY = Math.sign(segment.positionY) * boundary
+            segment.velocityY *= 0.5
           }
         })
         
