@@ -119,7 +119,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* 푸터는 그대로, 단지 클래스만 추가 */}
         <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
           <Footer />
         </div>

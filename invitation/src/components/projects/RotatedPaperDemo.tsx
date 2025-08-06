@@ -143,9 +143,16 @@ function FullscreenGyroSquares() {
             const color = interpolateColor(brandColorHex, refinedColorHex, factor)
 
             // 각 사각형마다 다른 이동 강도 적용 (작은 사각형일수록 더 많이 움직임)
+            // 각 사각형마다 다른 이동 강도 적용 (작은 사각형일수록 더 많이 움직임)
             const movementMultiplier = 1 + i * 0.15
             const currentMoveX = moveX * movementMultiplier
             const currentMoveY = moveY * movementMultiplier
+
+            // 회전 효과 계산 (레이어별로 차등 적용)
+            const rotationMultiplier = 0.3 + i * 0.1 // 뒤쪽 레이어일수록 더 많이 회전
+            const rotationX = (orientation.beta / 45) * 8 * rotationMultiplier // 최대 8도 회전
+            const rotationY = (orientation.gamma / 45) * 8 * rotationMultiplier
+            const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 3 * rotationMultiplier // Z축 회전 추가
 
             return (
               <div
@@ -162,6 +169,9 @@ function FullscreenGyroSquares() {
                   transform: `
                     translate(-50%, -50%) 
                     translate(${currentMoveX}px, ${currentMoveY}px)
+                    rotateX(${rotationX}deg)
+                    rotateY(${rotationY}deg)
+                    rotateZ(${rotationZ}deg)
                   `,
                   boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
                 }}
@@ -350,7 +360,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
       {/* 초대장 종이 - 중간 레이어 */}
       <div className='fixed inset-0 flex items-center justify-center z-[100] overflow-hidden'>
         <div className='relative transform -rotate-6'>
-          <RotatedPaper />
+          <RotatedPaper isMobile={isMobile} />
           <div className='absolute inset-0 flex flex-col items-center justify-between pr-8 pl-8 pt-[22%] pb-[22%] text-black z-[110] transform rotate-6'>
             <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
