@@ -13,6 +13,7 @@ interface RotatedPaperDemoProps {
   onDirectionsClick: () => void
   displayName: string
   squareColors?: string[]
+  onMotionPanelToggle?: (isOpen: boolean) => void
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
@@ -29,7 +30,7 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   )
 }
 
-export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors }: RotatedPaperDemoProps) {
+export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors, onMotionPanelToggle }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
     '#FF79B3',
@@ -299,10 +300,12 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         </div>
       </div>
 
-      { (
+      {/* Motion Control Panel - 모바일이고 자이로가 지원될 때만 표시 */}
+      {isMobile && isGyroSupported && (
         <MotionControlPanel
           settings={motionSettings}
           onSettingsChange={setMotionSettings}
+          onToggle={onMotionPanelToggle}
         />
       )}
 

@@ -19,6 +19,7 @@ export interface MotionSettings {
 interface MotionControlPanelProps {
   settings: MotionSettings
   onSettingsChange: (newSettings: MotionSettings) => void
+  onToggle?: (isOpen: boolean) => void
 }
 
 const defaultSettings: MotionSettings = {
@@ -35,8 +36,62 @@ const defaultSettings: MotionSettings = {
   offsetYMultiplier: 0.8,
 }
 
-export default function MotionControlPanel({ settings, onSettingsChange }: MotionControlPanelProps) {
+export default function MotionControlPanel({ settings, onSettingsChange, onToggle }: MotionControlPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const togglePanel = (open: boolean) => {
+    setIsOpen(open)
+    onToggle?.(open)
+  }
+
+  const generateSettingsCode = () => {
+    return `const motionSettings = {
+  deadZone: ${settings.deadZone},
+  smoothing: ${settings.smoothing},
+  positionSmoothing: ${settings.positionSmoothing},
+  accelerationPower: ${settings.accelerationPower},
+  accelerationMultiplier: ${settings.accelerationMultiplier},
+  tiltRotationMultiplier: ${settings.tiltRotationMultiplier},
+  baseGap: ${settings.baseGap},
+  springGapMultiplier: ${settings.springGapMultiplier},
+  layerMovementMultiplier: ${settings.layerMovementMultiplier},
+  offsetXMultiplier: ${settings.offsetXMultiplier},
+  offsetYMultiplier: ${settings.offsetYMultiplier},
+}`
+  }
+
+  const handleCopyCode = async () => {
+    const code = generateSettingsCode()
+    
+    if (navigator?.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(code)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+        return
+      } catch (err) {
+        console.error('Clipboard API 실패:', err)
+      }
+    }
+
+    // 폴백: 임시 textarea 사용
+    const textArea = document.createElement('textarea')
+    textArea.value = code
+    document.body.appendChild(textArea)
+    textArea.focus()
+    textArea.select()
+
+    try {
+      document.execCommand('copy')
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (fallbackErr) {
+      console.error('폴백 복사도 실패:', fallbackErr)
+    }
+
+    document.body.removeChild(textArea)
+  }
 
   const handleSliderChange = (key: keyof MotionSettings, value: number) => {
     onSettingsChange({
@@ -197,11 +252,11 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
     <>
       {/* Toggle Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className='fixed top-0 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
+        onClick={() => togglePanel(!isOpen)}
+        className='fixed bottom-20 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
         style={{ zIndex: 10000 }}
       >
-     모션 패널
+        ⚙️
       </button>
 
       {/* Control Panel */}
@@ -215,7 +270,7 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
               exit={{ opacity: 0 }}
               className='fixed inset-0 bg-black bg-opacity-30'
               style={{ zIndex: 10001 }}
-              onClick={() => setIsOpen(false)}
+              onClick={() => togglePanel(false)}
             />
 
             {/* Panel */}
@@ -239,7 +294,7 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
                 <div className='flex justify-between items-center mb-4 pb-3 border-b'>
                   <h2 className='text-lg font-bold text-gray-800'>모션 설정</h2>
                   <button
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => togglePanel(false)}
                     className='text-gray-500 hover:text-gray-700 w-8 h-8 flex items-center justify-center'
                   >
                     ✕
@@ -249,9 +304,28 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
                 {/* Reset Button */}
                 <button
                   onClick={resetToDefaults}
-                  className='w-full mb-4 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors text-sm'
+                  className='w-full mb-3 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors text-sm'
                 >
                   기본값으로 리셋
+                </button>
+
+                {/* Copy Code Button */}
+                <button
+                  onClick={handleCopyCode}
+                  className='w-full mb-4 px-3 py-2 bg-black hover:bg-gray-800 text-white rounded-md transition-colors text-sm flex items-center justify-center gap-2 relative'
+                >
+                  <span>📋</span>
+                  <span>코드 복사</span>
+                  {copied && (
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      className='absolute right-2 text-green-400'
+                    >
+                      ✓
+                    </motion.span>
+                  )}
                 </button>
 
                 {/* Controls */}
@@ -340,6 +414,14 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
                       step={0.1}
                     />
                   </div>
+                </div>
+
+                {/* 현재 설정 미리보기 */}
+                <div className='mt-6 p-3 bg-gray-50 rounded-md'>
+                  <h4 className='text-sm font-semibold text-gray-800 mb-2'>현재 설정</h4>
+                  <pre className='text-xs text-gray-600 overflow-x-auto whitespace-pre-wrap'>
+                    {generateSettingsCode()}
+                  </pre>
                 </div>
               </div>
             </motion.div>

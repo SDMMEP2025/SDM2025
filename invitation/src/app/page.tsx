@@ -13,6 +13,7 @@ export default function Page() {
   const [showDirections, setShowDirections] = useState(false)
   const [displayName, setDisplayName] = useState('김삼성') // 기본값
   const [isMobile, setIsMobile] = useState(false)
+  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false) // 추가
 
   // 모바일 기기 감지
   useEffect(() => {
@@ -102,7 +103,11 @@ export default function Page() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.1, ease: 'easeInOut' }}
                 >
-                  <RotatedPaperDemo onDirectionsClick={() => setShowDirections(true)} displayName={displayName} />
+                  <RotatedPaperDemo 
+                    onDirectionsClick={() => setShowDirections(true)} 
+                    displayName={displayName}
+                    onMotionPanelToggle={setIsMotionPanelOpen} // 추가
+                  />
                 </motion.div>
               ) : (
                 <motion.div
@@ -119,9 +124,12 @@ export default function Page() {
           </div>
         </div>
 
-        <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
-          <Footer />
-        </div>
+        {/* 모션 패널이 열리지 않았을 때만 푸터 표시 */}
+        {!isMotionPanelOpen && (
+          <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
+            <Footer />
+          </div>
+        )}
       </>
     </>
   )
