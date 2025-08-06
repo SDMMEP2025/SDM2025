@@ -55,10 +55,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
 
   const steps = 12
   const brandColorHex = '#FF60B9'
-  const refinedColorHex = '#FBE870'
+  const refinedColorHex = '#FF5E1F'
 
   // 화면 크기에 따른 사각형 크기 계산
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 2.0
   const stepReduction = maxSize / (steps + 2)
 
   useEffect(() => {
