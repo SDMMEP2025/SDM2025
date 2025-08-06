@@ -43,18 +43,16 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   
-  // 척추 시뮬레이션을 위한 상태 (각 사각형의 개별 물리 상태)
-  const [spinePhysics, setSpinePhysics] = useState(() => 
-    Array.from({ length: 12 }, () => ({
-      velocityX: 0,
-      velocityY: 0,
-      positionX: 0,
-      positionY: 0
-    }))
-  )
+  // 각 사각형의 물리 상태
+  const [physics, setPhysics] = useState({
+    velocityX: 0,
+    velocityY: 0,
+    positionX: 0,
+    positionY: 0,
+    tilt: 0 // 기울기 값
+  })
 
   const animationFrameRef = useRef<number | null>(null)
-
   const maxSize = Math.max(screenSize.width, screenSize.height) * 2.2
   const stepReduction = maxSize / (steps + 2)
 
@@ -135,87 +133,44 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 척추 물리 시뮬레이션 업데이트
+  // 물리 시뮬레이션 업데이트
   useEffect(() => {
     if (!isGyroSupported) return
 
-    const updateSpinePhysics = () => {
-      setSpinePhysics(prevSpine => {
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.35
-        
+    const updatePhysics = () => {
+      setPhysics(prevPhysics => {
         // 기울기를 -1 ~ 1 범위로 정규화
-        const normalizedGammaX = orientation.gamma / 45
-        const normalizedGammaY = orientation.gamma / 45
+        const normalizedGamma = orientation.gamma / 45
         
-        const newSpine = [...prevSpine]
+        // 비선형 가속도 (작은 기울기에서는 느리게, 큰 기울기에서는 빠르게)
+        const nonLinearFactor = 2.5
+        const accelerationMultiplier = 2.0
         
-        // 가장 작은 사각형(마지막 인덱스)이 자이로 입력을 직접 받음
-        const headIndex = steps - 1
-        const accelerationMultiplier = 1.8
-        const nonLinearFactor = 2.2
+        const tiltAccel = Math.sign(normalizedGamma) * Math.pow(Math.abs(normalizedGamma), nonLinearFactor) * accelerationMultiplier
         
-        const accelX = Math.sign(normalizedGammaX) * Math.pow(Math.abs(normalizedGammaX), nonLinearFactor) * accelerationMultiplier
-        const accelY = Math.sign(normalizedGammaY) * Math.pow(Math.abs(normalizedGammaY), nonLinearFactor) * accelerationMultiplier
+        // 기울기 값 업데이트 (이게 스프링 간격을 결정)
+        let newTilt = prevPhysics.tilt + tiltAccel * 0.1
+        newTilt *= 0.92 // 마찰력으로 자연스럽게 감속
+        newTilt = Math.max(-15, Math.min(15, newTilt)) // 기울기 제한
         
-        // 머리 사각형 물리 업데이트
-        newSpine[headIndex].velocityX += accelX
-        newSpine[headIndex].velocityY += accelY
+        // 오른쪽 기울이면 오른쪽 아래로, 왼쪽 기울이면 왼쪽 위로
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.25
+        const moveX = newTilt * 0.8 * maxMovement / 15 // 오른쪽/왼쪽
+        const moveY = newTilt * 0.6 * maxMovement / 15 // 아래/위 (오른쪽=아래, 왼쪽=위)
         
-        const friction = 0.96
-        newSpine[headIndex].velocityX *= friction
-        newSpine[headIndex].velocityY *= friction
-        
-        const maxVelocity = 8
-        newSpine[headIndex].velocityX = Math.max(-maxVelocity, Math.min(maxVelocity, newSpine[headIndex].velocityX))
-        newSpine[headIndex].velocityY = Math.max(-maxVelocity, Math.min(maxVelocity, newSpine[headIndex].velocityY))
-        
-        newSpine[headIndex].positionX += newSpine[headIndex].velocityX
-        newSpine[headIndex].positionY += newSpine[headIndex].velocityY
-        
-        // 나머지 사각형들은 단순하게 앞의 사각형을 따라감 (큰 사각형 순으로)
-        for (let i = steps - 2; i >= 0; i--) {
-          const followIndex = i + 1 // 바로 앞(더 작은) 사각형
-          
-          // 단순한 따라가기: 목표 위치를 향해 일정 비율로 이동
-          const followStrength = 0.08 // 따라가는 강도
-          const damping = 0.92 // 감속
-          
-          // 목표 위치로 향하는 벡터
-          const targetX = newSpine[followIndex].positionX
-          const targetY = newSpine[followIndex].positionY
-          
-          // 현재 위치에서 목표 위치로 조금씩 이동
-          newSpine[i].positionX += (targetX - newSpine[i].positionX) * followStrength
-          newSpine[i].positionY += (targetY - newSpine[i].positionY) * followStrength
-          
-          // 속도도 업데이트 (부드러운 움직임을 위해)
-          newSpine[i].velocityX = (targetX - newSpine[i].positionX) * followStrength
-          newSpine[i].velocityY = (targetY - newSpine[i].positionY) * followStrength
-          newSpine[i].velocityX *= damping
-          newSpine[i].velocityY *= damping
+        return {
+          velocityX: moveX - prevPhysics.positionX,
+          velocityY: moveY - prevPhysics.positionY,
+          positionX: moveX,
+          positionY: moveY,
+          tilt: newTilt
         }
-        
-        // 경계 처리
-        newSpine.forEach(segment => {
-          const boundary = maxMovement
-          
-          if (Math.abs(segment.positionX) > boundary) {
-            segment.positionX = Math.sign(segment.positionX) * boundary
-            segment.velocityX *= 0.5
-          }
-          if (Math.abs(segment.positionY) > boundary) {
-            segment.positionY = Math.sign(segment.positionY) * boundary
-            segment.velocityY *= 0.5
-          }
-        })
-        
-        return newSpine
       })
       
-      animationFrameRef.current = requestAnimationFrame(updateSpinePhysics)
+      animationFrameRef.current = requestAnimationFrame(updatePhysics)
     }
     
-    animationFrameRef.current = requestAnimationFrame(updateSpinePhysics)
+    animationFrameRef.current = requestAnimationFrame(updatePhysics)
     
     return () => {
       if (animationFrameRef.current) {
@@ -234,22 +189,26 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 각 사각형의 개별 위치 사용 (척추 연결 효과)
-                const currentMoveX = spinePhysics[i]?.positionX || 0
-                const currentMoveY = spinePhysics[i]?.positionY || 0
-
-                // 각 사각형의 속도에 따른 회전 (더 자연스러운 척추 움직임)
-                const velocityX = spinePhysics[i]?.velocityX || 0
-                const velocityY = spinePhysics[i]?.velocityY || 0
-                const velocityMagnitude = Math.sqrt(velocityX ** 2 + velocityY ** 2)
-                const baseRotation = -20
-                const dynamicRotation = (velocityX * 0.8) + (velocityMagnitude * 1.2)
-                const rotationZ = baseRotation + dynamicRotation
+                // 레이어별 회전각도: 작은 사각형(높은 i)이 -20도, 큰 사각형으로 갈수록 -5도씩 증가
+                const baseRotation = -20 + (i * 5) // i=11이면 -20+55=35도
+                
+                // 스프링 간격: 기울기가 클수록 사각형들 사이의 간격이 늘어남
+                const springGap = Math.abs(physics.tilt) * 2 // 기울기에 따른 간격 증가
+                const layerOffset = (steps - 1 - i) * springGap // 작은 사각형부터의 거리
+                
+                // 기울기 방향에 따른 오프셋 계산
+                const offsetDirection = physics.tilt > 0 ? 1 : -1
+                const offsetX = offsetDirection * layerOffset * 0.7 // 오른쪽/왼쪽 오프셋
+                const offsetY = offsetDirection * layerOffset * 0.5 // 아래/위 오프셋
+                
+                // 최종 위치 계산 (작은 사각형 중심 + 스프링 오프셋)
+                const finalX = physics.positionX + offsetX
+                const finalY = physics.positionY + offsetY
 
                 return (
                   <div
                     key={i}
-                    className='absolute transition-transform duration-50 ease-out'
+                    className='absolute transition-transform duration-100 ease-out'
                     style={{
                       width: `${size*1.2}px`,
                       height: `${size}px`,
@@ -259,8 +218,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       left: '50%',
                       transform: `
                         translate(-50%, -50%) 
-                        translate(${currentMoveX}px, ${currentMoveY}px)
-                        rotate(${rotationZ}deg)
+                        translate(${finalX}px, ${finalY}px)
+                        rotate(${baseRotation}deg)
                       `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
                     }}
@@ -339,9 +298,9 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
           γ: {orientation.gamma.toFixed(1)}°
           <br />
-          Head Vel (작은): {spinePhysics[steps-1]?.velocityX.toFixed(1) || 0}, {spinePhysics[steps-1]?.velocityY.toFixed(1) || 0}
+          Tilt: {physics.tilt.toFixed(1)}
           <br />
-          Tail Vel (큰): {spinePhysics[0]?.velocityX.toFixed(1) || 0}, {spinePhysics[0]?.velocityY.toFixed(1) || 0}
+          Gap: {(Math.abs(physics.tilt) * 2).toFixed(1)}
         </div>
       )}
     </>
