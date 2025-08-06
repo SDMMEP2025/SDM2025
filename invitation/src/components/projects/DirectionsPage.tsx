@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import { Footer } from '@/components/projects'
 export default function DirectionsPage({ onBackClick }) {
   const [copied, setCopied] = useState(false)
   const address = '서울특별시 서초구 성촌길 33'
@@ -42,7 +42,7 @@ export default function DirectionsPage({ onBackClick }) {
 
   return (
     <div className='absolute top-0 h-[100dvh] w-[100vw] flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
-      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[70px] md:gap-[83px] md:landscape:gap-[75px] lg:gap-[69px]'>
+      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[] md:gap-[83px] md:landscape:gap-[75px] lg:gap-[69px]'>
         <h1 className='justify-center text-neutral-800 text-xl font-medium leading-loose'>Directions</h1>
 
         <div className='flex flex-col gap-[40px] md:gap-[74px] md:landscape:gap-[82px] lg:gap-[66px]'>

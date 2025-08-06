@@ -1,7 +1,5 @@
 'use client'
-import {
-  Footer,
-} from '@/components/projects'
+import { Footer } from '@/components/projects'
 import RotatedPaperDemo from '@/components/projects/RotatedPaperDemo'
 import DirectionsPage from '@/components/projects/DirectionsPage'
 import { useScrollAtBottom } from '@/hooks'
@@ -33,7 +31,7 @@ export default function Page() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const nameFromUrl = urlParams.get('to')
-    
+
     if (nameFromUrl) {
       // URL 디코딩 (한글 등의 특수문자 처리)
       const decodedName = decodeURIComponent(nameFromUrl)
@@ -46,7 +44,7 @@ export default function Page() {
     const handleURLChange = () => {
       const urlParams = new URLSearchParams(window.location.search)
       const nameFromUrl = urlParams.get('to')
-      
+
       if (nameFromUrl) {
         const decodedName = decodeURIComponent(nameFromUrl)
         setDisplayName(decodedName)
@@ -57,7 +55,7 @@ export default function Page() {
 
     // popstate 이벤트 리스너 (뒤로가기/앞으로가기 버튼)
     window.addEventListener('popstate', handleURLChange)
-    
+
     return () => {
       window.removeEventListener('popstate', handleURLChange)
     }
@@ -65,63 +63,67 @@ export default function Page() {
 
   return (
     <>
-      <div 
-        className='overflow-hidden relative'
-        style={{
-          width: '100vw',
-          height: '100vh',
-          margin: 0,
-          padding: 0,
-          position: 'fixed',
-          top: 0,
-          left: 0
-        }}
-      >
-        {/* Lottie 배경 - 모바일이 아닐 때만 표시 */}
-        {!isMobile && (
-          <LottieBackground 
-            animationData={backgroundAnimation}
-            loop={true}
-            autoplay={true}
-            rotateOnMobile={true}
-          />
-        )}
-        
-        {/* 컨텐츠들을 z-index로 앞으로 */}
-        <div className="relative z-10">
-          <AnimatePresence mode="wait">
-            {!showDirections ? (
-              <motion.div
-                key="rotated-paper"
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1, ease: "easeInOut" }}
-              >
-                <RotatedPaperDemo 
-                  onDirectionsClick={() => setShowDirections(true)} 
-                  displayName={displayName} 
-                />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="directions"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-              >
-                <DirectionsPage 
-                  onBackClick={() => setShowDirections(false)} 
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+      <>
+        {/* CSS로 모달이 있을 때 푸터 z-index 낮추기 */}
+        <style jsx global>{`
+          /* 모달이 있을 때 모든 요소 z-index 조정 */
+          body:has(.motion-modal) .footer-container {
+            z-index: -1;
+          }
+
+          /* 또는 모달 자체의 z-index를 매우 높게 설정 */
+          .motion-modal {
+            z-index: 9999 !important;
+          }
+        `}</style>
+
+        <div
+          className='overflow-hidden relative'
+          style={{
+            width: '100vw',
+            height: '100vh',
+            margin: 0,
+            padding: 0,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+          }}
+        >
+          {!isMobile && (
+            <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} rotateOnMobile={true} />
+          )}
+
+          <div className='relative z-10'>
+            <AnimatePresence mode='wait'>
+              {!showDirections ? (
+                <motion.div
+                  key='rotated-paper'
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.1, ease: 'easeInOut' }}
+                >
+                  <RotatedPaperDemo onDirectionsClick={() => setShowDirections(true)} displayName={displayName} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key='directions'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                >
+                  <DirectionsPage onBackClick={() => setShowDirections(false)} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-        
-        <div className="mix-blend-difference absolute z-10 bottom-0 w-full">
+
+        {/* 푸터는 그대로, 단지 클래스만 추가 */}
+        <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
           <Footer />
         </div>
-      </div>
+      </>
     </>
   )
 }
