@@ -62,7 +62,7 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
     max: number
     step: number
   }) => (
-    <div className='flex items-center gap-3 mb-3'>
+    <div className='flex items-center gap-3 mb-4 touch-none'>
       <div className='w-20 text-xs text-gray-700 flex-shrink-0'>{label}</div>
       <input
         type='range'
@@ -71,7 +71,15 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
         step={step}
         value={settings[settingKey]}
         onChange={(e) => handleSliderChange(settingKey, parseFloat(e.target.value))}
-        className='flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider'
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+        className='flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider touch-auto'
+        style={{ 
+          WebkitAppearance: 'none',
+          MozAppearance: 'none',
+          touchAction: 'pan-x'
+        }}
       />
       <div className='w-12 text-xs text-gray-500 text-right flex-shrink-0'>
         {settings[settingKey].toFixed(step < 1 ? 2 : 0)}
@@ -79,12 +87,14 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
     </div>
   )
 
+
+
   return (
     <>
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='fixed top-0 right-0 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
+        className='fixed top-0 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
         style={{ zIndex: 10000 }}
       >
         모션 패널
@@ -110,9 +120,15 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className='fixed right-0 top-0 h-full w-72 bg-white shadow-2xl overflow-y-auto'
-              style={{ zIndex: 10002 }}
+              className='fixed right-0 top-0 h-full w-72 bg-white shadow-2xl overflow-y-auto touch-auto'
+              style={{ 
+                zIndex: 10002,
+                touchAction: 'pan-y'
+              }}
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
             >
               <div className='p-4'>
                 {/* Header */}
@@ -228,28 +244,37 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
       </AnimatePresence>
 
       <style jsx>{`
-        .slider::-webkit-slider-thumb {
+        .slider {
+          -webkit-appearance: none;
+          -moz-appearance: none;
           appearance: none;
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          background: #222222;
-          cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          background: #222222;
-          cursor: pointer;
-          border: none;
+          background: transparent;
+          outline: none;
+          width: 100%;
+          height: 8px;
         }
 
         .slider::-webkit-slider-track {
           height: 4px;
           border-radius: 2px;
           background: #e5e7eb;
+          border: none;
+          outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: #222222;
+          cursor: pointer;
+          border: none;
+          outline: none;
+          margin-top: -8px;
+          position: relative;
+          z-index: 1;
         }
 
         .slider::-moz-range-track {
@@ -257,6 +282,33 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
           border-radius: 2px;
           background: #e5e7eb;
           border: none;
+          outline: none;
+        }
+
+        .slider::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: #222222;
+          cursor: pointer;
+          border: none;
+          outline: none;
+          margin-top: -8px;
+        }
+
+        /* 모바일 터치 개선 */
+        @media (pointer: coarse) {
+          .slider::-webkit-slider-thumb {
+            width: 24px;
+            height: 24px;
+            margin-top: -10px;
+          }
+          
+          .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            margin-top: -10px;
+          }
         }
       `}</style>
     </>
