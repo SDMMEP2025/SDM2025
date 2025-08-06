@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 
-// iOS 13+ DeviceOrientationEvent 타입 확장
 declare global {
   interface DeviceOrientationEventConstructor {
     requestPermission?: () => Promise<'granted' | 'denied'>
@@ -14,7 +13,6 @@ interface RotatedPaperDemoProps {
   displayName: string
 }
 
-// 색상 보간 함수
 function interpolateColor(color1: string, color2: string, factor: number): string {
   const hexToRgb = (hex: string) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
@@ -45,12 +43,10 @@ function FullscreenGyroSquares() {
   const brandColorHex = '#FF60B9'
   const refinedColorHex = '#FBE870'
 
-  // 화면 크기에 따른 사각형 크기 계산
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5 // 화면보다 큰 크기로
-  const stepReduction = maxSize / (steps + 2) // 단계별 크기 감소량
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.5 
+  const stepReduction = maxSize / (steps + 2) 
 
   useEffect(() => {
-    // 화면 크기 설정
     const updateScreenSize = () => {
       setScreenSize({
         width: window.innerWidth,
@@ -61,14 +57,12 @@ function FullscreenGyroSquares() {
     updateScreenSize()
     window.addEventListener('resize', updateScreenSize)
 
-    // 모바일 기기인지 확인하고 자이로 버튼 표시
     const userAgent = navigator.userAgent
     const isMobileDevice = /iPhone|iPad|iPod|Android/i.test(userAgent)
-    console.log('Mobile check:', isMobileDevice, userAgent) // 디버깅용
+    // console.log('Mobile check:', isMobileDevice, userAgent) 
 
     if (isMobileDevice) {
       setShowGyroButton(true)
-      console.log('Gyro button should show') // 디버깅용
     }
 
     return () => {
@@ -76,7 +70,6 @@ function FullscreenGyroSquares() {
     }
   }, [])
 
-  // 자이로스코프 권한 요청 함수
   const requestGyroPermission = async () => {
     const DeviceOrientationEventConstructor = DeviceOrientationEvent as DeviceOrientationEventConstructor
 
@@ -108,8 +101,8 @@ function FullscreenGyroSquares() {
       const { beta, gamma } = event
       if (beta !== null && gamma !== null) {
         setOrientation({
-          beta: Math.max(-45, Math.min(45, beta)), // -45도 ~ 45도로 제한
-          gamma: Math.max(-45, Math.min(45, gamma)), // -45도 ~ 45도로 제한
+          beta: Math.max(-45, Math.min(45, beta)),
+          gamma: Math.max(-45, Math.min(45, gamma)),
         })
       }
     }
@@ -118,12 +111,8 @@ function FullscreenGyroSquares() {
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 자이로 값에 따른 이동 거리 계산
   const getMovement = () => {
-    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3 // 화면 크기의 30%까지 이동
-
-    // gamma: 좌우 기울기 (-45 ~ 45도)
-    // beta: 앞뒤 기울기 (-45 ~ 45도)
+    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
     const moveX = (orientation.gamma / 45) * maxMovement
     const moveY = (orientation.beta / 45) * maxMovement
 
@@ -134,7 +123,6 @@ function FullscreenGyroSquares() {
 
   return (
     <div className='fixed inset-0 pointer-events-none z-0'>
-      {/* 자이로스코프가 활성화된 경우 전체화면 사각형들 렌더링 */}
       {isGyroSupported && screenSize.width > 0 && (
         <div className='absolute inset-0 overflow-hidden'>
           {Array.from({ length: steps }).map((_, i) => {
@@ -142,17 +130,14 @@ function FullscreenGyroSquares() {
             const size = maxSize - stepReduction * i
             const color = interpolateColor(brandColorHex, refinedColorHex, factor)
 
-            // 각 사각형마다 다른 이동 강도 적용 (작은 사각형일수록 더 많이 움직임)
-            // 각 사각형마다 다른 이동 강도 적용 (작은 사각형일수록 더 많이 움직임)
             const movementMultiplier = 1 + i * 0.15
             const currentMoveX = moveX * movementMultiplier
             const currentMoveY = moveY * movementMultiplier
 
-            // 회전 효과 계산 (레이어별로 차등 적용)
-            const rotationMultiplier = 0.3 + i * 0.1 // 뒤쪽 레이어일수록 더 많이 회전
-            const rotationX = (orientation.beta / 45) * 8 * rotationMultiplier // 최대 8도 회전
-            const rotationY = (orientation.gamma / 45) * 8 * rotationMultiplier
-            const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 3 * rotationMultiplier // Z축 회전 추가
+            const rotationMultiplier = 1.5 - i * 0.1 
+            const rotationX = (orientation.beta / 45) * 20 * rotationMultiplier 
+            const rotationY = (orientation.gamma / 45) * 20 * rotationMultiplier
+            const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 3 * rotationMultiplier 
 
             return (
               <div
@@ -163,7 +148,7 @@ function FullscreenGyroSquares() {
                   height: `${size}px`,
                   backgroundColor: color,
                   borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
-                  opacity: 0.6 + i * 0.04, // 뒤쪽 사각형일수록 약간 더 투명
+                  opacity: 1,
                   top: '50%',
                   left: '50%',
                   transform: `
@@ -316,10 +301,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
 
   return (
     <>
-      {/* 모바일에서만 자이로 반응 사각형들 표시 - 가장 아래 레이어 */}
       {isMobile && (
         <div className='fixed inset-0 pointer-events-none z-0'>
-          {/* 자이로스코프가 활성화된 경우 전체화면 사각형들 렌더링 */}
           {isGyroSupported && screenSize.width > 0 && (
             <div className='absolute inset-0 overflow-hidden'>
               {Array.from({ length: steps }).map((_, i) => {
@@ -391,7 +374,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
         </div>
       </div>
 
-      {/* 자이로 활성화 버튼 - 가장 상단 레이어 */}
       {isMobile && showGyroButton && (
         <div className='fixed inset-0 flex items-center justify-center z-[1000] bg-[#000000DD] pointer-events-none'>
           <div className='pointer-events-auto'>
@@ -414,7 +396,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
         </div>
       )}
 
-      {/* 권한 거부 메시지 */}
       {isMobile && gyroPermissionDenied && (
         <div className='fixed top-4 left-4 z-[1000] pointer-events-auto'>
           <div className='bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm'>
@@ -423,7 +404,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName }: Rot
         </div>
       )}
 
-      {/* 자이로 상태 표시 (개발용) */}
       {isMobile && isGyroSupported && (
         <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
