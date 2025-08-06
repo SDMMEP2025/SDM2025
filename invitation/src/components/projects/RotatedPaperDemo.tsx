@@ -126,7 +126,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const getMovement = () => {
     const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
     
-    const moveX = -(orientation.gamma / 45) * maxMovement
+    const moveX = (orientation.gamma / 45) * maxMovement
     const moveY = (orientation.gamma / 45) * maxMovement
     
     return { moveX, moveY }
@@ -156,8 +156,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                     key={i}
                     className='absolute transition-transform duration-100 ease-out'
                     style={{
-                      width: `${size}px`,
-                      height: `${size*1.2}px`,
+                      width: `${size*1.2}px`,
+                      height: `${size}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
                       top: '50%',
