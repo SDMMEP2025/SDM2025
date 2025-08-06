@@ -143,28 +143,46 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 물리 시뮬레이션 업데이트
+  // 물리 시뮬레이션 업데이트 (개선된 버전)
   useEffect(() => {
     if (!isGyroSupported) return
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
-        const tiltValue = orientation.gamma / 4
+        const rawTilt = orientation.gamma / 4
 
-        // 기울기에 따른 기본 이동량 - 제곱으로 급격히 증가
-        const baseTilt = Math.abs(tiltValue)
-        const acceleratedMovement = (baseTilt ** 2) * 0.05 // 기울기 제곱으로 가속
-        
+        // 1. Dead Zone 적용 - 작은 기울기는 0으로 처리
+        const DEAD_ZONE = 0.5 // 0.5도 이하는 무시
+        const tiltValue = Math.abs(rawTilt) < DEAD_ZONE ? 0 : rawTilt
+
+        // 2. Smoothing 적용 - 이전 값과 보간
+        const SMOOTHING = 0.8 // 0.8 = 부드럽게, 0.2 = 즉시 반응
+        const smoothedTilt = prevPhysics.tilt * SMOOTHING + tiltValue * (1 - SMOOTHING)
+
+        // 3. 임계값 이하에서는 0으로 수렴
+        const finalTilt = Math.abs(smoothedTilt) < 0.1 ? 0 : smoothedTilt
+
+        // 기울기에 따른 기본 이동량 계산
+        const baseTilt = Math.abs(finalTilt)
+
+        // 4. 더 부드러운 가속 곡선 사용
+        const acceleratedMovement = baseTilt === 0 ? 0 : baseTilt ** 1.5 * 0.03 // 제곱에서 1.5승으로, 계수도 줄임
+
         const maxMovement = Math.min(screenSize.width, screenSize.height) * acceleratedMovement
-        const moveX = (tiltValue * maxMovement) / 22.5 // 오른쪽/왼쪽
-        const moveY = (tiltValue * maxMovement) / 30 // 아래/위
+        const moveX = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 22.5
+        const moveY = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 30
+
+        // 5. 위치도 부드럽게 보간
+        const POSITION_SMOOTHING = 0.85
+        const smoothedX = prevPhysics.positionX * POSITION_SMOOTHING + moveX * (1 - POSITION_SMOOTHING)
+        const smoothedY = prevPhysics.positionY * POSITION_SMOOTHING + moveY * (1 - POSITION_SMOOTHING)
 
         return {
           velocityX: 0,
           velocityY: 0,
-          positionX: moveX,
-          positionY: moveY,
-          tilt: tiltValue,
+          positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX, // 아주 작은 값은 0으로
+          positionY: Math.abs(smoothedY) < 0.1 ? 0 : smoothedY,
+          tilt: finalTilt,
         }
       })
 
@@ -200,8 +218,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const layerOffset = i * springGap // 큰 사각형(낮은 i)부터의 거리로 변경
 
                 // 레이어별 움직임 차이: 큰 사각형(낮은 i)일수록 덜 움직임
-                const layerMovementMultiplier = (i * 0.08) // i=0이면 1.0, i=11이면 0.12
-                
+                const layerMovementMultiplier = i * 0.08 // i=0이면 1.0, i=11이면 0.12
+
                 // 기울기 방향에 따른 오프셋 계산 (더 강한 효과)
                 const offsetDirection = physics.tilt > 0 ? 1 : -1 // 방향을 원래대로 복구
                 const offsetX = offsetDirection * layerOffset * 1.2 // 0.7에서 1.2로 증가
