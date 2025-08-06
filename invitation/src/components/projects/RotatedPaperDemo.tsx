@@ -183,14 +183,14 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 
                 // 스프링 간격: 기울기가 클수록 사각형들 사이의 간격이 더 크게 늘어남
                 const springGap = Math.abs(physics.tilt) * 4 // 2에서 4로 증가 (더 큰 간격)
-                const layerOffset = (steps - 1 - i) * springGap // 작은 사각형부터의 거리
+                const layerOffset = i * springGap // 큰 사각형(낮은 i)부터의 거리로 변경
                 
                 // 기울기 방향에 따른 오프셋 계산 (더 강한 효과)
-                const offsetDirection = physics.tilt > 0 ? 1 : -1
+                const offsetDirection = physics.tilt > 0 ? -1 : 1 // 방향 반전
                 const offsetX = offsetDirection * layerOffset * 1.2 // 0.7에서 1.2로 증가
                 const offsetY = offsetDirection * layerOffset * 0.8 // 0.5에서 0.8로 증가
                 
-                // 최종 위치 계산 (작은 사각형 중심 + 스프링 오프셋)
+                // 최종 위치 계산 (작은 사각형이 리드하도록 수정)
                 const finalX = physics.positionX + offsetX
                 const finalY = physics.positionY + offsetY
 
