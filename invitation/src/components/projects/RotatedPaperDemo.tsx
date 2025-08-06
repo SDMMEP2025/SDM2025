@@ -237,7 +237,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       width: `${size * 1.5}px`,
                       height: `${size}px`,
                       backgroundColor: color,
-                      borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
                       top: '50%',
                       left: '50%',
                       transform: `
