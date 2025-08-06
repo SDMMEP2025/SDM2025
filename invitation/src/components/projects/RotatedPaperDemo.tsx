@@ -126,9 +126,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const getMovement = () => {
     const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
     
-    // 좌측 기울임: 위로 이동, 우측 기울임: 아래로 이동
-    const moveX = 0 // X축 이동 제거
-    const moveY = -(orientation.gamma / 45) * maxMovement // 좌측 기울임시 음수(위로), 우측 기울임시 양수(아래로)
+    // X축: 좌측 기울임시 왼쪽으로, 우측 기울임시 오른쪽으로
+    const moveX = (orientation.gamma / 45) * maxMovement
+    // Y축: 좌측 기울임시 위로, 우측 기울임시 아래로
+    const moveY = -(orientation.gamma / 45) * maxMovement
     
     return { moveX, moveY }
   }
