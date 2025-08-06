@@ -38,8 +38,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
   const steps = 12
   const defaultColors = [
-    '#FF60B9', '#FF6BB3', '#FF77AD', '#FF82A7', '#FF8EA1', '#FF999B',
-    '#FFA595', '#FFB08F', '#FFBC89', '#FFC783', '#FFD37D', '#FBE870'
+    '#FF79B3', '#FF92AB', '#FFABA3', '#FFC59D', '#FEDE96', '#FFF790',
+    '#FFDC7E', '#FFC46C', '#FDAB58', '#FF9246', '#FE7832', '#FF5E1E'
   ]
   const colors = squareColors || defaultColors
 
@@ -144,10 +144,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
                 const movementMultiplier = 1 + i * 0.15
                 const currentMoveX = moveX * movementMultiplier
-                const currentMoveY = moveY * movementMultiplier
+                const currentMoveY = moveY * movementMultiplier + (orientation.gamma / 45) * 50
 
                 const rotationMultiplier = 1.5 - i * 0.1
-                const rotationZ = ((orientation.gamma + orientation.beta) / 90) * 15 * rotationMultiplier
+                const rotationZ = -20 - (orientation.gamma / 45) * 15 * rotationMultiplier
 
                 return (
                   <div
