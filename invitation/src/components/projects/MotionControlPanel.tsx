@@ -84,10 +84,10 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='fixed bottom-20 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
+        className='fixed top-0 right-0 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
         style={{ zIndex: 10000 }}
       >
-        ⚙️
+        모션 패널
       </button>
 
       {/* Control Panel */}
