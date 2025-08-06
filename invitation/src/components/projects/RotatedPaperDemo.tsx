@@ -29,6 +29,13 @@ export function RotatedPaper({ className = '', isMobile = false }) {
 }
 
 export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors }: RotatedPaperDemoProps) {
+  const steps = 12
+  const defaultColors = [
+    '#FF79B3', '#FF92AB', '#FFABA3', '#FFC59D', '#FEDE96', '#FFF790',
+    '#FFDC7E', '#FFC46C', '#FDAB58', '#FF9246', '#FE7832', '#FF5E1E'
+  ]
+  const colors = squareColors || defaultColors
+
   const [isMobile, setIsMobile] = useState(false)
   const [isGyroSupported, setIsGyroSupported] = useState(false)
   const [showGyroButton, setShowGyroButton] = useState(false)
@@ -38,7 +45,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   
   // 척추 시뮬레이션을 위한 상태 (각 사각형의 개별 물리 상태)
   const [spinePhysics, setSpinePhysics] = useState(() => 
-    Array.from({ length: steps }, () => ({
+    Array.from({ length: 12 }, () => ({
       velocityX: 0,
       velocityY: 0,
       positionX: 0,
@@ -47,13 +54,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   )
 
   const animationFrameRef = useRef<number | null>(null)
-
-  const steps = 12
-  const defaultColors = [
-    '#FF79B3', '#FF92AB', '#FFABA3', '#FFC59D', '#FEDE96', '#FFF790',
-    '#FFDC7E', '#FFC46C', '#FDAB58', '#FF9246', '#FE7832', '#FF5E1E'
-  ]
-  const colors = squareColors || defaultColors
 
   const maxSize = Math.max(screenSize.width, screenSize.height) * 2.2
   const stepReduction = maxSize / (steps + 2)
