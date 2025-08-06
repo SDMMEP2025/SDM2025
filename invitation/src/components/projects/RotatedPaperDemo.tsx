@@ -35,10 +35,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
-  
-  // 회전 속도 누적을 위한 상태
-  const [rotationSpeed, setRotationSpeed] = useState(0)
-  const animationFrameRef = useRef<number | null>(null)
 
   const steps = 12
   const defaultColors = [
@@ -127,36 +123,13 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 회전 속도 누적 업데이트
-  useEffect(() => {
-    if (!isGyroSupported) return
-
-    const animate = () => {
-      setRotationSpeed(prevSpeed => {
-        // 기울기에 따라 회전 속도 증가
-        const tiltIntensity = Math.abs(orientation.gamma) / 45
-        const speedIncrease = tiltIntensity * 0.5 // 기울기만큼 속도 증가
-        
-        // 새로운 속도 = 기존 속도 + 증가량
-        return prevSpeed + speedIncrease
-      })
-
-      animationFrameRef.current = requestAnimationFrame(animate)
-    }
-
-    animationFrameRef.current = requestAnimationFrame(animate)
-    
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
-      }
-    }
-  }, [isGyroSupported, orientation])
-
   const getMovement = () => {
     const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
-    const moveX = (orientation.gamma / 45) * maxMovement
-    const moveY = (orientation.beta / 45) * maxMovement
+    
+    // 좌측 기울임: 위로 이동, 우측 기울임: 아래로 이동
+    const moveX = 0 // X축 이동 제거
+    const moveY = -(orientation.gamma / 45) * maxMovement // 좌측 기울임시 음수(위로), 우측 기울임시 양수(아래로)
+    
     return { moveX, moveY }
   }
 
@@ -172,15 +145,15 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                const movementMultiplier = 1 + i * 0.15
+                // 레이어별로 다른 이동 배율 (상위 레이어일수록 더 많이 이동)
+                const movementMultiplier = 1 + i * 0.2
                 const currentMoveX = moveX * movementMultiplier
-                const currentMoveY = moveY * movementMultiplier + (orientation.gamma / 45) * 50
+                const currentMoveY = moveY * movementMultiplier
 
-                // 회전 속도가 누적되면서 점점 빨라짐
-                const rotationMultiplier = 1.5 - i * 0.1
-                const baseRotation = -20 - (orientation.gamma / 45) * 15 * rotationMultiplier
-                const speedBonus = rotationSpeed * (1 + i * 0.1) // 레이어마다 조금씩 다른 속도
-                const finalRotation = baseRotation + speedBonus
+                // 회전값 계산 - 좌측 기울임: 시계방향(양수), 우측 기울임: 시계반대방향(음수)
+                // 레이어별로 회전 정도가 다름 (상위 레이어일수록 더 많이 회전)
+                const rotationMultiplier = 1 + i * 0.15 // 상위 레이어일수록 더 많이 회전
+                const rotationZ = -20 + (orientation.gamma / 45) * 20 * rotationMultiplier
 
                 return (
                   <div
@@ -196,7 +169,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       transform: `
                         translate(-50%, -50%) 
                         translate(${currentMoveX}px, ${currentMoveY}px)
-                        rotate(${finalRotation}deg)
+                        rotate(${rotationZ}deg)
                       `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
                     }}
@@ -275,7 +248,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
           <br />
-          Rotation Speed: {rotationSpeed.toFixed(1)}
+          Move: {moveX.toFixed(0)}, {moveY.toFixed(0)}
         </div>
       )}
     </>
