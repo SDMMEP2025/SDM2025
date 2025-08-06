@@ -126,8 +126,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const getMovement = () => {
     const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.4
     
+    // X축: 좌측 기울임시 왼쪽으로, 우측 기울임시 오른쪽으로
     const moveX = (orientation.gamma / 45) * maxMovement
-    const moveY = (orientation.gamma / 45) * maxMovement
+    // Y축: 좌측 기울임시 위로, 우측 기울임시 아래로
+    const moveY = -(orientation.gamma / 45) * maxMovement
     
     return { moveX, moveY }
   }
@@ -144,19 +146,22 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                const movementMultiplier = 1 + i * 0.2
-                const currentMoveX = moveX * movementMultiplier
-                const currentMoveY = moveY * movementMultiplier
+                // 가장 작은 사각형(마지막 레이어)의 움직임을 기준으로 계산
+                // 작은 사각형(높은 i값)일수록 더 많이 움직이고, 큰 사각형은 따라감
+                const leadMovementMultiplier = 1 + i * 0.15 // 작은 사각형일수록 더 많이 움직임
+                const currentMoveX = moveX * leadMovementMultiplier
+                const currentMoveY = moveY * leadMovementMultiplier
 
-                const rotationMultiplier = 1 + i * 0.15 
-                const rotationZ = -20 - (orientation.gamma / 45) * 20 * rotationMultiplier
+                // 회전도 마찬가지로 작은 사각형이 더 많이 회전하고 큰 사각형이 따라감
+                const rotationMultiplier = 1 + i * 0.12
+                const rotationZ = -20 + (orientation.gamma / 45) * 20 * rotationMultiplier
 
                 return (
                   <div
                     key={i}
                     className='absolute transition-transform duration-100 ease-out'
                     style={{
-                      width: `${size*1.2}px`,
+                      width: `${size}px`,
                       height: `${size}px`,
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
