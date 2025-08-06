@@ -36,10 +36,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   
-  // 바이킹 효과를 위한 상태
-  const [momentum, setMomentum] = useState({ x: 0, y: 0, rotation: 0 })
-  const [velocity, setVelocity] = useState({ x: 0, y: 0, rotation: 0 })
-  const [lastOrientation, setLastOrientation] = useState({ beta: 0, gamma: 0 })
+  // 회전 속도 누적을 위한 상태
+  const [rotationSpeed, setRotationSpeed] = useState(0)
   const animationFrameRef = useRef<number | null>(null)
 
   const steps = 12
@@ -118,12 +116,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta, gamma } = event
       if (beta !== null && gamma !== null) {
-        const newOrientation = {
+        setOrientation({
           beta: Math.max(-45, Math.min(45, beta)),
           gamma: Math.max(-45, Math.min(45, gamma)),
-        }
-        setLastOrientation(orientation)
-        setOrientation(newOrientation)
+        })
       }
     }
 
@@ -131,58 +127,19 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 바이킹 물리 엔진 - 누적 가속도!
+  // 회전 속도 누적 업데이트
   useEffect(() => {
     if (!isGyroSupported) return
 
     const animate = () => {
-      setVelocity(prevVel => {
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
+      setRotationSpeed(prevSpeed => {
+        // 기울기에 따라 회전 속도 증가
+        const tiltIntensity = Math.abs(orientation.gamma) / 45
+        const speedIncrease = tiltIntensity * 0.5 // 기울기만큼 속도 증가
         
-        // 기기 기울기 변화량 계산 (바이킹의 핵심!)
-        const deltaGamma = orientation.gamma - lastOrientation.gamma
-        const deltaBeta = orientation.beta - lastOrientation.beta
-        
-        // 같은 방향으로 계속 기울이면 가속도 누적
-        const gammaAcceleration = deltaGamma * 8 // 기울기 변화에 비례한 가속도
-        const betaAcceleration = deltaBeta * 8
-        
-        // 현재 속도와 같은 방향이면 더 빨라지고, 반대면 브레이킹
-        const currentGammaDirection = Math.sign(prevVel.rotation)
-        const currentGammaInput = Math.sign(orientation.gamma)
-        
-        // 바이킹 효과: 같은 방향이면 부스터, 반대면 브레이크
-        const rotationBoost = currentGammaDirection === currentGammaInput ? 1.3 : 0.7
-        
-        // 새로운 속도 계산
-        let newVelX = prevVel.x + gammaAcceleration * 0.3
-        let newVelY = prevVel.y + betaAcceleration * 0.3
-        let newVelRotation = (prevVel.rotation + (orientation.gamma * 0.8)) * rotationBoost
-        
-        // 마찰력 (공기저항)
-        newVelX *= 0.92
-        newVelY *= 0.92
-        newVelRotation *= 0.94
-        
-        // 최대 속도 제한 (바이킹도 한계가 있으니까)
-        const maxVel = maxMovement * 1.2 // 기존보다 더 빠르게!
-        newVelX = Math.max(-maxVel, Math.min(maxVel, newVelX))
-        newVelY = Math.max(-maxVel, Math.min(maxVel, newVelY))
-        newVelRotation = Math.max(-50, Math.min(50, newVelRotation))
-        
-        return {
-          x: newVelX,
-          y: newVelY,
-          rotation: newVelRotation
-        }
+        // 새로운 속도 = 기존 속도 + 증가량
+        return prevSpeed + speedIncrease
       })
-
-      // 위치 업데이트
-      setMomentum(prev => ({
-        x: prev.x + velocity.x,
-        y: prev.y + velocity.y,
-        rotation: prev.rotation + velocity.rotation
-      }))
 
       animationFrameRef.current = requestAnimationFrame(animate)
     }
@@ -194,7 +151,16 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [isGyroSupported, orientation, lastOrientation, velocity, screenSize])
+  }, [isGyroSupported, orientation])
+
+  const getMovement = () => {
+    const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
+    const moveX = (orientation.gamma / 45) * maxMovement
+    const moveY = (orientation.beta / 45) * maxMovement
+    return { moveX, moveY }
+  }
+
+  const { moveX, moveY } = getMovement()
 
   return (
     <>
@@ -206,21 +172,20 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 바이킹 효과: 각 레이어마다 다른 관성과 오버슈팅
-                const layerInertia = 1 + i * 0.12
-                const overshoot = Math.sin(Date.now() * 0.003 + i) * (Math.abs(momentum.rotation) * 0.02)
-                
-                const currentMoveX = momentum.x * layerInertia + overshoot
-                const currentMoveY = momentum.y * layerInertia
-                
-                // 회전은 더 과격하게!
-                const rotationInertia = 1.5 - i * 0.08
-                const currentRotation = momentum.rotation * rotationInertia + (i * 3) + overshoot * 2
+                const movementMultiplier = 1 + i * 0.15
+                const currentMoveX = moveX * movementMultiplier
+                const currentMoveY = moveY * movementMultiplier + (orientation.gamma / 45) * 50
+
+                // 회전 속도가 누적되면서 점점 빨라짐
+                const rotationMultiplier = 1.5 - i * 0.1
+                const baseRotation = -20 - (orientation.gamma / 45) * 15 * rotationMultiplier
+                const speedBonus = rotationSpeed * (1 + i * 0.1) // 레이어마다 조금씩 다른 속도
+                const finalRotation = baseRotation + speedBonus
 
                 return (
                   <div
                     key={i}
-                    className='absolute'
+                    className='absolute transition-transform duration-100 ease-out'
                     style={{
                       width: `${size}px`,
                       height: `${size}px`,
@@ -231,10 +196,9 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       transform: `
                         translate(-50%, -50%) 
                         translate(${currentMoveX}px, ${currentMoveY}px)
-                        rotate(${currentRotation}deg)
+                        rotate(${finalRotation}deg)
                       `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
-                      transition: 'none', // 부드러운 애니메이션을 위해 transition 제거
                     }}
                   />
                 )
@@ -311,9 +275,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         <div className='fixed top-4 right-4 bg-black/50 text-white p-2 rounded text-xs pointer-events-auto z-[999]'>
           β: {orientation.beta.toFixed(1)}° γ: {orientation.gamma.toFixed(1)}°
           <br />
-          Momentum: {momentum.x.toFixed(0)}, {momentum.y.toFixed(0)}, {momentum.rotation.toFixed(1)}°
-          <br />
-          Velocity: {velocity.x.toFixed(1)}, {velocity.y.toFixed(1)}
+          Rotation Speed: {rotationSpeed.toFixed(1)}
         </div>
       )}
     </>
