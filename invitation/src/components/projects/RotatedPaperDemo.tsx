@@ -53,8 +53,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   })
 
   const animationFrameRef = useRef<number | null>(null)
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.8 // 2.2에서 1.8로 축소
-  const stepReduction = maxSize / (steps + 4) // steps + 2에서 steps + 4로 변경해서 크기 간격 줄임
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 2.0 // 1.8에서 2.0으로 증가
+  const stepReduction = maxSize / (steps + 3) // steps + 4에서 steps + 3으로 조정
 
   useEffect(() => {
     const updateScreenSize = () => {
@@ -179,7 +179,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const color = colors[i] || colors[colors.length - 1]
 
                 // 레이어별 회전각도: 작은 사각형(높은 i)이 -20도, 큰 사각형으로 갈수록 -5도씩 증가
-                const baseRotation = 20 + (i * 5) // i=11이면 -20+55=35도
+                const baseRotation = -20 + (i * 5) // i=11이면 -20+55=35도
                 
                 // 기울기에 따른 추가 회전: 오른쪽 기울이면 반시계방향(+), 왼쪽 기울이면 시계방향(-)
                 const tiltRotation = physics.tilt * 1.5 // 기울기에 비례한 회전각 (부호 수정)
@@ -203,8 +203,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                     key={i}
                     className='absolute transition-transform duration-100 ease-out'
                     style={{
-                      width: `${size*1.1}px`, // 1.2에서 1.1로 축소
-                      height: `${size*0.9}px`, // 세로 비율도 조정
+                      width: `${size*1.15}px`, // 1.1에서 1.15로 조금 증가
+                      height: `${size*0.95}px`, // 0.9에서 0.95로 조금 증가
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
                       top: '50%',
