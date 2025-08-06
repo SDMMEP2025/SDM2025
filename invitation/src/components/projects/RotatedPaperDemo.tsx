@@ -141,7 +141,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
     const updateSpinePhysics = () => {
       setSpinePhysics(prevSpine => {
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.15
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.35
         
         // 기울기를 -1 ~ 1 범위로 정규화
         const normalizedGammaX = orientation.gamma / 45
