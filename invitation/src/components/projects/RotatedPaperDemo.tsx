@@ -140,12 +140,12 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     const updatePhysics = () => {
       setPhysics(prevPhysics => {
         // 직접 gamma 값 사용 (더 단순하게)
-        const tiltValue = orientation.gamma / 3 // -15 ~ +15 범위로 조정
+        const tiltValue = orientation.gamma / 2 // -22.5 ~ +22.5 범위로 조정 (더 넓은 범위)
         
-        // 오른쪽 기울이면 오른쪽 아래로, 왼쪽 기울이면 왼쪽 위로
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
-        const moveX = tiltValue * maxMovement / 15 // 오른쪽/왼쪽
-        const moveY = tiltValue * maxMovement / 20 // 아래/위 (오른쪽=아래, 왼쪽=위)
+        // 오른쪽 기울이면 오른쪽 아래로, 왼쪽 기울이면 왼쪽 위로 (범위 크게 증가)
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.6 // 0.3에서 0.6으로 두 배 증가
+        const moveX = tiltValue * maxMovement / 22.5 // 오른쪽/왼쪽
+        const moveY = tiltValue * maxMovement / 30 // 아래/위 (오른쪽=아래, 왼쪽=위)
         
         return {
           velocityX: 0,
@@ -181,14 +181,14 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 // 레이어별 회전각도: 작은 사각형(높은 i)이 -20도, 큰 사각형으로 갈수록 -5도씩 증가
                 const baseRotation = -20 + (i * 5) // i=11이면 -20+55=35도
                 
-                // 스프링 간격: 기울기가 클수록 사각형들 사이의 간격이 늘어남
-                const springGap = Math.abs(physics.tilt) * 2 // 기울기에 따른 간격 증가
+                // 스프링 간격: 기울기가 클수록 사각형들 사이의 간격이 더 크게 늘어남
+                const springGap = Math.abs(physics.tilt) * 4 // 2에서 4로 증가 (더 큰 간격)
                 const layerOffset = (steps - 1 - i) * springGap // 작은 사각형부터의 거리
                 
-                // 기울기 방향에 따른 오프셋 계산
+                // 기울기 방향에 따른 오프셋 계산 (더 강한 효과)
                 const offsetDirection = physics.tilt > 0 ? 1 : -1
-                const offsetX = offsetDirection * layerOffset * 0.7 // 오른쪽/왼쪽 오프셋
-                const offsetY = offsetDirection * layerOffset * 0.5 // 아래/위 오프셋
+                const offsetX = offsetDirection * layerOffset * 1.2 // 0.7에서 1.2로 증가
+                const offsetY = offsetDirection * layerOffset * 0.8 // 0.5에서 0.8로 증가
                 
                 // 최종 위치 계산 (작은 사각형 중심 + 스프링 오프셋)
                 const finalX = physics.positionX + offsetX
@@ -289,7 +289,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
           <br />
           Tilt: {physics.tilt.toFixed(1)}
           <br />
-          Gap: {(Math.abs(physics.tilt) * 2).toFixed(1)}
+          Gap: {(Math.abs(physics.tilt) * 4).toFixed(1)}
         </div>
       )}
     </>
