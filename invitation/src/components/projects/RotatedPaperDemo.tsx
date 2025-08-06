@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
+import MotionControlPanel, { MotionSettings } from './MotionControlPanel'
 
 declare global {
   interface DeviceOrientationEventConstructor {
@@ -52,6 +53,21 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
+
+  // Motion settings state
+  const [motionSettings, setMotionSettings] = useState<MotionSettings>({
+    deadZone: 0.5,
+    smoothing: 0.8,
+    positionSmoothing: 0.85,
+    accelerationPower: 1.5,
+    accelerationMultiplier: 0.03,
+    tiltRotationMultiplier: 1.5,
+    baseGap: 0.0,
+    springGapMultiplier: 0.15,
+    layerMovementMultiplier: 0.08,
+    offsetXMultiplier: 1.2,
+    offsetYMultiplier: 0.8,
+  })
 
   // 각 사각형의 물리 상태
   const [physics, setPhysics] = useState({
@@ -143,7 +159,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 물리 시뮬레이션 업데이트 (개선된 버전)
+  // 물리 시뮬레이션 업데이트 (개선된 버전 - 모션 설정 적용)
   useEffect(() => {
     if (!isGyroSupported) return
 
@@ -151,13 +167,11 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
       setPhysics((prevPhysics) => {
         const rawTilt = orientation.gamma / 4
 
-        // 1. Dead Zone 적용 - 작은 기울기는 0으로 처리
-        const DEAD_ZONE = 0.5 // 0.5도 이하는 무시
-        const tiltValue = Math.abs(rawTilt) < DEAD_ZONE ? 0 : rawTilt
+        // 1. Dead Zone 적용 - 모션 설정에서 가져옴
+        const tiltValue = Math.abs(rawTilt) < motionSettings.deadZone ? 0 : rawTilt
 
-        // 2. Smoothing 적용 - 이전 값과 보간
-        const SMOOTHING = 0.8 // 0.8 = 부드럽게, 0.2 = 즉시 반응
-        const smoothedTilt = prevPhysics.tilt * SMOOTHING + tiltValue * (1 - SMOOTHING)
+        // 2. Smoothing 적용 - 모션 설정에서 가져옴
+        const smoothedTilt = prevPhysics.tilt * motionSettings.smoothing + tiltValue * (1 - motionSettings.smoothing)
 
         // 3. 임계값 이하에서는 0으로 수렴
         const finalTilt = Math.abs(smoothedTilt) < 0.1 ? 0 : smoothedTilt
@@ -165,22 +179,21 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         // 기울기에 따른 기본 이동량 계산
         const baseTilt = Math.abs(finalTilt)
 
-        // 4. 더 부드러운 가속 곡선 사용
-        const acceleratedMovement = baseTilt === 0 ? 0 : baseTilt ** 1.5 * 0.03 // 제곱에서 1.5승으로, 계수도 줄임
+        // 4. 가속 곡선 - 모션 설정에서 가져옴
+        const acceleratedMovement = baseTilt === 0 ? 0 : baseTilt ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
 
         const maxMovement = Math.min(screenSize.width, screenSize.height) * acceleratedMovement
         const moveX = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 22.5
         const moveY = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 30
 
-        // 5. 위치도 부드럽게 보간
-        const POSITION_SMOOTHING = 0.85
-        const smoothedX = prevPhysics.positionX * POSITION_SMOOTHING + moveX * (1 - POSITION_SMOOTHING)
-        const smoothedY = prevPhysics.positionY * POSITION_SMOOTHING + moveY * (1 - POSITION_SMOOTHING)
+        // 5. 위치도 부드럽게 보간 - 모션 설정에서 가져옴
+        const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
+        const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
 
         return {
           velocityX: 0,
           velocityY: 0,
-          positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX, // 아주 작은 값은 0으로
+          positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX,
           positionY: Math.abs(smoothedY) < 0.1 ? 0 : smoothedY,
           tilt: finalTilt,
         }
@@ -196,7 +209,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         cancelAnimationFrame(animationFrameRef.current)
       }
     }
-  }, [isGyroSupported, orientation, screenSize])
+  }, [isGyroSupported, orientation, screenSize, motionSettings])
 
   return (
     <>
@@ -209,23 +222,23 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 기울기에 따른 회전각도: 왼쪽 기울이면 시계방향(+), 오른쪽 기울이면 반시계방향(-)
-                const tiltRotation = -physics.tilt * 1.5 // 기울기 반전 후 강도 조절
+                // 기울기에 따른 회전각도 - 모션 설정 적용
+                const tiltRotation = -physics.tilt * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                const baseGap = 0.0 // 초기 아주 좁은 간격
-                const springGap = baseGap + Math.abs(physics.tilt) ** 2 * 0.15
-                const layerOffset = i * springGap // 큰 사각형(낮은 i)부터의 거리로 변경
+                // 스프링 효과 - 모션 설정 적용
+                const springGap = motionSettings.baseGap + Math.abs(physics.tilt) ** 2 * motionSettings.springGapMultiplier
+                const layerOffset = i * springGap
 
-                // 레이어별 움직임 차이: 큰 사각형(낮은 i)일수록 덜 움직임
-                const layerMovementMultiplier = i * 0.08 // i=0이면 1.0, i=11이면 0.12
+                // 레이어별 움직임 차이 - 모션 설정 적용
+                const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
 
-                // 기울기 방향에 따른 오프셋 계산 (더 강한 효과)
-                const offsetDirection = physics.tilt > 0 ? 1 : -1 // 방향을 원래대로 복구
-                const offsetX = offsetDirection * layerOffset * 1.2 // 0.7에서 1.2로 증가
-                const offsetY = offsetDirection * layerOffset * 0.8 // 0.5에서 0.8로 증가
+                // 기울기 방향에 따른 오프셋 계산 - 모션 설정 적용
+                const offsetDirection = physics.tilt > 0 ? 1 : -1
+                const offsetX = offsetDirection * layerOffset * motionSettings.offsetXMultiplier
+                const offsetY = offsetDirection * layerOffset * motionSettings.offsetYMultiplier
 
-                // 최종 위치 계산: 기본 이동 + 스프링 오프셋 + 레이어별 차등 적용
+                // 최종 위치 계산
                 const finalX = physics.positionX * layerMovementMultiplier + offsetX
                 const finalY = physics.positionY * layerMovementMultiplier + offsetY
 
@@ -285,6 +298,13 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
           </div>
         </div>
       </div>
+
+      {isMobile && isGyroSupported && (
+        <MotionControlPanel
+          settings={motionSettings}
+          onSettingsChange={setMotionSettings}
+        />
+      )}
 
       {isMobile && showGyroButton && (
         <div className='fixed inset-0 flex items-center justify-center z-[1000] bg-[#000000DD] pointer-events-none'>
