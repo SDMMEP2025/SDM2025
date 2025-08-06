@@ -18,7 +18,7 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   return (
     <div
       className={`
-      w-[388.0000151880226px] h-[65dvh] ${isMobile ? 'bg-white/90' : 'bg-white'} rounded-lg
+      w-[388.0000151880226px] h-[65dvh] ${isMobile ? 'bg-white/85' : 'bg-white'} rounded-lg
       md:w-[640.7787222419632px] md:h-[690.6728853097492px]
       landscape:md:w-[880.0000262670924px] landscape:md:h-[537.9999787440715px]
       lg:w-[880.0000262670924px] lg:h-[537.9999787440715px]
