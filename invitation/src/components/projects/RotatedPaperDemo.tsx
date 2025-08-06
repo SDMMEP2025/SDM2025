@@ -53,8 +53,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   })
 
   const animationFrameRef = useRef<number | null>(null)
-  const maxSize = Math.max(screenSize.width, screenSize.height) * 2.2
-  const stepReduction = maxSize / (steps + 2)
+  const maxSize = Math.max(screenSize.width, screenSize.height) * 1.8 // 2.2에서 1.8로 축소
+  const stepReduction = maxSize / (steps + 4) // steps + 2에서 steps + 4로 변경해서 크기 간격 줄임
 
   useEffect(() => {
     const updateScreenSize = () => {
@@ -144,7 +144,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         
         // 오른쪽 기울이면 오른쪽 아래로, 왼쪽 기울이면 왼쪽 위로 (범위 크게 증가)
         const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.6 // 0.3에서 0.6으로 두 배 증가
-        const moveX = tiltValue * maxMovement / 22.5 // 오른쪽/왼쪽
+        const moveX = tiltValue * maxMovement / 22.5 // 오른쪽/왼쪽 (방향 수정)
         const moveY = tiltValue * maxMovement / 30 // 아래/위 (오른쪽=아래, 왼쪽=위)
         
         return {
@@ -179,14 +179,18 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const color = colors[i] || colors[colors.length - 1]
 
                 // 레이어별 회전각도: 작은 사각형(높은 i)이 -20도, 큰 사각형으로 갈수록 -5도씩 증가
-                const baseRotation = -20 + (i * 5) // i=11이면 -20+55=35도
+                const baseRotation = 20 + (i * 5) // i=11이면 -20+55=35도
+                
+                // 기울기에 따른 추가 회전: 오른쪽 기울이면 반시계방향(+), 왼쪽 기울이면 시계방향(-)
+                const tiltRotation = physics.tilt * 1.5 // 기울기에 비례한 회전각 (부호 수정)
+                const finalRotation = baseRotation + tiltRotation
                 
                 // 스프링 간격: 기울기가 클수록 사각형들 사이의 간격이 더 크게 늘어남
                 const springGap = Math.abs(physics.tilt) * 4 // 2에서 4로 증가 (더 큰 간격)
                 const layerOffset = i * springGap // 큰 사각형(낮은 i)부터의 거리로 변경
                 
                 // 기울기 방향에 따른 오프셋 계산 (더 강한 효과)
-                const offsetDirection = physics.tilt > 0 ? -1 : 1 // 방향 반전
+                const offsetDirection = physics.tilt > 0 ? 1 : -1 // 방향을 원래대로 복구
                 const offsetX = offsetDirection * layerOffset * 1.2 // 0.7에서 1.2로 증가
                 const offsetY = offsetDirection * layerOffset * 0.8 // 0.5에서 0.8로 증가
                 
@@ -199,8 +203,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                     key={i}
                     className='absolute transition-transform duration-100 ease-out'
                     style={{
-                      width: `${size*1.2}px`,
-                      height: `${size}px`,
+                      width: `${size*1.1}px`, // 1.2에서 1.1로 축소
+                      height: `${size*0.9}px`, // 세로 비율도 조정
                       backgroundColor: color,
                       borderRadius: i === 0 ? '24px' : `${Math.max(8, 24 - i * 2)}px`,
                       top: '50%',
@@ -208,9 +212,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                       transform: `
                         translate(-50%, -50%) 
                         translate(${finalX}px, ${finalY}px)
-                        rotate(${baseRotation}deg)
+                        rotate(${finalRotation}deg)
                       `,
                       boxShadow: i === 0 ? '0 20px 60px rgba(0,0,0,0.15)' : 'none',
+                      zIndex: steps - i, // z-index 추가로 레이어 순서 명확히
                     }}
                   />
                 )
