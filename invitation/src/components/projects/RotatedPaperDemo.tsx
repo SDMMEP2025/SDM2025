@@ -139,31 +139,20 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
     const updatePhysics = () => {
       setPhysics(prevPhysics => {
-        // 기울기를 -1 ~ 1 범위로 정규화
-        const normalizedGamma = orientation.gamma / 45
-        
-        // 비선형 가속도 (작은 기울기에서는 느리게, 큰 기울기에서는 빠르게)
-        const nonLinearFactor = 2.5
-        const accelerationMultiplier = 2.0
-        
-        const tiltAccel = Math.sign(normalizedGamma) * Math.pow(Math.abs(normalizedGamma), nonLinearFactor) * accelerationMultiplier
-        
-        // 기울기 값 업데이트 (이게 스프링 간격을 결정)
-        let newTilt = prevPhysics.tilt + tiltAccel * 0.1
-        newTilt *= 0.92 // 마찰력으로 자연스럽게 감속
-        newTilt = Math.max(-15, Math.min(15, newTilt)) // 기울기 제한
+        // 직접 gamma 값 사용 (더 단순하게)
+        const tiltValue = orientation.gamma / 3 // -15 ~ +15 범위로 조정
         
         // 오른쪽 기울이면 오른쪽 아래로, 왼쪽 기울이면 왼쪽 위로
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.25
-        const moveX = newTilt * 0.8 * maxMovement / 15 // 오른쪽/왼쪽
-        const moveY = newTilt * 0.6 * maxMovement / 15 // 아래/위 (오른쪽=아래, 왼쪽=위)
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * 0.3
+        const moveX = tiltValue * maxMovement / 15 // 오른쪽/왼쪽
+        const moveY = tiltValue * maxMovement / 20 // 아래/위 (오른쪽=아래, 왼쪽=위)
         
         return {
-          velocityX: moveX - prevPhysics.positionX,
-          velocityY: moveY - prevPhysics.positionY,
+          velocityX: 0,
+          velocityY: 0,
           positionX: moveX,
           positionY: moveY,
-          tilt: newTilt
+          tilt: tiltValue
         }
       })
       
