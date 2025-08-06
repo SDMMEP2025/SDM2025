@@ -257,13 +257,12 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
       <div className='fixed inset-0 flex items-center justify-center z-[100] overflow-hidden'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper isMobile={isMobile} />
-          <div className='absolute inset-0 flex flex-col items-center justify-between pr-8 pl-8 pt-[22%] pb-[22%] text-black z-[110] transform rotate-6'>
+          <div className='absolute inset-0 flex flex-col items-center justify-center pr-8 pl-8 gap-[71px] md:gap-[82px] lg:gap-[88px] text-black z-[110] transform rotate-6'>
             <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
               <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
               <p>
                 전시는 8월 22일부터 27일까지, 삼성전자 서울 R&D 캠퍼스 A타워 2층, 이노베이션 스튜디오에서 진행됩니다.
-                <br className='md:block landscape:md:hidden lg:hidden' />
                 소중한 발걸음으로 자리를 빛내주세요.
               </p>
             </div>
