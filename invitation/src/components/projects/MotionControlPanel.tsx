@@ -256,7 +256,7 @@ export default function MotionControlPanel({ settings, onSettingsChange, onToggl
         className='fixed top-0 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
         style={{ zIndex: 10000 }}
       >
-        ⚙️
+     모션 패널
       </button>
 
       {/* Control Panel */}

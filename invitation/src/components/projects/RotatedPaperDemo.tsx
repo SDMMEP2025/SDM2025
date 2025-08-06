@@ -9,6 +9,8 @@ declare global {
   }
 }
 
+type OrientationLockType = 'portrait' | 'landscape' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary'
+
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void
   displayName: string
@@ -54,8 +56,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
   const [gyroPermissionDenied, setGyroPermissionDenied] = useState(false)
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
+  const [initialOrientation, setInitialOrientation] = useState<'portrait' | 'landscape' | null>(null)
 
-  // Motion settings state
   const [motionSettings, setMotionSettings] = useState<MotionSettings>({
     deadZone: 0.5,
     smoothing: 0.8,
@@ -70,13 +72,12 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     offsetYMultiplier: 0.8,
   })
 
-  // 각 사각형의 물리 상태
   const [physics, setPhysics] = useState({
     velocityX: 0,
     velocityY: 0,
     positionX: 0,
     positionY: 0,
-    tilt: 0, // 기울기 값
+    tilt: 0,
   })
 
   const animationFrameRef = useRef<number | null>(null)
@@ -115,6 +116,52 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
       window.removeEventListener('resize', checkIfMobile)
     }
   }, [])
+
+  useEffect(() => {
+    const detectAndLockOrientation = async () => {
+      if (!isMobile) return
+
+      try {
+        let currentOrientation: 'portrait' | 'landscape' | null = null
+
+        if (screen.orientation) {
+          const orientationType = screen.orientation.type
+          if (orientationType.includes('portrait')) {
+            currentOrientation = 'portrait'
+          } else if (orientationType.includes('landscape')) {
+            currentOrientation = 'landscape'
+          }
+        } else {
+          const isPortrait = window.innerHeight > window.innerWidth
+          currentOrientation = isPortrait ? 'portrait' : 'landscape'
+        }
+
+        setInitialOrientation(currentOrientation)
+
+        if ((screen.orientation as any)?.lock && currentOrientation) {
+          await (screen.orientation as any).lock(currentOrientation as OrientationLockType)
+        }
+
+      } catch (error) {
+        const isPortrait = window.innerHeight > window.innerWidth
+        setInitialOrientation(isPortrait ? 'portrait' : 'landscape')
+      }
+    }
+
+    if (isMobile) {
+      detectAndLockOrientation()
+    }
+
+    return () => {
+      try {
+        if ((screen.orientation as any)?.unlock) {
+          (screen.orientation as any).unlock()
+        }
+      } catch (error) {
+        // 에러 무시
+      }
+    }
+  }, [isMobile])
 
   const requestGyroPermission = async () => {
     const DeviceOrientationEventConstructor = DeviceOrientationEvent as DeviceOrientationEventConstructor
@@ -160,7 +207,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => window.removeEventListener('deviceorientation', handleDeviceOrientation)
   }, [isGyroSupported])
 
-  // 물리 시뮬레이션 업데이트 (개선된 버전 - 모션 설정 적용)
   useEffect(() => {
     if (!isGyroSupported) return
 
@@ -168,26 +214,20 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
       setPhysics((prevPhysics) => {
         const rawTilt = orientation.gamma / 4
 
-        // 1. Dead Zone 적용 - 모션 설정에서 가져옴
         const tiltValue = Math.abs(rawTilt) < motionSettings.deadZone ? 0 : rawTilt
 
-        // 2. Smoothing 적용 - 모션 설정에서 가져옴
         const smoothedTilt = prevPhysics.tilt * motionSettings.smoothing + tiltValue * (1 - motionSettings.smoothing)
 
-        // 3. 임계값 이하에서는 0으로 수렴
         const finalTilt = Math.abs(smoothedTilt) < 0.1 ? 0 : smoothedTilt
 
-        // 기울기에 따른 기본 이동량 계산
         const baseTilt = Math.abs(finalTilt)
 
-        // 4. 가속 곡선 - 모션 설정에서 가져옴
         const acceleratedMovement = baseTilt === 0 ? 0 : baseTilt ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
 
         const maxMovement = Math.min(screenSize.width, screenSize.height) * acceleratedMovement
         const moveX = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 22.5
         const moveY = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 30
 
-        // 5. 위치도 부드럽게 보간 - 모션 설정에서 가져옴
         const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
         const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
 
@@ -214,7 +254,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
   return (
     <>
-      {/* 모바일용 배경 효과 */}
       {isMobile && (
         <div className='fixed inset-0 pointer-events-none z-0'>
           {isGyroSupported && screenSize.width > 0 && (
@@ -223,23 +262,18 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 기울기에 따른 회전각도 - 모션 설정 적용
                 const tiltRotation = -physics.tilt * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                // 스프링 효과 - 모션 설정 적용
                 const springGap = motionSettings.baseGap + Math.abs(physics.tilt) ** 2 * motionSettings.springGapMultiplier
                 const layerOffset = i * springGap
 
-                // 레이어별 움직임 차이 - 모션 설정 적용
                 const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
 
-                // 기울기 방향에 따른 오프셋 계산 - 모션 설정 적용
                 const offsetDirection = physics.tilt > 0 ? 1 : -1
                 const offsetX = offsetDirection * layerOffset * motionSettings.offsetXMultiplier
                 const offsetY = offsetDirection * layerOffset * motionSettings.offsetYMultiplier
 
-                // 최종 위치 계산
                 const finalX = physics.positionX * layerMovementMultiplier + offsetX
                 const finalY = physics.positionY * layerMovementMultiplier + offsetY
 
@@ -300,7 +334,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         </div>
       </div>
 
-      {/* Motion Control Panel - 모바일이고 자이로가 지원될 때만 표시 */}
       {isMobile && isGyroSupported && (
         <MotionControlPanel
           settings={motionSettings}
