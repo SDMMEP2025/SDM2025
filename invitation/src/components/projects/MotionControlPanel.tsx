@@ -37,7 +37,6 @@ const defaultSettings: MotionSettings = {
 
 export default function MotionControlPanel({ settings, onSettingsChange }: MotionControlPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
 
   const handleSliderChange = (key: keyof MotionSettings, value: number) => {
     onSettingsChange({
@@ -56,22 +55,15 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
     min,
     max,
     step,
-    description,
   }: {
     label: string
     settingKey: keyof MotionSettings
     min: number
     max: number
     step: number
-    description?: string
   }) => (
-    <div className='mb-4'>
-      <div className='flex justify-between items-center mb-2'>
-        <label className='text-sm font-medium text-gray-700'>{label}</label>
-        <span className='text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded'>
-          {settings[settingKey].toFixed(step < 1 ? 2 : 0)}
-        </span>
-      </div>
+    <div className='flex items-center gap-3 mb-3'>
+      <div className='w-20 text-xs text-gray-700 flex-shrink-0'>{label}</div>
       <input
         type='range'
         min={min}
@@ -79,9 +71,11 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
         step={step}
         value={settings[settingKey]}
         onChange={(e) => handleSliderChange(settingKey, parseFloat(e.target.value))}
-        className='w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider'
+        className='flex-1 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer slider'
       />
-      {description && <p className='text-xs text-gray-500 mt-1'>{description}</p>}
+      <div className='w-12 text-xs text-gray-500 text-right flex-shrink-0'>
+        {settings[settingKey].toFixed(step < 1 ? 2 : 0)}
+      </div>
     </div>
   )
 
@@ -90,10 +84,10 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='fixed top-0 right-4 z-[9999] bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition-colors'
-        style={{ fontSize: '18px' }}
+        className='fixed bottom-20 right-4 bg-black text-white w-12 h-12 rounded-full shadow-lg hover:bg-gray-800 transition-colors flex items-center justify-center text-lg'
+        style={{ zIndex: 10000 }}
       >
-        모션 패널
+        ⚙️
       </button>
 
       {/* Control Panel */}
@@ -105,7 +99,8 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className='fixed inset-0 bg-black bg-opacity-20 z-[9998]'
+              className='fixed inset-0 bg-black bg-opacity-30'
+              style={{ zIndex: 10001 }}
               onClick={() => setIsOpen(false)}
             />
 
@@ -115,152 +110,115 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className='fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-[9999] overflow-y-auto'
+              className='fixed right-0 top-0 h-full w-72 bg-white shadow-2xl overflow-y-auto'
+              style={{ zIndex: 10002 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className='p-6'>
+              <div className='p-4'>
                 {/* Header */}
-                <div className='flex justify-between items-center mb-6 pb-4 border-b'>
-                  <h2 className='text-xl font-bold text-gray-800'>Motion Controls</h2>
+                <div className='flex justify-between items-center mb-4 pb-3 border-b'>
+                  <h2 className='text-lg font-bold text-gray-800'>모션 설정</h2>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className='text-gray-500 hover:text-gray-700 text-2xl'
+                    className='text-gray-500 hover:text-gray-700 w-8 h-8 flex items-center justify-center'
                   >
-                    ×
+                    ✕
                   </button>
                 </div>
 
                 {/* Reset Button */}
                 <button
                   onClick={resetToDefaults}
-                  className='w-full mb-6 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors'
+                  className='w-full mb-4 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors text-sm'
                 >
-                  Reset to Defaults
+                  기본값으로 리셋
                 </button>
 
-                {/* Controls Categories */}
-                <div className='space-y-6'>
-                  {/* Basic Physics */}
+                {/* Controls */}
+                <div className='space-y-4'>
+                  {/* 기본 설정 */}
                   <div>
-                    <h3 className='text-lg font-semibold text-gray-800 mb-4'>Basic Physics</h3>
+                    <h3 className='text-sm font-semibold text-gray-800 mb-3'>기본 설정</h3>
                     <SliderControl
-                      label='Dead Zone'
+                      label='감지 최소값'
                       settingKey='deadZone'
                       min={0}
                       max={2}
                       step={0.1}
-                      description='Minimum tilt before movement starts'
                     />
                     <SliderControl
-                      label='Smoothing'
+                      label='부드러움'
                       settingKey='smoothing'
                       min={0}
                       max={1}
                       step={0.05}
-                      description='How smooth the tilt response is'
                     />
                     <SliderControl
-                      label='Position Smoothing'
+                      label='위치 부드러움'
                       settingKey='positionSmoothing'
                       min={0}
                       max={1}
                       step={0.05}
-                      description='How smooth the position changes are'
                     />
                   </div>
 
-                  {/* Acceleration */}
+                  {/* 움직임 */}
                   <div>
-                    <h3 className='text-lg font-semibold text-gray-800 mb-4'>Acceleration</h3>
+                    <h3 className='text-sm font-semibold text-gray-800 mb-3'>움직임</h3>
                     <SliderControl
-                      label='Acceleration Power'
+                      label='가속도 강도'
                       settingKey='accelerationPower'
                       min={1}
                       max={3}
                       step={0.1}
-                      description='How aggressive the acceleration curve is'
                     />
                     <SliderControl
-                      label='Acceleration Multiplier'
+                      label='움직임 속도'
                       settingKey='accelerationMultiplier'
                       min={0.001}
                       max={0.1}
                       step={0.001}
-                      description='Overall movement speed multiplier'
                     />
                   </div>
 
-                  {/* Visual Effects */}
+                  {/* 시각 효과 */}
                   <div>
-                    <h3 className='text-lg font-semibold text-gray-800 mb-4'>Visual Effects</h3>
+                    <h3 className='text-sm font-semibold text-gray-800 mb-3'>시각 효과</h3>
                     <SliderControl
-                      label='Tilt Rotation'
+                      label='회전 정도'
                       settingKey='tiltRotationMultiplier'
                       min={0}
                       max={5}
                       step={0.1}
-                      description='How much the squares rotate with tilt'
                     />
                     <SliderControl
-                      label='Base Gap'
-                      settingKey='baseGap'
-                      min={0}
-                      max={1}
-                      step={0.05}
-                      description='Initial gap between layers'
-                    />
-                    <SliderControl
-                      label='Spring Gap'
+                      label='레이어 간격'
                       settingKey='springGapMultiplier'
                       min={0}
                       max={0.5}
                       step={0.01}
-                      description='How much layers separate when tilting'
                     />
-                  </div>
-
-                  {/* Layer Movement */}
-                  <div>
-                    <h3 className='text-lg font-semibold text-gray-800 mb-4'>Layer Movement</h3>
                     <SliderControl
-                      label='Layer Movement'
+                      label='레이어 차이'
                       settingKey='layerMovementMultiplier'
                       min={0}
                       max={0.2}
                       step={0.01}
-                      description='How much each layer moves differently'
                     />
                     <SliderControl
-                      label='Offset X'
+                      label='가로 오프셋'
                       settingKey='offsetXMultiplier'
                       min={0}
                       max={3}
                       step={0.1}
-                      description='Horizontal offset strength'
                     />
                     <SliderControl
-                      label='Offset Y'
+                      label='세로 오프셋'
                       settingKey='offsetYMultiplier'
                       min={0}
                       max={3}
                       step={0.1}
-                      description='Vertical offset strength'
                     />
-                  </div>
-                </div>
-
-                {/* Current Values Display */}
-                <div className='mt-8 p-4 bg-gray-50 rounded-lg'>
-                  <h4 className='font-semibold text-gray-800 mb-2'>Current Settings</h4>
-                  <div className='text-xs text-gray-600 space-y-1'>
-                    <div className='grid grid-cols-2 gap-2'>
-                      {Object.entries(settings).map(([key, value]) => (
-                        <div key={key} className='flex justify-between'>
-                          <span>{key}:</span>
-                          <span>{typeof value === 'number' ? value.toFixed(3) : value}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 </div>
               </div>
@@ -272,16 +230,16 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
           background: #222222;
           cursor: pointer;
         }
 
         .slider::-moz-range-thumb {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
           background: #222222;
           cursor: pointer;
@@ -289,14 +247,14 @@ export default function MotionControlPanel({ settings, onSettingsChange }: Motio
         }
 
         .slider::-webkit-slider-track {
-          height: 8px;
-          border-radius: 4px;
+          height: 4px;
+          border-radius: 2px;
           background: #e5e7eb;
         }
 
         .slider::-moz-range-track {
-          height: 8px;
-          border-radius: 4px;
+          height: 4px;
+          border-radius: 2px;
           background: #e5e7eb;
           border: none;
         }
