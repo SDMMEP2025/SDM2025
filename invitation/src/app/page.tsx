@@ -118,7 +118,7 @@ export default function Page() {
           </AnimatePresence>
         </div>
         
-        <div className="absolute z-10 bottom-0 w-full">
+        <div className="mix-blend-difference absolute z-10 bottom-0 w-full">
           <Footer />
         </div>
       </div>

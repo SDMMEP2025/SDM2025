@@ -85,6 +85,7 @@ const LottieBackground = ({
         padding: 0,
         overflow: 'hidden',
         zIndex: 0,
+        mixBlendMode: 'difference',
         ...style
       }}
     />
