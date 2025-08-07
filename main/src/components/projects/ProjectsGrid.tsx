@@ -1,3 +1,5 @@
+//ProjectGrid.tsx
+
 'use client'
 import { ProjectCard } from '@/components/projects/ProjectCard'
 import { useState } from 'react'
@@ -5,7 +7,10 @@ import { useState } from 'react'
 interface Project {
   id: string
   title: string
-  thumbnail: string
+  thumbnail: {
+    pc: string
+    mobile: string
+  }
 }
 
 export default function ProjectsGrid() {
@@ -15,53 +20,80 @@ export default function ProjectsGrid() {
     {
       id: 'cruise',
       title: 'Cruise',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'silmul',
       title: 'Silmul',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'potrik',
       title: 'Potrik',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'newbe',
       title: 'Newbe',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'layon',
       title: 'Lay.On',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'hotcake',
       title: 'Hotcake',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'merlin',
       title: 'Merlin',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'autonomy-practice',
       title: 'Autonomy Practice',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
     {
       id: 'mizi',
       title: 'Mizi',
-      thumbnail: '/images/projects/test.png',
+      thumbnail: {
+        pc: '/images/projects/test.png',
+        mobile: '/images/projects/test-m.png',
+      },
     },
   ]
 
   return (
     <>
-      <div className='w-full flex-1 min-h-0 px-[16px] md:px-[40px] lg:px-[48px] relative'>
+      <div className='w-full mb-[20px] px-[16px] md:px-[40px] lg:px-[48px] '>
         <ProjectCard projects={projects} index={expandedIndex} setIndex={setExpandedIndex} />
       </div>
     </>
