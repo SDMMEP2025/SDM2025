@@ -38,13 +38,13 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   const getHeightStyles = () => {
     if (index === undefined) {
       return {
-        '--desktop-height': `calc((100vw - 140px) * ${desktopImageRatio} * ${expandedDesktop / 100})`,
+        '--desktop-height': `calc((100vw - 230px) * ${desktopImageRatio} * ${expandedDesktop / 100})`,
         '--mobile-height': `calc((100vh - 32px) * ${mobileImageRatio} * ${expandedMobile / 100} + ${total - 1} * ${collapsedItemHeight}px)`,
         '--tablet-height': `calc((100vh - 80px) * ${mobileImageRatio} * ${expandedMobile / 100} + ${total - 1} * ${collapsedItemHeightTablet}px)`,
       }
     }
 
-    const desktopHeight = `calc((100vw - 160px) * ${expandedDesktop / 100} * ${desktopImageRatio})`
+    const desktopHeight = `calc((100vw - 230px) * ${expandedDesktop / 100} * ${desktopImageRatio})`
 
     const expandedMobileHeight = `calc((100vh - 32px) * ${mobileImageRatio})`
     const collapsedItemsHeight = `calc(${total - 1} * ${collapsedItemHeight}px)`
