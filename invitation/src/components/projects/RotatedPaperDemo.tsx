@@ -24,8 +24,8 @@ export function RotatedPaper({ className = '', isMobile = false }) {
       className={`
       w-[388.0000151880226px] h-[65dvh] ${isMobile ? 'bg-white' : 'bg-white'} rounded-lg
       md:w-[640.7787222419632px] md:h-[690.6728853097492px]
-      landscape:md:w-[880.0000262670924px] landscape:md:h-[537.9999787440715px]
-      lg:w-[880.0000262670924px] lg:h-[537.9999787440715px]
+      md-landscape:w-[880.0000262670924px] md-landscape:h-[537.9999787440715px]
+      lg:w-[60vw] lg:h-[65dvh]
       ${className}
     `}
     ></div>
@@ -302,11 +302,11 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         </div>
       )}
 
-      <div className='fixed inset-0 flex items-center justify-center z-[100] overflow-hidden'>
+      <div className='fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-[100]'>
         <div className='relative transform -rotate-6'>
           <RotatedPaper isMobile={isMobile} />
           <div className='absolute inset-0 flex flex-col items-center justify-center pr-8 pl-8 gap-[71px] md:gap-[82px] lg:gap-[88px] text-black z-[110] transform rotate-6'>
-            <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[22px]'>
+            <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[1.5vw]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
               <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
               <p>
@@ -314,10 +314,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 소중한 발걸음으로 자리를 빛내주세요.
               </p>
             </div>
-            <div className='inline-flex flex-col justify-center items-center gap-3 text-[17px] md:text-[18px]'>
+            <div className='inline-flex flex-col justify-center items-center gap-3'>
               <button
                 onClick={onDirectionsClick}
-                className='text-zinc-600 text-base lg:text-lg font-medium underline leading-relaxed hover:text-zinc-800 transition-colors'
+                className='text-zinc-600 text-base text-[17px] md:text-[18px] lg:text-[1.23vw] font-medium underline leading-relaxed hover:text-zinc-800 transition-colors'
               >
                 오시는 길
               </button>
@@ -325,7 +325,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 href='https://www.newformative.com/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='text-zinc-600 text-base lg:text-lg font-medium underline leading-relaxed hover:text-zinc-800 transition-colors'
+                className='text-zinc-600 text-base text-[17px] md:text-[18px] lg:text-[1.23vw] font-medium underline leading-relaxed hover:text-zinc-800 transition-colors'
               >
                 웹사이트 보러가기
               </a>
@@ -347,15 +347,15 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
           <div className='pointer-events-auto'>
             <div className='bg-white/95 backdrop-blur-sm rounded-[10px] p-6 shadow-2xl text-center max-w-xs'>
               <div className='mb-4'>
-                <div className='w-16 h-16 mx-auto mb-3 bg-[#222222] rounded-full flex items-center justify-center'>
+                <div className='w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center'>
                   <img src='/images/icon.svg' alt='Icon' className='w-12 h-12' />
                 </div>
                 <h3 className='text-lg font-semibold text-gray-800 mb-2'>움직임 효과 활성화</h3>
-                <p className='text-sm text-gray-600'>기기를 기울여 배경과 상호작용해보세요</p>
+                <p className='text-sm text-gray-600'>기기를 기울여 배경을 움직여보세요</p>
               </div>
               <button
                 onClick={requestGyroPermission}
-                className='w-full bg-[#222222] text-white py-3 px-6 rounded-[10px] font-medium hover:from-pink-600 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105 active:scale-95'
+                className='w-full bg-[#222222] text-white py-3 px-6 rounded-[500px] font-medium hover:from-pink-600 hover:to-yellow-600 transition-all duration-200 transform hover:scale-105 active:scale-95'
               >
                 활성화하기
               </button>

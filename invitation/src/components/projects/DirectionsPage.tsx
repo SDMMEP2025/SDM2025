@@ -42,16 +42,16 @@ export default function DirectionsPage({ onBackClick }) {
 
   return (
     <div className='absolute top-0 h-[100dvh] w-[100vw] flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
-      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[] md:gap-[83px] md:landscape:gap-[75px] lg:gap-[69px]'>
+      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[] md:gap-[83px] md-landscape:gap-[75px] lg:gap-[8.36dvh]'>
         <h1 className='justify-center text-neutral-800 text-xl font-medium leading-loose'>Directions</h1>
 
-        <div className='flex flex-col gap-[40px] md:gap-[74px] md:landscape:gap-[82px] lg:gap-[66px]'>
+        <div className='flex flex-col gap-[40px] md:gap-[74px] md:landscape:gap-[8.03dvh] lg:gap-[66px]'>
           <img src='/images/map.svg' className='block md:hidden' />
           <img src='/images/map-md.svg' className='hidden md:block lg:hidden landscape:hidden' />
           <img src='/images/map-landscape.svg' className='hidden landscape:md:block landscape:lg:hidden' />
           <img src='/images/map-lg.svg' className='hidden lg:block' />
 
-          <div className='flex flex-col justify-start items-center gap-3'>
+          <div className='flex flex-col justify-start items-center gap-[0.145dvh]'>
             <button
               onClick={handleCopyAddress}
               className='flex items-center gap-2 w-fit justify-center p-2 transition-colors duration-200'
