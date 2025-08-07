@@ -11,8 +11,7 @@ export function ProjectCard({ projects, setIndex, index }) {
   const [isClient, setIsClient] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
-  // 이미지 비율
-  const desktopImageRatio = 977 / 710
+  const desktopImageRatio = 1920 / 1080
   const tabletImageRatio = 666 / 486
   const mobileImageRatio = 358 / 446
 
