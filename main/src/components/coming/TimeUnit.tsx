@@ -14,8 +14,7 @@ export default function TimeUnit({ value, className = '' }: TimeUnitProps) {
   return (
     <div className={`relative flex text-neutral-800 font-english font-normal font-bold tracking-[-0.02em] ${className}`}>
       {digits.map((digit, index) => {
-        // 일의 자리(index 1)가 먼저 애니메이션되고, 십의 자리(index 0)가 나중에 애니메이션되도록 지연시간 설정
-        const delay = index === 0 ? 0.1 : 0
+        const delay = index === 0 ? 0.5 : 0
 
         return (
           <div
