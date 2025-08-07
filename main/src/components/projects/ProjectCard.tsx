@@ -85,7 +85,7 @@ export function ProjectCard({ projects, setIndex, index }) {
     )
   }
 
-  const collapsedItemWidthDesktop = 100 // px 단위, 원하는 너비로 조정 가능
+  const collapsedItemWidthDesktop = 60 // px 단위, 원하는 너비로 조정 가능
   const collapsedItemWidthTablet = 100 // px 단위, 원하는 너비로 조정 가능
   const collapsedItemHeightMobile = 60 // px 단위, 원하는 높이로 조정 가능
 
@@ -257,7 +257,7 @@ export function ProjectCard({ projects, setIndex, index }) {
                   'top-auto md:top-auto md-landscape:top-5 lg:top-5',
                   'bottom-3 md:bottom-3 md-landscape:bottom-auto lg:bottom-auto',
                   'left-3 md:left-3 md-landscape:left-auto lg:left-auto',
-                  'right-auto md:right-auto md-landscape:right-6 lg:right-6',
+                  'right-auto md:right-auto md-landscape:right-6 lg:right-2',
                   index === i ? 'text-white mr-0' : 'text-zinc-600',
                 )}
               >

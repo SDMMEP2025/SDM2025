@@ -93,7 +93,7 @@ export default function ProjectsGrid() {
 
   return (
     <>
-      <div className='w-full flex-1 min-h-0 px-[16px] md:px-[40px] lg:px-[48px] lg:pb-[30px] relative'>
+      <div className='w-full flex-1 min-h-0 px-[16px] mb-[58px] md:px-[40px] md:mb-[90px] md-landscape:mb-[56px] lg:mb-0 lg:px-[48px] lg:pb-[30px] relative'>
         <ProjectCard projects={projects} index={expandedIndex} setIndex={setExpandedIndex} />
       </div>
     </>
