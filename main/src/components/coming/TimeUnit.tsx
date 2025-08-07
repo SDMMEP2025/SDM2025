@@ -19,7 +19,7 @@ export default function TimeUnit({ value, className = '' }: TimeUnitProps) {
         return (
           <div
             key={index}
-            className={`relative flex w-[12vw] md-landscape-coming:w-[9vw] lg:w-[9vw] text-[22vw] md-landscape-coming:text-[17vw] lg:text-[17vw] p-0 m-0 ${index === 1 ? 'mr-[20%] md:mr-[20%] md-landscape-coming:ml-[10%] lg:ml-[10%] xl:ml-[10%]' : ''}`}
+            className={`relative flex w-[12vw] md-landscape-coming:w-[9vw] lg:w-[45%] text-[22vw] md-landscape-coming:text-[17vw] lg:text-[17vw] p-0 m-0 ${index === 1 ? '' : ''}`}
           >
             {' '}
             <AnimatePresence mode='wait'>

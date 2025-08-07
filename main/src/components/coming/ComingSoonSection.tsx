@@ -89,11 +89,11 @@ export default function ComingSoonSection() {
           >
             <div className='px-[22dvh] h-[35dvw] md-landscape-coming:h-[20dvw] lg:h-[18dvw] md-landscape-coming:px-[24px] lg:px-[27px] pt-20 flex w-full md:w-full items-center justify-center '>
               <TimeUnit value={days} className='flex-1' />
-              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:w-[2vw]' />
+              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:mx-[1vw] lg:w-[2vw]' />
               <TimeUnit value={hours} className='flex-1' />
-              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:w-[2vw]' />
+              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:mx-[1vw] lg:w-[2vw]' />
               <TimeUnit value={minutes} className='flex-1' />
-              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:w-[2vw]' />
+              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:mx-[1vw] lg:w-[2vw]' />
               <TimeUnit value={seconds} className='flex-1' />
             </div>
             <div className='h-[50dvw] md-landscape-coming:h-[50dvh] lg:h-[50dvh] z-10'>
