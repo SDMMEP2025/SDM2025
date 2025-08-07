@@ -1,106 +1,160 @@
 'use client'
 import Link from 'next/link'
-import { AnimatePresence, motion } from 'framer-motion'
-import { SetStateAction, useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
 
-interface Project {
-  id: string
-  title: string
-  thumbnail: {
-    pc: string
-    mobile: string
-  }
-}
-
-interface ProjectCardProps {
-  projects: Project[]
-  setIndex: React.Dispatch<SetStateAction<number | undefined>>
-  index: number | undefined
-}
-
-export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
+export function ProjectCard({ projects, setIndex, index }) {
   const total = projects.length
+  const boundingBox = useRef<HTMLDivElement>(null)
+  const [boundingBoxWidth, setBoundingBoxWidth] = useState(0)
+  const [isClient, setIsClient] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  const desktopImageRatio = 710 / 977
-  const mobileImageRatio = 446 / 358
+  // 이미지 비율
+  const desktopImageRatio = 977 / 710
+  const tabletImageRatio = 666 / 486
+  const mobileImageRatio = 358 / 446
 
-  const expandedDesktop = 69.76
-  const collapsedDesktop = (100 - expandedDesktop) / (total - 1)
-  const expandedMobile = 47.76
-  const collapsedMobile = (100 - expandedMobile) / (total - 1)
+  // 클라이언트 사이드에서만 실행되도록 보장
+  useEffect(() => {
+    setIsClient(true)
+    
+    // 모바일 디바이스 감지
+    const checkIfMobile = () => {
+      const isMobileDevice = window.innerWidth < 768 // md 브레이크포인트
+      setIsMobile(isMobileDevice)
+    }
+    
+    checkIfMobile()
+    window.addEventListener('resize', checkIfMobile)
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile)
+    }
+  }, [])
 
-  const desktopCols = projects.map((_, i) => (index === i ? `${expandedDesktop}%` : `${collapsedDesktop}%`)).join(' ')
-  const mobileRows = projects.map((_, i) => (index === i ? `${expandedMobile}%` : `${collapsedMobile}%`)).join(' ')
-
-  const collapsedItemHeight = 30
-  const collapsedItemHeightTablet = 0 // 타블렛용 높이를 50px로 조정
-
-  const getHeightStyles = () => {
-    if (index === undefined) {
-      return {
-        '--desktop-height': `calc((100vw - 230px) * ${desktopImageRatio} * ${expandedDesktop / 100})`,
-        '--mobile-height': `calc((100vh - 32px) * ${mobileImageRatio} * ${expandedMobile / 100} + ${total - 1} * ${collapsedItemHeight}px)`,
-        '--tablet-height': `calc((100vh - 80px) * ${mobileImageRatio} * ${expandedMobile / 100} + ${total - 1} * ${collapsedItemHeightTablet}px)`,
+  // boundingBox 크기를 추적
+  useEffect(() => {
+    const updateWidth = () => {
+      if (boundingBox.current) {
+        const width = boundingBox.current.getBoundingClientRect().width
+        setBoundingBoxWidth(width)
       }
     }
 
-    const desktopHeight = `calc((100vw - 230px) * ${expandedDesktop / 100} * ${desktopImageRatio})`
+    // 초기 크기 설정
+    updateWidth()
 
-    const expandedMobileHeight = `calc((100vh - 32px) * ${mobileImageRatio})`
-    const collapsedItemsHeight = `calc(${total - 1} * ${collapsedItemHeight}px)`
-    const mobileHeight = `calc(${expandedMobileHeight} + ${collapsedItemsHeight})`
-    
-    // 타블렛 높이 계산 수정 - 80px 패딩과 더 큰 collapsed 높이 적용
-    const expandedTabletHeight = `calc((100vh - 80px) * ${mobileImageRatio})`
-    const collapsedItemsHeightTablet = `calc(${total - 1} * ${collapsedItemHeightTablet}px)`
-    const tabletHeight = `calc(${expandedTabletHeight} + ${collapsedItemsHeightTablet})`
+    // 윈도우 리사이즈 시 크기 업데이트
+    window.addEventListener('resize', updateWidth)
 
-    return {
-      '--desktop-height': desktopHeight,
-      '--mobile-height': mobileHeight,
-      '--tablet-height': tabletHeight,
+    // 이미지 로딩 완료 후에도 크기 재계산 (폰트 로딩이나 다른 요소들 때문에)
+    const timer = setTimeout(updateWidth, 100)
+
+    return () => {
+      window.removeEventListener('resize', updateWidth)
+      clearTimeout(timer)
     }
+  }, [])
+
+  // 모바일에서 터치 핸들러
+  const handleMobileTouch = (e: React.MouseEvent, i: number) => {
+    if (!isMobile) return true // 모바일이 아니면 기본 동작
+
+    e.preventDefault() // 기본 링크 동작 방지
+    
+    if (index === i) {
+      // 이미 펼쳐진 상태라면 상세 페이지로 이동
+      window.location.href = `/projects/${projects[i].id}`
+    } else {
+      // 펼쳐지지 않은 상태라면 펼치기
+      setIndex(i)
+    }
+    
+    return false
   }
 
-  return (
-    <div
-      className={`
-        w-full
-        overflow-hidden relative
-        grid
-        transition-all
-        duration-500 ease-in-out
-        justify-between
-        grid-cols-1
-        [grid-template-rows:var(--mobile-rows)]
-        h-[var(--mobile-height)]
-        
-        md:grid-cols-1
-        md:[grid-template-rows:var(--mobile-rows)]
-        md:h-[var(--tablet-height)]
+  // SSR 방지 및 너비가 설정되기 전까지 렌더링 방지
+  if (!isClient || boundingBoxWidth === 0) {
+    return (
+      <div ref={boundingBox} className='w-full h-96 flex items-center justify-center'>
+        {/* 로딩 상태 또는 최소 높이 유지 */}
+        <div className='w-full h-full bg-gray-100 animate-pulse rounded'></div>
+      </div>
+    )
+  }
 
-        md-landscape:grid-rows-1
-        md-landscape:[grid-template-columns:var(--desktop-cols)]
-        md-landscape:h-[var(--desktop-height)]
-        lg:grid-rows-1
-        lg:[grid-template-columns:var(--desktop-cols)]
-        lg:h-[var(--desktop-height)]
-      `}
+  const collapsedItemWidthDesktop = 100 // px 단위, 원하는 너비로 조정 가능
+  const collapsedItemWidthTablet = 100 // px 단위, 원하는 너비로 조정 가능
+  const collapsedItemHeightMobile = 60 // px 단위, 원하는 높이로 조정 가능
+
+  // 확장된 항목의 너비 계산
+  const expandedWidthDesktop = boundingBoxWidth - collapsedItemWidthDesktop * (total - 1)
+  const expandedWidthTablet = boundingBoxWidth - collapsedItemWidthTablet * (total - 1)
+
+  // 확장된 항목의 높이 계산
+  const expandedHeightMobile = boundingBoxWidth / mobileImageRatio
+
+  //pc,tablet
+  const desktopHeight = `${expandedWidthDesktop / desktopImageRatio}px`
+  const tabletHeight = `${expandedWidthTablet / tabletImageRatio}px`
+
+  const desktopCols = projects
+    .map((_, i) => (index === i ? `${expandedWidthDesktop}px` : `${collapsedItemWidthDesktop}px`))
+    .join(' ')
+
+  const tabletCols = projects
+    .map((_, i) => (index === i ? `${expandedWidthTablet}px` : `${collapsedItemWidthTablet}px`))
+    .join(' ')
+
+  //mobile
+  const mobileRows = projects
+    .map((_, i) => (index === i ? `${expandedHeightMobile}px` : `${collapsedItemHeightMobile}px`))
+    .join(' ')
+
+  return (
+    <motion.div
+      ref={boundingBox}
       style={
         {
           '--desktop-cols': desktopCols,
+          '--tablet-cols': tabletCols,
+          '--desktop-height': desktopHeight,
+          '--tablet-height': tabletHeight,
           '--mobile-rows': mobileRows,
-          ...getHeightStyles(),
         } as React.CSSProperties
       }
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      layout
+      id='projects-grid'
+      className={classNames(
+        'w-full grid',
+        'transition-all duration-500 ease-in-out',
+        // grid-rows 설정
+        'grid-rows-[var(--mobile-rows)]',
+        'md:grid-rows-[var(--mobile-rows)]',
+        'md-landscape:grid-rows-1',
+        'lg:grid-rows-1',
+        // grid-cols 설정
+        'grid-cols-1',
+        'md:grid-cols-1',
+        'md-landscape:grid-cols-[var(--tablet-cols)]',
+        'lg:grid-cols-[var(--desktop-cols)]',
+        // height 설정
+        'h-fit',
+        'md:h-fit',
+        'md-landscape:h-full',
+        'lg:h-[calc(100dvh-7.5rem)]'
+      )}
     >
       {projects.map((project, i) => {
         const isExpanded = index === i
-        const isNextToExpanded = index !== undefined && index + 1 === i
-        const isPreviousToExpanded = index !== undefined && index - 1 === i
-
-        const collapsedItemHeightMobile = 30
-        const collapsedItemHeightTablet = 50 // 타블렛에서 50px 높이
+        const isNextToExpanded = index !== undefined && index + 1 === i // 다음 항목이 확장된 경우
+        const isPreviousToExpanded = index !== undefined && index - 1 === i // 이전 항목이 확장된 경우
 
         const getBorderClasses = () => {
           if (isExpanded) {
@@ -109,87 +163,110 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
 
           let classes = 'border-stone-300'
 
+          // 기본: border-b (모바일에서 bottom border)
           classes += ' border-b'
 
+          // md (태블릿 세로)에서의 처리 - portrait일 때만 적용
           if (isPreviousToExpanded) {
-            classes += ' md:max-md-landscape:border-none'
+            classes += ' '
           } else {
-            classes += ' md:max-md-landscape:border-b md:max-md-landscape:border-t-0 md:max-md-landscape:border-l-0'
+            classes +=
+              ' md:border-b md:border-t-0 md:border-l-0 md-landscape:border-b-0 md-landscape:border-t-0 md-landscape:border-l'
           }
 
+          // md-landscape (태블릿 가로)에서의 처리
           if (isNextToExpanded) {
-            classes += ' md-landscape:border-none lg:border-none'
+            classes += ' md-landscape:border-none'
           } else {
-            classes += ' md-landscape:border-b-0 md-landscape:border-l lg:border-b-0 lg:border-l'
+            classes += ' md-landscape:border-b-0 md-landscape:border-l'
+          }
+
+          // lg (데스크톱)에서의 처리
+          if (isNextToExpanded) {
+            classes += ' lg:border-none'
+          } else {
+            classes += ' lg:border-b-0 lg:border-l'
           }
 
           return classes
         }
 
-        const getItemHeightClass = () => {
-          if (isExpanded) {
-            return `
-              h-full
-              md:h-full
-              md-landscape:h-full
-              lg:h-full
-            `
+        // 모바일에서는 조건부로 Link 래핑
+        const LinkWrapper = ({ children }) => {
+          if (isMobile) {
+            // 모바일에서는 div로 래핑하고 onClick 핸들러 사용
+            return (
+              <div
+                className={`cursor-pointer w-full h-full block`}
+                onClick={(e) => handleMobileTouch(e, i)}
+                onTouchStart={() => {}} // 터치 반응성을 위한 빈 핸들러
+              >
+                {children}
+              </div>
+            )
           } else {
-            return `
-              h-[${collapsedItemHeightMobile}px]
-              md:h-[${collapsedItemHeightTablet}px]
-              md-landscape:h-full
-              lg:h-full
-            `
+            // 데스크톱/태블릿에서는 기존 Link 동작 유지
+            return (
+              <Link
+                href={`/projects/${project.id}`}
+                className={`cursor-pointer w-full h-full block`}
+                onMouseEnter={() => setIndex(i)}
+                onClick={() => setIndex(i)}
+              >
+                {children}
+              </Link>
+            )
           }
         }
 
         return (
-          <div
-            key={project.id}
-            className={`relative cursor-pointer ${getBorderClasses()} ${getItemHeightClass()}`}
-            onMouseEnter={() => setIndex(i)}
-            onClick={() => setIndex(i)}
-          >
-            <Link href={`/projects/${project.id}`} aria-label={project.title}>
+          <div className={`w-full overflow-x-hidden relative  ${getBorderClasses()}`} key={project.id}>
+            <LinkWrapper>
               <motion.div
-                className={`w-full h-full absolute origin-center bg-cover bg-center opacity-${isExpanded ? '100' : '0'} transition-all duration-500
-              flex-shrink-0 origin-center object-clip `}
+                className='w-full h-full relative overflow-hidden'
+                style={{
+                  aspectRatio: desktopImageRatio,
+                }}
               >
                 <motion.img
-                  src={project?.thumbnail.mobile}
-                  className={`w-full rounded-[5px] h-full object-cover block md:hidden`}
+                  src={project.thumbnail.pc}
+                  alt={project.title}
+                  style={{
+                    opacity: i === index ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className='absolute inset-0 h-full w-full object-cover'
                 />
-                <motion.img
-                  src={project?.thumbnail.pc}
-                  className={`w-full rounded-[5px] h-full object-cover hidden md:block`}
-                />
+                
+                {isMobile && isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.3 }}
+                    className="absolute bottom-2 text-[24px] text-white right-1 p-2"
+                  >
+                    →
+                  </motion.div>
+                )}
               </motion.div>
+              
               <motion.h3
-                className={`
-              absolute font-semibold whitespace-nowrap transition-all duration-300
-              text-2xl lg:text-3xl md:text-[22px] [writing-mode:horizontal-tb] md:[writing-mode:horizontal-tb] md-landscape:[writing-mode:vertical-rl] lg:[writing-mode:vertical-rl]
-              ${isExpanded 
-                ? 'top-5 md:top-3 md-landscape:top-5 lg:top-5' 
-                : 'top-5 md:top-3 md-landscape:top-5 lg:top-5'
-              }
-              bottom-auto
-              left-3 md-landscape:left-auto
-              right-auto md:right-[0.6vw] md-landscape:right-[0.35vw] lg:right-[0.4vw]
-              ${index === i ? 'text-white mr-0' : 'text-zinc-600'}
-            `}
+                className={classNames(
+                  'absolute font-semibold whitespace-nowrap transition-all duration-300',
+                  'text-2xl lg:text-3xl md:text-xl [writing-mode:horizontal-tb] md:[writing-mode:horizontal-tb] md-landscape:[writing-mode:vertical-rl] lg:[writing-mode:vertical-rl]',
+                  'top-auto md:top-auto md-landscape:top-5 lg:top-5',
+                  'bottom-3 md:bottom-3 md-landscape:bottom-auto lg:bottom-auto',
+                  'left-3 md:left-3 md-landscape:left-auto lg:left-auto',
+                  'right-auto md:right-auto md-landscape:right-6 lg:right-6',
+                  index === i ? 'text-white mr-0' : 'text-zinc-600',
+                )}
               >
                 {project.title}
               </motion.h3>
-              <motion.button className='block lg:hidden absolute bottom-[2vh] md:bottom-[2vh] text-white right-3 z-10 hover:opacity-70 transition-all duration-300'>
-                <svg xmlns='http://www.w3.org/2000/svg' className='w-5 h-5' viewBox='0 0 16 15' fill='currentColor'>
-                  <path d='M9.30741 14.4639L7.78994 12.8917L9.58033 11.0098C9.9879 10.5814 10.3991 10.1682 10.814 9.77042C11.2361 9.36496 11.5527 9.0666 11.7637 8.87534L12.0803 8.58846C11.1124 8.68791 9.98063 8.73764 8.68514 8.73764H0.966797L0.966797 6.16715H8.68514C9.2601 6.16715 9.83143 6.18245 10.3991 6.21305C10.9668 6.24365 11.3889 6.27425 11.6655 6.30485L12.0803 6.33928C11.338 5.68135 10.5046 4.87425 9.58033 3.91797L7.81178 2.036L9.32924 0.463867L15.9668 7.46387L9.30741 14.4639Z' />
-                </svg>
-              </motion.button>
-            </Link>
+            </LinkWrapper>
           </div>
         )
       })}
-    </div>
+    </motion.div>
   )
 }

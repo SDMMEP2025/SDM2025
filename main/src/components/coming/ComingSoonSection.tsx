@@ -44,7 +44,7 @@ export default function ComingSoonSection() {
   const seconds = secondsLeft % 60
 
   return (
-    <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black overflow-hidden relative'>
+    <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative'>
       <div className='flex flex-col items-center bottom-0 '>
         <div className='flex flex-col top-1/2 justify-center items-center'>
           <div className='
