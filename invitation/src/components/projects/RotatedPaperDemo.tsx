@@ -9,7 +9,13 @@ declare global {
   }
 }
 
-type OrientationLockType = 'portrait' | 'landscape' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary'
+type OrientationLockType =
+  | 'portrait'
+  | 'landscape'
+  | 'portrait-primary'
+  | 'portrait-secondary'
+  | 'landscape-primary'
+  | 'landscape-secondary'
 
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void
@@ -32,7 +38,12 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   )
 }
 
-export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors, onMotionPanelToggle }: RotatedPaperDemoProps) {
+export default function RotatedPaperDemo({
+  onDirectionsClick,
+  displayName,
+  squareColors,
+  onMotionPanelToggle,
+}: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
     '#FF79B3',
@@ -141,7 +152,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         if ((screen.orientation as any)?.lock && currentOrientation) {
           await (screen.orientation as any).lock(currentOrientation as OrientationLockType)
         }
-
       } catch (error) {
         const isPortrait = window.innerHeight > window.innerWidth
         setInitialOrientation(isPortrait ? 'portrait' : 'landscape')
@@ -155,7 +165,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => {
       try {
         if ((screen.orientation as any)?.unlock) {
-          (screen.orientation as any).unlock()
+          ;(screen.orientation as any).unlock()
         }
       } catch (error) {
         // 에러 무시
@@ -212,31 +222,44 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
-        const rawTilt = orientation.gamma / 4
+        const { beta, gamma } = orientation
 
-        const tiltValue = Math.abs(rawTilt) < motionSettings.deadZone ? 0 : rawTilt
+        const rawTiltX = gamma / 4 //좌우
+        const rawTiltY = beta / 4 //상하
 
-        const smoothedTilt = prevPhysics.tilt * motionSettings.smoothing + tiltValue * (1 - motionSettings.smoothing)
+        const tiltX = Math.abs(rawTiltX) < motionSettings.deadZone ? 0 : rawTiltX
+        const tiltY = Math.abs(rawTiltY) < motionSettings.deadZone ? 0 : rawTiltY
 
-        const finalTilt = Math.abs(smoothedTilt) < 0.1 ? 0 : smoothedTilt
+        const smoothedTiltX = prevPhysics.velocityX * motionSettings.smoothing + tiltX * (1 - motionSettings.smoothing)
+        const smoothedTiltY = prevPhysics.velocityY * motionSettings.smoothing + tiltY * (1 - motionSettings.smoothing)
 
-        const baseTilt = Math.abs(finalTilt)
+        const finalTiltX = Math.abs(smoothedTiltX) < 0.1 ? 0 : smoothedTiltX
+        const finalTiltY = Math.abs(smoothedTiltY) < 0.1 ? 0 : smoothedTiltY
 
-        const acceleratedMovement = baseTilt === 0 ? 0 : baseTilt ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
+        const accelerationX =
+          finalTiltX === 0
+            ? 0
+            : Math.abs(finalTiltX) ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
+        const accelerationY =
+          finalTiltY === 0
+            ? 0
+            : Math.abs(finalTiltY) ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
 
-        const maxMovement = Math.min(screenSize.width, screenSize.height) * acceleratedMovement
-        const moveX = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 22.5
-        const moveY = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 30
+        const maxMovement = Math.min(screenSize.width, screenSize.height)
+        const moveX = finalTiltX === 0 ? 0 : (finalTiltX * maxMovement * accelerationX) / 22.5
+        const moveY = finalTiltY === 0 ? 0 : (finalTiltY * maxMovement * accelerationY) / 30
 
-        const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
-        const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
+        const smoothedX =
+          prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
+        const smoothedY =
+          prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
 
         return {
-          velocityX: 0,
-          velocityY: 0,
+          velocityX: finalTiltX,
+          velocityY: finalTiltY,
           positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX,
           positionY: Math.abs(smoothedY) < 0.1 ? 0 : smoothedY,
-          tilt: finalTilt,
+          tilt: finalTiltX,
         }
       })
 
@@ -265,7 +288,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const tiltRotation = -physics.tilt * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                const springGap = motionSettings.baseGap + Math.abs(physics.tilt) ** 2 * motionSettings.springGapMultiplier
+                const springGap =
+                  motionSettings.baseGap + Math.abs(physics.tilt) ** 2 * motionSettings.springGapMultiplier
                 const layerOffset = i * springGap
 
                 const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
