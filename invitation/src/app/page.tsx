@@ -11,11 +11,11 @@ import backgroundAnimation from '@/animation/main.json'
 
 export default function Page() {
   const [showDirections, setShowDirections] = useState(false)
-  const [displayName, setDisplayName] = useState('김삼성') // 기본값
+  const [displayName, setDisplayName] = useState('김삼성') 
   const [isMobile, setIsMobile] = useState(false)
-  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false) // 추가
+  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false) 
+  const [isGyroPopupVisible, setIsGyroPopupVisible] = useState(false)
 
-  // 모바일 기기 감지
   useEffect(() => {
     const checkIfMobile = () => {
       const userAgent = navigator.userAgent
@@ -39,8 +39,8 @@ export default function Page() {
       setDisplayName(decodedName)
     }
   }, [])
-
-  // URL 변경 시 실시간 업데이트를 위한 이벤트 리스너
+  
+  
   useEffect(() => {
     const handleURLChange = () => {
       const urlParams = new URLSearchParams(window.location.search)
@@ -64,72 +64,57 @@ export default function Page() {
 
   return (
     <>
-      <>
-        {/* CSS로 모달이 있을 때 푸터 z-index 낮추기 */}
-        <style jsx global>{`
-          /* 모달이 있을 때 모든 요소 z-index 조정 */
-          body:has(.motion-modal) .footer-container {
-            z-index: -1;
-          }
-
-          /* 또는 모달 자체의 z-index를 매우 높게 설정 */
-          .motion-modal {
-            z-index: 9999 !important;
-          }
-        `}</style>
-
-        <div
-          className='overflow-hidden relative'
-          style={{
-            width: '100vw',
-            height: '100vh',
-            margin: 0,
-            padding: 0,
-            position: 'fixed',
-            top: 0,
-            left: 0,
-          }}
-        >
-          {!isMobile && (
-            <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} rotateOnMobile={true} />
-          )}
-
-          <div className='relative z-10'>
-            <AnimatePresence mode='wait'>
-              {!showDirections ? (
-                <motion.div
-                  key='rotated-paper'
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.1, ease: 'easeInOut' }}
-                >
-                  <RotatedPaperDemo
-                    onDirectionsClick={() => setShowDirections(true)}
-                    displayName={displayName}
-                    onMotionPanelToggle={setIsMotionPanelOpen} // 추가
-                  />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key='directions'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                >
-                  <DirectionsPage onBackClick={() => setShowDirections(false)} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {(!isMobile || isMotionPanelOpen) && (
-          <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
-            <Footer />
-          </div>
+      <div
+        className='overflow-hidden relative'
+        style={{
+          width: '100vw',
+          height: '100vh',
+          margin: 0,
+          padding: 0,
+          position: 'fixed',
+          top: 0,
+          left: 0,
+        }}
+      >
+        {!isMobile && (
+          <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} rotateOnMobile={true} />
         )}
-      </>
+
+        <div className='relative z-10'>
+          <AnimatePresence mode='wait'>
+            {!showDirections ? (
+              <motion.div
+                key='rotated-paper'
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1, ease: 'easeInOut' }}
+              >
+                <RotatedPaperDemo
+                  onDirectionsClick={() => setShowDirections(true)}
+                  displayName={displayName}
+                  onMotionPanelToggle={setIsMotionPanelOpen}
+                  onGyroPopupToggle={(visible) => setIsGyroPopupVisible(visible)}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key='directions'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+              >
+                <DirectionsPage onBackClick={() => setShowDirections(false)} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+      {!isMobile || (isMobile && !isGyroPopupVisible) || (
+        <div className='footer-container fixed bottom-0 w-screen z-[9999] pointer-events-none'>
+          <Footer />
+        </div>
+      )}
     </>
   )
 }

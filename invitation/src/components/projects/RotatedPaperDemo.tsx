@@ -22,6 +22,7 @@ interface RotatedPaperDemoProps {
   displayName: string
   squareColors?: string[]
   onMotionPanelToggle?: (isOpen: boolean) => void
+  onGyroPopupToggle?: (visible: boolean) => void
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
@@ -43,6 +44,7 @@ export default function RotatedPaperDemo({
   displayName,
   squareColors,
   onMotionPanelToggle,
+  onGyroPopupToggle
 }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
@@ -75,7 +77,7 @@ export default function RotatedPaperDemo({
     positionSmoothing: 0.85,
     accelerationPower: 2.0,
     accelerationMultiplier: 0.06,
-    tiltRotationMultiplier: 2.70,
+    tiltRotationMultiplier: 2.7,
     baseGap: 0.0,
     springGapMultiplier: 0.15,
     layerMovementMultiplier: 0.08,
@@ -127,6 +129,12 @@ export default function RotatedPaperDemo({
       window.removeEventListener('resize', checkIfMobile)
     }
   }, [])
+
+  useEffect(() => {
+    if (onGyroPopupToggle) {
+      onGyroPopupToggle(isMobile && showGyroButton)
+    }
+  }, [isMobile, showGyroButton, onGyroPopupToggle])
 
   useEffect(() => {
     const detectAndLockOrientation = async () => {
