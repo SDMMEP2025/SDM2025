@@ -71,11 +71,11 @@ export default function RotatedPaperDemo({
 
   const [motionSettings, setMotionSettings] = useState<MotionSettings>({
     deadZone: 0.5,
-    smoothing: 0.8,
+    smoothing: 0.75,
     positionSmoothing: 0.85,
-    accelerationPower: 1.5,
-    accelerationMultiplier: 0.03,
-    tiltRotationMultiplier: 1.5,
+    accelerationPower: 2.0,
+    accelerationMultiplier: 0.06,
+    tiltRotationMultiplier: 2.70,
     baseGap: 0.0,
     springGapMultiplier: 0.15,
     layerMovementMultiplier: 0.08,
