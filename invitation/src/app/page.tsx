@@ -103,8 +103,8 @@ export default function Page() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.1, ease: 'easeInOut' }}
                 >
-                  <RotatedPaperDemo 
-                    onDirectionsClick={() => setShowDirections(true)} 
+                  <RotatedPaperDemo
+                    onDirectionsClick={() => setShowDirections(true)}
                     displayName={displayName}
                     onMotionPanelToggle={setIsMotionPanelOpen} // 추가
                   />
@@ -124,8 +124,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* 모션 패널이 열리지 않았을 때만 푸터 표시 */}
-        {!isMotionPanelOpen && (
+        {(!isMobile || isMotionPanelOpen) && (
           <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
             <Footer />
           </div>
