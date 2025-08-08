@@ -229,25 +229,35 @@ export default function RotatedPaperDemo({
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
-        const leftRightTilt = orientation.gamma
-        const frontBackTilt = orientation.beta
+        const leftRightTilt = orientation.gamma  // 좌우 기울임
+        const frontBackTilt = orientation.beta   // 앞뒤 기울임
 
+        // 데드존 적용
         const tiltXValue = Math.abs(leftRightTilt) < motionSettings.deadZone ? 0 : leftRightTilt
         const tiltYValue = Math.abs(frontBackTilt) < motionSettings.deadZone ? 0 : frontBackTilt
 
+        // 스무딩 적용
         const smoothedTiltX = prevPhysics.tiltX * motionSettings.smoothing + tiltXValue * (1 - motionSettings.smoothing)
         const smoothedTiltY = prevPhysics.tiltY * motionSettings.smoothing + tiltYValue * (1 - motionSettings.smoothing)
 
+        // 최소 임계값 적용
         const finalTiltX = Math.abs(smoothedTiltX) < 0.1 ? 0 : smoothedTiltX
         const finalTiltY = Math.abs(smoothedTiltY) < 0.1 ? 0 : smoothedTiltY
 
-        const moveX = finalTiltX * 5
-        const moveY = finalTiltY * 5
-
-        const smoothedX =
-          prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
-        const smoothedY =
-          prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
+        // 대각선 움직임을 위한 좌표 계산
+        // gamma: 좌우 기울임 (왼쪽이 음수, 오른쪽이 양수)
+        // beta: 앞뒤 기울임 (앞이 양수, 뒤가 음수)
+        
+        // 화면 크기의 일정 비율만큼 최대 이동 거리 설정
+        const maxMoveDistance = Math.min(screenSize.width, screenSize.height) * 0.15
+        
+        // 대각선 이동을 위해 X, Y 좌표를 함께 계산
+        const moveX = (finalTiltX / 45) * maxMoveDistance  // -1 ~ 1 범위로 정규화 후 거리 곱하기
+        const moveY = (finalTiltY / 45) * maxMoveDistance
+        
+        // 위치 스무딩 적용
+        const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
+        const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
 
         return {
           velocityX: 0,
@@ -281,28 +291,25 @@ export default function RotatedPaperDemo({
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
+                // 회전 계산 (X축 기울임에 따른 회전)
                 const tiltRotation = physics.tiltX * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                const springGap =
-                  motionSettings.baseGap + Math.abs(physics.tiltX) ** 2 * motionSettings.springGapMultiplier
+                // 레이어별 간격 조정
+                const springGap = motionSettings.baseGap + Math.abs(physics.tiltX + physics.tiltY) * motionSettings.springGapMultiplier
                 const layerOffset = i * springGap
 
-                const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
+                // 각 레이어의 움직임 배율
+                const layerMovementMultiplier = (i + 1) * motionSettings.layerMovementMultiplier
 
-                const offsetX =
-                  physics.tiltX > 0
-                    ? layerOffset * motionSettings.offsetXMultiplier
-                    : -layerOffset * motionSettings.offsetXMultiplier
-                const offsetY = 0
-
-                const finalX = physics.positionX * layerMovementMultiplier + offsetX
-                const finalY = physics.positionY * layerMovementMultiplier + offsetY
+                // 최종 위치 계산 (대각선 이동 포함)
+                const finalX = physics.positionX * layerMovementMultiplier
+                const finalY = physics.positionY * layerMovementMultiplier
 
                 return (
                   <div
                     key={i}
-                    className='absolute transition-transform duration-100 ease-out'
+                    className='absolute transition-transform duration-75 ease-out'
                     style={{
                       width: `${size * 1.5}px`,
                       height: `${size}px`,
