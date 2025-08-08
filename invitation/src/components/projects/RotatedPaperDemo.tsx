@@ -16,6 +16,7 @@ interface RotatedPaperDemoProps {
   displayName: string
   squareColors?: string[]
   onMotionPanelToggle?: (isOpen: boolean) => void
+  onGyroButtonStateChange?: (isVisible: boolean) => void
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
@@ -32,7 +33,7 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   )
 }
 
-export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors, onMotionPanelToggle }: RotatedPaperDemoProps) {
+export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors, onMotionPanelToggle, onGyroButtonStateChange }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
     '#FF79B3',
@@ -106,6 +107,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
       if (isMobileDevice) {
         setShowGyroButton(true)
+        onGyroButtonStateChange?.(true)
       }
     }
 
@@ -172,21 +174,26 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         if (permission === 'granted') {
           setIsGyroSupported(true)
           setShowGyroButton(false)
+          onGyroButtonStateChange?.(false)
         } else {
           setGyroPermissionDenied(true)
           setShowGyroButton(false)
+          onGyroButtonStateChange?.(false)
         }
       } catch (error) {
         console.log('자이로스코프 권한 요청 실패:', error)
         setGyroPermissionDenied(true)
         setShowGyroButton(false)
+        onGyroButtonStateChange?.(false)
       }
     } else if (window.DeviceOrientationEvent) {
       setIsGyroSupported(true)
       setShowGyroButton(false)
+      onGyroButtonStateChange?.(false)
     } else {
       setGyroPermissionDenied(true)
       setShowGyroButton(false)
+      onGyroButtonStateChange?.(false)
     }
   }
 
@@ -212,11 +219,11 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
-        const rawTiltX = orientation.gamma / 4
-        const rawTiltY = orientation.beta / 4
+        const leftRightTilt = orientation.gamma
+        const frontBackTilt = orientation.beta
 
-        const tiltXValue = Math.abs(rawTiltX) < motionSettings.deadZone ? 0 : rawTiltX
-        const tiltYValue = Math.abs(rawTiltY) < motionSettings.deadZone ? 0 : rawTiltY
+        const tiltXValue = Math.abs(leftRightTilt) < motionSettings.deadZone ? 0 : leftRightTilt
+        const tiltYValue = Math.abs(frontBackTilt) < motionSettings.deadZone ? 0 : frontBackTilt
 
         const smoothedTiltX = prevPhysics.tiltX * motionSettings.smoothing + tiltXValue * (1 - motionSettings.smoothing)
         const smoothedTiltY = prevPhysics.tiltY * motionSettings.smoothing + tiltYValue * (1 - motionSettings.smoothing)
@@ -224,15 +231,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         const finalTiltX = Math.abs(smoothedTiltX) < 0.1 ? 0 : smoothedTiltX
         const finalTiltY = Math.abs(smoothedTiltY) < 0.1 ? 0 : smoothedTiltY
 
-        const baseTiltX = Math.abs(finalTiltX)
-        const baseTiltY = Math.abs(finalTiltY)
-
-        const acceleratedMovementX = baseTiltX === 0 ? 0 : baseTiltX ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
-        const acceleratedMovementY = baseTiltY === 0 ? 0 : baseTiltY ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
-
-        const maxMovement = Math.min(screenSize.width, screenSize.height)
-        const moveX = finalTiltX === 0 ? 0 : (finalTiltX * maxMovement * acceleratedMovementX) / 22.5
-        const moveY = finalTiltY === 0 ? 0 : (finalTiltY * maxMovement * acceleratedMovementY) / 30
+        const moveX = finalTiltX * 5
+        const moveY = finalTiltY * 5
 
         const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
         const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
@@ -240,8 +240,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         return {
           velocityX: 0,
           velocityY: 0,
-          positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX,
-          positionY: Math.abs(smoothedY) < 0.1 ? 0 : smoothedY,
+          positionX: smoothedX,
+          positionY: smoothedY,
           tiltX: finalTiltX,
           tiltY: finalTiltY,
         }
@@ -277,9 +277,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
 
                 const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
 
-                const offsetDirection = physics.tiltX > 0 ? 1 : -1
-                const offsetX = offsetDirection * layerOffset * motionSettings.offsetXMultiplier
-                const offsetY = -offsetDirection * layerOffset * motionSettings.offsetYMultiplier
+                const offsetX = physics.tiltX > 0 ? layerOffset * motionSettings.offsetXMultiplier : -layerOffset * motionSettings.offsetXMultiplier
+                const offsetY = 0
 
                 const finalX = physics.positionX * layerMovementMultiplier + offsetX
                 const finalY = physics.positionY * layerMovementMultiplier + offsetY

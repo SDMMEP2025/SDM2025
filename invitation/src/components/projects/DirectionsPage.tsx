@@ -42,7 +42,7 @@ export default function DirectionsPage({ onBackClick }) {
 
   return (
     <div className='absolute top-0 h-[100dvh] w-[100vw] flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
-      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[] md:gap-[83px] md-landscape:gap-[75px] lg:gap-[8.36dvh]'>
+      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[70px] md:gap-[83px] md-landscape:gap-[75px] lg:gap-[8.36dvh]'>
         <h1 className='justify-center text-neutral-800 text-xl font-medium leading-loose'>Directions</h1>
 
         <div className='flex flex-col gap-[40px] md:gap-[74px] md:landscape:gap-[8.03dvh] lg:gap-[66px]'>
@@ -54,12 +54,12 @@ export default function DirectionsPage({ onBackClick }) {
           <div className='flex flex-col justify-start items-center gap-[0.145dvh]'>
             <button
               onClick={handleCopyAddress}
-              className='flex items-center gap-2 w-fit justify-center p-2 transition-colors duration-200'
+              className='flex items-center gap-1 w-fit justify-center p-2 transition-colors duration-200'
             >
               <span className="text-center justify-center text-neutral-800 text-base lg:text-lg font-normal md:font-medium font-['Pretendard'] underline leading-7">
                 {address}
               </span>
-              <div className='w-4 h-4 relative'>
+              <div className='w-4 h-4 mb-1 relative'>
                 <div className='w-2.5 h-3.5 left-[5.64px] top-[0.50px] absolute bg-black/50 rounded-[0.66px]' />
                 <div className='w-2.5 h-3.5 left-[3px] top-[3.80px] absolute bg-neutral-800 rounded-[0.66px]' />
               </div>
@@ -72,7 +72,7 @@ export default function DirectionsPage({ onBackClick }) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className='absolute bottom-72 md:bottom-64 lg:bottom-56 text-sm text-white font-regular bg-black px-3 py-1 flex items-center gap-2 rounded-md'
+                  className='absolute bottom-72 md:bottom-64 lg:bottom-56 text-sm text-white font-regular bg-black px-3 py-1 flex items-center gap-3 rounded-md'
                 >
                   <svg width='16' height='16' viewBox='0 0 24 24' fill='none' className='text-white'>
                     <circle cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='2' fill='currentColor' />
