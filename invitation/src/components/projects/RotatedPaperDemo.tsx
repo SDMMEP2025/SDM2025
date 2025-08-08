@@ -9,7 +9,13 @@ declare global {
   }
 }
 
-type OrientationLockType = 'portrait' | 'landscape' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary'
+type OrientationLockType =
+  | 'portrait'
+  | 'landscape'
+  | 'portrait-primary'
+  | 'portrait-secondary'
+  | 'landscape-primary'
+  | 'landscape-secondary'
 
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void
@@ -33,7 +39,13 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   )
 }
 
-export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors, onMotionPanelToggle, onGyroButtonStateChange }: RotatedPaperDemoProps) {
+export default function RotatedPaperDemo({
+  onDirectionsClick,
+  displayName,
+  squareColors,
+  onMotionPanelToggle,
+  onGyroButtonStateChange,
+}: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
     '#FF79B3',
@@ -144,7 +156,6 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         if ((screen.orientation as any)?.lock && currentOrientation) {
           await (screen.orientation as any).lock(currentOrientation as OrientationLockType)
         }
-
       } catch (error) {
         const isPortrait = window.innerHeight > window.innerWidth
         setInitialOrientation(isPortrait ? 'portrait' : 'landscape')
@@ -158,10 +169,9 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     return () => {
       try {
         if ((screen.orientation as any)?.unlock) {
-          (screen.orientation as any).unlock()
+          ;(screen.orientation as any).unlock()
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     }
   }, [isMobile])
 
@@ -234,8 +244,10 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         const moveX = finalTiltX * 5
         const moveY = finalTiltY * 5
 
-        const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
-        const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
+        const smoothedX =
+          prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
+        const smoothedY =
+          prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
 
         return {
           velocityX: 0,
@@ -272,12 +284,16 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const tiltRotation = physics.tiltX * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                const springGap = motionSettings.baseGap + Math.abs(physics.tiltX) ** 2 * motionSettings.springGapMultiplier
+                const springGap =
+                  motionSettings.baseGap + Math.abs(physics.tiltX) ** 2 * motionSettings.springGapMultiplier
                 const layerOffset = i * springGap
 
                 const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
 
-                const offsetX = physics.tiltX > 0 ? layerOffset * motionSettings.offsetXMultiplier : -layerOffset * motionSettings.offsetXMultiplier
+                const offsetX =
+                  physics.tiltX > 0
+                    ? layerOffset * motionSettings.offsetXMultiplier
+                    : -layerOffset * motionSettings.offsetXMultiplier
                 const offsetY = 0
 
                 const finalX = physics.positionX * layerMovementMultiplier + offsetX
@@ -307,6 +323,7 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
           )}
         </div>
       )}
+        <MotionControlPanel settings={motionSettings} onSettingsChange={setMotionSettings} />
 
       <div className='fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-[100]'>
         <div className='relative transform -rotate-6'>
