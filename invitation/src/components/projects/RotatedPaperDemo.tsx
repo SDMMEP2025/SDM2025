@@ -77,7 +77,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
     velocityY: 0,
     positionX: 0,
     positionY: 0,
-    tilt: 0,
+    tiltX: 0,
+    tiltY: 0,
   })
 
   const animationFrameRef = useRef<number | null>(null)
@@ -217,19 +218,21 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
         const tiltXValue = Math.abs(rawTiltX) < motionSettings.deadZone ? 0 : rawTiltX
         const tiltYValue = Math.abs(rawTiltY) < motionSettings.deadZone ? 0 : rawTiltY
 
-        const smoothedTiltX = prevPhysics.tilt * motionSettings.smoothing + tiltXValue * (1 - motionSettings.smoothing)
+        const smoothedTiltX = prevPhysics.tiltX * motionSettings.smoothing + tiltXValue * (1 - motionSettings.smoothing)
+        const smoothedTiltY = prevPhysics.tiltY * motionSettings.smoothing + tiltYValue * (1 - motionSettings.smoothing)
 
         const finalTiltX = Math.abs(smoothedTiltX) < 0.1 ? 0 : smoothedTiltX
+        const finalTiltY = Math.abs(smoothedTiltY) < 0.1 ? 0 : smoothedTiltY
 
         const baseTiltX = Math.abs(finalTiltX)
-        const baseTiltY = Math.abs(tiltYValue)
+        const baseTiltY = Math.abs(finalTiltY)
 
         const acceleratedMovementX = baseTiltX === 0 ? 0 : baseTiltX ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
         const acceleratedMovementY = baseTiltY === 0 ? 0 : baseTiltY ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
 
         const maxMovement = Math.min(screenSize.width, screenSize.height)
         const moveX = finalTiltX === 0 ? 0 : (finalTiltX * maxMovement * acceleratedMovementX) / 22.5
-        const moveY = tiltYValue === 0 ? 0 : (tiltYValue * maxMovement * acceleratedMovementY) / 30
+        const moveY = finalTiltY === 0 ? 0 : (finalTiltY * maxMovement * acceleratedMovementY) / 30
 
         const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
         const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
@@ -239,7 +242,8 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
           velocityY: 0,
           positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX,
           positionY: Math.abs(smoothedY) < 0.1 ? 0 : smoothedY,
-          tilt: finalTiltX,
+          tiltX: finalTiltX,
+          tiltY: finalTiltY,
         }
       })
 
@@ -265,15 +269,15 @@ export default function RotatedPaperDemo({ onDirectionsClick, displayName, squar
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                const tiltRotation = physics.tilt * motionSettings.tiltRotationMultiplier
+                const tiltRotation = physics.tiltX * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                const springGap = motionSettings.baseGap + Math.abs(physics.tilt) ** 2 * motionSettings.springGapMultiplier
+                const springGap = motionSettings.baseGap + Math.abs(physics.tiltX) ** 2 * motionSettings.springGapMultiplier
                 const layerOffset = i * springGap
 
                 const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
 
-                const offsetDirection = physics.tilt > 0 ? 1 : -1
+                const offsetDirection = physics.tiltX > 0 ? 1 : -1
                 const offsetX = offsetDirection * layerOffset * motionSettings.offsetXMultiplier
                 const offsetY = -offsetDirection * layerOffset * motionSettings.offsetYMultiplier
 
