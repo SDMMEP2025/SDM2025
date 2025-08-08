@@ -9,20 +9,13 @@ declare global {
   }
 }
 
-type OrientationLockType =
-  | 'portrait'
-  | 'landscape'
-  | 'portrait-primary'
-  | 'portrait-secondary'
-  | 'landscape-primary'
-  | 'landscape-secondary'
+type OrientationLockType = 'portrait' | 'landscape' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary'
 
 interface RotatedPaperDemoProps {
   onDirectionsClick: () => void
   displayName: string
   squareColors?: string[]
   onMotionPanelToggle?: (isOpen: boolean) => void
-  onGyroButtonStateChange?: (isVisible: boolean) => void
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
@@ -39,13 +32,7 @@ export function RotatedPaper({ className = '', isMobile = false }) {
   )
 }
 
-export default function RotatedPaperDemo({
-  onDirectionsClick,
-  displayName,
-  squareColors,
-  onMotionPanelToggle,
-  onGyroButtonStateChange,
-}: RotatedPaperDemoProps) {
+export default function RotatedPaperDemo({ onDirectionsClick, displayName, squareColors, onMotionPanelToggle }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
     '#FF79B3',
@@ -90,8 +77,7 @@ export default function RotatedPaperDemo({
     velocityY: 0,
     positionX: 0,
     positionY: 0,
-    tiltX: 0,
-    tiltY: 0,
+    tilt: 0,
   })
 
   const animationFrameRef = useRef<number | null>(null)
@@ -119,7 +105,6 @@ export default function RotatedPaperDemo({
 
       if (isMobileDevice) {
         setShowGyroButton(true)
-        onGyroButtonStateChange?.(true)
       }
     }
 
@@ -156,6 +141,7 @@ export default function RotatedPaperDemo({
         if ((screen.orientation as any)?.lock && currentOrientation) {
           await (screen.orientation as any).lock(currentOrientation as OrientationLockType)
         }
+
       } catch (error) {
         const isPortrait = window.innerHeight > window.innerWidth
         setInitialOrientation(isPortrait ? 'portrait' : 'landscape')
@@ -169,9 +155,11 @@ export default function RotatedPaperDemo({
     return () => {
       try {
         if ((screen.orientation as any)?.unlock) {
-          ;(screen.orientation as any).unlock()
+          (screen.orientation as any).unlock()
         }
-      } catch (error) {}
+      } catch (error) {
+        // 에러 무시
+      }
     }
   }, [isMobile])
 
@@ -184,26 +172,21 @@ export default function RotatedPaperDemo({
         if (permission === 'granted') {
           setIsGyroSupported(true)
           setShowGyroButton(false)
-          onGyroButtonStateChange?.(false)
         } else {
           setGyroPermissionDenied(true)
           setShowGyroButton(false)
-          onGyroButtonStateChange?.(false)
         }
       } catch (error) {
         console.log('자이로스코프 권한 요청 실패:', error)
         setGyroPermissionDenied(true)
         setShowGyroButton(false)
-        onGyroButtonStateChange?.(false)
       }
     } else if (window.DeviceOrientationEvent) {
       setIsGyroSupported(true)
       setShowGyroButton(false)
-      onGyroButtonStateChange?.(false)
     } else {
       setGyroPermissionDenied(true)
       setShowGyroButton(false)
-      onGyroButtonStateChange?.(false)
     }
   }
 
@@ -229,43 +212,31 @@ export default function RotatedPaperDemo({
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
-        const leftRightTilt = orientation.gamma  // 좌우 기울임
-        const frontBackTilt = orientation.beta   // 앞뒤 기울임
+        const rawTilt = orientation.gamma / 4
 
-        // 데드존 적용
-        const tiltXValue = Math.abs(leftRightTilt) < motionSettings.deadZone ? 0 : leftRightTilt
-        const tiltYValue = Math.abs(frontBackTilt) < motionSettings.deadZone ? 0 : frontBackTilt
+        const tiltValue = Math.abs(rawTilt) < motionSettings.deadZone ? 0 : rawTilt
 
-        // 스무딩 적용
-        const smoothedTiltX = prevPhysics.tiltX * motionSettings.smoothing + tiltXValue * (1 - motionSettings.smoothing)
-        const smoothedTiltY = prevPhysics.tiltY * motionSettings.smoothing + tiltYValue * (1 - motionSettings.smoothing)
+        const smoothedTilt = prevPhysics.tilt * motionSettings.smoothing + tiltValue * (1 - motionSettings.smoothing)
 
-        // 최소 임계값 적용
-        const finalTiltX = Math.abs(smoothedTiltX) < 0.1 ? 0 : smoothedTiltX
-        const finalTiltY = Math.abs(smoothedTiltY) < 0.1 ? 0 : smoothedTiltY
+        const finalTilt = Math.abs(smoothedTilt) < 0.1 ? 0 : smoothedTilt
 
-        // 대각선 움직임을 위한 좌표 계산
-        // gamma: 좌우 기울임 (왼쪽이 음수, 오른쪽이 양수)
-        // beta: 앞뒤 기울임 (앞이 양수, 뒤가 음수)
-        
-        // 화면 크기의 일정 비율만큼 최대 이동 거리 설정
-        const maxMoveDistance = Math.min(screenSize.width, screenSize.height) * 0.15
-        
-        // 대각선 이동을 위해 X, Y 좌표를 함께 계산
-        const moveX = (finalTiltX / 45) * maxMoveDistance  // -1 ~ 1 범위로 정규화 후 거리 곱하기
-        const moveY = (finalTiltY / 45) * maxMoveDistance
-        
-        // 위치 스무딩 적용
+        const baseTilt = Math.abs(finalTilt)
+
+        const acceleratedMovement = baseTilt === 0 ? 0 : baseTilt ** motionSettings.accelerationPower * motionSettings.accelerationMultiplier
+
+        const maxMovement = Math.min(screenSize.width, screenSize.height) * acceleratedMovement
+        const moveX = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 22.5
+        const moveY = finalTilt === 0 ? 0 : (finalTilt * maxMovement) / 30
+
         const smoothedX = prevPhysics.positionX * motionSettings.positionSmoothing + moveX * (1 - motionSettings.positionSmoothing)
         const smoothedY = prevPhysics.positionY * motionSettings.positionSmoothing + moveY * (1 - motionSettings.positionSmoothing)
 
         return {
           velocityX: 0,
           velocityY: 0,
-          positionX: smoothedX,
-          positionY: smoothedY,
-          tiltX: finalTiltX,
-          tiltY: finalTiltY,
+          positionX: Math.abs(smoothedX) < 0.1 ? 0 : smoothedX,
+          positionY: Math.abs(smoothedY) < 0.1 ? 0 : smoothedY,
+          tilt: finalTilt,
         }
       })
 
@@ -291,25 +262,25 @@ export default function RotatedPaperDemo({
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
 
-                // 회전 계산 (X축 기울임에 따른 회전)
-                const tiltRotation = physics.tiltX * motionSettings.tiltRotationMultiplier
+                const tiltRotation = -physics.tilt * motionSettings.tiltRotationMultiplier
                 const baseRotation = -10 + i * 2 + tiltRotation
 
-                // 레이어별 간격 조정
-                const springGap = motionSettings.baseGap + Math.abs(physics.tiltX + physics.tiltY) * motionSettings.springGapMultiplier
+                const springGap = motionSettings.baseGap + Math.abs(physics.tilt) ** 2 * motionSettings.springGapMultiplier
                 const layerOffset = i * springGap
 
-                // 각 레이어의 움직임 배율
-                const layerMovementMultiplier = (i + 1) * motionSettings.layerMovementMultiplier
+                const layerMovementMultiplier = i * motionSettings.layerMovementMultiplier
 
-                // 최종 위치 계산 (대각선 이동 포함)
-                const finalX = physics.positionX * layerMovementMultiplier
-                const finalY = physics.positionY * layerMovementMultiplier
+                const offsetDirection = physics.tilt > 0 ? 1 : -1
+                const offsetX = offsetDirection * layerOffset * motionSettings.offsetXMultiplier
+                const offsetY = offsetDirection * layerOffset * motionSettings.offsetYMultiplier
+
+                const finalX = physics.positionX * layerMovementMultiplier + offsetX
+                const finalY = physics.positionY * layerMovementMultiplier + offsetY
 
                 return (
                   <div
                     key={i}
-                    className='absolute transition-transform duration-75 ease-out'
+                    className='absolute transition-transform duration-100 ease-out'
                     style={{
                       width: `${size * 1.5}px`,
                       height: `${size}px`,
@@ -330,7 +301,6 @@ export default function RotatedPaperDemo({
           )}
         </div>
       )}
-        <MotionControlPanel settings={motionSettings} onSettingsChange={setMotionSettings} />
 
       <div className='fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-[100]'>
         <div className='relative transform -rotate-6'>
@@ -363,6 +333,14 @@ export default function RotatedPaperDemo({
           </div>
         </div>
       </div>
+
+      {isMobile && isGyroSupported && (
+        <MotionControlPanel
+          settings={motionSettings}
+          onSettingsChange={setMotionSettings}
+          onToggle={onMotionPanelToggle}
+        />
+      )}
 
       {isMobile && showGyroButton && (
         <div className='fixed inset-0 flex items-center justify-center z-[1000] bg-[#000000DD] pointer-events-none'>

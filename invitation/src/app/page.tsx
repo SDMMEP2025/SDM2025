@@ -11,23 +11,16 @@ import backgroundAnimation from '@/animation/main.json'
 
 export default function Page() {
   const [showDirections, setShowDirections] = useState(false)
-  const [displayName, setDisplayName] = useState('김삼성')
+  const [displayName, setDisplayName] = useState('김삼성') // 기본값
   const [isMobile, setIsMobile] = useState(false)
-  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false)
-  const [showGyroButton, setShowGyroButton] = useState(false)
+  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false) // 추가
 
+  // 모바일 기기 감지
   useEffect(() => {
     const checkIfMobile = () => {
       const userAgent = navigator.userAgent
       const mobileRegex = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i
-      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-      const isMobileDevice = mobileRegex.test(userAgent) || isTouch
-      
-      setIsMobile(isMobileDevice)
-      
-      if (isMobileDevice) {
-        setShowGyroButton(true)
-      }
+      setIsMobile(mobileRegex.test(userAgent))
     }
 
     checkIfMobile()
@@ -35,16 +28,19 @@ export default function Page() {
     return () => window.removeEventListener('resize', checkIfMobile)
   }, [])
 
+  // URL 파라미터에서 이름 읽기
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const nameFromUrl = urlParams.get('to')
 
     if (nameFromUrl) {
+      // URL 디코딩 (한글 등의 특수문자 처리)
       const decodedName = decodeURIComponent(nameFromUrl)
       setDisplayName(decodedName)
     }
   }, [])
 
+  // URL 변경 시 실시간 업데이트를 위한 이벤트 리스너
   useEffect(() => {
     const handleURLChange = () => {
       const urlParams = new URLSearchParams(window.location.search)
@@ -54,10 +50,11 @@ export default function Page() {
         const decodedName = decodeURIComponent(nameFromUrl)
         setDisplayName(decodedName)
       } else {
-        setDisplayName('김삼성')
+        setDisplayName('김삼성') // 파라미터가 없으면 기본값
       }
     }
 
+    // popstate 이벤트 리스너 (뒤로가기/앞으로가기 버튼)
     window.addEventListener('popstate', handleURLChange)
 
     return () => {
@@ -65,74 +62,75 @@ export default function Page() {
     }
   }, [])
 
-  const handleGyroButtonStateChange = (isVisible) => {
-    setShowGyroButton(isVisible)
-  }
-
   return (
     <>
-      <style jsx global>{`
-        body:has(.motion-modal) .footer-container {
-          z-index: -1;
-        }
+      <>
+        {/* CSS로 모달이 있을 때 푸터 z-index 낮추기 */}
+        <style jsx global>{`
+          /* 모달이 있을 때 모든 요소 z-index 조정 */
+          body:has(.motion-modal) .footer-container {
+            z-index: -1;
+          }
 
-        .motion-modal {
-          z-index: 9999 !important;
-        }
-      `}</style>
+          /* 또는 모달 자체의 z-index를 매우 높게 설정 */
+          .motion-modal {
+            z-index: 9999 !important;
+          }
+        `}</style>
 
-      <div
-        className='overflow-hidden relative'
-        style={{
-          width: '100vw',
-          height: '100vh',
-          margin: 0,
-          padding: 0,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-        }}
-      >
-        {!isMobile && (
-          <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} rotateOnMobile={true} />
+        <div
+          className='overflow-hidden relative'
+          style={{
+            width: '100vw',
+            height: '100vh',
+            margin: 0,
+            padding: 0,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+          }}
+        >
+          {!isMobile && (
+            <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} rotateOnMobile={true} />
+          )}
+
+          <div className='relative z-10'>
+            <AnimatePresence mode='wait'>
+              {!showDirections ? (
+                <motion.div
+                  key='rotated-paper'
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.1, ease: 'easeInOut' }}
+                >
+                  <RotatedPaperDemo 
+                    onDirectionsClick={() => setShowDirections(true)} 
+                    displayName={displayName}
+                    onMotionPanelToggle={setIsMotionPanelOpen} // 추가
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key='directions'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                >
+                  <DirectionsPage onBackClick={() => setShowDirections(false)} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* 모션 패널이 열리지 않았을 때만 푸터 표시 */}
+        {!isMotionPanelOpen && (
+          <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
+            <Footer />
+          </div>
         )}
-
-        <div className='relative z-10'>
-          <AnimatePresence mode='wait'>
-            {!showDirections ? (
-              <motion.div
-                key='rotated-paper'
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.1, ease: 'easeInOut' }}
-              >
-                <RotatedPaperDemo 
-                  onDirectionsClick={() => setShowDirections(true)} 
-                  displayName={displayName}
-                  onMotionPanelToggle={setIsMotionPanelOpen}
-                  onGyroButtonStateChange={handleGyroButtonStateChange}
-                />
-              </motion.div>
-            ) : (
-              <motion.div
-                key='directions'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-              >
-                <DirectionsPage onBackClick={() => setShowDirections(false)} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {isMobile && showGyroButton && !isMotionPanelOpen && (
-        <div className='footer-container absolute mix-blend-difference bottom-0 w-[100vw]'>
-          <Footer />
-        </div>
-      )}
+      </>
     </>
   )
 }
