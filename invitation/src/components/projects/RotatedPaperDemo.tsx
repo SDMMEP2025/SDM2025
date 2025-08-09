@@ -2,38 +2,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import MotionControlPanel, { MotionSettings } from './MotionControlPanel'
-
-function normalizeOrientation(betaRaw: number, gammaRaw: number) {
-  const angle = (
-    screen.orientation && typeof screen.orientation.angle === 'number'
-      ? screen.orientation.angle
-      : typeof (window as any).orientation === 'number'
-        ? (window as any).orientation
-        : 0
-  ) as number
-
-  let beta = betaRaw
-  let gamma = gammaRaw
-
-  switch (angle) {
-    case 90: // landscape (오른쪽 가로)
-      ;[beta, gamma] = [gamma, -beta]
-      break
-    case -90:
-    case 270: // landscape (왼쪽 가로)
-      ;[beta, gamma] = [-gamma, beta]
-      break
-    case 180:
-    case -180: // 반대 portrait
-      beta = -beta
-      gamma = -gamma
-      break
-    default: // 정방향 portrait
-      break
-  }
-  return { beta, gamma }
-}
-
 declare global {
   interface DeviceOrientationEventConstructor {
     requestPermission?: () => Promise<'granted' | 'denied'>
@@ -55,6 +23,50 @@ interface RotatedPaperDemoProps {
   onMotionPanelToggle?: (isOpen: boolean) => void
   onGyroPopupToggle?: (visible: boolean) => void
   onGyroFallback?: (useLottie: boolean) => void
+}
+
+
+function normalizeOrientation(betaRaw: number, gammaRaw: number) {
+  const type = (screen.orientation && (screen.orientation as any).type) as
+    | 'portrait-primary'
+    | 'portrait-secondary'
+    | 'landscape-primary'
+    | 'landscape-secondary'
+    | string
+    | undefined
+
+  if (type) {
+    switch (true) {
+      case /portrait-primary/.test(type):
+        return { beta: betaRaw, gamma: gammaRaw }
+      case /portrait-secondary/.test(type):
+        return { beta: -betaRaw, gamma: -gammaRaw }
+      case /landscape-primary/.test(type):
+        return { beta: gammaRaw, gamma: -betaRaw }
+      case /landscape-secondary/.test(type):
+        return { beta: -gammaRaw, gamma: betaRaw }
+    }
+  }
+
+  const rawAngle =
+    typeof (window as any).orientation === 'number'
+      ? ((window as any).orientation as number)
+      : typeof screen.orientation?.angle === 'number'
+        ? (screen.orientation!.angle as number)
+        : 0
+
+  const angle = ((rawAngle % 360) + 360) % 360
+
+  if (angle === 0) {
+    return { beta: betaRaw, gamma: gammaRaw }
+  }
+  if (angle === 180) {
+    return { beta: -betaRaw, gamma: -gammaRaw }
+  }
+  if (angle === 90) {
+    return { beta: gammaRaw, gamma: -betaRaw }
+  }
+  return { beta: -gammaRaw, gamma: betaRaw }
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
@@ -297,7 +309,6 @@ export default function RotatedPaperDemo({
 
   useEffect(() => {
     if (!isGyroSupported) return
-    
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
