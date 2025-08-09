@@ -10,11 +10,11 @@ import Colon from './Colon'
 import TimeUnit from './TimeUnit'
 import { CountdownBars } from './CountdownBars'
 import dynamic from 'next/dynamic'
-import type { CountdownDigitsProps } from '@/components/coming/CountdownDigits.client'
+import type { CountdownDigitsProps } from './CountdownDigitsClient'
 
 const CountdownDigits = dynamic<CountdownDigitsProps>(
-  () => import('@/components/coming/CountdownDigits.client').then((m) => m.default),
-  { ssr: false },
+  () => import('@/components/coming/CountdownDigitsClient.jsx').then(m => m.default),
+  { ssr: false }
 )
 
 dayjs.extend(utc)
