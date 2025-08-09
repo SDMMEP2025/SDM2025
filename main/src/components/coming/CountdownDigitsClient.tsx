@@ -53,7 +53,7 @@ export default function CountdownDigits({
         <Colon className={colonClassName} />
         <TimeUnit value={minutes} className='md:flex-1' />
         <Colon className={colonClassName} />
-        <TimeUnit value={seconds} className='mdLflex-1' />
+        <TimeUnit value={seconds} className='md:flex-1' />
       </div>
 
       {showBars && (

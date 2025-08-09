@@ -13,9 +13,10 @@ import dynamic from 'next/dynamic'
 import type { CountdownDigitsProps } from './CountdownDigitsClient'
 
 const CountdownDigits = dynamic<CountdownDigitsProps>(
-  () => import('@/components/coming/CountdownDigitsClient.jsx').then(m => m.default),
+  () => import('./CountdownDigitsClient.js').then(m => m.default),
   { ssr: false }
 )
+
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
