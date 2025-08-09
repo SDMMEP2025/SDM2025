@@ -41,9 +41,9 @@ function normalizeOrientation(betaRaw: number, gammaRaw: number) {
       case /portrait-secondary/.test(type):
         return { beta: -betaRaw, gamma: -gammaRaw }
       case /landscape-primary/.test(type):
-        return { beta: gammaRaw, gamma: -betaRaw }
-      case /landscape-secondary/.test(type):
         return { beta: -gammaRaw, gamma: betaRaw }
+      case /landscape-secondary/.test(type):
+        return { beta: gammaRaw, gamma: -betaRaw }
     }
   }
 
