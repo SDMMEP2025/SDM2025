@@ -11,12 +11,8 @@ import TimeUnit from './TimeUnit'
 import { CountdownBars } from './CountdownBars'
 import dynamic from 'next/dynamic'
 import type { CountdownDigitsProps } from './CountdownDigitsClient'
-
-const CountdownDigits = dynamic<CountdownDigitsProps>(
-  () => import('./CountdownDigitsClient.js').then(m => m.default),
-  { ssr: false }
-)
-
+import CountdownDigits from './CountdownDigitsClient'
+import ClientOnly from './ClientOnly'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -97,7 +93,9 @@ export default function ComingSoonSection() {
           lg:w-full
           '
           >
-            <CountdownDigits targetISO='2025-08-22 00:00:00' tz='Asia/Seoul' showBars />
+            <ClientOnly>
+              <CountdownDigits targetISO='2025-08-22 00:00:00' tz='Asia/Seoul' showBars />
+            </ClientOnly>
           </div>
         </div>
         <div className='absolute flex justify-center top-0 left-0 w-full z-10'>

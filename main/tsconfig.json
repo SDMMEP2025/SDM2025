@@ -45,7 +45,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/Frame"
-  ],
+, "src/components/coming/CountdownDigitsClient.jsx"  ],
   "exclude": [
     "node_modules"
   ]
