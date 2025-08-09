@@ -79,9 +79,10 @@ export default function ComingSoonSection() {
           rotate-90
           w-[100dvh]
           top-1/2
-          left-[32.5vw]
+          left-[31.5vw]
           transform -translate-y-1/2 -translate-x-1/2
           md:rotate-90
+          md:left-[32.5vw]
           md-landscape-coming:left-1/2
           md-landscape-coming:rotate-0
           md-landscape-coming:w-full

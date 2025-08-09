@@ -45,7 +45,7 @@ export default function TimeUnit({ value, className = '' }: TimeUnitProps) {
             text-[clamp(40px,20vw,130px)] w-[clamp(32px,11vw,78px)]
             md:text-[clamp(130px,17vw,170px)] md:w-[clamp(80px,7dvh,110px)] 
             md-landscape-coming:text-[17vw] md-landscape-coming:w-[9vw] 
-            lg:text-[17vw] lg:w-[46%] p-0 m-0"
+            lg:text-[clamp(200px,17vw,500px)] lg:w-[clamp(100px,10.5vw,280px)] p-0 m-0"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.div

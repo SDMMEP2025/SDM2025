@@ -46,7 +46,7 @@ export default function CountdownDigits({
 
   return (
     <>
-      <div className={`px-[22dvh] h-[35dvw] md-landscape-coming:h-[20dvw] lg:h-[18dvw] md-landscape-coming:px-[24px] lg:px-[27px] pt-[clamp(10px,15vw,45px)] md:pt-[20vw] md-landscape-coming:pt-[5rem] lg:pt-[5rem] flex w-full justify-center items-center gap-1 md:gap-2 ${className}`}>
+      <div className={`px-[22dvh] h-[clamp(10px,34vw, 50px)] md-landscape-coming:h-[22dvw] lg:h-[20dvw] md-landscape-coming:px-[24px] lg:px-[27px] pt-[clamp(10px,15vw,45px)] md:pt-[20vw] md-landscape-coming:pt-[5rem] lg:pt-[5rem] flex w-full justify-center items-center gap-1 md:gap-2 ${className}`}>
         <TimeUnit value={days} className='md:flex-1' />
         <Colon className={colonClassName} />
         <TimeUnit value={hours} className='md:flex-1' />
