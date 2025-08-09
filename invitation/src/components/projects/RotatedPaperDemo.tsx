@@ -116,6 +116,8 @@ export default function RotatedPaperDemo({
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   const [initialOrientation, setInitialOrientation] = useState<'portrait' | 'landscape' | null>(null)
   const [useLottie, setUseLottie] = useState(false)
+  const baselineRef = useRef<{ beta: number; gamma: number } | null>(null)
+  const calibratingRef = useRef(false)
 
   const [motionSettings, setMotionSettings] = useState<MotionSettings>({
     deadZone: 0.5,
@@ -158,6 +160,8 @@ export default function RotatedPaperDemo({
   useEffect(() => {
     const onOrientChange = () => {
       resetPhysics()
+      calibratingRef.current = true
+      baselineRef.current = null
     }
     window.addEventListener('orientationchange', onOrientChange)
     ;(screen.orientation as any)?.addEventListener?.('change', onOrientChange) // TS 안전하게
@@ -260,10 +264,12 @@ export default function RotatedPaperDemo({
           setIsGyroSupported(true)
           setShowGyroButton(false)
           onGyroFallback?.(false)
+          calibratingRef.current = true
+          baselineRef.current = null
         } else {
           setIsGyroSupported(false)
           setShowGyroButton(false)
-          onGyroFallback?.(true) // ⬅️ Lottie 전환
+          onGyroFallback?.(true)
         }
       } catch {
         setIsGyroSupported(false)
@@ -274,6 +280,8 @@ export default function RotatedPaperDemo({
       setIsGyroSupported(true)
       setShowGyroButton(false)
       onGyroFallback?.(false)
+      calibratingRef.current = true
+      baselineRef.current = null
     } else {
       setIsGyroSupported(false)
       setShowGyroButton(false)
@@ -293,10 +301,24 @@ export default function RotatedPaperDemo({
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta: b, gamma: g } = event
       if (b == null || g == null) return
-      const { beta, gamma } = normalizeOrientation(b, g)
+
+      const { beta: nb, gamma: ng } = normalizeOrientation(b, g)
+
+      if (calibratingRef.current) {
+        baselineRef.current = { beta: nb, gamma: ng }
+        calibratingRef.current = false
+        setPhysics({ velocityX: 0, velocityY: 0, positionX: 0, positionY: 0, tilt: 0 })
+        setOrientation({ beta: 0, gamma: 0 })
+        return
+      }
+
+      const base = baselineRef.current ?? { beta: 0, gamma: 0 }
+      const rb = nb - base.beta
+      const rg = ng - base.gamma
+
       setOrientation({
-        beta: Math.max(-45, Math.min(45, beta)),
-        gamma: Math.max(-45, Math.min(45, gamma)),
+        beta: Math.max(-45, Math.min(45, rb)),
+        gamma: Math.max(-45, Math.min(45, rg)),
       })
     }
 
