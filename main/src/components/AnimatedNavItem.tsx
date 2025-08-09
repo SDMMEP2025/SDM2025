@@ -26,6 +26,8 @@ export function AnimatedNavItem({ label, href }: AnimatedNavItemProps) {
         >
           {label}
         </motion.button>
+
+        
         <AnimatePresence mode='wait'>
           {isHovered && (
             <motion.div

@@ -69,7 +69,7 @@ export function RightTitleBody({
             className={classNames(
               'w-full',
               //mobile
-              'text-[20px] tracking-[-0.4px] leading-[1.6] whitespace-nowrap font-normal',
+              'text-[20px] tracking-[-0.4px] leading-[1.6] font-normal',
               //tablet
               'md:text-[20px] md:tracking-[-0.4px] md:leading-[1.5] md:whitespace-pre-line md:font-bold',
               //desktop

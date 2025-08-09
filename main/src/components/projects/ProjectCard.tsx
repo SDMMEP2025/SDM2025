@@ -239,7 +239,7 @@ export function ProjectCard({ projects, setIndex, index }) {
                 
                 {isMobile && isExpanded && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 1 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2, duration: 0.3 }}
                     className="absolute bottom-2 text-[24px] text-white right-1 p-2"

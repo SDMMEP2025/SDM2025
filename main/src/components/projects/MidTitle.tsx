@@ -29,7 +29,7 @@ export function MidTitle({ align = 'center', text }: MidTitleProps) {
           'w-full',
           align === 'center' ? 'text-center' : align === 'left' ? 'text-left' : 'text-right',
           //mobile
-          'text-[20px] leading-[1.6] tracking-[-0.4px] font-normal',
+          'text-[20px] leading-[1.6] tracking-[-0.4px] font-bold',
           //tablet
           'md:text-[20px] md:leading-[1.5] md:tracking-[-0.4px] md:font-bold',
           //desktop

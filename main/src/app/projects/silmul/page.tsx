@@ -237,8 +237,8 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous Project', url: '/projects/layon' }}
-          nextItem={{ label: 'Next Project', url: '/projects/autonomy-practice' }}
+          previousItem={{ label: 'Previous', url: '/projects/layon' }}
+          nextItem={{ label: 'Next', url: '/projects/autonomy-practice' }}
         />
         <ProjectNavigation
           leftProject={{
