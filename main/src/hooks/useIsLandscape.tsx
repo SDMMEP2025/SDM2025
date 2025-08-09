@@ -4,15 +4,27 @@ export function useIsLandscape() {
   const [isLandscape, setIsLandscape] = useState(false)
 
   useEffect(() => {
-    const check = () => {
-      setIsLandscape(window.innerWidth > window.innerHeight)
+    let raf = 0
+
+    const update = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const w = window.visualViewport?.width ?? window.innerWidth
+        const h = window.visualViewport?.height ?? window.innerHeight
+        setIsLandscape(w > h)
+      })
     }
-    check()
-    window.addEventListener('resize', check)
-    window.addEventListener('orientationchange', check)
+
+    update()
+    window.visualViewport?.addEventListener('resize', update)
+    window.addEventListener('resize', update)
+    window.addEventListener('orientationchange', update)
+
     return () => {
-      window.removeEventListener('resize', check)
-      window.removeEventListener('orientationchange', check)
+      cancelAnimationFrame(raf)
+      window.visualViewport?.removeEventListener('resize', update)
+      window.removeEventListener('resize', update)
+      window.removeEventListener('orientationchange', update)
     }
   }, [])
 

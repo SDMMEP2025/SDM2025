@@ -42,7 +42,7 @@ export default function ComingSoonSection() {
   return (
     <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative overflow-hidden'>
       {showOverlay && (
-         <div className='absolute inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center'>
+         <div className='fixed inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center'>
           <img className='pb-[20px]' src='/images/icon-error.svg' />
           <p className='text-[24px] font-bold mb-2'>해당 서비스는 세로 모드 전용입니다</p>
           <p className='text-[17px] text-[#CFCFCF]'>가로 모드에서는 일부 콘텐츠가 보이지 않을 수 있어요</p>
