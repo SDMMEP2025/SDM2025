@@ -3,6 +3,37 @@ import { motion } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import MotionControlPanel, { MotionSettings } from './MotionControlPanel'
 
+function normalizeOrientation(betaRaw: number, gammaRaw: number) {
+  const angle = (
+    screen.orientation && typeof screen.orientation.angle === 'number'
+      ? screen.orientation.angle
+      : typeof (window as any).orientation === 'number'
+        ? (window as any).orientation
+        : 0
+  ) as number
+
+  let beta = betaRaw
+  let gamma = gammaRaw
+
+  switch (angle) {
+    case 90: // landscape (오른쪽 가로)
+      ;[beta, gamma] = [gamma, -beta]
+      break
+    case -90:
+    case 270: // landscape (왼쪽 가로)
+      ;[beta, gamma] = [-gamma, beta]
+      break
+    case 180:
+    case -180: // 반대 portrait
+      beta = -beta
+      gamma = -gamma
+      break
+    default: // 정방향 portrait
+      break
+  }
+  return { beta, gamma }
+}
+
 declare global {
   interface DeviceOrientationEventConstructor {
     requestPermission?: () => Promise<'granted' | 'denied'>
@@ -47,7 +78,7 @@ export default function RotatedPaperDemo({
   squareColors,
   onMotionPanelToggle,
   onGyroPopupToggle,
-  onGyroFallback
+  onGyroFallback,
 }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
@@ -100,6 +131,31 @@ export default function RotatedPaperDemo({
   const animationFrameRef = useRef<number | null>(null)
   const maxSize = Math.max(screenSize.width, screenSize.height) * 1.2
   const stepReduction = maxSize / (steps + 3)
+
+  const cleanupPhysics = () => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+  }
+  const resetPhysics = () => {
+    cleanupPhysics()
+    setPhysics({ velocityX: 0, velocityY: 0, positionX: 0, positionY: 0, tilt: 0 })
+    setOrientation({ beta: 0, gamma: 0 })
+  }
+
+  useEffect(() => {
+    const onOrientChange = () => {
+      resetPhysics()
+    }
+    window.addEventListener('orientationchange', onOrientChange)
+    ;(screen.orientation as any)?.addEventListener?.('change', onOrientChange) // TS 안전하게
+
+    return () => {
+      window.removeEventListener('orientationchange', onOrientChange)
+      ;(screen.orientation as any)?.removeEventListener?.('change', onOrientChange)
+    }
+  }, [])
 
   useEffect(() => {
     const updateScreenSize = () => {
@@ -224,13 +280,15 @@ export default function RotatedPaperDemo({
     if (!isGyroSupported) return
 
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, gamma } = event
-      if (beta !== null && gamma !== null) {
-        setOrientation({
-          beta: Math.max(-45, Math.min(45, beta)),
-          gamma: Math.max(-45, Math.min(45, gamma)),
-        })
-      }
+      const { beta: b, gamma: g } = event
+      if (b == null || g == null) return
+
+      const { beta, gamma } = normalizeOrientation(b, g)
+
+      setOrientation({
+        beta: Math.max(-45, Math.min(45, beta)),
+        gamma: Math.max(-45, Math.min(45, gamma)),
+      })
     }
 
     window.addEventListener('deviceorientation', handleDeviceOrientation)
@@ -239,6 +297,7 @@ export default function RotatedPaperDemo({
 
   useEffect(() => {
     if (!isGyroSupported) return
+    
 
     const updatePhysics = () => {
       setPhysics((prevPhysics) => {
@@ -288,11 +347,7 @@ export default function RotatedPaperDemo({
 
     animationFrameRef.current = requestAnimationFrame(updatePhysics)
 
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
-      }
-    }
+    return cleanupPhysics
   }, [isGyroSupported, orientation, screenSize, motionSettings])
 
   return (
