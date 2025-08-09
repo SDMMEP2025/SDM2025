@@ -9,6 +9,7 @@ import LottieBackground from '@/components/LottieBackground'
 
 import backgroundAnimation from '@/animation/main.json'
 import { useIsLandscape } from '@/hooks/useIsLandscape'
+import { useIsPhone } from '@/hooks/useIsPhone'
 
 export default function Page() {
   const [showDirections, setShowDirections] = useState(false)
@@ -18,6 +19,11 @@ export default function Page() {
   const [isGyroPopupVisible, setIsGyroPopupVisible] = useState(false)
   const [useLottie, setUseLottie] = useState(false)
   const isLandscape = useIsLandscape()
+  const isPhone = useIsPhone({ cutoff: 768 })
+
+  console.log(navigator.userAgent)
+  console.log(isMobile)
+  console.log(isLandscape)
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -31,13 +37,11 @@ export default function Page() {
     return () => window.removeEventListener('resize', checkIfMobile)
   }, [])
 
-  // URL 파라미터에서 이름 읽기
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const nameFromUrl = urlParams.get('to')
 
     if (nameFromUrl) {
-      // URL 디코딩 (한글 등의 특수문자 처리)
       const decodedName = decodeURIComponent(nameFromUrl)
       setDisplayName(decodedName)
     }
@@ -56,7 +60,6 @@ export default function Page() {
       }
     }
 
-    // popstate 이벤트 리스너 (뒤로가기/앞으로가기 버튼)
     window.addEventListener('popstate', handleURLChange)
 
     return () => {
@@ -122,10 +125,10 @@ export default function Page() {
         </div>
       )}
       {isMobile && isLandscape && (
-        <div className="fixed inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center md:hidden">
-          <img className='pb-[20px]' src='/images/icon-error.svg'/>
-          <p className="text-[24px] font-bold mb-2">해당 서비스는 세로 모드 전용입니다</p>
-          <p className="text-[17px] text-[#CFCFCF]">가로 모드에서는 일부 콘텐츠가 보이지 않을 수 있어요</p>
+        <div className='fixed inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center'>
+          <img className='pb-[20px]' src='/images/icon-error.svg' />
+          <p className='text-[24px] font-bold mb-2'>해당 서비스는 세로 모드 전용입니다</p>
+          <p className='text-[17px] text-[#CFCFCF]'>가로 모드에서는 일부 콘텐츠가 보이지 않을 수 있어요</p>
         </div>
       )}
     </>
