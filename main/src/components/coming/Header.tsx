@@ -32,11 +32,11 @@ export default function Header() {
       </div>
 
       {/* 작은 모바일 버전 (md 미만) */}
-      <div className='flex md:hidden flex-col items-center font-english justify-center gap-[-10px] px-[39px] py-[5.8dvh] w-full z-[600]'>
-        <div className="text-center text-neutral-800 text-xl font-medium">
+      <div className='flex md:hidden flex-col items-center font-english justify-center pt-7 py-[5.8dvh] w-full z-[600]'>
+        <div className="text-center text-neutral-800 text-[20px] font-medium">
           New Formative
         </div>
-        <div className="text-center text-neutral-800 text-lg font-medium">
+        <div className="text-center text-neutral-800 text-[18px] font-medium">
           Aug 22 (Fri) – Aug 27 (Tue)
         </div>
       </div>

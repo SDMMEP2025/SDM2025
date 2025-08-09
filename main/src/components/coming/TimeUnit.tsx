@@ -1,6 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useMemo } from 'react'
 
 interface TimeUnitProps {
   value: number
@@ -8,33 +9,53 @@ interface TimeUnitProps {
 }
 
 export default function TimeUnit({ value, className = '' }: TimeUnitProps) {
-  const formattedValue = String(value).padStart(2, '0')
+  const mountedRef = useRef(false)
+  useEffect(() => {
+    mountedRef.current = true
+  }, [])
+
+  const formattedValue = useMemo(() => String(value).padStart(2, '0'), [value])
   const digits = formattedValue.split('')
+
+  const prevDigitsRef = useRef<string[] | null>(null)
+  const tensChanged =
+    prevDigitsRef.current &&
+    digits.length >= 2 &&
+    prevDigitsRef.current.length >= 2 &&
+    prevDigitsRef.current[digits.length - 2] !== digits[digits.length - 2]
+
+  useEffect(() => {
+    prevDigitsRef.current = digits
+  }, [digits])
 
   return (
     <div className={`relative flex text-neutral-800 font-english font-normal font-bold tracking-[-0.02em] ${className}`}>
       {digits.map((digit, index) => {
-        const delay = index === 0 ? 0.6 : 0
+        const tensIndex = digits.length - 2
+        const onesIndex = digits.length - 1
+        const isTens = index === tensIndex
+        const isOnes = index === onesIndex
+        let delay = 0
+        const initialStyle = mountedRef.current ? { y: '-90%', opacity: 0.2 } : { y: '0%', opacity: 1 }
 
         return (
           <div
             key={index}
-            className={`relative flex w-[12vw] md-landscape-coming:w-[9vw] lg:w-[46%] text-[22vw] md-landscape-coming:text-[17vw] lg:text-[17vw] p-0 m-0 ${index === 1 ? '' : ''}`}
+            className="relative flex w-[clamp(32px,12vw,78px)] text-[clamp(40px,22vw,130px)] md-landscape-coming:w-[9vw] lg:w-[46%] md-landscape-coming:text-[17vw] lg:text-[17vw] p-0 m-0"
           >
-            {' '}
-            <AnimatePresence mode='wait'>
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`${index}-${digit}`}
-                initial={{ y: '-90%', opacity: 1 }}
+                initial={initialStyle}
                 animate={{ y: '0%', opacity: 1 }}
                 exit={{ y: '0%', opacity: 1 }}
                 transition={{
                   type: 'tween',
-                  ease: [0.25, 0.46, 0.45, 0.94],
+                  ease: [0.15, 0.16,0.2, 0.94],
                   duration: 0.9,
-                  delay: delay
+                  delay,
                 }}
-                className='leading-none p-0 m-0 w-full text-center'
+                className="leading-none p-0 m-0 w-full text-center"
               >
                 {digit}
               </motion.div>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import Header from '@/components/coming/Header'
 import { Footer } from '@/components/coming/Footer'
 import dayjs from 'dayjs'
@@ -9,32 +9,35 @@ import timezone from 'dayjs/plugin/timezone'
 import Colon from './Colon'
 import TimeUnit from './TimeUnit'
 import { CountdownBars } from './CountdownBars'
+import dynamic from 'next/dynamic'
+import type { CountdownDigitsProps } from '@/components/coming/CountdownDigits.client'
+
+const CountdownDigits = dynamic<CountdownDigitsProps>(
+  () => import('@/components/coming/CountdownDigits.client').then((m) => m.default),
+  { ssr: false },
+)
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export default function ComingSoonSection() {
   const [mounted, setMounted] = useState(false)
-  const [secondsLeft, setSecondsLeft] = useState(0)
 
-  const targetDate = dayjs.tz('2025-08-22 00:00:00', 'Asia/Seoul')
+  const targetDate = useMemo(() => dayjs.tz('2025-08-22 00:00:00', 'Asia/Seoul'), [])
+  const [isHydrated, setIsHydrated] = useState(false)
+  useEffect(() => {
+    setIsHydrated(true)
+  }, [])
+
+  const [secondsLeft, setSecondsLeft] = useState(() => Math.max(0, targetDate.diff(dayjs(), 'second')))
 
   useEffect(() => {
-    setMounted(true)
-
-    const calculateTime = () => {
-      const diff = Math.max(0, targetDate.diff(dayjs(), 'second'))
-      return diff
+    const tick = () => {
+      setSecondsLeft(Math.max(0, targetDate.diff(dayjs(), 'second')))
     }
+    tick()
 
-    const initialDiff = calculateTime()
-    setSecondsLeft(initialDiff)
-
-    const timer = setInterval(() => {
-      const diff = calculateTime()
-      setSecondsLeft(diff)
-    }, 1000)
-
+    const timer = setInterval(tick, 1000)
     return () => clearInterval(timer)
   }, [targetDate])
 
@@ -44,42 +47,47 @@ export default function ComingSoonSection() {
   const seconds = secondsLeft % 60
 
   return (
-    <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative'>
+    <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative overflow-hidden'>
       <div className='flex flex-col items-center bottom-0 '>
         <div className='flex flex-col top-1/2 justify-center items-center'>
-          <div className='
-          absolute
-          rotate-90 
-          w-[100dvh]
-          h-[14dvh]
-          top-1/2
-          left-[70dvw]
-          bg-[#FFF790]
-          transform -translate-y-1/2 -translate-x-1/2
-           z-10
-           md:rotate-0
-           md:left-1/2
-           md:w-full
-           md:top-[35dvh]
-           md:h-[20dvh]
-           lg:h-[30dvh]
-           lg:top-[25dvh]'
-           />
+          <div
+            className='
+              absolute flex
+              rotate-90
+              w-[100dvh] h-[35vw] bg-[#FFF790] z-10
+              top-1/2 left-[85%]
+              -translate-x-1/2 -translate-y-1/2
+              
+              md-landscape-coming:rotate-0
+              md-landscape-coming:left-1/2
+              md-landscape-coming:w-full
+              md-landscape-coming:top-0
+              md-landscape-coming:-translate-y-0 
+              md-landscape-coming:h-[40dvh]
+              lg:rotate-0
+              lg:h-[35dvh]
+              lg:-translate-y-0
+              lg:left-1/2
+              lg:top-0
+              lg:w-full
+              z-100
+            '
+          />
           <div
             className='
             absolute
           rotate-90
           w-[100dvh]
           top-1/2
-          left-[30dvw]
+          left-[32.5dvw]
           transform -translate-y-1/2 -translate-x-1/2
           md:rotate-90
           md-landscape-coming:left-1/2
-          md-landscape-coming:mt-24
           md-landscape-coming:rotate-0
           md-landscape-coming:w-full
           md-landscape-coming:mt-16 
           md-landscape-coming:top-2/3
+          md-landscape-coming:pt-20
           lg:mt-24
           lg:top-2/3
           lg:rotate-0
@@ -87,18 +95,7 @@ export default function ComingSoonSection() {
           lg:w-full
           '
           >
-            <div className='px-[22dvh] h-[35dvw] md-landscape-coming:h-[20dvw] lg:h-[18dvw] md-landscape-coming:px-[24px] lg:px-[27px] pt-20 flex w-full md:w-full items-center justify-center '>
-              <TimeUnit value={days} className='flex-1' />
-              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:mx-[1vw] lg:w-[2vw]' />
-              <TimeUnit value={hours} className='flex-1' />
-              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:mx-[1vw] lg:w-[2vw]' />
-              <TimeUnit value={minutes} className='flex-1' />
-              <Colon className='mb-[1vw] w-[2vw] mx-[10px] md:w-[2vw] lg:mx-[1vw] lg:w-[2vw]' />
-              <TimeUnit value={seconds} className='flex-1' />
-            </div>
-            <div className='h-[50dvw] md-landscape-coming:h-[50dvh] lg:h-[50dvh] z-10'>
-              <CountdownBars />
-            </div>
+            <CountdownDigits targetISO='2025-08-22 00:00:00' tz='Asia/Seoul' showBars />
           </div>
         </div>
         <div className='absolute flex justify-center top-0 left-0 w-full z-10'>
