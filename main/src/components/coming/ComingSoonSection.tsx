@@ -6,13 +6,10 @@ import { Footer } from '@/components/coming/Footer'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import Colon from './Colon'
-import TimeUnit from './TimeUnit'
-import { CountdownBars } from './CountdownBars'
-import dynamic from 'next/dynamic'
-import type { CountdownDigitsProps } from './CountdownDigitsClient'
 import CountdownDigits from './CountdownDigitsClient'
 import ClientOnly from './ClientOnly'
+import { useIsLandscape } from '@/hooks/useIsLandscape'
+import { useIsPhone } from '@/hooks/useIsPhone'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -22,6 +19,10 @@ export default function ComingSoonSection() {
 
   const targetDate = useMemo(() => dayjs.tz('2025-08-22 00:00:00', 'Asia/Seoul'), [])
   const [isHydrated, setIsHydrated] = useState(false)
+  const isPhone = useIsPhone()
+  const isLandscape = useIsLandscape()
+  const showOverlay = isPhone && isLandscape
+
   useEffect(() => {
     setIsHydrated(true)
   }, [])
@@ -38,13 +39,17 @@ export default function ComingSoonSection() {
     return () => clearInterval(timer)
   }, [targetDate])
 
-  const days = Math.floor(secondsLeft / (60 * 60 * 24))
-  const hours = Math.floor((secondsLeft % (60 * 60 * 24)) / (60 * 60))
-  const minutes = Math.floor((secondsLeft % (60 * 60)) / 60)
-  const seconds = secondsLeft % 60
-
   return (
     <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative overflow-hidden'>
+      {showOverlay && (
+         <div className='fixed inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center'>
+          <img className='pb-[20px]' src='/images/icon-error.svg' />
+          <p className='text-[24px] font-bold mb-2'>해당 서비스는 세로 모드 전용입니다</p>
+          <p className='text-[17px] text-[#CFCFCF]'>가로 모드에서는 일부 콘텐츠가 보이지 않을 수 있어요</p>
+        </div>
+      )}
+
+
       <div className='flex flex-col items-center bottom-0 '>
         <div className='flex flex-col top-1/2 justify-center items-center'>
           <div
