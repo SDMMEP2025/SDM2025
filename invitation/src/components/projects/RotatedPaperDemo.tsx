@@ -25,7 +25,6 @@ interface RotatedPaperDemoProps {
   onGyroFallback?: (useLottie: boolean) => void
 }
 
-
 function normalizeOrientation(betaRaw: number, gammaRaw: number) {
   const type = (screen.orientation && (screen.orientation as any).type) as
     | 'portrait-primary'
@@ -294,9 +293,7 @@ export default function RotatedPaperDemo({
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta: b, gamma: g } = event
       if (b == null || g == null) return
-
       const { beta, gamma } = normalizeOrientation(b, g)
-
       setOrientation({
         beta: Math.max(-45, Math.min(45, beta)),
         gamma: Math.max(-45, Math.min(45, gamma)),
