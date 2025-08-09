@@ -42,21 +42,21 @@ export default function DirectionsPage({ onBackClick }) {
 
   return (
     <div className='absolute top-0 h-[100dvh] w-[100vw] flex items-center justify-center bg-gradient-to-br from-pink-400 to-pink-500 z-10'>
-      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[70px] md:gap-[83px] md-landscape:gap-[75px] lg:gap-[8.36dvh]'>
-        <h1 className='justify-center text-neutral-800 text-xl font-medium leading-loose'>Directions</h1>
+      <div className='w-full max-w-5xl px-8 py-16 flex flex-col items-center text-black gap-[clamp(70px,8.36dvh,83px)]'>
+        <h1 className='justify-center text-neutral-800 text-[clamp(22px,1.5vw,38.5px)] font-medium leading-loose'>Directions</h1>
 
-        <div className='flex flex-col gap-[40px] md:gap-[74px] md:landscape:gap-[8.03dvh] lg:gap-[66px]'>
+        <div className='flex flex-col gap-[clamp(40px,4.52dvh,115.75px)]'>
           <img src='/images/map.svg' className='block md:hidden' />
-          <img src='/images/map-md.svg' className='hidden md:block lg:hidden landscape:hidden' />
-          <img src='/images/map-landscape.svg' className='hidden landscape:md:block landscape:lg:hidden' />
-          <img src='/images/map-lg.svg' className='hidden lg:block' />
+          <img src='/images/map-md.svg' className='hidden md:block lg:hidden' />
+          <img src='/images/map-landscape.svg' className='hidden md-landscape:block lg:hidden' />
+          <img src='/images/map-lg.svg' className='hidden lg:block w-[25.8vw]' />
 
           <div className='flex flex-col justify-start items-center gap-[0.145dvh]'>
             <button
               onClick={handleCopyAddress}
               className='flex items-center gap-1 w-fit justify-center p-2 transition-colors duration-200'
             >
-              <span className="text-center justify-center text-neutral-800 text-base lg:text-lg font-normal md:font-medium font-['Pretendard'] underline leading-7">
+              <span className="text-center justify-center text-neutral-800 text-[clamp(17px, 1.23vw, 31.5px)] font-normal md:font-medium font-['Pretendard'] underline leading-7">
                 {address}
               </span>
               <div className='w-4 h-4 mb-1 relative'>
@@ -93,7 +93,7 @@ export default function DirectionsPage({ onBackClick }) {
               href={mapLink}
               target='_blank'
               rel='noopener noreferrer'
-              className="text-center justify-start text-neutral-800 text-base lg:text-lg font-normal md:font-medium font-['Pretendard'] underline leading-7"
+              className="text-center justify-start text-neutral-800 text-[clamp(17px, 1.23vw, 31.5px)] font-normal md:font-medium font-['Pretendard'] underline leading-7"
             >
               길 찾기
             </a>

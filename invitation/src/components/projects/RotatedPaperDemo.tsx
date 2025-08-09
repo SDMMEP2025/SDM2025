@@ -23,16 +23,18 @@ interface RotatedPaperDemoProps {
   squareColors?: string[]
   onMotionPanelToggle?: (isOpen: boolean) => void
   onGyroPopupToggle?: (visible: boolean) => void
+  onGyroFallback?: (useLottie: boolean) => void
 }
 
 export function RotatedPaper({ className = '', isMobile = false }) {
   return (
+    //종이의 크기
     <div
       className={`
-      w-[388.0000151880226px] h-[65dvh] ${isMobile ? 'bg-white' : 'bg-white'} rounded-lg
-      md:w-[640.7787222419632px] md:h-[690.6728853097492px]
+      w-[99.47vw] h-[clamp(488px,57.81dvh,941.2298px)] bg-white rounded-lg
+      md:w-[clamp(640.7787px,83.33vw,880px)] md:h-[67.38dvh]
       md-landscape:w-[880.0000262670924px] md-landscape:h-[537.9999787440715px]
-      lg:w-[60vw] lg:h-[65dvh]
+      lg:w-[61vw] lg:h-[66dvh]
       ${className}
     `}
     ></div>
@@ -44,7 +46,8 @@ export default function RotatedPaperDemo({
   displayName,
   squareColors,
   onMotionPanelToggle,
-  onGyroPopupToggle
+  onGyroPopupToggle,
+  onGyroFallback
 }: RotatedPaperDemoProps) {
   const steps = 12
   const defaultColors = [
@@ -70,6 +73,7 @@ export default function RotatedPaperDemo({
   const [screenSize, setScreenSize] = useState({ width: 0, height: 0 })
   const [orientation, setOrientation] = useState({ beta: 0, gamma: 0 })
   const [initialOrientation, setInitialOrientation] = useState<'portrait' | 'landscape' | null>(null)
+  const [useLottie, setUseLottie] = useState(false)
 
   const [motionSettings, setMotionSettings] = useState<MotionSettings>({
     deadZone: 0.5,
@@ -175,9 +179,7 @@ export default function RotatedPaperDemo({
         if ((screen.orientation as any)?.unlock) {
           ;(screen.orientation as any).unlock()
         }
-      } catch (error) {
-        // 에러 무시
-      }
+      } catch (error) {}
     }
   }, [isMobile])
 
@@ -190,23 +192,33 @@ export default function RotatedPaperDemo({
         if (permission === 'granted') {
           setIsGyroSupported(true)
           setShowGyroButton(false)
+          onGyroFallback?.(false)
         } else {
-          setGyroPermissionDenied(true)
+          setIsGyroSupported(false)
           setShowGyroButton(false)
+          onGyroFallback?.(true) // ⬅️ Lottie 전환
         }
-      } catch (error) {
-        console.log('자이로스코프 권한 요청 실패:', error)
-        setGyroPermissionDenied(true)
+      } catch {
+        setIsGyroSupported(false)
         setShowGyroButton(false)
+        onGyroFallback?.(true)
       }
     } else if (window.DeviceOrientationEvent) {
       setIsGyroSupported(true)
       setShowGyroButton(false)
+      onGyroFallback?.(false)
     } else {
-      setGyroPermissionDenied(true)
+      setIsGyroSupported(false)
       setShowGyroButton(false)
+      onGyroFallback?.(true)
     }
   }
+
+  useEffect(() => {
+    if (isMobile && !('DeviceOrientationEvent' in window)) {
+      onGyroFallback?.(true)
+    }
+  }, [isMobile, onGyroFallback])
 
   useEffect(() => {
     if (!isGyroSupported) return
@@ -338,7 +350,7 @@ export default function RotatedPaperDemo({
         <div className='relative transform -rotate-6'>
           <RotatedPaper isMobile={isMobile} />
           <div className='absolute inset-0 flex flex-col items-center justify-center pr-8 pl-8 gap-[71px] md:gap-[82px] lg:gap-[88px] text-black z-[110] transform rotate-6'>
-            <div className='text-center w-[79%] font-medium text-[17px] md:text-[18px] lg:text-[1.5vw]'>
+            <div className='text-center w-[79%] font-medium text-[clamp(17px,1.5vw,38.5px)]'>
               <p className='leading-relaxed break-keep'>안녕하세요.</p>
               <p className='break-keep'>2025 MEP 〈Newformative〉에 {displayName}님을 초대합니다.</p>
               <p>
@@ -346,10 +358,10 @@ export default function RotatedPaperDemo({
                 소중한 발걸음으로 자리를 빛내주세요.
               </p>
             </div>
-            <div className='inline-flex flex-col justify-center items-center gap-3'>
+            <div className='inline-flex flex-col justify-center text-[clamp(17px,1.23vw,31.5px)] items-center gap-2 md:gap-3'>
               <button
                 onClick={onDirectionsClick}
-                className='text-zinc-600 text-base text-[17px] md:text-[18px] lg:text-[1.23vw] font-medium underline leading-relaxed hover:text-zinc-800 transition-colors'
+                className='text-zinc-600 font-medium underline leading-[150%] hover:text-zinc-800 transition-colors'
               >
                 오시는 길
               </button>
@@ -357,7 +369,7 @@ export default function RotatedPaperDemo({
                 href='https://www.newformative.com/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='text-zinc-600 text-base text-[17px] md:text-[18px] lg:text-[1.23vw] font-medium underline leading-relaxed hover:text-zinc-800 transition-colors'
+                className='text-zinc-600 font-medium underline leading-[150%] hover:text-zinc-800 transition-colors'
               >
                 웹사이트 보러가기
               </a>

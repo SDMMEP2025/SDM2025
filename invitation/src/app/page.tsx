@@ -11,10 +11,11 @@ import backgroundAnimation from '@/animation/main.json'
 
 export default function Page() {
   const [showDirections, setShowDirections] = useState(false)
-  const [displayName, setDisplayName] = useState('김삼성') 
+  const [displayName, setDisplayName] = useState('김삼성')
   const [isMobile, setIsMobile] = useState(false)
-  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false) 
+  const [isMotionPanelOpen, setIsMotionPanelOpen] = useState(false)
   const [isGyroPopupVisible, setIsGyroPopupVisible] = useState(false)
+  const [useLottie, setUseLottie] = useState(false)
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -39,8 +40,7 @@ export default function Page() {
       setDisplayName(decodedName)
     }
   }, [])
-  
-  
+
   useEffect(() => {
     const handleURLChange = () => {
       const urlParams = new URLSearchParams(window.location.search)
@@ -76,8 +76,8 @@ export default function Page() {
           left: 0,
         }}
       >
-        {!isMobile && (
-          <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} rotateOnMobile={true} />
+        {(!isMobile || (isMobile && useLottie)) && (
+          <LottieBackground animationData={backgroundAnimation} loop={true} autoplay={true} forceRotate90={false} />
         )}
 
         <div className='relative z-10'>
@@ -94,6 +94,10 @@ export default function Page() {
                   displayName={displayName}
                   onMotionPanelToggle={setIsMotionPanelOpen}
                   onGyroPopupToggle={(visible) => setIsGyroPopupVisible(visible)}
+                  onGyroFallback={(fallback) => {
+                    setUseLottie(fallback)
+                    if (fallback) setIsGyroPopupVisible(false)
+                  }}
                 />
               </motion.div>
             ) : (
@@ -110,7 +114,7 @@ export default function Page() {
           </AnimatePresence>
         </div>
       </div>
-      {!isMobile || (isMobile && !isGyroPopupVisible) || (
+      {!isMobile || (isMobile && isGyroPopupVisible) || (
         <div className='footer-container fixed bottom-0 w-screen z-[9999] pointer-events-none'>
           <Footer />
         </div>
