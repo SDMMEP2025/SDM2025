@@ -41,7 +41,11 @@ export default function TimeUnit({ value, className = '' }: TimeUnitProps) {
         return (
           <div
             key={index}
-            className="relative flex w-[clamp(32px,12vw,78px)] text-[clamp(40px,22vw,130px)] md-landscape-coming:w-[9vw] lg:w-[46%] md-landscape-coming:text-[17vw] lg:text-[17vw] p-0 m-0"
+            className="relative flex 
+            text-[clamp(40px,20vw,130px)] w-[clamp(32px,11vw,78px)]
+            md:text-[clamp(130px,17vw,170px)] md:w-[clamp(80px,7dvh,110px)] 
+            md-landscape-coming:text-[17vw] md-landscape-coming:w-[9vw] 
+            lg:text-[17vw] lg:w-[46%] p-0 m-0"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
