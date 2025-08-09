@@ -21,9 +21,9 @@ export default function Page() {
   const isLandscape = useIsLandscape()
   const isPhone = useIsPhone({ cutoff: 768 })
 
-  console.log(navigator.userAgent)
-  console.log(isMobile)
-  console.log(isLandscape)
+  // console.log(navigator.userAgent)
+  // console.log(isMobile)
+  // console.log(isLandscape)
 
   useEffect(() => {
     const checkIfMobile = () => {
