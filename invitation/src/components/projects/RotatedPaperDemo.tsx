@@ -120,17 +120,17 @@ export default function RotatedPaperDemo({
   const calibratingRef = useRef(false)
 
   const [motionSettings, setMotionSettings] = useState<MotionSettings>({
-    deadZone: 0.5,
-    smoothing: 0.75,
-    positionSmoothing: 0.85,
-    accelerationPower: 2.0,
-    accelerationMultiplier: 0.06,
-    tiltRotationMultiplier: 2.7,
-    baseGap: 0.0,
+    deadZone: 1.3,
+    smoothing: 0.45,
+    positionSmoothing: 0.8,
+    accelerationPower: 2.1,
+    accelerationMultiplier: 0.025,
+    tiltRotationMultiplier: 4,
+    baseGap: 0,
     springGapMultiplier: 0.15,
-    layerMovementMultiplier: 0.08,
-    offsetXMultiplier: 1.2,
-    offsetYMultiplier: 0.8,
+    layerMovementMultiplier: 0.18,
+    offsetXMultiplier: 2.3000000000000003,
+    offsetYMultiplier: 2.2,
   })
 
   const [physics, setPhysics] = useState({
