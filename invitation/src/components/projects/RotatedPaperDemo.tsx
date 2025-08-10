@@ -75,8 +75,8 @@ export function RotatedPaper({ className = '', isMobile = false }) {
       className={`
       w-[99.47vw] h-[clamp(488px,57.81dvh,941.2298px)] bg-white rounded-lg
       md:w-[clamp(640.7787px,83.33vw,880px)] md:h-[67.38dvh]
-      md-landscape:w-[880.0000262670924px] md-landscape:h-[537.9999787440715px]
-      lg:w-[61vw] lg:h-[66dvh]
+      md-landscape:w-[880.0000262670924px] md-landscape:h-[537px]
+      lg:w-[clamp(880px,59vw,1540px)] lg:h-[clamp(538px,58dvh,941px)]
       ${className}
     `}
     ></div>
