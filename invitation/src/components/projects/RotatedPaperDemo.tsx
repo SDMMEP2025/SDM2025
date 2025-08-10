@@ -385,7 +385,7 @@ export default function RotatedPaperDemo({
       {isMobile && (
         <div className='fixed inset-0 pointer-events-none z-0'>
           {isGyroSupported && screenSize.width > 0 && (
-            <div className='absolute inset-0 overflow-hidden'>
+            <div className='absolute inset-0 overflow-hidden bg-[#FF79B3]'>
               {Array.from({ length: steps }).map((_, i) => {
                 const size = maxSize - stepReduction * i
                 const color = colors[i] || colors[colors.length - 1]
@@ -476,8 +476,8 @@ export default function RotatedPaperDemo({
           <div className='pointer-events-auto'>
             <div className='bg-white/95 backdrop-blur-sm rounded-[10px] p-6 shadow-2xl text-center max-w-xs'>
               <div className='mb-4'>
-                <div className='w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center'>
-                  <img src='/images/icon.svg' alt='Icon' className='w-12 h-12' />
+                <div className='mx-auto mb-3 rounded-full flex items-center justify-center'>
+                  <img src='/images/icon.svg' alt='Icon' className='text-black w-12 h-12' />
                 </div>
                 <h3 className='text-lg font-semibold text-gray-800 mb-2'>움직임 효과 활성화</h3>
                 <p className='text-sm text-gray-600'>기기를 기울여 배경을 움직여보세요</p>

@@ -119,12 +119,12 @@ export default function Page() {
           </AnimatePresence>
         </div>
       </div>
-      {(!isMobile || (isMobile && isGyroPopupVisible)) && (
+      {(!isPhone || (isMobile && isGyroPopupVisible)) && (
         <div className='footer-container mix-blend-difference fixed bottom-0 w-screen z-[9999] pointer-events-none'>
           <Footer />
         </div>
       )}
-      {isMobile && isLandscape && (
+      {isPhone && isLandscape && (
         <div className='fixed inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center'>
           <img className='pb-[20px]' src='/images/icon-error.svg' />
           <p className='text-[24px] font-bold mb-2'>해당 서비스는 세로 모드 전용입니다</p>
