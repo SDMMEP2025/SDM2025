@@ -15,9 +15,9 @@ export function useIsPhone({ cutoff = 768 }: Options = {}) {
       const isiPhone = /iPhone/i.test(ua)
       const isiPod = /iPod/i.test(ua)
       const isAndroid = /Android/i.test(ua)
-      const isAndroidPhone = isAndroid && /Mobile/i.test(ua) 
+      const isAndroidPhone = isAndroid && /Mobile/i.test(ua)
       const isiPadClassic = /iPad/i.test(ua)
-      const isiPadOS13Plus = /Macintosh/i.test(ua) && navigator.maxTouchPoints > 1 
+      const isiPadOS13Plus = /Macintosh/i.test(ua) && navigator.maxTouchPoints > 1
       const isAndroidTablet = isAndroid && !/Mobile/i.test(ua)
       const isGenericTablet = /Tablet|PlayBook|Silk/i.test(ua)
 
@@ -31,10 +31,7 @@ export function useIsPhone({ cutoff = 768 }: Options = {}) {
       const shortSide = Math.min(window.innerWidth, window.innerHeight)
       const looksPhoneBySize = shortSide < cutoff
 
-      const phone =
-        uaPhone ||
-        uaDataMobile ||
-        ((hasTouch || isCoarse) && looksPhoneBySize && !isTabletByUA)
+      const phone = uaPhone || uaDataMobile || ((hasTouch || isCoarse) && looksPhoneBySize && !isTabletByUA)
 
       setIsPhone(!!phone)
     }
