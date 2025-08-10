@@ -129,7 +129,7 @@ export default function RotatedPaperDemo({
     baseGap: 0,
     springGapMultiplier: 0.15,
     layerMovementMultiplier: 0.18,
-    offsetXMultiplier: 2.3000000000000003,
+    offsetXMultiplier: 2.3,
     offsetYMultiplier: 2.2,
   })
 
