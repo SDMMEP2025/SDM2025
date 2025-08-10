@@ -120,7 +120,7 @@ export default function Page() {
         </div>
       </div>
       {(!isPhone || (isMobile && isGyroPopupVisible)) && (
-        <div className='footer-container mix-blend-difference fixed bottom-0 w-screen z-[9999] pointer-events-none'>
+        <div className='footer-container mix-blend-difference fixed bottom-0 w-screen z-[9999]'>
           <Footer />
         </div>
       )}
