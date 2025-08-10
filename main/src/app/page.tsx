@@ -9,9 +9,9 @@ import { useState } from 'react'
 export default function Page() {
   return (
     <>
-      <Header />
       <ScrollOrchestrator />
-      <Footer/>
+      <Header />
+      <Footer />
       {/* <ComingSoonSection /> */}
     </>
   )
