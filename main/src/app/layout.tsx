@@ -61,21 +61,21 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icons/apple-touch-icon.png" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16" },
-      { url: "/icons/favicon-32x32.png", sizes: "32x32" },
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180" },
+      { url: '/icons/apple-touch-icon.png' },
+      { url: '/icons/favicon-16x16.png', sizes: '16x16' },
+      { url: '/icons/favicon-32x32.png', sizes: '32x32' },
+      { url: '/icons/apple-touch-icon.png', sizes: '180x180' },
     ],
     apple: [
-      { url: "/icons/apple-touch-icon.png" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16" },
-      { url: "/icons/favicon-32x32.png", sizes: "32x32" },
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180" },
+      { url: '/icons/apple-touch-icon.png' },
+      { url: '/icons/favicon-16x16.png', sizes: '16x16' },
+      { url: '/icons/favicon-32x32.png', sizes: '32x32' },
+      { url: '/icons/apple-touch-icon.png', sizes: '180x180' },
     ],
     other: {
-      rel: "mask-icon",
-      url: "/icons/safari-pinned-tab.svg",
-      color: "#000000",
+      rel: 'mask-icon',
+      url: '/icons/safari-pinned-tab.svg',
+      color: '#000000',
     },
   },
 };
