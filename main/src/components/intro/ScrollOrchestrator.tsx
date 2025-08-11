@@ -84,7 +84,7 @@ export function ScrollOrchestrator() {
       const r = el.getBoundingClientRect()
       const vw = window.innerWidth
       const vh = window.innerHeight + +100
-      const s = Math.max(vw / Math.max(r.width, 1), vh / Math.max(r.height, 1)) * 1.06
+      const s = Math.max(vw / Math.max(r.width, 1), vh / Math.max(r.height, 1)) * 1.03
       setCoverScale(s)
     }
     calc()
@@ -125,7 +125,7 @@ export function ScrollOrchestrator() {
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.6 })
   const lift3 = useTransform(p2, [0.1, 0.8], [0, -230])
   const yAll3 = lift3
-  const rectOpacity = useTransform(p2, [0.2, 0.55], [1, 0], { clamp: true, ease: easeInOut })
+  const rectOpacity = useTransform(p2, [0.2, 0.85], [1, 0], { clamp: true, ease: easeInOut })
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
   const infoOpacity = useTransform([opacityScale, infoFadeOut], ([a, b]) => Number(a) * Number(b))
 
