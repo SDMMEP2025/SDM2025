@@ -17,6 +17,7 @@
   }
 
   :lang(en) {
+    @apply font-english;
     letter-spacing: 0;
   }
 
@@ -148,7 +149,6 @@
     writing-mode: horizontal-tb;
   }
 }
-
 
 @font-face {
   font-family: 'SaansTRIAL';

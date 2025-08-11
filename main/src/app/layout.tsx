@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { METADATA } from "./metadata";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
-import { pretendard } from "@/theme/font";
-import "@/styles/globals.css";
-import { Layout } from "@/components/projects/Layout";
+import type { Metadata } from 'next'
+import { METADATA } from './metadata'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { pretendard, saans } from '@/theme/font'
+import '@/styles/globals.css'
+import { Layout } from '@/components/projects/Layout'
 
 export const metadata: Metadata = {
   alternates: {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   authors: METADATA.authors,
   creator: METADATA.authors[0].name,
   publisher: METADATA.authors[0].name,
-  manifest: "/manifest.json",
+  manifest: '/manifest.json',
   generator: METADATA.authors[0].name,
   applicationName: METADATA.name,
   appleWebApp: {
@@ -26,27 +26,27 @@ export const metadata: Metadata = {
     title: METADATA.title,
     // startUpImage: [],
   },
-  category: "webapp",
+  category: 'webapp',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   openGraph: {
-    type: "website",
+    type: 'website',
     siteName: METADATA.name,
     title: {
       default: METADATA.title,
       template: METADATA.titleTemplate,
     },
     description: METADATA.description,
-    locale: "ko_KR",
+    locale: 'ko_KR',
     url: METADATA.url,
     images: {
-      url: "/icons/op-image.png",
+      url: '/icons/op-image.png',
     },
   },
-  referrer: "origin-when-cross-origin",
+  referrer: 'origin-when-cross-origin',
   robots: {
     index: true,
     follow: true,
@@ -54,9 +54,9 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
   icons: {
@@ -78,18 +78,18 @@ export const metadata: Metadata = {
       color: '#000000',
     },
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="ko">
-      <body className={`${pretendard.variable} antialiased`}>
+    <html lang='ko'>
+      <body className={`${pretendard.variable} ${saans.variable} antialiased`}>
         <Layout>{children}</Layout>
       </body>
     </html>
-  );
+  )
 }

@@ -47,7 +47,7 @@ export default {
       fontFamily: {
         // 한글용 폰트
         korean: ['var(--font-pretendard)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        english: ['SaansTRIAL', 'sans-serif'],
+        english: ['var(--font-saans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       aspectRatio: {},
     },
