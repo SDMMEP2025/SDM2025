@@ -42,9 +42,22 @@ export const metadata: Metadata = {
     description: METADATA.description,
     locale: 'ko_KR',
     url: METADATA.url,
-    images: {
-      url: '/icons/op-image.png',
-    },
+    images: [
+      {
+        url: '/og/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'New Formative',
+        type: 'image/png',
+      },
+      {
+        url: '/og/og-image.webp',
+        width: 1200,
+        height: 630,
+        alt: 'New Formative',
+        type: 'image/webp',
+      },
+    ],
   },
   referrer: 'origin-when-cross-origin',
   robots: {
