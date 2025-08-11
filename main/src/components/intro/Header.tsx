@@ -18,6 +18,7 @@ export function Header() {
   const [blendMode, setBlendMode] = useState<'difference' | 'normal'>('difference')
   const headerOpacity = useTransform(chromeProgress, [0, 0.2, 0.6], [0, 0, 1])
   const headerY = useTransform(chromeProgress, [0, 0.6], [0, 0])
+  const pe = useTransform(headerOpacity, (v) => (v < 0.15 ? 'none' : ('auto' as const)))
 
   function toggleDropdown() {
     setIsDropdownOpen(!isDropdownOpen)
@@ -40,25 +41,12 @@ export function Header() {
     }
   }
 
-  //네비 나왔을때 스크롤 비활성화
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isMobileMenuOpen])
-
   return (
     <motion.div
       style={{
         opacity: headerOpacity,
         y: headerY,
-        pointerEvents: headerOpacity.get() < 0.05 ? ('none' as const) : 'auto',
+        pointerEvents: pe,
       }}
       className={`w-full h-fit fixed top-0 z-200 transition-all duration-300 ${
         blendMode === 'difference' ? 'mix-blend-difference' : 'mix-blend-normal'

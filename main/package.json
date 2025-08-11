@@ -20,6 +20,7 @@
     "dayjs": "^1.11.13",
     "framer-motion": "^11.15.0",
     "gyronorm": "^2.0.6",
+    "lottie-react": "^2.4.1",
     "next": "^15.1.7",
     "node-vibrant": "^4.0.3",
     "openai": "^5.11.0",
