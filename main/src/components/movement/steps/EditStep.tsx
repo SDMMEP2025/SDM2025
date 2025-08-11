@@ -1,11 +1,14 @@
 // components/movement/steps/EditStep.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { useImageAnalysis } from '@/hooks/useImageAnalysis'
 import { useColorAnalysis } from '@/hooks/useColorAnalysis'
 import { ColorAnalysisResult } from '@/types/color'
+import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import animationData from '@/animation/movement_loading.json'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface EditStepProps {
   imageUrl: string
@@ -20,6 +23,8 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
 
   const { analyzeImage, isAnalyzing: isAnalyzingText, error: textError } = useImageAnalysis()
   const { analyzeImageColors, isAnalyzing: isAnalyzingColor, error: colorError } = useColorAnalysis()
+
+  const [step, setStep] = useState(1)
 
   // 컴포넌트 마운트 시 AI 텍스트 분석 + 색상 분석 동시 실행
   useEffect(() => {
@@ -59,20 +64,19 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
 
   return (
     <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
-      <div className='w-full px-4'>
-        {/* 뒤로가기 버튼 */}
-        {/* <button
+      {/* 뒤로가기 버튼 */}
+      {/* <button
           onClick={onBack}
           className="mb-6 flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          다시 선택하기
+          다시 선택하기 
         </button> */}
 
-        {/* 이미지 */}
-        {/* <div className="mb-6">
+      {/* 이미지 */}
+      {/* <div className="mb-6">
           <img
             src={imageUrl}
             alt="업로드된 이미지"
@@ -80,10 +84,10 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
           />
         </div> */}
 
-        {/* 분석 상태 및 색상 미리보기 */}
-        <div className='mb-0'>
-          {/* 로딩 상태 */}
-          {/* {isAnalyzing && (
+      {/* 분석 상태 및 색상 미리보기 */}
+      <div className='absolute top-20 left-1/2 -translate-x-1/2'>
+        {/* 로딩 상태 */}
+        {/* {isAnalyzing && (
             <div className="flex items-center gap-2 text-blue-400 text-sm">
               <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-400 border-t-transparent"></div>
               {isAnalyzingText && isAnalyzingColor ? 'AI 분석 및 색상 추출 중...' :
@@ -92,95 +96,231 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
             </div>
           )} */}
 
-          {/* 에러 상태 */}
-          {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>}
+        {/* 에러 상태 */}
+        {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>}
+      </div>
+
+      {/* Step Indicator */}
+      <div
+        className={classNames(
+          'absolute left-1/2 -translate-x-1/2 w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
+          'bottom-[17.41%]',
+          'md:bottom-[15.32%]',
+          'lg:bottom-[13.58%]',
+          '2xl:bottom-[13.60%]',
+        )}
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          className={classNames(
+            'aspect-[62/14] h-auto',
+            'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
+            'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
+            '2xl:w-[62px]', // 2xl 이상 고정
+          )}
+          viewBox='0 0 62 14'
+          fill='none'
+        >
+          <circle cx='7' cy='7' r='7' fill={step > 0 ? '#222222' : '#F2F2F2'} />
+          <circle cx='31' cy='7' r='7' fill={step > 1 ? '#222222' : '#F2F2F2'} />
+          <circle cx='55' cy='7' r='7' fill={step > 2 ? '#222222' : '#F2F2F2'} />
+        </svg>
+      </div>
+
+      {/* 타이틀 */}
+      <div
+        className={classNames(
+          'absolute flex flex-col justify-center items-center inset-x-0 w-full',
+          //mobile
+          'top-[16.66%]',
+          'gap-[102px]', // 모바일
+          //tablet
+          'md-landscape:top-[34.9%]',
+          'md:top-[27.01%]',
+          'md:gap-[42px]', // md
+          'md-landscape:gap-[66px]', // md-landscape 조건
+          //desktop
+          'lg:top-[28.64%]',
+          'lg:gap-[clamp(54px,calc(-11.428px+4.55357vw),105px)]', // lg~2xl fluid
+          // large desktop
+          '2xl:top-[28.58%]',
+          '2xl:gap-[105px]', // 2xl 이상
+        )}
+      >
+        <div
+          className={classNames(
+            'flex flex-col justify-center items-center w-full',
+            //mobile
+            'gap-[10px]', // 모바일
+            //tablet
+            'md:gap-[10px]',
+            //desktop
+            'lg:gap-[10px]',
+            // large desktop
+            '2xl:gap-[17px]', // 2xl 이상 고정
+          )}
+        >
+          <motion.div
+            initial={{ opacity: 0.2 }}
+            animate={{ opacity: isAnalyzing ? 0.2 : 1 }}
+            exit={{ opacity: 0.2 }}
+            transition={{ duration: 0.3 }}
+            className={classNames(
+              'text-center text-[#FF60B9] font-medium font-english',
+              // 모바일
+              'text-[17px] leading-[100%] letterSpacing-[-0.34px]',
+              // tablet
+              'md:text-[clamp(17px,calc(16.118px+0.2451vw),18px)] md:leading-[130%] md:letterSpacing-[-0.36px]',
+              // desktop
+              'lg:text-[clamp(20px,calc(-0.571px+1.42857vw),36px)] lg:leading-[130%] lg:letterSpacing-[-0.4px]',
+              // large desktop
+              '2xl:text-[36px] 2xl:leading-[130%] 2xl:letterSpacing-[-0.72px]',
+            )}
+          >
+            Tell Us Your Movement
+          </motion.div>
+          <div
+            className={classNames(
+              'text-center text-[#FFF] font-bold mix-blend-difference',
+              // 모바일
+              'text-[30px] leading-[140%] letterSpacing-[-0.6px]',
+              // tablet
+              'md:text-[clamp(30px,calc(28.235px+0.4902vw),32px)] md:leading-[140%] md:letterSpacing-[-0.64px]',
+              // desktop
+              'lg:text-[clamp(36px,calc(0px+2.5vw),64px)] lg:leading-[140%] lg:letterSpacing-[-0.72px]',
+              // large desktop
+              '2xl:text-[64px] 2xl:leading-[140%] 2xl:letterSpacing-[-1.28px]',
+            )}
+          >
+            이미지에는 어떤 순간이 <br className='inline md:hidden' />
+            담겨 있나요?
+          </div>
         </div>
 
-        <div className='flex flex-col justify-between items-center gap-[19dvh] lg:gap-[11.8dvh]'>
-          <div className='flex flex-col justify-center items-center gap-[3.68dvh] md:gap-[0.4dvh]'>
-            <div className='left-1/2 transform hidden md:block lg:mt-[0dvh]'>
-              <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
-                <circle cx='4' cy='4.5' r='4' fill='#222222' />
-                <circle cx='15.7344' cy='4.5' r='4' fill='#E8E8E8' />
-                <circle cx='27.4688' cy='4.5' r='4' fill='#E8E8E8' />
-              </svg>
-            </div>
-
-            {/* 타이틀 */}
-            <div className='flex flex-col justify-center items-center gap-[2.13dvh] md:gap-[0.4dvh]'>
-              <h2
-                className={classNames(
-                  'text-center text-[#222222] font-semibold font-english',
-                  'text-[34px] w-[237px] md:w-fit text-[28px] md:text-[40px] lg:text-[32px]',
-                  'pt-[36px]'
-                )}
+        {/* textarea */}
+        <div
+          className={classNames(
+            'relative flex justify-center items-center',
+            'bg-white rounded-[8px]',
+            // 모바일
+            'w-[358px] h-[70px]',
+            // tablet
+            'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)]',
+            'md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
+            // desktop
+            'lg:w-[clamp(984px,calc(37.714px+65.7143vw),1720px)]',
+            'lg:h-[clamp(126px,calc(25.7143px+6.96429vw),204px)]',
+            // large desktop
+            '2xl:w-[1720px]',
+            '2xl:h-[204px]',
+          )}
+        >
+          {/* GPT 로딩  */}
+          <AnimatePresence>
+            {isAnalyzing && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isAnalyzing ? 1 : 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className={classNames('absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2', '')}
               >
-                Tell Us Your Movement
-              </h2>
-              <p className={classNames('text-center text-[#4B4F57] mt-2', 'text-[16px] md:text-[17px] lg:text-[18px]')}>
-                업로드한 이미지에는 어떤 순간이 담겨 있나요?
-              </p>
-            </div>
-          </div>
-
-          <div className='flex flex-col justify-center items-center gap-[20dvh] md:gap-[10dvh]  lg:gap-[14.54dvh]'>
-            <div className='relative'>
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder={isAnalyzing ? '이미지 분석 중...' : '나를 움직이게 하는 이 순간에 대해 적어보세요...'}
-                className='w-[380px] md:w-[688px] py-[22px] md:py-[84px] lg:py-[77px] bg-[#F6F6F6] text-center rounded-lg text-[#AEB1B6] text-[18px] md:text-[32px]  lg:text-[42px] placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none'
-                maxLength={200}
-                disabled={isAnalyzing}
-                rows={1}
-              />
-              <div className='absolute right-[14px] bottom-[14px] flex justify-between text-xs text-[#AEB1B6]'>
-                <span>{text.length}/22</span>
-              </div>
-            </div>
-
-
-            <div className='flex flex-col justify-center items-center gap-[32px]'>
-              <div className='left-1/2 transform md:hidden'>
-                <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
-                  <circle cx='4' cy='4.5' r='4' fill='#222222' />
-                  <circle cx='15.7344' cy='4.5' r='4' fill='#E8E8E8' />
-                  <circle cx='27.4688' cy='4.5' r='4' fill='#E8E8E8' />
-                </svg>
-              </div>
-              <button
-                onClick={handleSubmit}
-                disabled={!text.trim() || !colorAnalysis || isAnalyzing}
-                className={classNames(
-                  'mix-blend-normal bg-neutral-800 rounded-[100px] inline-flex justify-center items-center gap-[5.11px] overflow-hidden transition-all duration-200 hover:bg-neutral-700',
-                  //mobile
-                  'w-[128px] h-[40px] px-[32px]',
-                  //tablet
-                  'md:w-[136px] md:h-[42px] md:px-[36px]',
-                  //desktop
-                  'lg:w-[144px] lg:h-[44px] lg:px-[36px]',
-                  text.trim() && colorAnalysis && !isAnalyzing
-                    ? 'bg-neutral-800 hover:bg-neutral-700 text-white'
-                    : 'bg-neutral-600 text-gray-400 cursor-not-allowed',
-                )}
-              >
-                <div
-                  className={classNames(
-                    'text-white font-medium',
-                    //mobile
-                    'text-[16px]',
-                    //tablet
-                    'md:text-[17px]',
-                    //desktop
-                    'lg:text-[18px]',
-                  )}
-                >
-                  Next
-                </div>
-              </button>
-            </div>
-          </div>
+                <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}></div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <motion.textarea
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isAnalyzing ? 0 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder={'나를 움직이게 하는 이 순간에 대해 적어보세요...'}
+            className={classNames(
+              'w-full h-auto text-center bg-transparent text-[#AEB1B6] font-medium',
+              'placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none',
+              // 모바일
+              'text-[18px] leading-[150%] letterSpacing-[-0.36px]',
+              // tablet
+              'md:text-[clamp(18px,calc(5.647px+3.43137vw),32px)] md:leading-[150%] md:letterSpacing-[-0.64px]',
+              // desktop
+              'lg:text-[clamp(32px,calc(1.1429px+2.14286vw),56px)] lg:leading-[150%] lg:letterSpacing-[-0.64px]',
+              // large desktop
+              '2xl:text-[56px] 2xl:leading-[150%] 2xl:letterSpacing-[-1.12px]',
+            )}
+            maxLength={22}
+            disabled={isAnalyzing}
+            rows={1}
+          />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isAnalyzing ? 0 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={classNames(
+              'absolute right-0 md:right-[14px] bottom-[-30px] md:bottom-[14px] flex justify-between text-[#AEB1B6] font-medium',
+              // 모바일
+              'text-[15px]',
+              // tablet
+              'text-[15px]',
+              // desktop
+              'lg:text-[clamp(15px,calc(0.85714px+0.982143vw),26px)]',
+              // large desktop
+              '2xl:text-[26px]',
+            )}
+          >
+            <span>{text.length}/22</span>
+          </motion.div>
         </div>
+      </div>
+
+      {/* button */}
+      <div
+        className={classNames(
+          'absolute flex justify-center items-center',
+          'right-auto bottom-[14.30%] inset-y-auto',
+          'md:right-auto md:bottom-[20.7%] md:inset-y-auto',
+          'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
+          'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
+          '2xl:right-[100px] 2xl:inset-y-0', // 2xl 이상 고정
+        )}
+      >
+        <motion.button
+          type='button'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: text.trim() && colorAnalysis && !isAnalyzing ? 1 : 0.2 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleSubmit}
+          disabled={!text.trim() || !colorAnalysis || isAnalyzing}
+          className={classNames(
+            'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
+            'h-auto aspect-square',
+            //mobile
+            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            //tablet & desktop & large desktop
+            'md:w-[46px]',
+            'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
+            '2xl:w-[74px]',
+            text.trim() && colorAnalysis && !isAnalyzing ? 'cursor-pointer' : 'cursor-not-allowed',
+          )}
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className={classNames(
+              'h-auto aspect-square',
+              'w-[clamp(15px,calc(20.647px-0.735294vw),18px)]', // 모바일→md
+              'lg:w-[clamp(15px,calc(3.42857px+0.803571vw),24px)]', // lg→2xl
+              '2xl:w-[24px]', // 2xl 이상
+            )}
+            viewBox='0 0 16 14'
+            fill='currentColor'
+          >
+            <path d='M9.57556 12.9384C9.20564 13.3071 8.60779 13.3091 8.23548 12.9428C7.8577 12.5712 7.85598 11.9626 8.23165 11.5888L9.72493 10.1031C10.1152 9.71293 10.5054 9.34111 10.8956 8.98771C11.2932 8.62694 11.595 8.36556 11.8012 8.20358C11.8926 8.12568 11.8291 7.97487 11.7094 7.98451C10.9009 8.04957 9.95969 8.0821 8.88559 8.0821H1.56345C0.971809 8.0821 0.492188 7.60248 0.492188 7.01084C0.492188 6.41919 0.971809 5.93957 1.56345 5.93957H8.88559C9.43779 5.93957 9.97895 5.9543 10.5091 5.98375C11.0392 6.00584 11.4331 6.03161 11.6908 6.06106C11.8084 6.07114 11.8696 5.92213 11.7796 5.84562C11.1627 5.32109 10.4778 4.68241 9.72493 3.92957L8.24424 2.43369C7.87207 2.0577 7.87361 1.45167 8.2477 1.07758C8.62403 0.701251 9.23449 0.702272 9.60956 1.07986L14.934 6.44008C15.2534 6.76156 15.2521 7.28091 14.9311 7.60078L9.57556 12.9384Z' />
+          </svg>
+        </motion.button>
       </div>
     </div>
   )

@@ -8,7 +8,6 @@ import { InteractPage } from '@/components/movement/steps/Interact'
 import { useStepManager } from '@/hooks/useStepManager'
 import { UploadedImage } from '@/types/movement'
 import { ColorAnalysisResult } from '@/types/color'
-import { AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
 // 인터랙션 데이터 타입 정의
@@ -29,7 +28,7 @@ export default function Page() {
 
   const handleFileUpload = (files: FileList | null) => {
     if (!files || files.length === 0) return
-    
+
     // 첫 번째 파일만 처리
     const file = files[0]
     if (file.type.startsWith('image/')) {
@@ -37,9 +36,9 @@ export default function Page() {
       const imageData: UploadedImage = {
         file,
         url,
-        id: Date.now().toString()
+        id: Date.now().toString(),
       }
-      
+
       setCurrentImage(imageData)
       goToStep('edit', { currentImage: imageData })
     } else {
@@ -76,12 +75,10 @@ export default function Page() {
   return (
     <>
       <Header />
-      
+
       {/* 단계별 화면 렌더링 */}
-      {step === 'upload' && (
-        <Main onUpload={handleFileUpload} />
-      )}
-      
+      {step === 'upload' && <Main onUpload={handleFileUpload} />}
+
       {step === 'edit' && currentImage && (
         <EditStep
           imageUrl={currentImage.url}
@@ -90,7 +87,7 @@ export default function Page() {
           onComplete={handleEditComplete}
         />
       )}
-      
+
       {step === 'result' && currentImage && data.text && data.colorAnalysis && (
         <ResultStep
           imageUrl={currentImage.url}
@@ -100,14 +97,11 @@ export default function Page() {
           onComplete={handleResultComplete}
         />
       )}
-      
+
       {step === 'interact' && interactionData && (
-        <InteractPage
-          interactionData={interactionData}
-          onStartOver={handleStartOver}
-        />
+        <InteractPage interactionData={interactionData} onStartOver={handleStartOver} />
       )}
-      
+
       <Footer />
     </>
   )

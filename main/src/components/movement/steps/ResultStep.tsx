@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react'
 import classNames from 'classnames'
 import { ColorAnalysisResult } from '@/types/color'
 import { Range, getTrackBackground } from 'react-range'
-import { MotionControlPanel, MotionParams } from '../MotionControlPanel' 
+import { MotionControlPanel, MotionParams } from '../MotionControlPanel'
+import { motion } from 'framer-motion'
 
 interface ResultStepProps {
   imageUrl: string
@@ -53,7 +54,7 @@ function ConcentricSquares({
     stepReductionRatio: 0.06,
     borderRadiusOuter: 8,
     dragSmoothing: 1.0,
-  }
+  },
 }: {
   steps: number
   brandColorHex: string
@@ -64,14 +65,14 @@ function ConcentricSquares({
   // 반응형 사이즈 계산
   const getResponsiveSize = () => {
     if (typeof window === 'undefined') return { maxWidth: 420, maxHeight: 316 }
-    
+
     const width = window.innerWidth
     const height = window.innerHeight
-    
+
     // 화면 크기에 따른 maxWidth 설정
     let maxWidth: number
     let maxHeight: number
-    
+
     if (width >= 1024) {
       // 데스크톱 (lg 이상)
       maxWidth = 420
@@ -85,7 +86,7 @@ function ConcentricSquares({
       maxWidth = Math.min(280, width * 0.75)
       maxHeight = Math.min(210, height * 0.3)
     }
-    
+
     return { maxWidth, maxHeight }
   }
 
@@ -203,7 +204,8 @@ function ConcentricSquares({
         for (let i = lastIdx - 1; i >= 0; i--) {
           const current = newPositions[i]
           const next = newPositions[i + 1]
-          const speed = motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
+          const speed =
+            motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
           let newX = current.x + (next.x - current.x) * speed
           let newY = current.y + (next.y - current.y) * speed
 
@@ -234,7 +236,7 @@ function ConcentricSquares({
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
     window.addEventListener('touchend', handleTouchEnd)
-    
+
     return () => {
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mousemove', handleMouseMove)
@@ -280,7 +282,7 @@ function ConcentricSquares({
 export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onComplete }: ResultStepProps) {
   const [values, setValues] = React.useState([9])
   const [currentPositions, setCurrentPositions] = useState<Array<{ x: number; y: number }>>([])
-  
+
   // 모션 컨트롤 관련 state 추가
   const [motionParams, setMotionParams] = useState<MotionParams>({
     speedBase: 0.08,
@@ -292,7 +294,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
     dragSmoothing: 1.0,
   })
   const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(false)
-  
+
   const STEP = 1
   const MIN = 6
   const MAX = 13
@@ -325,119 +327,153 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
         isVisible={isMotionPanelVisible}
         onToggle={() => setIsMotionPanelVisible(!isMotionPanelVisible)}
       />
-      
-      <div className='flex flex-col justify-between items-center gap-[8dvh]'>
-        <div className='flex flex-col justify-center items-center gap-[3.68dvh]'>
-          <div className='left-1/2 transform hidden md:block'>
-            <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
-              <circle cx='4' cy='4.5' r='4' fill='#222222' />
-              <circle cx='15.7344' cy='4.5' r='4' fill='#222222' />
-              <circle cx='27.4688' cy='4.5' r='4' fill='#E8E8E8' />
-            </svg>
-          </div>
 
-          <div className='flex flex-col justify-center items-center gap-[2.13dvh]'>
-            <h2
-              className={classNames(
-                'text-center text-[#222222] font-semibold font-english',
-                'text-[34px] md:text-[28px] lg:text-[32px]',
-              )}
-            >
-              Move Your Movement
-            </h2>
-            <p className={classNames('text-center text-[#4B4F57] mt-2', 'text-[16px] md:text-[17px] lg:text-[18px]')}>
-              방향을 움직여 나만의 움직임을 만들어보세요
-            </p>
-          </div>
-        </div>
-
-        <div className='flex flex-col justify-center items-center gap-[14dvh] md:gap-[8dvh]'>
-          <div className='flex flex-col justify-center items-center gap-[2dvh]'>
-            <div className='flex justify-center items-center'>
-              <ConcentricSquares
-                steps={values[0]}
-                brandColorHex={colorAnalysis.brandColor.hex}
-                refinedColorHex={colorAnalysis.refinedColor.hex}
-                onPositionsChange={handlePositionsChange}
-                motionParams={motionParams} // 모션 파라미터 전달
-              />
-            </div>
-
-            {/* 기존 Range 컴포넌트는 그대로 유지 */}
-            <div className='w-full max-w-[366px] px-4'>
-              <Range
-                values={values}
-                step={STEP}
-                min={MIN}
-                max={MAX}
-                onChange={(values) => setValues(values)}
-                renderTrack={({ props, children }) => (
-                  <div
-                    onMouseDown={props.onMouseDown}
-                    onTouchStart={props.onTouchStart}
-                    style={{ ...props.style, height: '36px', display: 'flex', width: '100%' }}
-                  >
-                    <div
-                      ref={props.ref}
-                      style={{
-                        height: '6px',
-                        width: '100%',
-                        borderRadius: '20px',
-                        background: getTrackBackground({
-                          values,
-                          colors: ['#000', '#ccc'],
-                          min: MIN,
-                          max: MAX,
-                        }),
-                        alignSelf: 'center',
-                      }}
-                    >
-                      {children}
-                    </div>
-                  </div>
-                )}
-                renderThumb={({ props }) => (
-                  <div
-                    {...props}
-                    key={props.key}
-                    style={{
-                      ...props.style,
-                      height: '14px',
-                      width: '14px',
-                      borderRadius: '20px',
-                      backgroundColor: '#000',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  />
-                )}
-              />
-            </div>
-          </div>
-
-          <div className='flex flex-col justify-center items-center gap-[4dvh]'>
-            <div className='left-1/2 transform md:hidden'>
-            <svg xmlns='http://www.w3.org/2000/svg' width='32' height='9' viewBox='0 0 32 9' fill='none'>
-              <circle cx='4' cy='4.5' r='4' fill='#222222' />
-              <circle cx='15.7344' cy='4.5' r='4' fill='#222222' />
-              <circle cx='27.4688' cy='4.5' r='4' fill='#E8E8E8' />
-            </svg>
-          </div>
-
-          <button
-            onClick={handleSubmit}
+      <div
+        className={classNames(
+          'absolute flex flex-col justify-center items-center inset-x-0 w-full',
+          //mobile
+          'top-[14.17%]',
+          'gap-[30px]', // 모바일
+          //tablet
+          'md-landscape:top-[27.01%]',
+          'md:top-[21.3%]',
+          'md:gap-[50px]', // md
+          'md-landscape:gap-[50px]', // md-landscape 조건
+          //desktop
+          'lg:top-[17.53%]',
+          'lg:gap-[30px]', // lg~2xl fluid
+          // large desktop
+          '2xl:top-[17.52%]',
+          '2xl:gap-[60px]', // 2xl 이상
+        )}
+      >
+        <div
+          className={classNames(
+            'flex flex-col justify-center items-center w-full',
+            //mobile
+            'gap-[10px]', // 모바일
+            //tablet
+            'md:gap-[10px]',
+            //desktop
+            'lg:gap-[10px]',
+            // large desktop
+            '2xl:gap-[17px]', // 2xl 이상 고정
+          )}
+        >
+          <motion.div
+            initial={{ opacity: 0.2 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0.2 }}
+            transition={{ duration: 0.3 }}
             className={classNames(
-              'w-[150px] rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
-              'h-[44px] px-[36px] bg-[#222222] hover:bg-[#333333]',
+              'text-center text-[#FF60B9] font-medium font-english',
+              // 모바일
+              'text-[17px] leading-[100%] letterSpacing-[-0.34px]',
+              // tablet
+              'md:text-[clamp(17px,calc(16.118px+0.2451vw),18px)] md:leading-[130%] md:letterSpacing-[-0.36px]',
+              // desktop
+              'lg:text-[clamp(20px,calc(-0.571px+1.42857vw),36px)] lg:leading-[130%] lg:letterSpacing-[-0.4px]',
+              // large desktop
+              '2xl:text-[36px] 2xl:leading-[130%] 2xl:letterSpacing-[-0.72px]',
             )}
           >
-            <div className='text-[18px] text-white font-medium'>Done</div>
-          </button>
+            Make Your Movement
+          </motion.div>
+          <div
+            className={classNames(
+              'text-center text-[#FFF] font-bold mix-blend-difference',
+              // 모바일
+              'text-[30px] leading-[140%] letterSpacing-[-0.6px]',
+              // tablet
+              'md:text-[clamp(30px,calc(28.235px+0.4902vw),32px)] md:leading-[140%] md:letterSpacing-[-0.64px]',
+              // desktop
+              'lg:text-[clamp(36px,calc(0px+2.5vw),64px)] lg:leading-[140%] lg:letterSpacing-[-0.72px]',
+              // large desktop
+              '2xl:text-[64px] 2xl:leading-[140%] 2xl:letterSpacing-[-1.28px]',
+            )}
+          >
+            <span className='hidden md:block'>드래그로 나만의 움직임을 만들어보세요</span>
+            <span className='block md:hidden'>
+              방향을 움직여 나만의 <br />
+              움직임을 만들어보세요
+            </span>
+          </div>
+        </div>
+        {/* canvas */}
+        <div className='flex flex-col justify-center items-center gap-[2dvh]'>
+          <div className='flex justify-center items-center'>
+            <ConcentricSquares
+              steps={values[0]}
+              brandColorHex={colorAnalysis.brandColor.hex}
+              refinedColorHex={colorAnalysis.refinedColor.hex}
+              onPositionsChange={handlePositionsChange}
+              motionParams={motionParams} // 모션 파라미터 전달
+            />
           </div>
 
-          
+          {/* 기존 Range 컴포넌트는 그대로 유지 */}
+          <div className='w-full max-w-[366px] px-4'>
+            <Range
+              values={values}
+              step={STEP}
+              min={MIN}
+              max={MAX}
+              onChange={(values) => setValues(values)}
+              renderTrack={({ props, children }) => (
+                <div
+                  onMouseDown={props.onMouseDown}
+                  onTouchStart={props.onTouchStart}
+                  style={{ ...props.style, height: '36px', display: 'flex', width: '100%' }}
+                >
+                  <div
+                    ref={props.ref}
+                    style={{
+                      height: '6px',
+                      width: '100%',
+                      borderRadius: '20px',
+                      background: getTrackBackground({
+                        values,
+                        colors: ['#000', '#ccc'],
+                        min: MIN,
+                        max: MAX,
+                      }),
+                      alignSelf: 'center',
+                    }}
+                  >
+                    {children}
+                  </div>
+                </div>
+              )}
+              renderThumb={({ props }) => (
+                <div
+                  {...props}
+                  key={props.key}
+                  style={{
+                    ...props.style,
+                    height: '14px',
+                    width: '14px',
+                    borderRadius: '20px',
+                    backgroundColor: '#000',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                />
+              )}
+            />
+          </div>
         </div>
+
+        {/* button */}
+        <button
+          onClick={handleSubmit}
+          className={classNames(
+            'w-[150px] rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
+            'h-[44px] px-[36px] bg-[#222222] hover:bg-[#333333]',
+          )}
+        >
+          <div className='text-[18px] text-white font-medium'>Done</div>
+        </button>
       </div>
     </div>
   )
