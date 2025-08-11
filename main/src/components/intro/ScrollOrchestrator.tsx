@@ -64,8 +64,8 @@ export function ScrollOrchestrator() {
   })
 
   // ───────────────── Section 1 바인딩 ─────────────────
-  const titleScale = useTransform(p0Local, [0, 1], [1, 2.2])
-  const subtitleScale = useTransform(p0Local, [0, 1], [1, 2.2])
+  const titleScaleIn = useTransform(p0Local, [0, 1], [1, 2.2])
+  const subtitleScaleIn = useTransform(p0Local, [0, 1], [1, 2.2])
   const opacityScale = useTransform(chromeProgress, [0, 0.2, 0.6], [0, 0, 1])
   const [coverScale, setCoverScale] = useState(1)
 
@@ -147,9 +147,20 @@ export function ScrollOrchestrator() {
     [],
   )
 
+  const shrinkStart = 0.2
+
+  const titleShrink = useTransform(p4, [shrinkStart, 1], [1, 0.22], { ease: easeInOut, clamp: true })
+  const subtitleShrink = useTransform(p4, [shrinkStart, 1], [1, 0.22], { ease: easeInOut, clamp: true })
+
+  const titleLift = useTransform(p4, [shrinkStart, 1], [0, -108], { ease: easeInOut, clamp: true })
+  const subtitleLift = useTransform(p4, [shrinkStart, 1], [0, -300], { ease: easeInOut, clamp: true })
+
+  const titleScale = useTransform([titleScaleIn, titleShrink], ([a, b]) => Number(a) * Number(b))
+  const subtitleScale = useTransform([subtitleScaleIn, subtitleShrink], ([a, b]) => Number(a) * Number(b))
+
   return (
     <div ref={wrapRef} className='absolute w-full z-0 top-0'>
-      <section className='relative h-[1250dvh] bg-black'>
+      <section className='relative h-[1500dvh] bg-black'>
         <div className='sticky h-[100dvh] top-0' style={{ contain: 'layout style paint' }}>
           <div className='relative w-full h-full bg-white'>
             {/* 핑크 사각형 */}
@@ -187,13 +198,13 @@ export function ScrollOrchestrator() {
             </motion.div>
 
             <div className='absolute left-1/2 top-[35dvh] -translate-x-1/2 -translate-y-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
-              <motion.span initial={false} style={{ scale: titleScale }} className='block leading-none text-[2.77vw]'>
+              <motion.span initial={false} style={{ scale: titleScale, y: titleLift }} className='block leading-none text-[2.77vw]'>
                 New Formative
               </motion.span>
             </div>
 
             <div className='absolute left-1/2 top-[67.56dvh] w-[400px] -translate-x-1/2 -translate-y-1/2 font-english mix-blend-difference text-center text-white font-semibold leading-[270%] z-[9999]'>
-              <motion.span initial={false} style={{ scale: subtitleScale }} className='block text-[2.77vw]'>
+              <motion.span initial={false} style={{ scale: subtitleScale, y: subtitleLift }} className='block text-[2.77vw]'>
                 Steady Movement For Progress
               </motion.span>
             </div>
