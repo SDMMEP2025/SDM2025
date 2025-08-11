@@ -7,7 +7,7 @@ export default function Header() {
       <div className='hidden lg:block lg:flex px-[39px] py-[41px] font-english w-full justify-between z-500'>
         <div className='text-left text-neutral-800 text-lg font-medium leading-snug'>
           Membership Emergence<br/>
-          project 2025 
+          Project 2025 
         </div>
         <div className='text-left text-neutral-800 text-lg font-medium leading-snug'>
           New Formative
