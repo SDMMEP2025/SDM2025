@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
-import { METADATA } from "./metadata";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
-import { pretendard } from "@/theme/font";
-import "@/styles/globals.css";
-import { Layout } from "@/components/projects/Layout"
+import type { Metadata } from 'next'
+import { METADATA } from './metadata'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { pretendard } from '@/theme/font'
+import '@/styles/globals.css'
+import { Layout } from '@/components/projects/Layout'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(METADATA.url), 
   alternates: {
     canonical: METADATA.url,
   },
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   authors: METADATA.authors,
   creator: METADATA.authors[0].name,
   publisher: METADATA.authors[0].name,
-  manifest: "/manifest.json",
+  manifest: '/manifest.json',
   generator: METADATA.authors[0].name,
   applicationName: METADATA.name,
   appleWebApp: {
@@ -26,27 +27,43 @@ export const metadata: Metadata = {
     title: METADATA.title,
     // startUpImage: [],
   },
-  category: "webapp",
+  category: 'webapp',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   openGraph: {
-    type: "website",
+    type: 'website',
     siteName: METADATA.name,
-    title: {
-      default: METADATA.title,
-      template: METADATA.titleTemplate,
-    },
+    title: { default: METADATA.title, template: METADATA.titleTemplate },
     description: METADATA.description,
-    locale: "ko_KR",
+    locale: 'ko_KR',
     url: METADATA.url,
-    images: {
-      url: "/icons/op-image.png",
-    },
+    images: [
+      {
+        url: '/og/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'New Formative',
+        type: 'image/png',
+      },
+      {
+        url: '/og/og-image.webp',
+        width: 1200,
+        height: 630,
+        alt: 'New Formative',
+        type: 'image/webp',
+      },
+    ],
   },
-  referrer: "origin-when-cross-origin",
+  twitter: {
+    card: 'summary_large_image',
+    title: METADATA.title,
+    description: METADATA.description,
+    images: ['/og/og-image.png'],
+  },
+  referrer: 'origin-when-cross-origin',
   robots: {
     index: true,
     follow: true,
@@ -54,42 +71,45 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
   icons: {
     icon: [
-      { url: "/icons/apple-touch-icon.png" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16" },
-      { url: "/icons/favicon-32x32.png", sizes: "32x32" },
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180" },
+      { url: "/favicon.ico" },
+      { url: '/icons/apple-icon.png' },
+      { url: '/icons/favicon-16x16.png', sizes: '16x16' },
+      { url: '/icons/favicon-32x32.png', sizes: '32x32' },
+      { url: '/icons/apple-icon.png', sizes: '180x180' },
     ],
     apple: [
-      { url: "/icons/apple-touch-icon.png" },
-      { url: "/icons/favicon-16x16.png", sizes: "16x16" },
-      { url: "/icons/favicon-32x32.png", sizes: "32x32" },
-      { url: "/icons/apple-touch-icon.png", sizes: "180x180" },
+      { url: '/icons/apple-icon.png' },
+      { url: '/icons/favicon-16x16.png', sizes: '16x16' },
+      { url: '/icons/favicon-32x32.png', sizes: '32x32' },
+      { url: '/icons/favicon-180x180.png', sizes: '180x180' },
+      { url: '/icons/apple-icon.png', sizes: '180x180' },
     ],
+    shortcut: ["/favicon.ico"],
     other: {
-      rel: "mask-icon",
-      url: "/icons/safari-pinned-tab.svg",
-      color: "#000000",
+      rel: 'mask-icon',
+      url: '/icons/favicon.svg',
+      color: '#000000',
     },
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="ko">
+    <html lang='ko'>
       <body className={`${pretendard.variable} antialiased`}>
         <Layout>{children}</Layout>
       </body>
     </html>
-  );
+  )
 }

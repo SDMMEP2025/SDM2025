@@ -463,13 +463,13 @@ export default function RotatedPaperDemo({
         </div>
       </div>
 
-      {isMobile && isGyroSupported && (
+      {/* {isMobile && isGyroSupported && (
         <MotionControlPanel
           settings={motionSettings}
           onSettingsChange={setMotionSettings}
           onToggle={onMotionPanelToggle}
         />
-      )}
+      )} */}
 
       {isMobile && showGyroButton && (
         <div className='fixed inset-0 flex items-center justify-center z-[1000] bg-[#000000DD] pointer-events-none'>
