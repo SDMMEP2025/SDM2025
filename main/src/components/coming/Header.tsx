@@ -15,7 +15,7 @@ export default function Header() {
         <div className='text-left text-neutral-800 text-lg font-medium leading-snug'>
           Samsung R&D Campus
           <br />
-          Tower A 2F
+          Tower A 2F, Gallery 1, 2
           <br />
           Aug 22 (Fri) – Aug 27 (Tue)
         </div>
