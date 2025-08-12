@@ -339,6 +339,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
           'md:top-[21.3%]',
           'md:gap-[50px]', // md
           'md-landscape:gap-[50px]', // md-landscape 조건
+          'md-landscape:top-[17.53%]',
           //desktop
           'lg:top-[17.53%]',
           'lg:gap-[30px]', // lg~2xl fluid
@@ -463,17 +464,101 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
             />
           </div>
         </div>
-
-        {/* button */}
-        <button
-          onClick={handleSubmit}
+      </div>
+      {/* left button */}
+      <div
+        className={classNames(
+          'absolute flex justify-center items-center',
+          'left-[calc(54px+(-5.14286px+18.10714vw))] bottom-[24%] inset-y-auto',
+          'md:left-[calc(54px+(-5.14286px+34.10714vw))] md:bottom-[24%] md:inset-y-auto',
+          'md-landscape:left-[40px] md-landscape:inset-y-0', // md-landscape 전용
+          'lg:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
+          '2xl:left-[100px] 2xl:inset-y-0', // 2xl 이상 고정
+        )}
+      >
+        <motion.button
+          type='button'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.2 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ opacity: 1 }}
+          whileTap={{ scale: 0.95, opacity: 1 }}
+          onClick={() => {
+            onStartOver()
+          }}
           className={classNames(
-            'w-[150px] rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
-            'h-[44px] px-[36px] bg-[#222222] hover:bg-[#333333]',
+            'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
+            'h-auto aspect-square',
+            //mobile
+            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            //tablet & desktop & large desktop
+            'md:w-[46px]',
+            'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
+            '2xl:w-[74px]',
+            'cursor-pointer',
           )}
         >
-          <div className='text-[18px] text-white font-medium'>Done</div>
-        </button>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className={classNames(
+              'h-auto aspect-square',
+              'w-[clamp(15px,calc(20.647px-0.735294vw),18px)]', // 모바일→md
+              'lg:w-[clamp(15px,calc(3.42857px+0.803571vw),24px)]', // lg→2xl
+              '2xl:w-[24px]', // 2xl 이상
+            )}
+            viewBox='0 0 16 14'
+            fill='currentColor'
+          >
+            <path d='M6.43225 12.9384C6.80217 13.3071 7.40002 13.3091 7.77233 12.9428C8.15012 12.5712 8.15183 11.9626 7.77616 11.5888L6.28288 10.1031C5.89266 9.71293 5.50244 9.34111 5.11222 8.98771C4.71464 8.62694 4.41277 8.36556 4.20661 8.20358C4.11516 8.12568 4.1787 7.97487 4.29844 7.98451C5.10686 8.04957 6.04812 8.0821 7.12222 8.0821H14.4444C15.036 8.0821 15.5156 7.60248 15.5156 7.01084C15.5156 6.41919 15.036 5.93957 14.4444 5.93957H7.12222C6.57002 5.93957 6.02887 5.9543 5.49876 5.98375C4.96865 6.00584 4.57475 6.03161 4.31705 6.06106C4.19937 6.07114 4.13823 5.92213 4.22821 5.84562C4.84515 5.32109 5.53004 4.68241 6.28288 3.92957L7.76357 2.43369C8.13575 2.0577 8.1342 1.45167 7.76011 1.07758C7.38379 0.701251 6.77332 0.702272 6.39826 1.07986L1.07377 6.44008C0.754435 6.76156 0.755739 7.28091 1.07668 7.60078L6.43225 12.9384Z' />
+          </svg>
+        </motion.button>
+      </div>
+      {/* right button */}
+      <div
+        className={classNames(
+          'absolute flex justify-center items-center',
+          'right-[calc(54px+(-5.14286px+18.10714vw))] bottom-[24%] inset-y-auto',
+          'md:right-[calc(54px+(-5.14286px+34.10714vw))] md:bottom-[24%] md:inset-y-auto',
+          'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
+          'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
+          '2xl:right-[100px] 2xl:inset-y-0', // 2xl 이상 고정
+        )}
+      >
+        <motion.button
+          type='button'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleSubmit}
+          className={classNames(
+            'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
+            'h-auto aspect-square',
+            //mobile
+            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            //tablet & desktop & large desktop
+            'md:w-[46px]',
+            'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
+            '2xl:w-[74px]',
+            'cursor-pointer',
+          )}
+        >
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className={classNames(
+              'h-auto aspect-square',
+              'w-[clamp(15px,calc(20.647px-0.735294vw),18px)]', // 모바일→md
+              'lg:w-[clamp(15px,calc(3.42857px+0.803571vw),24px)]', // lg→2xl
+              '2xl:w-[24px]', // 2xl 이상
+            )}
+            viewBox='0 0 16 14'
+            fill='currentColor'
+          >
+            <path d='M9.57556 12.9384C9.20564 13.3071 8.60779 13.3091 8.23548 12.9428C7.8577 12.5712 7.85598 11.9626 8.23165 11.5888L9.72493 10.1031C10.1152 9.71293 10.5054 9.34111 10.8956 8.98771C11.2932 8.62694 11.595 8.36556 11.8012 8.20358C11.8926 8.12568 11.8291 7.97487 11.7094 7.98451C10.9009 8.04957 9.95969 8.0821 8.88559 8.0821H1.56345C0.971809 8.0821 0.492188 7.60248 0.492188 7.01084C0.492188 6.41919 0.971809 5.93957 1.56345 5.93957H8.88559C9.43779 5.93957 9.97895 5.9543 10.5091 5.98375C11.0392 6.00584 11.4331 6.03161 11.6908 6.06106C11.8084 6.07114 11.8696 5.92213 11.7796 5.84562C11.1627 5.32109 10.4778 4.68241 9.72493 3.92957L8.24424 2.43369C7.87207 2.0577 7.87361 1.45167 8.2477 1.07758C8.62403 0.701251 9.23449 0.702272 9.60956 1.07986L14.934 6.44008C15.2534 6.76156 15.2521 7.28091 14.9311 7.60078L9.57556 12.9384Z' />
+          </svg>
+        </motion.button>
       </div>
     </div>
   )

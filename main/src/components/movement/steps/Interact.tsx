@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { InteractMotionControlPanel, InteractMotionParams } from '../InteractMotionControlPanel'
+import { motion } from 'framer-motion'
 
 interface InteractPageProps {
   interactionData: {
@@ -52,7 +53,7 @@ function FloatingConcentricSquares({
   brandColorHex,
   refinedColorHex,
   interactionData,
-  motionParams
+  motionParams,
 }: {
   steps: number
   positions: Array<{ x: number; y: number }>
@@ -207,7 +208,8 @@ function FloatingConcentricSquares({
         for (let i = lastIdx - 1; i >= 0; i--) {
           const current = newPositions[i]
           const next = newPositions[i + 1]
-          const speed = motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
+          const speed =
+            motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
           const newX = current.x + (next.x - current.x) * speed
           const newY = current.y + (next.y - current.y) * speed
           newPositions[i] = { x: newX, y: newY }
@@ -480,7 +482,8 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     const centerY = 842 // 중앙 위치
 
     for (let i = 0; i < interactionData.steps; i++) {
-      const factor = interactionData.steps > 1 ? Math.pow(i / (interactionData.steps - 1), motionParams.colorInterpolationPower) : 0
+      const factor =
+        interactionData.steps > 1 ? Math.pow(i / (interactionData.steps - 1), motionParams.colorInterpolationPower) : 0
       const width = (maxWidth - stepReduction * i) * scale
       const height = (maxHeight - stepReduction * i) * scale
 
@@ -603,27 +606,91 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
       </div>
 
       <div className='absolute flex gap-3 bottom-20 left-1/2 transform -translate-x-1/2'>
-        <button
+        <motion.button
+          type='button'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isGenerating ? 0.2 : 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ opacity: 1 }}
+          whileTap={{ scale: 0.95, opacity: 1 }}
           onClick={handleDownload}
           disabled={isGenerating}
           className={classNames(
-            'w-[150px] rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
-            'h-[44px] px-[36px]',
-            isGenerating ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#222222] hover:bg-[#333333]',
+            'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
+            'h-auto aspect-square',
+            //mobile
+            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            //tablet & desktop & large desktop
+            'md:w-[46px]',
+            'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
+            '2xl:w-[74px]',
+            'cursor-pointer',
           )}
         >
-          <div className='text-[18px] text-white font-medium'>{isGenerating ? 'Generating...' : 'Download'}</div>
-        </button>
-        <button
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            className={classNames(
+              'text-white w-4',
+              // 모바일
+              'w-[clamp(20px,calc(27.529px-0.980392vw),24px)]',
+              // md이상
+              '',
+              // desktop
+              'lg:w-[clamp(20px,calc(2px+1.25vw),34px)]',
+              // large desktop
+              '2xl:w-[34px]',
+            )}
+            viewBox='0 0 20 21'
+            fill='currentColor'
+          >
+            <path d='M4.44144 9.35876C4.07276 8.98884 4.07081 8.391 4.43708 8.01868C4.80872 7.6409 5.41727 7.63918 5.79104 8.01485L7.27674 9.50814C7.66696 9.89836 8.03877 10.2886 8.39218 10.6788C8.75295 11.0764 9.01432 11.3782 9.1763 11.5844C9.2542 11.6759 9.40501 11.6123 9.39538 11.4926C9.33031 10.6842 9.29778 9.74289 9.29778 8.6688L9.29778 1.34665C9.29778 0.755012 9.7774 0.27539 10.369 0.27539C10.9607 0.27539 11.4403 0.755011 11.4403 1.34665L11.4403 8.6688C11.4403 9.22099 11.4256 9.76215 11.3961 10.2923C11.374 10.8224 11.3483 11.2163 11.3188 11.474C11.3087 11.5916 11.4578 11.6528 11.5343 11.5628C12.0588 10.9459 12.6975 10.261 13.4503 9.50814L14.9462 8.02744C15.3222 7.65527 15.9282 7.65682 16.3023 8.0309C16.6786 8.40723 16.6776 9.01769 16.3 9.39276L10.9398 14.7172C10.6183 15.0366 10.099 15.0353 9.7791 14.7143L4.44144 9.35876Z' />
+            <rect x='0.554688' y='18.5811' width='18.8929' height='1.64286' rx='0.821429' />
+          </svg>
+        </motion.button>
+        <motion.button
+          type='button'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isSharing ? 0.2 : 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ opacity: 1 }}
+          whileTap={{ scale: 0.95, opacity: 1 }}
+          // onClick={handleDownload}
           disabled={isSharing}
           className={classNames(
-            'w-[150px] rounded-[100px] inline-flex justify-center items-center transition-all duration-200',
-            'h-[44px] px-[36px]',
-            isSharing ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#222222] hover:bg-[#333333]',
+            'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
+            // mobile
+            'w-[clamp(182px,calc(185.765px-0.4902vw),184px)]',
+            'h-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            // tablet
+            'md:h-[46px]',
+            'md:w-[clamp(160px,calc(207.154px-3.27381vw),182px)]',
+            // desktop
+            'lg:h-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
+            'lg:w-[clamp(160px,calc(31.4286px+8.92857vw),260px)]',
+            // large desktop
+            '2xl:w-[260px]',
+            '2xl:h-[74px]',
+            'cursor-pointer',
           )}
         >
-          <div className='text-[18px] text-white font-medium'>{isSharing ? 'Sharing...' : 'Share'}</div>
-        </button>
+          <div
+            className={classNames(
+              'text-white font-medium',
+              // 모바일
+              'text-[clamp(17px,calc(16.118px+0.2451vw),18px)]',
+              // tablet
+              '',
+              // desktop
+              'lg:text-[clamp(18px,calc(0px+1.25vw),32px)]',
+              // large desktop
+              '2xl:text-[32px]',
+            )}
+          >
+            {isSharing ? 'Sharing...' : 'Share'}
+          </div>
+        </motion.button>
       </div>
     </div>
   )

@@ -7,7 +7,7 @@ import { useImageAnalysis } from '@/hooks/useImageAnalysis'
 import { useColorAnalysis } from '@/hooks/useColorAnalysis'
 import { ColorAnalysisResult } from '@/types/color'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
-import animationData from '@/animation/movement_loading.json'
+import animationData from '@/animation/edit_loading.json'
 import { AnimatePresence, motion } from 'framer-motion'
 
 interface EditStepProps {
@@ -21,10 +21,9 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
   const [text, setText] = useState('')
   const [colorAnalysis, setColorAnalysis] = useState<ColorAnalysisResult | null>(null)
 
+  const lottieRef = useRef<LottieRefCurrentProps>(null)
   const { analyzeImage, isAnalyzing: isAnalyzingText, error: textError } = useImageAnalysis()
   const { analyzeImageColors, isAnalyzing: isAnalyzingColor, error: colorError } = useColorAnalysis()
-
-  const [step, setStep] = useState(1)
 
   // 컴포넌트 마운트 시 AI 텍스트 분석 + 색상 분석 동시 실행
   useEffect(() => {
@@ -98,33 +97,6 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
 
         {/* 에러 상태 */}
         {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>}
-      </div>
-
-      {/* Step Indicator */}
-      <div
-        className={classNames(
-          'absolute left-1/2 -translate-x-1/2 w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
-          'bottom-[17.41%]',
-          'md:bottom-[15.32%]',
-          'lg:bottom-[13.58%]',
-          '2xl:bottom-[13.60%]',
-        )}
-      >
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          className={classNames(
-            'aspect-[62/14] h-auto',
-            'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
-            'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
-            '2xl:w-[62px]', // 2xl 이상 고정
-          )}
-          viewBox='0 0 62 14'
-          fill='none'
-        >
-          <circle cx='7' cy='7' r='7' fill={step > 0 ? '#222222' : '#F2F2F2'} />
-          <circle cx='31' cy='7' r='7' fill={step > 1 ? '#222222' : '#F2F2F2'} />
-          <circle cx='55' cy='7' r='7' fill={step > 2 ? '#222222' : '#F2F2F2'} />
-        </svg>
       </div>
 
       {/* 타이틀 */}
@@ -225,7 +197,15 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
                 transition={{ duration: 0.3 }}
                 className={classNames('absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2', '')}
               >
-                <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}></div>
+                <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}>
+                  <Lottie
+                    lottieRef={lottieRef}
+                    animationData={animationData}
+                    loop={true}
+                    autoplay={true}
+                    className='w-full h-full'
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
