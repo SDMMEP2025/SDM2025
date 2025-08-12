@@ -32,34 +32,39 @@ const tutorData = [
   {
     title: 'Advisory Professor',
     tutors: [
-      { name: '홍길동', englishName: 'Gildong Hong' },
-      { name: '김철수', englishName: 'Cheolsu Kim' },
+      { name: '김치헌', englishName: 'Chiheon Kim' },
+      { name: '이문환', englishName: 'Moonhwan Lee' },
     ],
   },
   {
-    title: 'UX tutor',
-    tutors: [{ name: '이영희', englishName: 'Younghee Lee' }],
+    title: 'ID tutor',
+    tutors: [
+      { name: '장민욱', englishName: 'Minwook Jang' },
+      { name: '정수헌', englishName: 'Soohun Jung' },
+    ],
   },
   {
     title: 'VD tutor',
-    tutors: [
-      { name: '박민수', englishName: 'Minsu Park' },
-      { name: '최지은', englishName: 'Jieun Choi' },
-      { name: '최지은', englishName: 'Jieun Choi' },
-      { name: '최지은', englishName: 'Jieun Choi' },
-    ],
+    tutors: [{ name: '우민성', englishName: 'Minsung Woo' }],
   },
 ]
 
 const thankstoData = [
   {
-    title: 'VD tutor',
+    title: 'Photographer',
     tutors: [
-      { name: '박민수', englishName: 'Minsu Park' },
-      { name: '최지은', englishName: 'Jieun Choi' },
-      { name: '최지은', englishName: 'Jieun Choi' },
-      { name: '최지은', englishName: 'Jieun Choi' },
+      { name: '박도현', englishName: 'Dohyun Park' },
+      { name: '이재윤', englishName: 'Jaiyun Lee' },
     ],
+  },
+  {
+    title: 'Technical Advisory',
+    tutors: [{ name: '이호원', englishName: 'Howon Lee' }],
+  },
+
+  {
+    title: 'Adviser',
+    tutors: [{ name: '김현준', englishName: 'Hyeonjun Kim' }],
   },
 ]
 
@@ -232,20 +237,129 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-
-      <TitleBody
-        title="'나의 순간'에 몰입하는 방법'"
-        text="'Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!"
+      <RightTitleBody
+        title='실감을 실물로 구현하는 창작 경험'
+        text={
+          <>
+            Silmul[실물]은 ‘창작의 감각적 실감’을 경험하도록 돕는 새로운 창작 도구입니다.
+            <br />
+            <br />
+            디지털 화면 속에만 존재하고, 만질 수 없었던 창작의 경험을 현실의 ‘실물’로 구현해 보세요. 더욱 적극적으로
+            만지고, 상호작용을 하며 말이죠.
+            <br />
+            <br />
+            이를 위해 Silmul은 Gen-AI의 쉽고 빠른 창작 프로세스에 더해, 실물로의 구현을 위해 3D Printing 기술을 함께
+            활용합니다.
+          </>
+        }
       />
-      <RightBody />
+      <Divide title='Technical problem' number='05' />
       <MidBody
-        align='left'
-        content="Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!"
+        align='center'
+        content={
+          <>
+            3D 프린터는 근미래에 가정에서도 사용할 수 있을 만큼 발전하고 있지만,
+            <br />
+            여전히 가정 환경에서 창작 도구로 활용하기에 형태나 사용 방식은 적합하지 않습니다.
+          </>
+        }
       />
-      <MidTitle align='center' />
-      <MidTitle align='left' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/844128999' alt='이곳에 비디오를' />
-      <ImageGallery images={['/images/image1.jpeg', '/images/image2.jpeg', '/images/image3.jpeg']} />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Divide title='New Creation Paradigm' number='06' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <RightTitleBody
+        title='Product, ‘Sense’ ¹'
+        text={
+          <>
+            실공간에서 제스처로 크기를 확인하고, 색감과 형태 등의 요소를 Seamless 하게 데이터로 연동시켜 주는 프로덕트
+          </>
+        }
+      />
+      <RightTitleBody
+        title='Product, ‘Realize’ ²'
+        text={<>창작자가 만지고 느낄 수 있는 ‘실물’ 자체를 출력해 주는 프로덕트</>}
+      />
+      <Divide title='User Scenario' number='07' />
+      <MidTitle align='center' text='Sense: The easiest way to start creating' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidBody
+        align='center'
+        content={
+          <>
+            일상에서 마주하는 모든 감각[실감]은 창작의 밑거름이 됩니다.
+            <br />
+            Sense를 활용하면 ‘무엇을 어떻게 만들지’ 고민하지 않아도 자연스럽게 창작을 시작할 수 있습니다.
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <RightTitleBody
+        title={null}
+        text={
+          <>
+            'Sense'와 함께라면 평소 가늠하기 어렵던 크기도 제스처 하나로 쉽게 확인할 수 있어요. 일상에서 마주하는
+            다채로운 색상과 형태도 다른 장치를 거치지 않고 곧바로 창작에 활용할 수 있죠.
+          </>
+        }
+      />
+      <MidTitle align='center' text='Service: Generate experiences through Gen-AI' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <RightTitleBody
+        title={null}
+        text={
+          <>
+            감각과 경험은 형체가 없죠. 하지만 'Sense'를 통해 데이터화되고, Silmul App와 연동됩니다. 자연스럽게 모인
+            감각의 조각들을 조합하여, 만들고 싶은 실물의 이미지를 Gen-AI로 생성해 보세요. 그렇게 만들어진 결과물은
+            나만의 경험에서 비롯된, 세상에 단 하나뿐인 결과물이 되죠!
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidBody align='center' content={<>원하는 결과물이 만들어졌다면, 이제는 진짜 실물로 출력해 보죠!</>} />
+      <MidTitle align='center' text='Realize: From experience to real object' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidBody
+        align='center'
+        content={
+          <>
+            실물로 출력하기 위해서는 필라멘트와 잉크만 준비하면 됩니다.
+            <br />
+            상상 속 이미지가 실물로 구현되는 과정을 지켜보며, 창작의 즐거움에 푹 빠져보세요!
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Divide title='Extra Value' number='08' />
+      <MidTitle align='center' text='Tagging: Not the end of making - the beginning of expanding' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <RightTitleBody
+        title={null}
+        text={
+          <>
+            출력되는 실물에 태그가 새겨지며, 이를 스캔하면 창작 과정에서의 경험과 기억이 재생됩니다. Tagging System은
+            사용 중에도 쌓이는 새로운 경험도 계속해서 추가할 수 있어요. 실물 창작의 경험은 계속 확장될 수 있다는 뜻이죠.
+          </>
+        }
+      />
+      <MidTitle align='center' text='Melting: Sustainable cycle of Silmul' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidBody
+        align='center'
+        content={
+          <>
+            출력된 실물이 쓰임을 다했거나, 벌써 취향이 바뀌었다고요?
+            <br />
+            Melting System으로 다시 녹여 친환경 필라멘트로 재활용할 수 있어요. 이게 바로 지속 가능한 순환이죠.
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidTitle align='center' text='Turning real senses into real objects, Silmul' />
+
       <div ref={designedByRef}>
         <Credit
           title='Designed By'

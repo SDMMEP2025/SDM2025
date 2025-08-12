@@ -6,7 +6,7 @@ import classNames from 'classnames'
 
 interface MidTitleProps {
   align?: 'center' | 'left' | 'right'
-  text ?: string
+  text?: string | React.ReactNode
 }
 
 export function MidTitle({ align = 'center', text }: MidTitleProps) {

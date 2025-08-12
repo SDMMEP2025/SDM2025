@@ -135,7 +135,7 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
                 return Array.from({ length: Math.ceil(desktopSections.length / 2) }, (_, rowIndex) => (
                   <div key={rowIndex} className='flex flex-row gap-20'>
                     {desktopSections.slice(rowIndex * 2, rowIndex * 2 + 2).map((section, sectionIndex) => (
-                      <div key={sectionIndex} className='flex-1 flex gap-20'>
+                      <div key={sectionIndex} className='flex-1 w-fit flex gap-20'>
                         <div className='w-full text-neutral-800 text-lg font-normal leading-[1.5] tracking-[-0.02em]'>
                           {section.title}
                         </div>
@@ -153,6 +153,12 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
                         </div>
                       </div>
                     ))}
+                    {/* desktopSections가 홀수인 경우 빈 공간 추가 */}
+                    {desktopSections.length % 2 !== 0 && rowIndex === Math.floor(desktopSections.length / 2) && (
+                      <div className='flex-1 w-fit flex gap-20'>
+                        <div className='w-full h-[48px]' />
+                      </div>
+                    )}
                   </div>
                 ))
               })()}

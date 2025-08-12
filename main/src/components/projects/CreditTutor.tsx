@@ -153,6 +153,12 @@ export function CreditTutor({ title = 'Tutor', sections }: CreditTutorProps) {
                         </div>
                       </div>
                     ))}
+                    {/* desktopSections가 홀수인 경우 빈 공간 추가 */}
+                    {desktopSections.length % 2 !== 0 && rowIndex === Math.floor(desktopSections.length / 2) && (
+                      <div className='flex-1 flex gap-20'>
+                        <div className='w-full h-[48px]' />
+                      </div>
+                    )}
                   </div>
                 ))
               })()}
