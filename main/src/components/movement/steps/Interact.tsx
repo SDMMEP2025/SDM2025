@@ -605,7 +605,15 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         <div className='hidden md:block whitespace-nowrap'>{hexToRgb(brandColorHex)}</div>
       </div>
 
-      <div className='absolute flex gap-3 bottom-20 left-1/2 transform -translate-x-1/2'>
+      <div
+        className={classNames(
+          'absolute flex bottom-20 left-1/2 transform -translate-x-1/2',
+          'gap-4',
+          'md:gap-4',
+          'lg:gap-4',
+          '2xl:gap-5',
+        )}
+      >
         <motion.button
           type='button'
           initial={{ opacity: 0 }}
