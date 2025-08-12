@@ -3,7 +3,7 @@
 import classNames from 'classnames'
 
 interface MidBodyProps {
-  content: string
+  content: string | React.ReactNode
   className?: string
   align?: 'center' | 'left' | 'right'
 }

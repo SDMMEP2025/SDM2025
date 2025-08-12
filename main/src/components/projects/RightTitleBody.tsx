@@ -3,8 +3,8 @@
 import classNames from 'classnames'
 
 interface RightTitleBodyProps {
-  title?: string
-  text?: string
+  title?: string | React.ReactNode
+  text?: string | React.ReactNode
 }
 
 export function RightTitleBody({

@@ -4,14 +4,14 @@ import classNames from 'classnames'
 
 interface SummaryProps {
   title?: string[]
-  description?: string
+  description?: string | React.ReactNode
   credits?: string
 }
 
-export function Summary({ 
-  title = ['Default Title'], 
-  description = 'Default description text goes here.', 
-  credits = 'Default credits' 
+export function Summary({
+  title = ['Default Title'],
+  description = 'Default description text goes here.',
+  credits = 'Default credits',
 }: SummaryProps) {
   return (
     <div

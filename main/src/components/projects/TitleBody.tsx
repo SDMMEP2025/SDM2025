@@ -5,8 +5,8 @@
 import classNames from 'classnames'
 
 interface TitleBody {
-  title: string
-  text: string
+  title: string | React.ReactNode
+  text?: string | React.ReactNode
 }
 
 export function TitleBody({
@@ -60,6 +60,7 @@ export function TitleBody({
         <div
           className={classNames(
             '',
+            !text ? 'h-[0px]' : 'h-auto',
             //mobile
             'w-full text-[17px] tracking-[-0.34px] leading-[1.6] font-normal',
             //tablet

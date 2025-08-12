@@ -21,6 +21,7 @@ import {
   ArchiveSidebar,
   ArchivePoint,
   ArchiveImage,
+  Image,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -146,7 +147,6 @@ export default function Page() {
     setIsSidebarExpanded(expanded)
   }
 
-
   // 사이드바 표시 여부 결정:
   // - 모바일에서는 항상 true
   // - 테블릿에서는 항상 true (새로 추가된 조건)
@@ -156,14 +156,87 @@ export default function Page() {
   return (
     <>
       <Header />
-      <Summary />
+      <Summary
+        title={['실물', 'Turning real senses into real objects']}
+        description={
+          <>
+            Silmul은 자신의 실제 감각과 경험을 실물로 구현할 수 있는 새로운 창작 과정을 제안합니다. 나의 감각과 경험이
+            만질 수 있는 실체가 될 때, 창작은 더 이상 어렵지 않고 계속 이어질 수 있을 거예요. <br />
+            Realize Real Sense into Real Object, Silmul!
+          </>
+        }
+        credits='김선일, 현수련, 박세연, 서현빈, 윤현경'
+      />
       <MainImage />
       <Divide title='Background' number='01' />
+      <RightTitleBody
+        title='창작을 망설이게 하는 심리적 부담감'
+        text={
+          <>
+            무언가를 만들고 표현하고자 하는 근원적인 창작 욕구는 누구에게나 존재합니다.
+            <br />
+            <br />
+            그런데도 사람들은 창작을 막연히 ‘재능 있는 사람들의 일’로 인식하고, 쉽게 시작하기 어려운 일로 느끼곤 하죠.
+            <br />
+            <br />
+            이는 창작을 ‘무(無)에서 유(有)를 창조하는 특별한 행위’로 생각하는 데서 비롯됩니다.
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Divide title='Discover' number='02' />
+      <MidBody
+        align='left'
+        content={
+          <>
+            그렇다면 창작은 정말 무(無)에서 유(有)를 만드는 과정일까요? 그렇지 않습니다.
+            <br />
+            <br />
+            창작은 잠재된 경험의 총체가 표현되는 ‘유(有)에서 유(有)의 과정’입니다. 대부분의 창작은 완전한 백지상태에서
+            출발하지 않고, 우리가 평소에 느끼는 감각과 축적된 경험 그리고 맥락을 토대로 이루어지기 때문이죠.
+            <br />
+            <br />
+            특히 디지털 시대의 AI 창작 메커니즘을 살펴보면, 유(有)에서 유(有)의 창작 방식이 명확하게 드러납니다. 이러한
+            도구와 기술의 발전으로 창작에 대한 진입 장벽 역시 함께 완화되고 있음을 알 수 있죠.
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Divide title='Limitation' number='03' />
+      <MidBody align='center' content={<>그러나, 디지털 시대의 창작에 대한 아쉬움의 목소리는 여전히 존재합니다.</>} />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <LeftTitle
+        text={
+          <a href='https://bio.link/silmul' className='hover:underline' target='_blank'>
+            ▶︎ A more detailed story of Silmul
+          </a>
+        }
+      />
+      <Divide title='Concept' number='04' />
+      <LeftTitle
+        text={
+          <>
+            Turning real senses into real objects , Silmul <br />
+            실감을 실물로 구현하다
+          </>
+        }
+      />
+      <MidBody
+        align='left'
+        content={
+          <>
+            실감 ¹ : 개인이 이미 가지고 있는 감각, 기억, 취향 등 잠재된 경험의 총체
+            <br />
+            실물 ² : 흩어져 있던 경험을 보고 느끼고 만질 수 있는 구체적 형태로 만드는 것
+          </>
+        }
+      />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
       <TitleBody
         title="'나의 순간'에 몰입하는 방법'"
         text="'Slac은 언제나 소리와 함께하는 Z세대가 소리로 '나의 순간'에 몰입하는 방법을 제안합니다. 모든 순간 나를 가장 가까이서 이해하는 웨어러블 오디오를 통해 나와 닮아가는 소리는 마치 나에게 딱 맞는 옷을 입는 것처럼 변화합니다. Slac과 함께 디렉터가 되어, 소리로 완성되는 나만의 #Scene을 만나보세요!"
       />
-      <RightTitleBody />
       <RightBody />
       <MidBody
         align='left'
