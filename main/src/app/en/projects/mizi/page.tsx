@@ -146,7 +146,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Mizi_logo.svg'
-        className='w-[90px] md:w-[130px] lg:w-[clamp(130px,9vw,229px)]'
+        className='w-[74px] md:w-[130px] lg:w-[clamp(130px,9vw,229px)]'
         title={['MIZI', 'Into the Moment, MIZI']}
         description={
           'MIZI is an on-demand immersive experience platform that allows users to enter the world they desire—right here, right now—free from the limits of time and distance. Its telepresence avatar, NOMA, gathers sensory data from real locations and delivers it to users in real time through haptic devices, creating an experience that feels as if they’re truly there.\nStep into the moment you imagined. Fully, freely, in this very instant.'
@@ -253,10 +253,10 @@ Now, with NOMA:Stardust, MIZI’s space avatar, that dream becomes real. Experie
             <br />
             <a
               href='https://heyzine.com/flip-book/041d1f584b.html'
-              className='underline text-[#FF2A00]'
+              className='underline text-[#FF2A00] font-semibold'
               target='_blank'
             >
-              ▶Click here for more MIZI stories.
+              ▶ Click here for more MIZI stories.
             </a>
           </>
         }

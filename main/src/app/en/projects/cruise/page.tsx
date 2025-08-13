@@ -155,7 +155,7 @@ export default function Page() {
         title={['CRUISE', 'Style Our Mile, Drive Our Life']}
         description='In the age of level 5 autonomous vehicles, where every passenger is liberated from driving, CRUISE is an interactive device that reimagines travel as a dynamic, sharing experience. Inspired by familiar and intuitive gestures, CRUISE brings new significance and enthusiasm to everyday trips. Meet the new movement experience with CRUISE!'
         credits='Yeojun Yun, Hyunggoo Kang, Minji Kwon, Chaeyoung Baek, Minseo Jung'
-        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
+        className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='Background' number='01' />
@@ -179,7 +179,7 @@ export default function Page() {
             <br />
             <a
               href=' https://www.notion.so/CRUISE-UX-BOOK-23d6cd1a9e8280a68d64f1b14879e6a1?source=copy_link'
-              className='underline'
+              className='underline font-semibold'
               target='_blank'
             >
               ▶ A detailed story of their background
@@ -236,7 +236,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_12.jpg' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
 
-      <MidTitle align='center' padding={false} text='(3) Boundless Playground for Everyone' />
+      <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
         title={'Switching Vibes, Instantly.'}
         text='CRUISE instantly changes the current ambience with no interruptions. The pull and release gesture makes it possible to refresh your vibes and contents in the flick of your finger.'
@@ -262,6 +262,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_18.jpg' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106713465?h=79087f8614' />
       <Image Image='/images/projects/cruise/cruise_20.jpg' />
+      <Image Image='/images/projects/cruise/cruise_21.jpg' />
       <Image Image='/images/projects/cruise/cruise_21.jpg' />
 
       <div ref={designedByRef}>

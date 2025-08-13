@@ -165,7 +165,7 @@ export default function Page() {
           </>
         }
         credits='Haeri Ryoo, Seohyun Kim, Minhee Kim, Yubin Seo, Wanhyeok Choi'
-        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
+        className='w-[133px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
       <MainImage />
       <Divide title='Background' number='01' className='text-[#417EB4]' />
@@ -241,7 +241,7 @@ export default function Page() {
             <a
               href='https://abiding-birth-ce4.notion.site/LAY-ON-Get-Your-Layer-On-23e5dd09e82c80df8013c8496d8fffd2?source=copy_link'
               target='_blank'
-              className='underline'
+              className='underline font-semibold' 
             >
               ▶︎ Learn more about detailed story of LAY.ON
             </a>
@@ -351,7 +351,7 @@ export default function Page() {
             <a
               href='https://abiding-birth-ce4.notion.site/UX-design-guideline-of-LAY-ON-23e5dd09e82c806085a3c3e8ae13e3e7'
               target='_blank'
-              className='underline'
+              className='underline font-semibold'
             >
               ▶︎ Learn more about UX design guideline of LAY.ON
             </a>

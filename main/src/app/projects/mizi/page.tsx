@@ -146,7 +146,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Mizi_logo.svg'
-        className='w-[90px] md:w-[130px] lg:w-[clamp(130px,9vw,229px)]'
+        className='w-[74px] md:w-[130px] lg:w-[clamp(130px,9vw,229px)]'
         title={['미지', 'Into the Moment, MIZI']}
         description={
           'MIZI는 시간과 거리의 제약 없이 지금, 이 순간 원하는 세계에 몰입할 수 있는 온 디맨드(On-Demand) 몰입 경험 플랫폼입니다. MIZI의 텔레프레전스 아바타 NOMA는 실재하는 장소에서 감각을 수집하고 햅틱 디바이스를 통해 그 감각을 실시간으로 사용자에게 전달합니다. 마치 그 장소에 있는 것과 같은 몰입감 있는 경험을 선사합니다.\n\n지금 바로, 우리가 원하는 세계로 떠나보세요!'
@@ -256,7 +256,7 @@ export default function Page() {
             <br />
             <a
               href='https://heyzine.com/flip-book/041d1f584b.html'
-              className='underline text-[#FF2A00]'
+              className='underline text-[#FF2A00] font-semibold'
               target='_blank'
             >
               ▶Click here for more MIZI stories.

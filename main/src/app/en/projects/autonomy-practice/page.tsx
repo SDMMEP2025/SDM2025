@@ -161,7 +161,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/AutonomyPractice_logo.svg'
-        className='w-[90px] md:w-[180px] lg:w-[clamp(180px,16vw,229px)]'
+        className='w-[132px] md:w-[180px] lg:w-[clamp(180px,16vw,229px)]'
         title={['Autonomy Practice', 'Act Then Build']}
         description='Autonomy Practice is an experimental footwear brand that challenges how materials are used. We treat CMF not just as a surface detail, but as a responsive element that adapts to its environment. This belief led us to design self-disassembling shoes using shape memory polymers (SMP). Footwear that assembles and comes apart on its own—redefining the boundary between creation and consumption.'
         credits='Jeseok Poong, Minhee Lee, Seungmin Ha, Minyoung Jeong, Yujin Jung'
