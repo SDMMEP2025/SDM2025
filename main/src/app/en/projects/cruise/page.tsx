@@ -45,7 +45,7 @@ const tutorData = [
   },
   {
     title: 'UX tutor',
-    tutors: [{ name: '박지혜', englishName: 'Jihae Park' }],
+    tutors: [{ name: '박지해', englishName: 'Jihae Park' }],
   },
 ]
 

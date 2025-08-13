@@ -57,7 +57,6 @@ const thankstoData = [
       { name: '안성훈', englishName: 'Seonghoon Ahn' },
       { name: '최주혁', englishName: 'Juhyuk Choi' },
       { name: '이원준', englishName: 'Wonjun Lee' },
-      { name: '최지은', englishName: 'Jieun Choi' },
     ],
   },
   {
