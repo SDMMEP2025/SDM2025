@@ -1,9 +1,10 @@
 'use client'
 
 import classNames from 'classnames'
+import React from 'react'
 
 interface RightBodyProps {
-  text?: string
+  text?: string | React.ReactNode
 }
 
 export function RightBody({

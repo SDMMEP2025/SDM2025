@@ -6,22 +6,28 @@ import classNames from 'classnames'
 
 interface MidTitleProps {
   align?: 'center' | 'left' | 'right'
-  text ?: string
+  text?: string | React.ReactNode
+  padding?: boolean
+  className?: string
 }
 
-export function MidTitle({ align = 'center', text }: MidTitleProps) {
+export function MidTitle({ align = 'center', text, padding = true, className = ''  }: MidTitleProps) {
   return (
     <div
       className={classNames(
         'w-full bg-white flex justify-center items-center gap-2',
         //mobile
-        'px-[4.10vw] py-[56px]',
+        padding ? 'py-[56px]' : 'pt-[56px] pb-0',
+        'px-[4.10vw]',
         //tablet
-        'md:px-[5.2vw] md:py-[56px]',
+        'md:px-[5.2vw]',
         //desktop
-        'lg:px-[14.10vw] lg:py-[84px]',
+        padding ? 'lg:py-[84px]' : 'lg:pt-[84px] lg:pb-0',
+        'lg:px-[14.10vw]',
         //large desktop
-        'xl:px-[12.5vw] xl:py-[84px]',
+        padding ? 'xl:py-[84px]' : 'xl:pt-[84px] xl:pb-0',
+        'xl:px-[12.5vw]',
+        className,
       )}
     >
       <div

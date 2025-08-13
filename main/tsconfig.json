@@ -12,7 +12,7 @@
       ],
       "img": [
         "public/img"
-      ]
+      ],
     },
     "target": "es5",
     "lib": [
@@ -44,7 +44,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/Frame"
+    "src/components/Frame",
+    "src/types/svg.d.ts"
 , "src/components/coming/CountdownDigitsClient.jsx"  ],
   "exclude": [
     "node_modules"

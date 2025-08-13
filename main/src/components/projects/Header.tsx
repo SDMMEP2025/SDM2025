@@ -1,55 +1,62 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { AnimatedNavItem } from '../AnimatedNavItem'
-import Link from 'next/link'
-import { MobileNav } from './MobileNav'
-import { difference } from 'next/dist/build/utils'
+import { useState, useEffect, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { AnimatedNavItem } from '../AnimatedNavItem'
+import { MobileNav } from './MobileNav'
+
+type Lang = 'KR' | 'EN'
 
 export function Header() {
-  const [language, setLanguage] = useState('KR')
+  const router = useRouter()
+  const pathname = usePathname() || '/'
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const [animationState, setAnimationState] = useState('initial')
   const [blendMode, setBlendMode] = useState<'difference' | 'normal'>('difference')
 
-  function toggleDropdown() {
-    setIsDropdownOpen(!isDropdownOpen)
+  const { lang, langPrefix, restPath } = useMemo(() => {
+    const parts = pathname.split('/').filter(Boolean)
+    const first = parts[0]
+    const isEN = first === 'en'
+    const currentLang: Lang = isEN ? 'EN' : 'KR'
+    const prefix = isEN ? '/en' : ''
+    const rest = isEN ? '/' + (parts.slice(1).join('/') || '') : pathname
+    return { lang: currentLang, langPrefix: prefix, restPath: rest }
+  }, [pathname])
+
+  const buildPathForLang = (target: Lang) => {
+    if (target === 'EN') {
+      return `/en${restPath === '/' ? '' : restPath}`
+    } else {
+      return restPath === '/' ? '/' : restPath
+    }
   }
 
-  function selectLanguage(selectedLang) {
-    setLanguage(selectedLang)
+  const toggleDropdown = () => setIsDropdownOpen((v) => !v)
+
+  const selectLanguage = (selectedLang: Lang) => {
     setIsDropdownOpen(false)
+    router.push(buildPathForLang(selectedLang))
   }
 
-  function toggleMobileMenu() {
+  const toggleMobileMenu = () => {
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false)
-      setTimeout(() => {
-        setBlendMode('difference')
-      }, 400)
+      setTimeout(() => setBlendMode('difference'), 400)
     } else {
       setBlendMode('normal')
       setIsMobileMenuOpen(true)
     }
   }
 
-  //네비 나왔을때 스크롤 비활성화
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
   }, [isMobileMenuOpen])
-
   return (
     <div
       className={`w-full h-fit sticky top-0 z-30 transition-all duration-300 ${
@@ -58,7 +65,7 @@ export function Header() {
     >
       <div className='w-full h-[58px] px-[16px] py-[30px] lg:px-[48px] lg:py-[30px] lg:h-[80px] md:px-[40px] md:py-[30px] md:h-[68px] inline-flex justify-between items-center'>
         <Link
-          href='/'
+          href={langPrefix}
           className='h-[24px] text-white md:h-[30px] lg:h-[36px] w-auto relative flex justify-center items-center'
         >
           <svg
@@ -120,22 +127,19 @@ export function Header() {
           </svg>
         </Link>
 
+        {/* 데스크톱 네비 */}
         <div className='justify-start items-center gap-40 hidden lg:flex'>
           <div className='flex justify-start items-center gap-[26px]'>
-            <AnimatedNavItem label='About,' href='/about' />
-            <AnimatedNavItem label='Project,' href='/projects' />
-            <AnimatedNavItem label='Movement' href='/movement' />
+            <AnimatedNavItem label='About,' href={`${langPrefix}/about`} />
+            <AnimatedNavItem label='Project,' href={`${langPrefix}/projects`} />
+            <AnimatedNavItem label='Movement' href={`${langPrefix}/movement`} />
           </div>
 
           {/* 언어 드롭다운 */}
           <div className='relative'>
-            <div
-              data-property-1='kr'
-              className='relative flex flex-row justify-start items-center cursor-pointer'
-              onClick={toggleDropdown}
-            >
+            <div className='relative flex flex-row justify-start items-center cursor-pointer' onClick={toggleDropdown}>
               <div className="left-0 top-0 px-[8.68px] justify-center text-center text-white text-2xl font-semibold font-['Pretendard'] leading-9">
-                {language}
+                {lang}
               </div>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -147,21 +151,20 @@ export function Header() {
               </svg>
             </div>
 
-            {/* 드롭다운 메뉴 */}
             {isDropdownOpen && (
               <div className='absolute px-[8.68px] top-8 left-0 bg-white z-30'>
-                {['KR', 'EN']
-                  .filter((lang) => lang !== language)
-                  .map((lang) => (
+                {(['KR', 'EN'] as Lang[])
+                  .filter((l) => l !== lang)
+                  .map((l) => (
                     <div
-                      key={lang}
-                      className={`left-0 top-0 text-center cursor-pointer text-2xl font-semibold font-['Pretendard'] transition-colors `}
+                      key={l}
+                      className="left-0 top-0 text-center cursor-pointer text-2xl font-semibold font-['Pretendard'] transition-colors"
                       onClick={(e) => {
                         e.stopPropagation()
-                        selectLanguage(lang)
+                        selectLanguage(l)
                       }}
                     >
-                      {lang}
+                      {l}
                     </div>
                   ))}
               </div>
@@ -169,7 +172,7 @@ export function Header() {
           </div>
         </div>
 
-        {/* 모바일 햄버거 버튼 */}
+        {/* 모바일 햄버거 */}
         <div className='lg:hidden'>
           <button onClick={toggleMobileMenu} className='p-2'>
             <svg xmlns='http://www.w3.org/2000/svg' width='18' height='20' viewBox='0 0 18 20' fill='none'>
@@ -186,10 +189,12 @@ export function Header() {
         {isMobileMenuOpen && (
           <MobileNav
             isOpen={isMobileMenuOpen}
-            language={language}
+            language={lang} // 'KR' | 'EN'
             toggleDropdown={toggleMobileMenu}
+            // MobileNav에서 언어 선택하면 라우팅되도록 동일 함수 전달
             selectLanguage={selectLanguage}
             isDropdownOpen={isDropdownOpen}
+            // 필요하다면 nav 링크에도 langPrefix 넘겨서 `${langPrefix}/...` 사용
           />
         )}
       </AnimatePresence>
