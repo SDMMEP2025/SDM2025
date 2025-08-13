@@ -164,7 +164,7 @@ export default function Page() {
         className="w-[80px] md:w-[96px] lg:w-[clamp(60px,8.75vw,130px)]"
       />
       <MainImage />
-      <Divide title='Background' number='01' />
+      <Divide title='Background' number='01' className='text-[#E30D2D]'/>
       <RightTitleBody
         title='창작을 망설이게 하는 심리적 부담감'
         text={
@@ -180,7 +180,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Discover' number='02' />
+      <Divide title='Discover' number='02' className='text-[#E30D2D]' />
       <MidBody
         align='left'
         content={
@@ -198,7 +198,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Limitation' number='03' />
+      <Divide title='Limitation' number='03' className='text-[#E30D2D]'/>
       <MidBody align='center' content={<>그러나, 디지털 시대의 창작에 대한 아쉬움의 목소리는 여전히 존재합니다.</>} />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <LeftTitle
@@ -207,8 +207,9 @@ export default function Page() {
             ▶︎ A more detailed story of Silmul
           </a>
         }
+        className='text-[#E30D2D]'
       />
-      <Divide title='Concept' number='04' />
+      <Divide title='Concept' number='04' className='text-[#E30D2D]4'/>
       <LeftTitle
         text={
           <>
@@ -245,7 +246,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Technical problem' number='05' />
+      <Divide title='Technical problem' number='05' className='text-[#E30D2D]'/>
       <MidBody
         align='center'
         content={
@@ -257,7 +258,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='New Creation Paradigm' number='06' />
+      <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]'/>
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
@@ -272,8 +273,8 @@ export default function Page() {
         title='Product, ‘Realize’ ²'
         text={<>창작자가 만지고 느낄 수 있는 ‘실물’ 자체를 출력해 주는 프로덕트</>}
       />
-      <Divide title='User Scenario' number='07' />
-      <MidTitle align='center' text='Sense: The easiest way to start creating' />
+      <Divide title='User Scenario' number='07' className='text-[#E30D2D]'/>
+      <MidTitle align='center' text='Sense: The easiest way to start creating' className='text-[#E30D2D]'/>
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
         align='center'
@@ -295,7 +296,7 @@ export default function Page() {
           </>
         }
       />
-      <MidTitle align='center' text='Service: Generate experiences through Gen-AI' />
+      <MidTitle align='center' text='Service: Generate experiences through Gen-AI' className='text-[#E30D2D]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
@@ -310,7 +311,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody align='center' content={<>원하는 결과물이 만들어졌다면, 이제는 진짜 실물로 출력해 보죠!</>} />
-      <MidTitle align='center' text='Realize: From experience to real object' />
+      <MidTitle align='center' text='Realize: From experience to real object' className='text-[#E30D2D]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
@@ -324,8 +325,8 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Extra Value' number='08' />
-      <MidTitle align='center' text='Tagging: Not the end of making - the beginning of expanding' />
+      <Divide title='Extra Value' number='08' className='text-[#E30D2D]'/>
+      <MidTitle align='center' text='Tagging: Not the end of making - the beginning of expanding' className='text-[#E30D2D]'/>
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
         title={null}
@@ -336,7 +337,7 @@ export default function Page() {
           </>
         }
       />
-      <MidTitle align='center' text='Melting: Sustainable cycle of Silmul' />
+      <MidTitle align='center' text='Melting: Sustainable cycle of Silmul' className='text-[#E30D2D]'/>
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
         align='center'
@@ -350,7 +351,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='Turning real senses into real objects, Silmul' />
+      <MidTitle align='center' text='Turning real senses into real objects, Silmul' className='text-[#E30D2D]' />
 
       <div ref={designedByRef}>
         <Credit

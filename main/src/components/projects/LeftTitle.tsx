@@ -7,11 +7,13 @@ import React from 'react'
 interface LeftTitleProps {
   text?: string | React.ReactNode
   padding?: boolean
+  className?: string
 }
 
 export function LeftTitle({
   text = '나를 몰입하는 방법',
   padding = true,
+  className = ''
 }: LeftTitleProps) {
   return (
     <div
@@ -29,6 +31,7 @@ export function LeftTitle({
         //large desktop
         padding ? 'xl:py-[84px]' : 'xl:pt-[84px]',
         'xl:px-[12.5vw]',
+        className
       )}
     >
       <div

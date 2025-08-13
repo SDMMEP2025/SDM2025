@@ -162,7 +162,7 @@ export default function Page() {
         className='w-[80px] md:w-[96px] lg:w-[clamp(60px,8.75vw,130px)]'
       />
       <MainImage />
-      <Divide title='Background' number='01' />
+      <Divide title='Background' number='01' className='text-[#E30D2D]'/>
       <RightTitleBody
         title='Psychological pressure blocks creativity'
         text={
@@ -176,7 +176,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Discover' number='02' />
+      <Divide title='Discover' number='02' className='text-[#E30D2D]'/>
       <MidBody
         align='left'
         content={
@@ -192,7 +192,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Limitation' number='03' />
+      <Divide title='Limitation' number='03' className='text-[#E30D2D]'/>
       <MidBody
         align='center'
         content={<>However, there's still something missing when it comes to creativity in the digital era.</>}
@@ -200,12 +200,12 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <LeftTitle
         text={
-          <a href='https://bio.link/silmul' className='underline' target='_blank'>
+          <a href='https://bio.link/silmul' className='underline text-[#E30D2D]' target='_blank'>
             ▶︎ A more detailed story of Silmul
           </a>
         }
       />
-      <Divide title='Concept' number='04' />
+      <Divide title='Concept' number='04' className='text-[#E30D2D]'/>
       <LeftTitle
         text={
           <>
@@ -214,6 +214,7 @@ export default function Page() {
           </>
         }
         padding={false}
+        className='text-[#E30D2D]'
       />
       <MidBody
         align='left'
@@ -241,7 +242,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Technical problem' number='05' />
+      <Divide title='Technical problem' number='05' className='text-[#E30D2D]'/>
       <MidBody
         align='center'
         content={
@@ -253,7 +254,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='New Creation Paradigm' number='06' />
+      <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]'/>
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
@@ -268,8 +269,8 @@ export default function Page() {
         title='Product, ‘Realize’ ²'
         text={<>Bring your creation to life—print a object that you can touch and feel.</>}
       />
-      <Divide title='User Scenario' number='07' />
-      <MidTitle align='center' text='Sense: The easiest way to start creating' />
+      <Divide title='User Scenario' number='07' className='text-[#E30D2D]'/>
+      <MidTitle align='center' className='text-[#E30D2D]' text='Sense: The easiest way to start creating' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
         align='center'
@@ -291,7 +292,7 @@ export default function Page() {
           </>
         }
       />
-      <MidTitle align='center' text='Service: Generate experiences through Gen-AI' />
+      <MidTitle align='center' className='text-[#E30D2D]' text='Service: Generate experiences through Gen-AI' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
@@ -309,7 +310,7 @@ export default function Page() {
       <MidBody align='center' content={<>Now, bring your design to life by turning it into a real object.</>} />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
 
-      <MidTitle align='center' text='Realize: From experience to real object' />
+      <MidTitle align='center' className='text-[#E30D2D]' text='Realize: From experience to real object' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
@@ -323,8 +324,8 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Extra Value' number='08' />
-      <MidTitle align='center' text='Tagging: Not the end of making - the beginning of expanding' />
+      <Divide title='Extra Value' number='08' className='text-[#E30D2D]'/>
+      <MidTitle align='center' className='text-[#E30D2D]' text='Tagging: Not the end of making - the beginning of expanding' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
         title={null}
@@ -336,7 +337,7 @@ export default function Page() {
           </>
         }
       />
-      <MidTitle align='center' text='Melting: Sustainable cycle of Silmul' />
+      <MidTitle align='center' className='text-[#E30D2D]' text='Melting: Sustainable cycle of Silmul' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
         align='center'
@@ -352,7 +353,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='Turning real senses into real objects, Silmul' />
+      <MidTitle align='center' className='text-[#E30D2D]' text='Turning real senses into real objects, Silmul' />
 
       <div ref={designedByRef}>
         <Credit
