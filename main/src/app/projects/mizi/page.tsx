@@ -156,13 +156,13 @@ export default function Page() {
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='Background' number='01' className='text-[#FF2A00]' />
       <TitleBody
-        title={'모든 것이 ‘즉시’ 가능한\n On-Demand 사회'}
+        title={'모든 것이 ‘즉시’ 가능한\nOn-Demand 사회'}
         text='우리는 클릭 한 번이면 음식이 1시간 안에 도착하고, 오늘 주문한 택배가 다음 날 새벽에 도착하며, 터치 한 번이면 영화 한 편을 볼 수 있는 온 디맨드(On-Demand) 사회에 살고 있습니다. 
 퀵커머스, 실시간 스트리밍과 같은 서비스가 우리의 일상이 되며 Z세대에게 기다림이라는 시간은 참기 힘들어졌죠.'
       />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106711843?h=ba42ab53da' />
       <TitleBody
-        title={'기다림을 요구하는 영역\n Travel'}
+        title={'기다림을 요구하는 영역\nTravel'}
         text='그런데 유독, 여행만큼은 아직 기다림을 요구하는 영역으로 남아있습니다. 떠나기로 다짐하고, 계획을 세우고, 여행을 가는 당일까지 기다리는 과정이 여전히 필수적으로 남아있죠. 사람들은 이 과정의 기다림조차 여행의 일부이자 의미 있는 시간이라고 이야기하고는 합니다. 
 하지만 혹시, 우리는 이 기다림으로 인해 떠나야 했던 타이밍을 놓치고 있는 것은 아닐까요?'
       />
@@ -170,7 +170,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Divide title='Insight' number='02' className='text-[#FF2A00]' />
       <TitleBody
-        title={'다짐과 실행 사이,\n 감정의 시차'}
+        title={'다짐과 실행 사이,\n감정의 시차'}
         text='우리는 우울할 때 바다를 보고 싶어 하고, 지치면 숲을 걷고 싶어 합니다. 하지만, 이 바람은 쉽게 이루어지지는 못합니다. ‘떠나자’라고 다짐하고 계획을 시작하면 우리는 곧 직장이나 학교 등의 현실과 마주하게 됩니다. 그렇게 몇 주, 몇 개월 뒤 원하는 곳에 도착했을 때 과연 처음 ‘떠나자’라고 다짐했을 시 가졌던 그 마음이 그대로 남아있나요? 다짐과 실행 사이에는 현실적인 장벽이 존재하고 바로 충족되지 못하는 그 시간은 감정의 시차를 만들어냅니다.'
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
@@ -183,7 +183,7 @@ export default function Page() {
       <MidTitle align='center' className='text-[#FF2A00]' text='Into the Moment, MIZI' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
-        title={'On-Demand Travel,\n MIZI'}
+        title={'On-Demand Travel,\nMIZI'}
         text='시간과 거리의 제약 없이 지금, 이 순간 원하는 세계에 몰입할 수 있는 플랫폼, MIZI를 제안합니다. MIZI는 사용자가 원하는 감각이나 분위기를 떠올리는 순간, 아바타 NOMA를 통해 가장 어울리는 물리적인 공간으로 사용자를 연결해 줍니다.'
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
