@@ -42,7 +42,11 @@ const tutorData = [
       { name: '주호영', englishName: 'Hoyoung Joo' },
       { name: '양진우', englishName: 'Jeenwoo Yang' },
     ],
-  }
+  },
+  {
+    title: 'UX tutor',
+    tutors: [{ name: '박지해', englishName: 'Jihae Park' }],
+  },
 ]
 
 const thankstoData = [
