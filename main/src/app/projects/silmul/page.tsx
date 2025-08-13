@@ -209,7 +209,7 @@ export default function Page() {
         }
         className='text-[#E30D2D]'
       />
-      <Divide title='Concept' number='04' className='text-[#E30D2D]4'/>
+      <Divide title='Concept' number='04' className='text-[#E30D2D]'/>
       <LeftTitle
         text={
           <>
@@ -218,6 +218,7 @@ export default function Page() {
           </>
         }
         padding={false}
+        className='text-[#E30D2D]'
       />
       <MidBody
         align='left'
