@@ -186,7 +186,7 @@ export default function Page() {
         className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
       />
       <MainImage />
-      <Divide title='Background' number='01' />
+      <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
       <TitleBody
         title={
           <>
@@ -205,7 +205,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Target' number='02' />
+      <Divide title='Target' number='02' className='text-[#7C8A8D]'/>
       <TitleBody
         title={
           <>
@@ -230,7 +230,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Problem' number='03' />
+      <Divide title='Problem' number='03' className='text-[#7C8A8D]'/>
       <TitleBody
         title={
           <>
@@ -276,7 +276,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Solution' number='04' />
+      <Divide title='Solution' number='04' className='text-[#7C8A8D]'/>
       <MidTitle align='center' text='머무름 자체가 곧 스타일링이 되는 NewBe' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
@@ -312,7 +312,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Scenario' number='05' />
+      <Divide title='Scenario' number='05' className='text-[#7C8A8D]'/>
       <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
       <TitleBody
         title={
@@ -435,7 +435,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Expectation' number='06' />
+      <Divide title='Expectation' number='06' className='text-[#7C8A8D]'/>
       <MidTitle
         align='center'
         text={

@@ -168,7 +168,7 @@ export default function Page() {
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Context' number='01' />
+      <Divide title='Context' number='01' className='text-[#949598]' />
       <MidBody
         align='left'
         content='CMF는 제품의 시각적, 촉각적 완성도를 높이는 요소로 자리해 왔습니다. Autonomy Practice는 이 역할을 재탐색하며, CMF를 주변 환경에 반응하고 제품의 상태를 변화시키는 능동적 재료로 탐구합니다. 이러한 관점은 온도에 반응하여 형태가 바뀌는 SMP(형상기억 폴리머)에 대한 소재 연구로 이어졌고, 나아가 가변적 물성과 제품의 만남에서 비롯되는 새로운 가능성을 모색합니다.'
@@ -179,7 +179,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Structure' number='02' />
+      <Divide title='Structure' number='02' className='text-[#949598]'/>
       <MidBody
         align='left'
         content={
@@ -189,7 +189,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Practice Log' number='03' />
+      <Divide title='Practice Log' number='03' className='text-[#949598]'/>
       <MidBody
         align='left'
         content={

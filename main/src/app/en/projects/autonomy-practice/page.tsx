@@ -168,7 +168,7 @@ export default function Page() {
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Context' number='01' />
+      <Divide title='Context' number='01' className='text-[#949598]'/>
       <MidBody
         align='left'
         content='CMF has long been about enhancing how products look and feel. At Autonomy Practice, we redefine our role, seeing CMF as an active material that responds to its environment and transforms the product itself. This perspective inspired us to explore shape memory polymers (SMP), materials that change shape with temperature. By blending adaptive materials with product design, we’re discovering new ways to shape interaction, meaning, and use.'
@@ -179,7 +179,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Structure' number='02' />
+      <Divide title='Structure' number='02' className='text-[#949598]'/>
       <MidBody
         align='left'
         content={
@@ -189,7 +189,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Practice Log' number='03' />
+      <Divide title='Practice Log' number='03' className='text-[#949598]'/>
       <MidBody
         align='left'
         content={
