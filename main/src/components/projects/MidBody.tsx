@@ -6,18 +6,22 @@ interface MidBodyProps {
   content: string | React.ReactNode
   className?: string
   align?: 'center' | 'left' | 'right'
+  padding?: boolean
 }
 
-export function MidBody({ content, className = '', align = 'center' }: MidBodyProps) {
+export function MidBody({ content, className = '', align = 'center', padding = true }: MidBodyProps) {
   return (
     <div
       className={classNames(
         'w-full h-fit bg-white flex flex-col justify-center items-center',
         //mobile
-        'px-[4.10vw] py-[56px] gap-[12px]',
+        padding ? 'py-[56px]' : 'pt-[56px]',
+        'px-[4.10vw] gap-[12px]',
         //tablet
+        padding ? 'md:py-[48px]' : 'md:pt-[48px]',
         'md:px-[5.2vw] md:py-[48px] md:gap-[20px]',
         //desktop
+        padding ? 'lg:py-[48px]' : 'lg:pt-[48px]',
         'lg:px-[14.10vw] lg:py-[84px] lg:gap-[24px]',
         className,
       )}

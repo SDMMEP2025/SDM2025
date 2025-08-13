@@ -3,26 +3,39 @@
 import classNames from 'classnames'
 import React from 'react'
 
-export function LeftTitle({ text = '나를 몰입하는 방법' }: { text: string | React.ReactNode }) {
+
+interface LeftTitleProps {
+  text?: string | React.ReactNode
+  padding?: boolean
+}
+
+export function LeftTitle({
+  text = '나를 몰입하는 방법',
+  padding = true,
+}: LeftTitleProps) {
   return (
     <div
       className={classNames(
         'w-full bg-white flex flex-col justify-start items-center',
         //mobile
-        'px-[4.10vw] py-[56px]',
+        padding ? 'py-[56px]' : 'pt-[56px]',
+        'px-[4.10vw]',
         //tablet
-        'md:px-[5.2vw] md:py-[56px]',
+        padding ? 'md:py-[56px]' : 'md:pt-[56px]',
+        'md:px-[5.2vw]',
         //desktop
-        'lg:px-[14.10vw] lg:py-[84px]',
+        padding ? 'lg:py-[84px]' : 'lg:pt-[84px]',
+        'lg:px-[14.10vw]',
         //large desktop
-        'xl:px-[12.5vw] xl:py-[84px]',
+        padding ? 'xl:py-[84px]' : 'xl:pt-[84px]',
+        'xl:px-[12.5vw]',
       )}
     >
       <div
         className={classNames(
           '',
           //mobile
-          'w-full text-[20px] tracking-[-0.4px] leading-[1.6] whitespace-nowrap font-normal',
+          'w-full text-[20px] tracking-[-0.4px] leading-[1.6] font-bold',
           //tablet
           'md:text-[20px] md:tracking-[-0.4px] md:leading-[1.5] md:whitespace-pre-line md:font-bold',
           //desktop

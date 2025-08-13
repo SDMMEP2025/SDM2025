@@ -46,7 +46,7 @@ export function TitleBody({
             '',
             !title ? 'h-[0px]' : 'h-auto',
             //mobile
-            'w-full text-[20px] tracking-[-0.4px] leading-[1.6] whitespace-nowrap font-normal',
+            'w-full text-[20px] tracking-[-0.4px] leading-[1.6] font-bold',
             //tablet
             'md:w-[30%] md:text-[20px] md:tracking-[-0.4px] md:leading-[1.5] md:whitespace-pre-line md:font-bold',
             //desktop

@@ -71,7 +71,7 @@ const thankstoData = [
     title: 'Music Producer',
     tutors: [{ name: '코토바', englishName: 'cotoba' }],
   },
-    {
+  {
     title: 'Model',
     tutors: [{ name: '됸쥬', englishName: 'DyoN Joo' }],
   },
@@ -176,9 +176,11 @@ export default function Page() {
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/hotcake_logo.svg'
         title={['핫케익', 'Heat it, Play it, Hotcake']}
         description='Hotcake는 공간 제약 없이 즐거운 합주를 할 수 있는 경험을 선사합니다. 마치 한 공간에 함께 있는 듯한 입체적인 사운드를 구현하고, 서로의 타이밍이 정확히 맞아떨어지는 짜릿한 순간을 놓치지 않도록 도와주죠. Hotcake와 함께, 평범한 일상 공간에서도 몰입감 넘치는 유난스러운 합주의 즐거움을 느껴보세요!'
         credits='장우진, 정혜령, 김채은, 이일여, 장은혜'
+        className='w-[80px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='A way of enjoying music' number='01' />
@@ -194,16 +196,25 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
-        title={'합주는 당연히\n 즐거워야 하니까'}
+        title={'합주는 당연히\n즐거워야 하니까'}
         text={
-          '합주는 늘 합주실에 가야만 가능한 일이었습니다. 무거운 악기를 들고, 비용을 지급해 예약한 공간에서는 괜히 잘해야 할 것만 같은 압박이 따르곤 했죠. 하지만 집에서도 합주가 가능하다면 어떨까요? Hotcake는 집이라는 가장 편안한 공간에서, 더 자유롭고 즐거운 합주를 지향합니다. 박자가 조금 틀리거나 음이 어긋나도 괜찮아요. 그저 음악에 몸을 맡겨보세요!\n\n► 더 자세한 이야기는 여기에'
+          <>
+            합주는 늘 합주실에 가야만 가능한 일이었습니다. 무거운 악기를 들고, 비용을 지급해 예약한 공간에서는 괜히
+            잘해야 할 것만 같은 압박이 따르곤 했죠. 하지만 집에서도 합주가 가능하다면 어떨까요? Hotcake는 집이라는 가장
+            편안한 공간에서, 더 자유롭고 즐거운 합주를 지향합니다. 박자가 조금 틀리거나 음이 어긋나도 괜찮아요. 그저
+            음악에 몸을 맡겨보세요!
+            <br /> <br />
+            <a href='https://bio.link/silmul' className='underline' target='_blank'>
+              ▶︎ A more detailed story of Silmul
+            </a>
+          </>
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidTitle align='center' text='Heat It, Play It, Hotcake' />
       <Image Image='/images/projects/cruise/cruise_5.jpg' />
       <TitleBody
-        title={'온라인 합주의 완성\n Cake & Butter'}
+        title={'온라인 합주의 완성\nCake & Butter'}
         text={
           'Hotcake는 모듈 스피커와 우퍼 스테이션으로 구성된 Cake와 햅틱 웨어러블 디바이스인 Butter로 구성되어 있습니다. Cake와 Butter는 각 세션이 연주하고 있는 소리를 공간 음향으로 구현해 실제 합주를 하는 듯한 경험을 제공하고, 연주하고 있는 음악의 파장을 햅틱 피드백으로 전달해 음악을 피부로 느낄 수 있도록 합니다.'
         }
@@ -223,7 +234,7 @@ export default function Page() {
         }
       />
       <Divide title='Scenario' number='04' />
-      <MidTitle align='center' text='(1) Connection with Sessions' />
+      <MidTitle align='center' text='(1) Connection with Sessions' padding={false} />
       <TitleBody
         title={'손쉽게 구하는\n나만의 즉흥 밴드'}
         text={
@@ -233,7 +244,7 @@ export default function Page() {
 
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
 
-      <MidTitle align='center' text='(2) New Experience with Hotcake' />
+      <MidTitle align='center' text='(2) New Experience with Hotcake' padding={false} />
       <TitleBody
         title={'빛, 진동, 그리고 소리로\n이어지는 합주 경험'}
         text={
@@ -252,7 +263,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <MidTitle align='center' text='(3) Frame the Heated Moment' />
+      <MidTitle align='center' text='(3) Frame the Heated Moment' padding={false} />
       <TitleBody
         title={'뜨거운 합주의\n순간으로 돌아가기'}
         text={
@@ -341,25 +352,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/autonomy-practice' }}
-          nextItem={{ label: 'Next', url: '/projects/mizi' }}
+          previousItem={{ label: 'Previous', url: '/projects/layon' }}
+          nextItem={{ label: 'Next', url: '/projects/merlin' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/autonomy-practice',
+            englishName: 'LAY.ON',
+            koreanName: '레이온',
+            linkUrl: '/projects/layon',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/mizi',
+            englishName: 'MERLIN',
+            koreanName: '멀린',
+            linkUrl: '/projects/merlin',
           }}
         />
         <AnimatePresence>

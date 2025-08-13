@@ -125,48 +125,37 @@ export default function Page() {
     }
   }, [])
 
-  // 마우스 위치 추적 (PC에서만)
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // 모바일이나 테블릿이면 마우스 추적하지 않음
       if (isMobile || isTablet) return
 
       const windowWidth = window.innerWidth
       const mouseX = event.clientX
-
-      // 오른쪽 1/3 지점 계산 (화면 너비의 2/3 지점부터)
       const rightThirdThreshold = windowWidth * (2 / 3)
 
       setIsMouseInRightThird(mouseX >= rightThirdThreshold)
     }
-
-    // 마우스 이동 이벤트 리스너 추가
     window.addEventListener('mousemove', handleMouseMove)
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [isMobile, isTablet])
 
-  // 사이드바 확장 상태 변경 핸들러
   const handleSidebarExpandedChange = (expanded: boolean) => {
     setIsSidebarExpanded(expanded)
   }
 
-  // 사이드바 표시 여부 결정:
-  // - 모바일에서는 항상 true
-  // - 테블릿에서는 항상 true (새로 추가된 조건)
-  // - PC에서는 마우스가 오른쪽 1/3에 있거나 확장된 상태일 때
   const shouldShowSidebar = isMobile || isTablet || isMouseInRightThird || isSidebarExpanded
 
   return (
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/CRUISE_logo.svg'
         title={['크루즈', 'Style Our Mile, Drive Our Life']}
         description='자율주행 5단계 시대, 운전의 개념이 사라지고 모든 탑승자가 네비게이터가 되는 변화 속에서, CRUISE는 이동을 능동적이고 역동적인 공유 경험으로 재정의하는 인터랙션 디바이스입니다. 소셜 미디어 속 디깅에 익숙한 이동 혁신 세대의 탐색 방식을 차 안으로 가져와, 모든 탑승자가 끊임없이 ‘움직이는 탐색’을 통해 경험을 공유하고 확장하게 하며, 일상에 새로운 가치와 영감을 더합니다. CRUISE와 함께 새로운 이동 경험을 만나보세요!'
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
+        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='Background' number='01' />
@@ -184,7 +173,20 @@ export default function Page() {
       <RightTitleBody
         title='수동적인 승객이 아닌 경험을 개척하는 CRUISER'
         text={
-          '우리가 정의하는 이동 혁신 세대는 과거와 본질적으로 다릅니다. 이들은 콘텐츠를 일방적으로 소비하기보다, 소셜 미디어 속에서 끊임없이 디깅하고 탐색하며 자신만의 취향을 능동적으로 스타일링합니다. 나아가, 발견한 것을 공유하며 새로운 가치를 창조하는 데 익숙하죠. \n\n▶ A detailed story of their background'
+          <>
+            우리가 정의하는 이동 혁신 세대는 과거와 본질적으로 다릅니다. 이들은 콘텐츠를 일방적으로 소비하기보다, 소셜
+            미디어 속에서 끊임없이 디깅하고 탐색하며 자신만의 취향을 능동적으로 스타일링합니다. 나아가, 발견한 것을
+            공유하며 새로운 가치를 창조하는 데 익숙하죠.
+            <br />
+            <br />
+            <a
+              href=' https://www.notion.so/CRUISE-UX-BOOK-23d6cd1a9e8280a68d64f1b14879e6a1?source=copy_link'
+              className='underline'
+              target='_blank'
+            >
+              ▶ A detailed story of their background
+            </a>
+          </>
         }
       ></RightTitleBody>
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712041?h=af8b7a7a8a' />
@@ -219,7 +221,7 @@ export default function Page() {
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712557?h=5d7c488384' />
 
       <Divide title='Scenario' number='05' />
-      <MidTitle align='center' text='(1) Styling Our Journey, Together' />
+      <MidTitle align='center' padding={false} text='(1) Styling Our Journey, Together' />
 
       <TitleBody
         title={'오늘의 여정, 어떤 분위기로\n 시작해 볼까요?'}
@@ -227,7 +229,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_11.jpg' />
 
-      <MidTitle align='center' text='(2)  Boundless Playground for Everyone' />
+      <MidTitle align='center' padding={false} text='(2) Boundless Playground for Everyone' />
       <TitleBody
         title={'서로의 시선으로\n함께 완성되는 지도'}
         text='운항 중인 크루즈 안에서 탑승자들이 각자의 보물 지도를 펼쳐 보이듯, CRUISE는 달리는 차 안을 우리 모두의 플레이그라운드로 만듭니다. Handle이 넘겨지는 순간 AI는 현재 사용자를 즉시 인식하여, 그들의 고유한 알고리즘을 불러올 수 있습니다. 이로써 각자의 시선이 담긴 정보들이 하나의 공유 지도 위에 통합되어 새로운 탐험의 재미를 선사하죠!'
@@ -236,7 +238,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_12.jpg' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
 
-      <MidTitle align='center' text='(3)  Boundless Playground for Everyone' />
+      <MidTitle align='center' padding={false} text='(3) Boundless Playground for Everyone' />
       <TitleBody
         title={'분위기 전환,\n한손으로 간단하게'}
         text='승객이 잠에 들면 불을 꺼주고, 지루해하면 파티를 열어주는 선장처럼 환경의 변화에 따라 순식간에 분위기를 전환할 수 있습니다. 이동 중 흐름이 끊기는 불편함은 CRUISE에서 사라지고, 당겼다 놓는 제스처 하나로 지금의 분위기, 경로, 콘텐츠를 물 흐르듯 즉시 새로고침 할 수 있죠.'
@@ -251,7 +253,7 @@ export default function Page() {
 
       <Divide title='Vision & Expectation' number='06' />
 
-      <MidTitle align='center' text='Future Value of CRUISE' />
+      <MidTitle align='center' padding={false} text='Future Value of CRUISE' />
       <MidBody
         content='CRUISE는 매일 우리들이 향유하는 이동의 경험을 역동적인 공유 경험으로 새롭게 정의합니다. 
 개인의 탐색과 취향이 끊임없이 연결되고 확장되며, 모든 여정이 함께 만들어가는 생동감 넘치는 
@@ -330,25 +332,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/autonomy-practice' }}
-          nextItem={{ label: 'Next', url: '/projects/mizi' }}
+          previousItem={{ label: 'Previous', url: '/projects/mizi' }}
+          nextItem={{ label: 'Next', url: '/projects/silmul' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/autonomy-practice',
+            englishName: 'Mizi',
+            koreanName: '미지',
+            linkUrl: '/projects/mizi',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/mizi',
+            englishName: 'Silmul',
+            koreanName: '실물',
+            linkUrl: '/projects/silmul',
           }}
         />
         <AnimatePresence>

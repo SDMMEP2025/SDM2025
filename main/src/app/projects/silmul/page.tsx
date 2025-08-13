@@ -90,29 +90,28 @@ export default function Page() {
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
   const [currentPoint, setCurrentPoint] = useState(
-    points[0], // 초기값으로 첫 번째 포인트 설정
+    points[0],
   )
 
   const designedByRef = useRef<HTMLDivElement>(null)
 
   const inView = useInView(designedByRef, {
-    amount: 0.1, // 10%가 보일 때 inView 상태 변경
-    once: false, // 한번만 감지하지 않도록 설정
+    amount: 0.1, 
+    once: false, 
   })
 
   useEffect(() => {
     if (inView) {
-      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
-    } else {
-      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
+      setIsSidebarShown(false)
+      setIsSidebarShown(true)
     }
   }, [inView, setIsSidebarShown])
 
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
-      setIsMobile(width < 768) // 768px 미만은 모바일
-      setIsTablet(width >= 768 && width < 1440) // 768px 이상 1440px 미만은 테블릿
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1440)
     }
 
     checkDeviceType()
@@ -123,45 +122,36 @@ export default function Page() {
     }
   }, [])
 
-  // 마우스 위치 추적 (PC에서만)
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // 모바일이나 테블릿이면 마우스 추적하지 않음
       if (isMobile || isTablet) return
 
       const windowWidth = window.innerWidth
       const mouseX = event.clientX
 
-      // 오른쪽 1/3 지점 계산 (화면 너비의 2/3 지점부터)
       const rightThirdThreshold = windowWidth * (2 / 3)
 
       setIsMouseInRightThird(mouseX >= rightThirdThreshold)
     }
 
-    // 마우스 이동 이벤트 리스너 추가
     window.addEventListener('mousemove', handleMouseMove)
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [isMobile, isTablet])
 
-  // 사이드바 확장 상태 변경 핸들러
   const handleSidebarExpandedChange = (expanded: boolean) => {
     setIsSidebarExpanded(expanded)
   }
 
-  // 사이드바 표시 여부 결정:
-  // - 모바일에서는 항상 true
-  // - 테블릿에서는 항상 true (새로 추가된 조건)
-  // - PC에서는 마우스가 오른쪽 1/3에 있거나 확장된 상태일 때
   const shouldShowSidebar = isMobile || isTablet || isMouseInRightThird || isSidebarExpanded
 
   return (
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/Silmul_logo.svg'
         title={['실물', 'Turning real senses into real objects']}
         description={
           <>
@@ -171,6 +161,7 @@ export default function Page() {
           </>
         }
         credits='김선일, 현수련, 박세연, 서현빈, 윤현경'
+        className="w-[80px] md:w-[96px] lg:w-[clamp(60px,8.75vw,130px)]"
       />
       <MainImage />
       <Divide title='Background' number='01' />
@@ -212,7 +203,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <LeftTitle
         text={
-          <a href='https://bio.link/silmul' className='hover:underline' target='_blank'>
+          <a href='https://bio.link/silmul' className='underline' target='_blank'>
             ▶︎ A more detailed story of Silmul
           </a>
         }
@@ -225,6 +216,7 @@ export default function Page() {
             실감을 실물로 구현하다
           </>
         }
+        padding={false}
       />
       <MidBody
         align='left'
@@ -424,25 +416,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/layon' }}
-          nextItem={{ label: 'Next', url: '/projects/autonomy-practice' }}
+          previousItem={{ label: 'Previous', url: '/projects/cruise' }}
+          nextItem={{ label: 'Next', url: '/projects/potrik' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/layon',
+            englishName: 'Cruise',
+            koreanName: '크루즈',
+            linkUrl: '/projects/cruise',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/autonomy-practice',
+            englishName: 'Potrik',
+            koreanName: '포트릭',
+            linkUrl: '/projects/potrik',
           }}
         />
         <AnimatePresence>

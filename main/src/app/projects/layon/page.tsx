@@ -153,6 +153,7 @@ export default function Page() {
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/Layon_logo.svg'
         title={['레이온', 'Get your layer on, LAY.ON']}
         description={
           <>
@@ -167,9 +168,10 @@ export default function Page() {
           </>
         }
         credits='유해리, 김서현, 김민희, 서유빈, 최완혁'
+        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
       />
       <MainImage />
-      <Divide title='Background' number='01' />
+      <Divide title='Background' number='01' className='text-[#417EB4]' />
       <TitleBody
         title={
           <>
@@ -188,7 +190,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Problem' number='02' />
+      <Divide title='Problem' number='02' className='text-[#417EB4]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
         title={
@@ -206,7 +208,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Project Overview' number='03' />
+      <Divide title='Project Overview' number='03' className='text-[#417EB4]' />
       <MidTitle align='center' text='Get your layer on, LAY.ON' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
@@ -220,7 +222,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Design Strategy' number='04' />
+      <Divide title='Design Strategy' number='04' className='text-[#417EB4]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
         title={
@@ -241,14 +243,14 @@ export default function Page() {
             <a
               href='https://abiding-birth-ce4.notion.site/LAY-ON-Get-Your-Layer-On-23e5dd09e82c80df8013c8496d8fffd2?source=copy_link'
               target='_blank'
-              className='hover:underline'
+              className='underline'
             >
               ▶︎ Learn more about detailed story of LAY.ON
             </a>
           </>
         }
       />
-      <Divide title='Our Product' number='05' />
+      <Divide title='Our Product' number='05' className='text-[#417EB4]' />
       <LeftTitle
         text={
           <>
@@ -332,7 +334,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Our OS' number='06' />
+      <Divide title='Our OS' number='06' className='text-[#417EB4]' />
       <LeftTitle text={<>필요한 경험이 먼저 제안되는 새로운 질서</>} />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
@@ -349,7 +351,7 @@ export default function Page() {
             <a
               href='https://abiding-birth-ce4.notion.site/UX-design-guideline-of-LAY-ON-23e5dd09e82c806085a3c3e8ae13e3e7'
               target='_blank'
-              className='hover:underline'
+              className='underline'
             >
               ▶︎ Learn more about UX design guideline of LAY.ON
             </a>
@@ -409,7 +411,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Our Vision' number='07' />
+      <Divide title='Our Vision' number='07' className='text-[#417EB4]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
 
@@ -479,25 +481,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/hotcake' }}
-          nextItem={{ label: 'Next', url: '/projects/silmul' }}
+          previousItem={{ label: 'Previous', url: '/projects/newbe' }}
+          nextItem={{ label: 'Next', url: '/projects/hotcake' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/hotcake',
+            englishName: 'NEWBE',
+            koreanName: '뉴비',
+            linkUrl: '/projects/newbe',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/silmul',
+            englishName: 'HOTCAKE',
+            koreanName: '핫케익',
+            linkUrl: '/projects/hotcake',
           }}
         />
         <AnimatePresence>

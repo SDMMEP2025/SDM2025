@@ -174,6 +174,7 @@ export default function Page() {
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/NewBe_logo.svg'
         title={['뉴비', 'The New Hair Station, Made to Fit You']}
         description={
           <>
@@ -183,6 +184,7 @@ export default function Page() {
           </>
         }
         credits='이채원, 윤예현, 강동헌, 김시우, 정채영'
+        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
       />
       <MainImage />
       <Divide title='Background' number='01' />
@@ -268,7 +270,7 @@ export default function Page() {
             <a
               href='https://rural-balmoral-f7c.notion.site/NewBe-UX-Process-23d292d2d1938007b54afdf92beb23e8?source=copy_link'
               target='_blank'
-              className='hover:underline'
+              className='underline'
             >
               ▶ More Detailed UX Process
             </a>
@@ -312,7 +314,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Divide title='Scenario' number='05' />
-      <MidTitle align='center' text='#1 How to Use NewBe' />
+      <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
       <TitleBody
         title={
           <>
@@ -366,7 +368,7 @@ export default function Page() {
             <a
               href='https://rural-balmoral-f7c.notion.site/NewBe-Product-Process-23d292d2d19380ba8f5be46de930753e?source=copy_link'
               target='_blank'
-              className='hover:underline'
+              className='underline'
             >
               ▶ Product Process
             </a>
@@ -385,7 +387,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='#2 우리의 New-Ing이 계속 즐거울 수 있게' />
+      <MidTitle align='center' padding={false} text='#2 우리의 New-Ing이 계속 즐거울 수 있게' />
       <TitleBody
         title={
           <>
@@ -416,7 +418,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='#3 확장되는 우리의 헤어 스타일링 씬' />
+      <MidTitle align='center' padding={false} text='#3 확장되는 우리의 헤어 스타일링 씬' />
       <TitleBody
         title={
           <>
@@ -531,25 +533,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/merlin' }}
-          nextItem={{ label: 'Next', url: '/projects/potrik' }}
+          previousItem={{ label: 'Previous', url: '/projects/potrik' }}
+          nextItem={{ label: 'Next', url: '/projects/layon' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/merlin',
+            englishName: 'Potrik',
+            koreanName: '포트릭',
+            linkUrl: '/projects/potrik',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/potrik',
+            englishName: 'Lay.On',
+            koreanName: '레이온',
+            linkUrl: '/projects/layon',
           }}
         />
         <AnimatePresence>

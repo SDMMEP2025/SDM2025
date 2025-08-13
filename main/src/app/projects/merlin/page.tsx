@@ -163,6 +163,8 @@ export default function Page() {
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/Merlin_logo.svg'        
+        className='w-[80px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
         title={['멀린', 'Into Your Flow, Merlin OS']}
         description='Merlin OS는 앱 전환과 복잡한 탐색을 줄여 사용자가 빠르게 목표에 도달하도록 돕는 흐름 중심 운영체제입니다. 사용자 상황을 실시간으로 인식하고, 여러 앱에 흩어진 기능을 하나의 흐름으로 연결해 기존의 정적이고 앱 중심적인 UI를 넘어 보다 유연하게 몰입하는 경험을 제공합니다. 흐름을 조율하는 새로운 운영체제, Merlin과 함께 미래의 디지털 여정을 시작해보세요.'
         credits='김유민, 이소은, 안지원, 양준홍, 조서현'
@@ -190,7 +192,17 @@ export default function Page() {
       <TitleBody
         title={'‘익숙한 미로’ 같은\n디지털 길찾기'}
         text={
-          'Z세대는 앱이나 기능 전체보다는 일부 특정 기능을 집중적으로 사용하고 있습니다. 이들의 모바일에는 평균 130개의 앱이 설치되어 있지만, 그중 주 10회 이상 사용하는 앱은 평균 12개에 불과하죠. 앱 내에서조차 나에게 편안한 몇 가지 기능만을 집중적으로 사용하면서, 이들에게 디지털 경험은 복잡하더라도 늘 같은 경로를 따라 앱과 버튼을 누르는 ‘익숙한 미로’입니다.\n\n▶ 더 자세한 이야기는 여기에서'
+          <>
+            Z세대는 앱이나 기능 전체보다는 일부 특정 기능을 집중적으로 사용하고 있습니다. 이들의 모바일에는 평균 130개의
+            앱이 설치되어 있지만, 그중 주 10회 이상 사용하는 앱은 평균 12개에 불과하죠. 앱 내에서조차 나에게 편안한 몇
+            가지 기능만을 집중적으로 사용하면서, 이들에게 디지털 경험은 복잡하더라도 늘 같은 경로를 따라 앱과 버튼을
+            누르는 ‘익숙한 미로’입니다.
+            <br />
+            <br />
+            <a href='https://umin.notion.site/merlinos' className='underline' target='_blank'>
+              &gt; 더 자세한 이야기는 여기에서
+            </a>
+          </>
         }
       />
       <Divide number='04' title='Problem' />
@@ -268,14 +280,6 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
 
-
-
-
-
-
-
-
-
       <div ref={designedByRef}>
         <Credit
           title='Designed By'
@@ -313,7 +317,7 @@ export default function Page() {
                 instagram: 'https://instagram.com/2woniee',
               },
             },
-            
+
             {
               name: '양준홍',
               role: 'VD',
@@ -341,25 +345,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/mizi' }}
-          nextItem={{ label: 'Next', url: '/projects/newbe' }}
+          previousItem={{ label: 'Previous', url: '/projects/hotcake' }}
+          nextItem={{ label: 'Next', url: '/projects/autonomy-practice' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/mizi',
+            englishName: 'HOTCAKE',
+            koreanName: '핫케익',
+            linkUrl: '/projects/hotcake',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/newbe',
+            englishName: 'AUTONOMY PRACTICE',
+            koreanName: '오토노미 프랙티스',
+            linkUrl: '/projects/autonomy-practice',
           }}
         />
         <AnimatePresence>

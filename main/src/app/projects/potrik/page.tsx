@@ -159,6 +159,7 @@ export default function Page() {
     <>
       <Header />
       <Summary
+        svgSrc='/images/logo/Potrik_logo.svg'
         title={['포트릭', 'No pack, No stop. Just POTRIK']}
         description={
           <>
@@ -171,9 +172,10 @@ export default function Page() {
           </>
         }
         credits='강윤권, 박효경, 양현지, 이주은, 주형준'
+        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
       />
       <MainImage />
-      <Divide title='Background' number='01' />
+      <Divide title='Background' number='01' className='text-[#09C17A]' />
       <TitleBody
         title={
           <>
@@ -195,7 +197,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='New Lifestyle' number='02' />
+      <Divide title='New Lifestyle' number='02' className='text-[#09C17A]' />
       <TitleBody
         title={
           <>
@@ -216,7 +218,7 @@ export default function Page() {
             <a
               href='https://www.notion.so/POTRIK-UX-Process-2315d7e3077e80efab01e92fb7abb053'
               target='_blank'
-              className='hover:underline'
+              className='underline'
             >
               ▶ A detaile story of their background.
             </a>
@@ -224,8 +226,8 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Solution' number='03' />
-      <MidTitle align='center' text='[Here] to [Here]' />
+      <Divide title='Solution' number='03' className='text-[#09C17A]' />
+      <MidTitle align='center' padding={false} text='[Here] to [Here]' className='text-[#09C17A]' />
       <MidBody
         align='center'
         content={
@@ -238,7 +240,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='System' number='04' />
+      <Divide title='System' number='04' className='text-[#09C17A]' />
       <TitleBody
         title={<>POTRIK</>}
         text={
@@ -284,9 +286,9 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='그럼 POTRIK을 사용해 볼까요?' />
+      <MidTitle align='center' text='그럼 POTRIK을 사용해 볼까요?' padding={true} className='text-[#09C17A]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Scenario' number='05' />
+      <Divide title='Scenario' number='05' className='text-[#09C17A]' />
       <TitleBody
         title={<>S1. 여행 중 쇼핑</>}
         text={
@@ -304,7 +306,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='How to use' number='06' />
+      <Divide title='How to use' number='06' className='text-[#09C17A]' />
       <TitleBody
         title={<>❶ Call & Send</>}
         text={
@@ -376,8 +378,8 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Vision' number='07' />
-      <MidTitle align='center' text='Start [Blank], End [Blank].' />
+      <Divide title='Vision' number='07' className='text-[#09C17A]' />
+      <MidTitle align='center' padding={false} text='Start [Blank], End [Blank].' className='text-[#09C17A]' />
       <MidBody
         align='center'
         content={
@@ -392,7 +394,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidTitle align='center' text='당신의 순간을 가볍게 하는 퍼스널 딜리버리 시스템, POTRIK' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Branding' number='08' />
+      <Divide title='Branding' number='08' className='text-[#09C17A]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
 
@@ -460,25 +462,25 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/newbe' }}
-          nextItem={{ label: 'Next', url: '/projects/hotcake' }}
+          previousItem={{ label: 'Previous', url: '/projects/silmul' }}
+          nextItem={{ label: 'Next', url: '/projects/newbe' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
             imageUrl: '/images/previous_image.png',
-            englishName: 'MEET',
-            koreanName: '미트',
-            linkUrl: '/projects/newbe',
+            englishName: 'Silmul',
+            koreanName: '실물',
+            linkUrl: '/projects/silmul',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
             imageUrl: '/images/next_image.png',
-            englishName: 'CONNECT',
-            koreanName: '연결',
-            linkUrl: '/projects/hotcake',
+            englishName: 'Newbe',
+            koreanName: '뉴비',
+            linkUrl: '/projects/newbe',
           }}
         />
         <AnimatePresence>
