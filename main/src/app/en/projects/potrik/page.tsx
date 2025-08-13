@@ -160,18 +160,18 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['포트릭', 'No pack, No stop. Just POTRIK']}
+        title={['POTRIK', 'No pack, No stop. Just POTRIK']}
         description={
           <>
-            POTRIK은 손에 들고 다니는 짐이 사라진 새로운 라이프스타일을 제공합니다. 복잡한 예약도, 물건을 들고 이동할
-            필요도 없이, 가볍게 호출하여 내 동선 위에서 자유롭게 짐을 보내고 받을 수 있습니다. POTRIK과 함께라면 양 손은
-            가벼워지고, 여정은 더 자유로워집니다.
+            POTRIK offers a new way of living—one where you no longer have to carry your baggage by hand. No more
+            complicated reservations or heavy bags to carry. Send and receive items effortlessly, along your path. Both
+            hands are free, and your journey flows more freely than ever with POTRIK.
             <br />
             <br />
-            순간이 가벼워지는 퍼스널 딜리버리 시스템, POTRIK을 만나보세요.
+            POTRIK—the delivery system that makes every moment easier.
           </>
         }
-        credits='강윤권, 박효경, 양현지, 이주은, 주형준'
+        credits='Yungwon Kang, Hyogyeong Park, Hyeonji Yang, Jueun Lee, Hyeongjoon Joo'
         className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
       />
       <MainImage />
@@ -179,20 +179,18 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            자유로운 이동, <br />
-            여전히 무거운 짐
+            Free to Move,
+            <br /> Heavy to Carry
           </>
         }
         text={
           <>
-            기술의 발전으로 우리는 더 멀리, 더 자주, 더 자유롭게 이동할 수 있게 되었습니다.
+            As technology evolves, we can now move farther, more often, and more freely than ever before.
             <br />
-            하지만 여전히 우리의 이동을 불편하게 만드는 것들이 존재합니다. 무거운 노트북 가방, 챙겨왔지만 더 이상 입지
-            않는 외투, 양손 가득 쇼핑백까지 우리 손에는 여전히 짐이 가득하고, 이동은 무거워져만 갑니다.
+            However, we still face challenges that disrupt our ability to move around. Like bulky laptop bags, winter
+            coats, and shopping bags that fill both hands. We still carry too much, and it slows us down. <br />
             <br />
-            <br />
-            만약, 모든 이동이 짐 없이 시작되고, 짐 없이 끝난다면 어떨까요? <br />
-            POTRIK은 바로 이 상상에서 출발하였습니다.
+            What if every journey began and ended with nothing to carry?POTRIK was born from this simple idea.
           </>
         }
       />
@@ -201,18 +199,20 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            짐 없이 시작되고,
-            <br />짐 없이 끝나는 모든 이동
+            Move Light, from
+            <br />
+            Beginning to End
           </>
         }
         text={
           <>
-            더 이상 짐 때문에 동선을 바꾸거나, 보관함을 찾아 발걸음을 멈출 필요도, 물건을 주고받기 위해 시간을 내어
-            이동할 필요도 없습니다.
+            No more changing your path because of heavy bags, looking for public lockers, or walking extra just to hand
+            something off.
             <br />
-            POTRIK은 순간에 맞춰 짐을 보내고 받는 새로운 딜리버리 시스템을 제안합니다.
+            POTRIK is a new delivery system that lets you send and receive items exactly at the right moment.
             <br />
-            양손은 가볍게, 이동은 끊김 없이. 우리가 꿈꾸던 자유로운 이동을 말이죠.
+            <br />
+            This is the freedom of movement we have always dreamed of.
             <br />
             <br />
             <a
@@ -232,10 +232,11 @@ export default function Page() {
         align='center'
         content={
           <>
-            지금 여기서 보내고, 다음 여정에서 다시 만나는 POTRIK.
+            Send your items now, and receive them at your destination.
             <br />
-            앱을 통해 POTRIK을 호출하고, 이동을 불편하게 만들었던 짐을 보관해 보세요. <br />
-            POTRIK이, 내가 설정한 목적지로 짐을 안전하게 운반해 줄 거예요.
+            Use the app to call POTRIK and store whatever has been weighing you down.
+            <br />
+            POTRIK delivers your baggage to the destination you have set.
           </>
         }
       />
@@ -245,8 +246,8 @@ export default function Page() {
         title={<>POTRIK</>}
         text={
           <>
-            POTRIK은 차도와 인도를 자유롭게 오가며, 사용자의 짐을 더 빠르게 더 가까운 곳까지 옮겨줄 수 있도록 설계된
-            분리, 결합형 모듈 구조의 공유 모빌리티입니다.
+            POTRIK is a modular sharing mobility with a detachable structure, designed to easily switch between roads
+            and sidewalks. Carry your baggage quickly and directly wherever you go.
           </>
         }
       />
@@ -262,12 +263,11 @@ export default function Page() {
         title={<>Driving Module</>}
         text={
           <>
-            Driving Module은 빠른 속도와 효율적인 이동을 위해, 차도 주행에 최적화된 모듈입니다.
+            Driving Module is designed to transport items quickly and efficiently on roads.
             <br />
             <br />
-            사용자의 호출이 감지되면, 충전 스테이션에서 대기 중이던 Driving Module은 Storage Module과 도킹하여, 하나의
-            유닛으로 결합됩니다. 결합 후 유닛은 차도를 따라 안전하고 빠르게 움직이며 사용자가 설정한 목적지까지 짐을
-            운반합니다.
+            When you request it, you’ll see Driving Module, which was waiting at the charging station, combine into a
+            single unit. Then baggage is safely and quickly delivered to your destination.
           </>
         }
       />
@@ -276,32 +276,37 @@ export default function Page() {
         title={<>Storage Module</>}
         text={
           <>
-            Storage Module은 사용자의 짐을 안전하게 보관하며, 보행자 환경에 최적화된 인도 주행 모듈입니다.
+            Storage Module safely stores your baggage. It is designed to navigate sidewalks and approach building
+            entrances to reach you.
             <br />
             <br />
-            좁은 골목이나 건물 입구까지 이동할 수 있도록 설계되어 사용자 가까이 도달할 수 있습니다. 목적지 근처 차도에서
-            Driving Module과 분리되어, 자율주행으로 최종 목적지까지 이동해 사용자의 동선 속에서 쉽게 만날 수 있도록
-            돕습니다.
+            Near the destination, Storage Module detaches from Driving Module and autonomously moves to the destination,
+            making it easy to connect with you along your route.
           </>
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='그럼 POTRIK을 사용해 볼까요?' padding={true} className='text-[#09C17A]' />
+      <MidTitle align='center' text=' Ready to experience POTRIK?' padding={true} className='text-[#09C17A]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Divide title='Scenario' number='05' className='text-[#09C17A]' />
       <TitleBody
-        title={<>S1. 여행 중 쇼핑</>}
+        title={
+          <>
+            S1.
+            <br /> Shopping During Trip
+          </>
+        }
         text={
           <>
-            점점 늘어나는 짐, 여행 동선을 방해하는 물건들
+            Too much baggage and stuff can easily disrupt your trip.
             <br />
             <br />
-            성수동, 홍대, 연남처럼 다양한 쇼핑 거리와 팝업스토어를 도는 도심 여행. 무거워진 가방과 손에 들린 쇼핑백은
-            우리의 동선을 어지럽히고, 물건을 잠시 맡길 곳을 찾아 헤매는 시간마저 당연하게 여겨졌습니다.
+            If you travel around cities like Seongsu, Hongdae, or Yeonnam, you often carry heavy bags and shopping bags.
+            You might also need to search for a public locker to store your belongings.
             <br />
             <br />
-            POTRIK은 이 당연했던 불편함을 다시 바라봅니다. 물건을 들고 다니는 번거로움 없이, 동선이 끊기지 않는
-            자연스러운 여정. POTRIK은 도시 위의 이동을 가볍고 부드럽게 이어줍니다.
+            POTRIK changes how you experience everyday hassles. No more carrying. No more interruptions. Just a smooth,
+            natural journey through the city. POTRIK keeps your journey light and seamless.
           </>
         }
       />
@@ -311,12 +316,12 @@ export default function Page() {
         title={<>❶ Call & Send</>}
         text={
           <>
-            애플리케이션을 통해 원하는 위치로 POTRIK을 호출하거나 인도에 비치된 Storage Module에 NFC를 태깅하면, 짐을
-            보관할 수 있습니다. 다음 목적지와 시간을 설정하면, POTRIK이 그곳에서 기다리고 있어요.
+            Call POTRIK to your location through the app, or simply tap the NFC on a sidewalk Storage Module to drop off
+            your bags. Set your next stop and time, and POTRIK will be there waiting.
             <br />
             <br />
-            하루 동안 짐을 여러 번 보내고 받고 싶다면, ‘24H PASS’ 기능을 활용해 보세요. 지금 목적지를 지정하지 않아도,
-            모든 동선에서 필요할 때마다 POTRIK을 자유롭게 이용할 수 있습니다.
+            If you want to send several items several times during a day? Try 24H PASS. So you can use POTRIK anytime,
+            anywhere—no need to set your destination.
           </>
         }
       />
@@ -325,11 +330,11 @@ export default function Page() {
         title={<>❷ Move</>}
         text={
           <>
-            POTRIK에 맡긴 짐은 애플리케이션을 통해 실시간으로 위치와 상태를 확인할 수 있어요.
+            You can check the real-time location and status of your belongings through the POTRIK app.
             <br />
             <br />
-            ’24H PASS’를 이용한다면, POTRIK이 사용자의 이동 동선에 맞춰 가까운 스테이션으로 함께 이동하며 언제, 어디서든
-            빠르게 호출에 응답할 수 있도록 대기합니다.
+            With the 24H PASS, POTRIK moves to nearby stations along your route, staying ready to respond anytime and
+            anywhere.
           </>
         }
       />
@@ -338,42 +343,47 @@ export default function Page() {
         title={<>❸ Receive</>}
         text={
           <>
-            사용자가 설정한 시간과 원하는 장소에 도착한 POTRIK.
+            With POTRIK, your items arrive exactly where and when you need them.
             <br />
-            NFC 태깅 한 번으로 Storage Module이 열리고, 간편하게 짐을 꺼낼 수 있어요.
+            Just tap with NFC, and Storage Module opens—letting you grab your baggage quickly and effortlessly.
           </>
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
-        title={<>S2. 장본 뒤 놀이터</>}
+        title={
+          <>
+            S2. <br />
+            After shopping, your hands-free
+          </>
+        }
         text={
           <>
-            장을 본 뒤, 아이들과 놀이터로 향하는 가벼운 발걸음
+            From grocery shopping to a playground — your hands are free.
             <br />
             <br />
-            마트 마감 시간에 맞춰 쇼핑을 마친 뒤, 아이들이 놀이터에 가고 싶다고 떼를 씁니다. 무거운 짐을 맡길 곳이 없어
-            집으로 향할 수밖에 없었던 예전과 달리, 이제는 무거운 장바구니를 POTRIK에 맡기고, 아이와 함께 놀이터로 향할
-            수 있습니다.
+            Imagine moments when your kids want to go to the playground after grocery shopping. Before, heavy bags meant
+            going straight home — no chance to stop and play. Now, you send your bags home and let your kids run free.
             <br />
             <br />
-            예상치 못한 순간도, POTRIK과 함께라면 무겁지 않습니다.
+            Even the unexpected feels lighter.
           </>
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
-        title={<>S3. 중고 거래</>}
+        title={<>S3. Marketplace</>}
         text={
           <>
-            지금 바로, POTRIK으로 보내주세요.
+            ”Could you send it to POTRIK please?“
             <br />
             <br />
-            카페에서 작업을 하던 중, 노트북 충전기가 고장 났습니다. 지금 바로 중고 거래를 통해 충전기를 구하려면 직접
-            받으러 이동해야 했지만, 이제는 POTRIK을 통해 필요한 물건을 내가 있는 곳으로 바로 받을 수 있습니다.
+            Imagine you are working in a coffee shop, and your laptop charger is broken.You used to have to pick one up
+            yourself. Now, you can get what you need delivered right where you are.
             <br />
             <br />
-            불필요한 동선 없이, 필요한 순간에 필요한 물건을 보내고 받는 새로운 방식, POTRIK은 일상의 흐름을 바꿉니다.
+            No extra walking, no hassle, just send and receive what you need, exactly when you need it. POTRIK changes
+            the way your day flows.
           </>
         }
       />
@@ -384,15 +394,16 @@ export default function Page() {
         align='center'
         content={
           <>
-            이제 물건은 단순히 장소에서 장소로 이동하지 않습니다.
+            No more moving things from place to place.
             <br />
-            POTRIK은 내가 있는 순간[Here]에서, 필요한 순간[Here]으로,
-            <br />더 유연하고 개인화된 새로운 딜리버리 시스템을 제안합니다.
+            POTRIK works like a new personal and flexible delivery system.
+            <br />
+            From [Here] to [Here], POTRIK moves with you.
           </>
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='당신의 순간을 가볍게 하는 퍼스널 딜리버리 시스템, POTRIK' />
+      <MidTitle align='center' text='POTRIK, the personal delivery system that lightens every moment.' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Divide title='Branding' number='08' className='text-[#09C17A]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
@@ -462,8 +473,8 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
         <MobileNavigation
-          previousItem={{ label: 'Previous', url: '/projects/silmul' }}
-          nextItem={{ label: 'Next', url: '/projects/newbe' }}
+          previousItem={{ label: 'Previous', url: '/en/projects/silmul' }}
+          nextItem={{ label: 'Next', url: '/en/projects/newbe' }}
         />
         <ProjectNavigation
           leftProject={{
@@ -472,7 +483,7 @@ export default function Page() {
             imageUrl: '/images/previous_image.png',
             englishName: 'Silmul',
             koreanName: '실물',
-            linkUrl: '/projects/silmul',
+            linkUrl: '/en/projects/silmul',
           }}
           rightProject={{
             id: '2',
@@ -480,7 +491,7 @@ export default function Page() {
             imageUrl: '/images/next_image.png',
             englishName: 'Newbe',
             koreanName: '뉴비',
-            linkUrl: '/projects/newbe',
+            linkUrl: '/en/projects/newbe',
           }}
         />
         <AnimatePresence>
