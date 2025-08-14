@@ -3,8 +3,10 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useLayoutEffect } from 'react'
 import classNames from 'classnames'
+import { useIsLandscape } from '@/hooks/useIsLandscape'
+import { useIsPhone } from '@/hooks/useIsPhone'
 
 type Project = {
   id: string
@@ -18,15 +20,65 @@ interface ProjectCardProps {
   setIndex: (i: number) => void
 }
 
+function useViewportSize() {
+  const [size, setSize] = useState({ w: 0, h: 0 })
+  const raf = useRef<number | null>(null)
+  const tick = () => {
+    const w = Math.round(window.visualViewport?.width ?? window.innerWidth)
+    const h = Math.round(window.visualViewport?.height ?? window.innerHeight)
+    setSize({ w, h })
+  }
+  const onResize = () => {
+    if (raf.current) cancelAnimationFrame(raf.current)
+    raf.current = requestAnimationFrame(() => {
+      tick()
+      raf.current = requestAnimationFrame(tick)
+    })
+  }
+  useLayoutEffect(() => {
+    onResize()
+    window.visualViewport?.addEventListener('resize', onResize, { passive: true })
+    window.addEventListener('resize', onResize, { passive: true })
+    window.addEventListener('orientationchange', onResize, { passive: true })
+    return () => {
+      if (raf.current) cancelAnimationFrame(raf.current)
+      window.visualViewport?.removeEventListener('resize', onResize as any)
+      window.removeEventListener('resize', onResize as any)
+      window.removeEventListener('orientationchange', onResize as any)
+    }
+  }, [])
+  return size
+}
+
+function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
+  const [w, setW] = useState(0)
+  useEffect(() => {
+    if (!ref.current) return
+    const el = ref.current
+    const ro = new ResizeObserver((entries) => {
+      const cr = entries[0]?.contentRect
+      if (cr) setW(Math.round(cr.width))
+    })
+    ro.observe(el)
+    setW(Math.round(el.getBoundingClientRect().width))
+    return () => ro.disconnect()
+  }, [ref])
+  return w
+}
+
 export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   const total = projects.length
   const boxRef = useRef<HTMLDivElement>(null)
-  const [W, setW] = useState(0)
-  const [isClient, setIsClient] = useState(false)
 
-  const [isMobile, setIsMobile] = useState(false)
-  const [isMdLandscape, setIsMdLandscape] = useState(false)
-  const [isMdPortrait, setIsMdPortrait] = useState(false)  
+  const { w: vw, h: vh } = useViewportSize()
+  const isLandscape = useIsLandscape()
+  const isPhone = useIsPhone()
+  const W = useElementWidth(boxRef)
+  const md = vw >= 768 && vw < 1440
+  const isMdLandscape = md && isLandscape
+  const isMdPortrait = md && !isLandscape
+  const isMobile = isPhone || (!md && vw < 768)
+
   const MOBILE_COLLAPSED_H = 60
   const MOBILE_EXPANDED_H = 446
 
@@ -37,36 +89,6 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   const slide = { type: 'spring', stiffness: 420, damping: 42 }
   const fade = { duration: 0.22, ease: 'easeOut' }
 
-  useEffect(() => {
-    setIsClient(true)
-    const onR = () => {
-      const w = window.innerWidth
-      const h = window.innerHeight
-      const md = w >= 768 && w < 1440
-      setIsMobile(w < 768)
-      setIsMdLandscape(md && w > h)
-      setIsMdPortrait(md && w <= h)
-    }
-    onR()
-    window.addEventListener('resize', onR)
-    return () => window.removeEventListener('resize', onR)
-  }, [])
-
-  // 컨테이너 폭 측정
-  useEffect(() => {
-    const update = () => {
-      if (!boxRef.current) return
-      setW(boxRef.current.getBoundingClientRect().width)
-    }
-    update()
-    window.addEventListener('resize', update)
-    const t = setTimeout(update, 80)
-    return () => {
-      window.removeEventListener('resize', update)
-      clearTimeout(t)
-    }
-  }, [])
-
   const handleTapExpandThenNavigate = (e: React.MouseEvent, i: number) => {
     if (!(isMobile || isMdLandscape || isMdPortrait)) return true
     e.preventDefault()
@@ -75,7 +97,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
     return false
   }
 
-  if (!isClient || W === 0) {
+  if (W === 0 || vw === 0 || vh === 0) {
     return (
       <div ref={boxRef} className='w-full h-96 flex items-center justify-center'>
         <div className='w-full h-full bg-gray-100 animate-pulse rounded' />
@@ -97,7 +119,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   const aspectH = (() => {
     if (isMobile) return MOBILE_EXPANDED_H
     if (isMdPortrait) return MOBILE_EXPANDED_H
-    const base = isMdLandscape ? 486 / 666 : 690 / 977
+    const base = isMdLandscape ? 486 / 666 : 680 / 977
     return Math.round(expandedW * base)
   })()
 
@@ -136,10 +158,8 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   }
 
   const originSide = isRow ? 'right' : 'left'
-  function getClipPath(isExpanded: boolean, originSide: 'left' | 'right') {
-    if (isExpanded) return 'inset(0 0 0 0)'
-    return originSide === 'right' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)'
-  }
+  const getClipPath = (isExpanded: boolean, origin: 'left' | 'right') =>
+    isExpanded ? 'inset(0 0 0 0)' : origin === 'right' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)'
 
   const Wrapper = ({ children, i, href }: { children: React.ReactNode; i: number; href: string }) =>
     isMobile || isMdLandscape || isMdPortrait ? (
@@ -171,10 +191,8 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
         {projects.map((project, i) => {
           const isExpanded = index === i
           const p = positions[i]
-
           const imgW = isRow ? expandedW : W
           const imgH = isRow ? aspectH : MOBILE_EXPANDED_H
-
           return (
             <motion.div
               key={project.id}
@@ -191,7 +209,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                     <motion.div
                       className='w-full h-full'
                       initial={false}
-                      animate={{ clipPath: getClipPath(isExpanded, originSide) }}
+                      animate={{ clipPath: getClipPath(isExpanded, originSide as 'left' | 'right') }}
                       transition={slide}
                     >
                       <img
@@ -203,9 +221,6 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                       />
                     </motion.div>
                   </div>
-
-                  {/* (선택) 약한 페이드 톤 */}
-                  
                   {(isMobile || isMdLandscape || isMdPortrait) && isExpanded && (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -217,12 +232,10 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                     </motion.div>
                   )}
                 </div>
-
-                {/* 타이틀 */}
                 <motion.h3
                   className={classNames(
                     'absolute font-semibold whitespace-nowrap pointer-events-none',
-                    'text-2xl md:text-[22px] md-landscape-coming:text-[22px] lg:text-[28px] ',
+                    'text-2xl md:text-[22px] md-landscape-coming:text-[22px] lg:text-[28px]',
                     isRow ? 'md-landscape-coming:right-0 lg:right-1 top-5 [writing-mode:vertical-rl]' : 'left-3 bottom-3',
                     isExpanded ? 'text-white' : 'text-zinc-[#666666]',
                   )}
