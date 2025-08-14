@@ -25,6 +25,16 @@ interface InteractionData {
 export default function Page() {
   const { step, data, goToStep, goBack, reset } = useStepManager()
   const [currentImage, setCurrentImage] = useState<UploadedImage | null>(null)
+  const [currentData, setCurrentData] = useState<{
+    initialize: boolean
+    text: string | null
+    colorAnalysis: ColorAnalysisResult | null
+  }>({
+    initialize: false,
+    text: null,
+    colorAnalysis: null,
+  })
+
   const [interactionData, setInteractionData] = useState<InteractionData | null>(null)
 
   const handleFileUpload = (files: FileList | null) => {
@@ -48,6 +58,11 @@ export default function Page() {
   }
 
   const handleEditComplete = (text: string, colorAnalysis: ColorAnalysisResult) => {
+    setCurrentData({
+      initialize: true,
+      text,
+      colorAnalysis,
+    })
     goToStep('result', { text, colorAnalysis })
   }
 
@@ -60,6 +75,14 @@ export default function Page() {
     if (step === 'edit' && currentImage) {
       URL.revokeObjectURL(currentImage.url)
       setCurrentImage(null)
+      setCurrentData({
+        initialize: false,
+        text: null,
+        colorAnalysis: null,
+      })
+    } else if (step === 'result') {
+      // 결과 단계에서 뒤로 가기 시 인터랙션 데이터 초기화
+      setInteractionData(null)
     }
     goBack()
   }
@@ -86,6 +109,7 @@ export default function Page() {
           <div
             className={classNames(
               'absolute left-1/2 -translate-x-1/2 w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
+              'hidden md-landscape:block lg:block',
               'bottom-[17.41%]',
               'md:bottom-[15.32%]',
               'lg:bottom-[13.58%]',
@@ -112,6 +136,7 @@ export default function Page() {
 
       {step === 'edit' && currentImage && (
         <EditStep
+          currentData={currentData}
           imageUrl={currentImage.url}
           imageFile={currentImage.file}
           onBack={handleBack}
@@ -124,6 +149,7 @@ export default function Page() {
           imageUrl={currentImage.url}
           text={data.text}
           colorAnalysis={data.colorAnalysis}
+          onBack={handleBack}
           onStartOver={handleStartOver}
           onComplete={handleResultComplete}
         />

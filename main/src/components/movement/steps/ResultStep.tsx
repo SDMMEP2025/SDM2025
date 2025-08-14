@@ -12,6 +12,7 @@ interface ResultStepProps {
   text: string
   colorAnalysis: ColorAnalysisResult
   onStartOver: () => void
+  onBack: () => void
   onComplete: (interactionData: {
     steps: number
     positions: Array<{ x: number; y: number }>
@@ -279,7 +280,7 @@ function ConcentricSquares({
   )
 }
 
-export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onComplete }: ResultStepProps) {
+export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack, onComplete }: ResultStepProps) {
   const [values, setValues] = React.useState([9])
   const [currentPositions, setCurrentPositions] = useState<Array<{ x: number; y: number }>>([])
 
@@ -469,7 +470,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'left-[calc(54px+(-5.14286px+18.10714vw))] bottom-[24%] inset-y-auto',
+          'left-[calc(54px+(-5.14286px+18.10714vw))] bottom-[18%] inset-y-auto',
           'md:left-[calc(54px+(-5.14286px+34.10714vw))] md:bottom-[24%] md:inset-y-auto',
           'md-landscape:left-[40px] md-landscape:inset-y-0', // md-landscape 전용
           'lg:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
@@ -485,13 +486,13 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
           whileHover={{ opacity: 1 }}
           whileTap={{ scale: 0.95, opacity: 1 }}
           onClick={() => {
-            onStartOver()
+            onBack()
           }}
           className={classNames(
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
             'h-auto aspect-square',
             //mobile
-            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            'w-[46px]',
             //tablet & desktop & large desktop
             'md:w-[46px]',
             'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
@@ -518,7 +519,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'right-[calc(54px+(-5.14286px+18.10714vw))] bottom-[24%] inset-y-auto',
+          'right-[calc(54px+(-5.14286px+18.10714vw))] bottom-[18%] inset-y-auto',
           'md:right-[calc(54px+(-5.14286px+34.10714vw))] md:bottom-[24%] md:inset-y-auto',
           'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
           'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
@@ -537,7 +538,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onCompl
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
             'h-auto aspect-square',
             //mobile
-            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            'w-[46px]',
             //tablet & desktop & large desktop
             'md:w-[46px]',
             'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',

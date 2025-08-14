@@ -25,15 +25,10 @@ export function Main({ onUpload, className = '' }: MainProps) {
   }
 
   const REPEAT = 5
-  const srcFront = {
-    pc: 'images/movement/pc_front.svg',
-    tab: 'images/movement/tab_front.svg',
-    mo: 'images/movement/mo_front.svg',
-  }
-  const srcBack = {
-    pc: 'images/movement/pc_back.svg',
-    tab: 'images/movement/tab_back.svg',
-    mo: 'images/movement/mo_back.svg',
+  const bg_src = {
+    pc: 'images/movement/main_pc.svg',
+    tab: 'images/movement/main_tab.svg',
+    mo: 'images/movement/main_mo.svg',
   }
 
   return (
@@ -47,31 +42,21 @@ export function Main({ onUpload, className = '' }: MainProps) {
       <input
         ref={fileInputRef}
         type='file'
-        multiple
+        multiple={false}
         accept='image/*,video/*'
         onChange={handleFileChange}
         className='hidden'
       />
 
-      <div className='animate-float-up-front absolute left-0 w-full'>
+      <div className='animate-float-up absolute left-0 w-full'>
         {Array.from({ length: REPEAT }).map((_, i) => (
           <picture key={`front-${i}`}>
             {/* lg 이상 = PC (1440px) */}
-            <source media='(min-width:1440px)' srcSet={srcFront.pc} />
+            <source media='(min-width:1440px)' srcSet={bg_src.pc} />
             {/* md 이상 = Tablet (768px) */}
-            <source media='(min-width:768px)' srcSet={srcFront.tab} />
+            <source media='(min-width:768px)' srcSet={bg_src.tab} />
             {/* 그 외 = Mobile */}
-            <img src={srcFront.mo} className='w-full h-auto' alt='' />
-          </picture>
-        ))}
-      </div>
-
-      <div className='animate-float-up-back absolute left-0 w-full'>
-        {Array.from({ length: REPEAT }).map((_, i) => (
-          <picture key={`back-${i}`}>
-            <source media='(min-width:1440px)' srcSet={srcBack.pc} />
-            <source media='(min-width:768px)' srcSet={srcBack.tab} />
-            <img src={srcBack.mo} className='w-full h-auto' alt='' />
+            <img src={bg_src.mo} className='w-full h-auto' alt='' />
           </picture>
         ))}
       </div>
@@ -166,7 +151,7 @@ export function Main({ onUpload, className = '' }: MainProps) {
           className={classNames(
             'bg-neutral-800 rounded-[100px] inline-flex justify-center items-center gap-[5.11px] overflow-hidden transition-all duration-200 hover:bg-neutral-700',
             // 모바일
-            'w-[184px] h-[56px]',
+            'w-[160px] h-[48px]',
             // tablet
             'md:w-[clamp(160px,calc(211.429px-3.57143vw),184px)] md:h-[48px]',
             // desktop
@@ -203,12 +188,8 @@ export function Main({ onUpload, className = '' }: MainProps) {
           }
         }
 
-        .animate-float-up-back {
-          animation: float-up 30s linear infinite;
-        }
-
-        .animate-float-up-front {
-          animation: float-up 25s linear infinite;
+        .animate-float-up {
+          animation: float-up 40s linear infinite;
         }
       `}</style>
     </div>

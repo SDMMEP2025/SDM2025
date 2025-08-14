@@ -10,7 +10,7 @@ export function useImageAnalysis() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const analyzeImage = useCallback(async (file: File): Promise<string> => {
+  const analyzeImage = useCallback(async (file: File, lang: 'en' | 'ko'): Promise<string> => {
     setIsAnalyzing(true)
     setError(null)
 
@@ -18,7 +18,7 @@ export function useImageAnalysis() {
       const formData = new FormData()
       formData.append('image', file)
 
-      const response = await fetch('/api/analyze-image', {
+      const response = await fetch(`/api/analyze-image/${lang}`, {
         method: 'POST',
         body: formData,
       })
@@ -28,7 +28,7 @@ export function useImageAnalysis() {
       }
 
       const result: AnalysisResult = await response.json()
-      
+
       if (result.success) {
         return result.description
       } else {
@@ -47,6 +47,6 @@ export function useImageAnalysis() {
   return {
     analyzeImage,
     isAnalyzing,
-    error
+    error,
   }
 }
