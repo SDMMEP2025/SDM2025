@@ -26,7 +26,7 @@ function useViewportSize() {
   const updateSize = useCallback(() => {
     const w = Math.round(window.visualViewport?.width ?? window.innerWidth)
     const h = Math.round(window.visualViewport?.height ?? window.innerHeight)
-    setSize(prev => (prev.w !== w || prev.h !== h ? { w, h } : prev))
+    setSize((prev) => (prev.w !== w || prev.h !== h ? { w, h } : prev))
   }, [])
 
   useLayoutEffect(() => {
@@ -49,7 +49,7 @@ function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
   const [w, setW] = useState(0)
   const updateWidth = useCallback((el: HTMLElement) => {
     const newWidth = Math.round(el.getBoundingClientRect().width)
-    setW(prev => (prev !== newWidth ? newWidth : prev))
+    setW((prev) => (prev !== newWidth ? newWidth : prev))
   }, [])
   useEffect(() => {
     if (!ref.current) return
@@ -59,7 +59,7 @@ function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
       const cr = entries[0]?.contentRect
       if (cr) {
         const newWidth = Math.round(cr.width)
-        setW(prev => (prev !== newWidth ? newWidth : prev))
+        setW((prev) => (prev !== newWidth ? newWidth : prev))
       }
     })
     ro.observe(el)
@@ -81,20 +81,19 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   // —— 레이아웃 플래그
   const layoutConfig = useMemo(() => {
     const md = vw >= 768 && vw < 1440
-    const isMdLandscape = (isLandscape && isPhone)
+    const isMdLandscape = isLandscape && isPhone
     const isMdPortrait = !isLandscape
     const isMobile = isPhone || (!md && vw < 768)
-    const isLG = (vw >= 1440) && !isPhone
+    const isLG = vw >= 1440 && !isPhone
     return {
       md,
       isMdLandscape,
       isMdPortrait,
       isMobile,
       isLG,
-      isRow: !(isMdPortrait),
+      isRow: !isMdPortrait,
     }
   }, [vw, isLandscape, isPhone])
-
 
   // —— 치수 계산
   const dimensions = useMemo(() => {
@@ -189,10 +188,13 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
     [layoutConfig, index, projects, setIndex],
   )
 
-  const getBorderClasses = useCallback((isExpanded: boolean) => {
+  const getBorderClasses = useCallback((isExpanded: boolean, isRow: boolean) => {
     if (isExpanded) return 'rounded-[5px] border-none'
     let c = 'border-stone-300 border-b'
     c += ' md:border-b md:border-t-0 md:border-l-0'
+    if (isRow) {
+      c += ' border-b-0 border-l'
+    }
     c += ' md-landscape-coming:border-b-0 md-landscape-coming:border-l'
     c += ' lg:border-b-0 lg:border-l'
     return c
@@ -255,7 +257,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
           return (
             <motion.div
               key={project.id}
-              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded))}
+              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded, isRow))}
               animate={{ left: p.left, top: p.top, width: p.width, height: p.height }}
               transition={slide}
             >
@@ -275,7 +277,6 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                         src={project.thumbnail.pc}
                         alt={project.title}
                         className='block w-full h-full object-cover'
-                        loading='lazy'
                         draggable={false}
                       />
                     </motion.div>
@@ -297,7 +298,9 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                   className={classNames(
                     'absolute font-semibold whitespace-nowrap pointer-events-none',
                     'text-2xl md:text-[22px] md-landscape-coming:text-[1.5vw] lg:text-[1.5vw]',
-                    isRow ? 'md-landscape-coming:right-[0.6vw] lg:right-[0.6vw] top-7 [writing-mode:vertical-rl]' : 'left-3 bottom-3',
+                    isRow
+                      ? 'text-[1.5vw] right-[0.6vw] md-landscape-coming:right-[0.6vw] lg:right-[0.6vw] top-7 [writing-mode:vertical-rl]'
+                      : 'left-3 bottom-3',
                     isExpanded ? 'text-white' : 'text-zinc-[#666666]',
                   )}
                   initial={false}
