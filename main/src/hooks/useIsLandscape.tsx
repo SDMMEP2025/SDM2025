@@ -1,32 +1,53 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
-export function useIsLandscape() {
+type Options = {
+  tolerance?: number
+  squareIsPortrait?: boolean
+}
+
+export function useIsLandscape(opts: Options = {}) {
+  const { tolerance = 0.5, squareIsPortrait = true } = opts
   const [isLandscape, setIsLandscape] = useState(false)
+  const rafRef = useRef<number | null>(null)
+  const mqlRef = useRef<MediaQueryList | null>(null)
 
   useEffect(() => {
-    let raf = 0
+    const compute = () => {
+      const w = Math.round(window.visualViewport?.width ?? window.innerWidth)
+      const h = Math.round(window.visualViewport?.height ?? window.innerHeight)
+      const delta = w - h
 
-    const update = () => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        const w = window.visualViewport?.width ?? window.innerWidth
-        const h = window.visualViewport?.height ?? window.innerHeight
-        setIsLandscape(w > h)
-      })
+      if (Math.abs(delta) <= tolerance) {
+        setIsLandscape(squareIsPortrait ? false : isLandscape)
+        return
+      }
+      setIsLandscape(delta > 0)
     }
 
-    update()
-    window.visualViewport?.addEventListener('resize', update)
-    window.addEventListener('resize', update)
-    window.addEventListener('orientationchange', update)
+    const schedule = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(compute)
+    }
+
+    schedule()
+
+    const vv = window.visualViewport
+    vv?.addEventListener('resize', schedule, { passive: true } as any)
+    window.addEventListener('resize', schedule, { passive: true })
+    window.addEventListener('orientationchange', schedule, { passive: true })
+
+    mqlRef.current = window.matchMedia?.('(orientation: landscape)') ?? null
+    const onMQ = () => schedule()
+    mqlRef.current?.addEventListener?.('change', onMQ)
 
     return () => {
-      cancelAnimationFrame(raf)
-      window.visualViewport?.removeEventListener('resize', update)
-      window.removeEventListener('resize', update)
-      window.removeEventListener('orientationchange', update)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      vv?.removeEventListener('resize', schedule as any)
+      window.removeEventListener('resize', schedule as any)
+      window.removeEventListener('orientationchange', schedule as any)
+      mqlRef.current?.removeEventListener?.('change', onMQ)
     }
-  }, [])
+  }, [tolerance, squareIsPortrait])
 
   return isLandscape
 }

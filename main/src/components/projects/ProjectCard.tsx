@@ -91,7 +91,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
       isMdPortrait,
       isMobile,
       isLG,
-      isRow: !(isMdPortrait), // 가로 열림(행 배치) 여부
+      isRow: !(isMdPortrait),
     }
   }, [vw, isLandscape, isPhone])
 
