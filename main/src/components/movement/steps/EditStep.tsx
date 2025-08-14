@@ -49,7 +49,7 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
             setText('이 순간에 대해 말해주세요...')
           } else {
             // AI 텍스트 분석 실행
-            const aiText = await analyzeImage(imageFile, 'ko')
+            const aiText = await analyzeImage(imageFile, 'en')
 
             // aiText가 ERROR라는 단어가 있다면
             if (aiText.includes('ERROR')) {
