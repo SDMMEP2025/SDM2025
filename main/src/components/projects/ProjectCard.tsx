@@ -1,271 +1,242 @@
+// ProjectCard.tsx
 'use client'
+
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 
-export function ProjectCard({ projects, setIndex, index }) {
+type Project = {
+  id: string
+  title: string
+  thumbnail: { pc: string; mobile: string }
+}
+
+interface ProjectCardProps {
+  projects: Project[]
+  index: number
+  setIndex: (i: number) => void
+}
+
+export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   const total = projects.length
-  const boundingBox = useRef<HTMLDivElement>(null)
-  const [boundingBoxWidth, setBoundingBoxWidth] = useState(0)
+  const boxRef = useRef<HTMLDivElement>(null)
+  const [W, setW] = useState(0)
   const [isClient, setIsClient] = useState(false)
+
   const [isMobile, setIsMobile] = useState(false)
+  const [isMdLandscape, setIsMdLandscape] = useState(false)
+  const [isMdPortrait, setIsMdPortrait] = useState(false)  
+  const MOBILE_COLLAPSED_H = 60
+  const MOBILE_EXPANDED_H = 446
 
-  const desktopImageRatio = 1920 / 1080
-  const tabletImageRatio = 666 / 486
-  const mobileImageRatio = 358 / 446
+  const DESKTOP_MIN_EXP_FRAC = 0.7
+  const DESKTOP_COLLAPSED_MIN = 22
+  const DESKTOP_COLLAPSED_MAX = 109
 
-  // 클라이언트 사이드에서만 실행되도록 보장
+  const slide = { type: 'spring', stiffness: 420, damping: 42 }
+  const fade = { duration: 0.22, ease: 'easeOut' }
+
   useEffect(() => {
     setIsClient(true)
-    
-    // 모바일 디바이스 감지
-    const checkIfMobile = () => {
-      const isMobileDevice = window.innerWidth < 768 // md 브레이크포인트
-      setIsMobile(isMobileDevice)
+    const onR = () => {
+      const w = window.innerWidth
+      const h = window.innerHeight
+      const md = w >= 768 && w < 1440
+      setIsMobile(w < 768)
+      setIsMdLandscape(md && w > h)
+      setIsMdPortrait(md && w <= h)
     }
-    
-    checkIfMobile()
-    window.addEventListener('resize', checkIfMobile)
-    
-    return () => {
-      window.removeEventListener('resize', checkIfMobile)
-    }
+    onR()
+    window.addEventListener('resize', onR)
+    return () => window.removeEventListener('resize', onR)
   }, [])
 
-  // boundingBox 크기를 추적
+  // 컨테이너 폭 측정
   useEffect(() => {
-    const updateWidth = () => {
-      if (boundingBox.current) {
-        const width = boundingBox.current.getBoundingClientRect().width
-        setBoundingBoxWidth(width)
-      }
+    const update = () => {
+      if (!boxRef.current) return
+      setW(boxRef.current.getBoundingClientRect().width)
     }
-
-    // 초기 크기 설정
-    updateWidth()
-
-    // 윈도우 리사이즈 시 크기 업데이트
-    window.addEventListener('resize', updateWidth)
-
-    // 이미지 로딩 완료 후에도 크기 재계산 (폰트 로딩이나 다른 요소들 때문에)
-    const timer = setTimeout(updateWidth, 100)
-
+    update()
+    window.addEventListener('resize', update)
+    const t = setTimeout(update, 80)
     return () => {
-      window.removeEventListener('resize', updateWidth)
-      clearTimeout(timer)
+      window.removeEventListener('resize', update)
+      clearTimeout(t)
     }
   }, [])
 
-  // 모바일에서 터치 핸들러
-  const handleMobileTouch = (e: React.MouseEvent, i: number) => {
-    if (!isMobile) return true // 모바일이 아니면 기본 동작
-
-    e.preventDefault() // 기본 링크 동작 방지
-    
-    if (index === i) {
-      // 이미 펼쳐진 상태라면 상세 페이지로 이동
-      window.location.href = `/projects/${projects[i].id}`
-    } else {
-      // 펼쳐지지 않은 상태라면 펼치기
-      setIndex(i)
-    }
-    
+  const handleTapExpandThenNavigate = (e: React.MouseEvent, i: number) => {
+    if (!(isMobile || isMdLandscape || isMdPortrait)) return true
+    e.preventDefault()
+    if (index === i) window.location.href = `/projects/${projects[i].id}`
+    else setIndex(i)
     return false
   }
 
-  // SSR 방지 및 너비가 설정되기 전까지 렌더링 방지
-  if (!isClient || boundingBoxWidth === 0) {
+  if (!isClient || W === 0) {
     return (
-      <div ref={boundingBox} className='w-full h-96 flex items-center justify-center'>
-        {/* 로딩 상태 또는 최소 높이 유지 */}
-        <div className='w-full h-full bg-gray-100 animate-pulse rounded'></div>
+      <div ref={boxRef} className='w-full h-96 flex items-center justify-center'>
+        <div className='w-full h-full bg-gray-100 animate-pulse rounded' />
       </div>
     )
   }
 
-  const collapsedItemWidthDesktop = 60 // px 단위, 원하는 너비로 조정 가능
-  const collapsedItemWidthTablet = 100 // px 단위, 원하는 너비로 조정 가능
-  const collapsedItemHeightMobile = 60 // px 단위, 원하는 높이로 조정 가능
+  const desktopCollapsedW = Math.min(
+    DESKTOP_COLLAPSED_MAX,
+    Math.max(DESKTOP_COLLAPSED_MIN, (W * (1 - DESKTOP_MIN_EXP_FRAC)) / (total - 1 || 1)),
+  )
+  const desktopExpandedW = Math.max(W * DESKTOP_MIN_EXP_FRAC, W - desktopCollapsedW * (total - 1))
+  const deltaW = desktopExpandedW - desktopCollapsedW
 
-  // 확장된 항목의 너비 계산
-  const expandedWidthDesktop = boundingBoxWidth - collapsedItemWidthDesktop * (total - 1)
-  const expandedWidthTablet = boundingBoxWidth - collapsedItemWidthTablet * (total - 1)
+  const isRow = !isMobile && !isMdPortrait
+  const collapsedW = desktopCollapsedW
+  const expandedW = desktopExpandedW
 
-  // 확장된 항목의 높이 계산
-  const expandedHeightMobile = boundingBoxWidth / mobileImageRatio
+  const aspectH = (() => {
+    if (isMobile) return MOBILE_EXPANDED_H
+    if (isMdPortrait) return MOBILE_EXPANDED_H
+    const base = isMdLandscape ? 486 / 666 : 690 / 977
+    return Math.round(expandedW * base)
+  })()
 
-  //pc,tablet
-  const desktopHeight = `${expandedWidthDesktop / desktopImageRatio}px`
-  const tabletHeight = `${expandedWidthTablet / tabletImageRatio}px`
+  const positions = projects.map((_, i) => {
+    if (isRow) {
+      const left = i * collapsedW + (i > index ? deltaW : 0)
+      const width = i === index ? expandedW : collapsedW
+      const top = 0
+      const height = aspectH
+      return { left, top, width, height }
+    } else {
+      const deltaH = MOBILE_EXPANDED_H - MOBILE_COLLAPSED_H
+      const top = i * MOBILE_COLLAPSED_H + (i > index ? deltaH : 0)
+      const height = i === index ? MOBILE_EXPANDED_H : MOBILE_COLLAPSED_H
+      const left = 0
+      const width = W
+      return { left, top, width, height }
+    }
+  })
 
-  const desktopCols = projects
-    .map((_, i) => (index === i ? `${expandedWidthDesktop}px` : `${collapsedItemWidthDesktop}px`))
-    .join(' ')
+  const containerStyle: React.CSSProperties = isRow
+    ? { position: 'relative', width: W, height: aspectH }
+    : {
+        position: 'relative',
+        width: W,
+        height: projects.length * MOBILE_COLLAPSED_H + (MOBILE_EXPANDED_H - MOBILE_COLLAPSED_H),
+      }
 
-  const tabletCols = projects
-    .map((_, i) => (index === i ? `${expandedWidthTablet}px` : `${collapsedItemWidthTablet}px`))
-    .join(' ')
+  const getBorderClasses = (isExpanded: boolean) => {
+    if (isExpanded) return 'rounded-[5px] border-none'
+    let c = 'border-stone-300 border-b'
+    c += ' md:border-b md:border-t-0 md:border-l-0'
+    c += ' md-landscape-coming:border-b-0 md-landscape-coming:border-l'
+    c += ' lg:border-b-0 lg:border-l'
+    return c
+  }
 
-  //mobile
-  const mobileRows = projects
-    .map((_, i) => (index === i ? `${expandedHeightMobile}px` : `${collapsedItemHeightMobile}px`))
-    .join(' ')
+  const originSide = isRow ? 'right' : 'left'
+  function getClipPath(isExpanded: boolean, originSide: 'left' | 'right') {
+    if (isExpanded) return 'inset(0 0 0 0)'
+    return originSide === 'right' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)'
+  }
+
+  const Wrapper = ({ children, i, href }: { children: React.ReactNode; i: number; href: string }) =>
+    isMobile || isMdLandscape || isMdPortrait ? (
+      <div
+        role='button'
+        tabIndex={0}
+        className='cursor-pointer w-full h-full block outline-none'
+        onClick={(e) => handleTapExpandThenNavigate(e, i)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') handleTapExpandThenNavigate(e as any, i)
+        }}
+      >
+        {children}
+      </div>
+    ) : (
+      <Link
+        href={href}
+        className='cursor-pointer w-full h-full block'
+        onMouseEnter={() => setIndex(i)}
+        onClick={() => setIndex(i)}
+      >
+        {children}
+      </Link>
+    )
 
   return (
-    <motion.div
-      ref={boundingBox}
-      style={
-        {
-          '--desktop-cols': desktopCols,
-          '--tablet-cols': tabletCols,
-          '--desktop-height': desktopHeight,
-          '--tablet-height': tabletHeight,
-          '--mobile-rows': mobileRows,
-        } as React.CSSProperties
-      }
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      layout
-      id='projects-grid'
-      className={classNames(
-        'w-full grid',
-        'transition-all duration-500 ease-in-out',
-        // grid-rows 설정
-        'grid-rows-[var(--mobile-rows)]',
-        'md:grid-rows-[var(--mobile-rows)]',
-        'md-landscape:grid-rows-1',
-        'lg:grid-rows-1',
-        // grid-cols 설정
-        'grid-cols-1',
-        'md:grid-cols-1',
-        'md-landscape:grid-cols-[var(--tablet-cols)]',
-        'lg:grid-cols-[var(--desktop-cols)]',
-        // height 설정
-        'h-fit',
-        'md:h-fit',
-        'md-landscape:h-full',
-        'lg:h-[calc(100dvh-7.5rem)]'
-      )}
-    >
-      {projects.map((project, i) => {
-        const isExpanded = index === i
-        const isNextToExpanded = index !== undefined && index + 1 === i // 다음 항목이 확장된 경우
-        const isPreviousToExpanded = index !== undefined && index - 1 === i // 이전 항목이 확장된 경우
+    <div ref={boxRef} id='projects-grid' className='w-full' style={{ position: 'relative' }}>
+      <div style={containerStyle}>
+        {projects.map((project, i) => {
+          const isExpanded = index === i
+          const p = positions[i]
 
-        const getBorderClasses = () => {
-          if (isExpanded) {
-            return 'rounded-[5px] border-none'
-          }
+          const imgW = isRow ? expandedW : W
+          const imgH = isRow ? aspectH : MOBILE_EXPANDED_H
 
-          let classes = 'border-stone-300'
-
-          // 기본: border-b (모바일에서 bottom border)
-          classes += ' border-b'
-
-          // md (태블릿 세로)에서의 처리 - portrait일 때만 적용
-          if (isPreviousToExpanded) {
-            classes += ' '
-          } else {
-            classes +=
-              ' md:border-b md:border-t-0 md:border-l-0 md-landscape:border-b-0 md-landscape:border-t-0 md-landscape:border-l'
-          }
-
-          // md-landscape (태블릿 가로)에서의 처리
-          if (isNextToExpanded) {
-            classes += ' md-landscape:border-none'
-          } else {
-            classes += ' md-landscape:border-b-0 md-landscape:border-l'
-          }
-
-          // lg (데스크톱)에서의 처리
-          if (isNextToExpanded) {
-            classes += ' lg:border-none'
-          } else {
-            classes += ' lg:border-b-0 lg:border-l'
-          }
-
-          return classes
-        }
-
-        // 모바일에서는 조건부로 Link 래핑
-        const LinkWrapper = ({ children }) => {
-          if (isMobile) {
-            // 모바일에서는 div로 래핑하고 onClick 핸들러 사용
-            return (
-              <div
-                className={`cursor-pointer w-full h-full block`}
-                onClick={(e) => handleMobileTouch(e, i)}
-                onTouchStart={() => {}} // 터치 반응성을 위한 빈 핸들러
-              >
-                {children}
-              </div>
-            )
-          } else {
-            // 데스크톱/태블릿에서는 기존 Link 동작 유지
-            return (
-              <Link
-                href={`/projects/${project.id}`}
-                className={`cursor-pointer w-full h-full block`}
-                onMouseEnter={() => setIndex(i)}
-                onClick={() => setIndex(i)}
-              >
-                {children}
-              </Link>
-            )
-          }
-        }
-
-        return (
-          <div className={`w-full overflow-x-hidden relative  ${getBorderClasses()}`} key={project.id}>
-            <LinkWrapper>
-              <motion.div
-                className='w-full h-full relative overflow-hidden'
-                style={{
-                  aspectRatio: desktopImageRatio,
-                }}
-              >
-                <motion.img
-                  src={project.thumbnail.pc}
-                  alt={project.title}
-                  style={{
-                    opacity: i === index ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className='absolute inset-0 h-full w-full object-cover'
-                />
-                
-                {isMobile && isExpanded && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.3 }}
-                    className="absolute bottom-2 text-[24px] text-white right-1 p-2"
+          return (
+            <motion.div
+              key={project.id}
+              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded))}
+              animate={{ left: p.left, top: p.top, width: p.width, height: p.height }}
+              transition={slide}
+            >
+              <Wrapper i={i} href={`/projects/${project.id}`}>
+                <div className='relative w-full h-full overflow-hidden will-change-transform'>
+                  <div
+                    className={classNames('absolute top-0', originSide === 'right' ? 'right-0' : 'left-0')}
+                    style={{ width: imgW, height: imgH }}
                   >
-                    →
-                  </motion.div>
-                )}
-              </motion.div>
-              
-              <motion.h3
-                className={classNames(
-                  'absolute font-semibold whitespace-nowrap transition-all duration-300',
-                  'text-2xl lg:text-3xl md:text-xl [writing-mode:horizontal-tb] md:[writing-mode:horizontal-tb] md-landscape:[writing-mode:vertical-rl] lg:[writing-mode:vertical-rl]',
-                  'top-auto md:top-auto md-landscape:top-5 lg:top-5',
-                  'bottom-3 md:bottom-3 md-landscape:bottom-auto lg:bottom-auto',
-                  'left-3 md:left-3 md-landscape:left-auto lg:left-auto',
-                  'right-auto md:right-auto md-landscape:right-6 lg:right-2',
-                  index === i ? 'text-white mr-0' : 'text-zinc-600',
-                )}
-              >
-                {project.title}
-              </motion.h3>
-            </LinkWrapper>
-          </div>
-        )
-      })}
-    </motion.div>
+                    <motion.div
+                      className='w-full h-full'
+                      initial={false}
+                      animate={{ clipPath: getClipPath(isExpanded, originSide) }}
+                      transition={slide}
+                    >
+                      <img
+                        src={project.thumbnail.pc}
+                        alt={project.title}
+                        className='block w-full h-full object-cover'
+                        loading='lazy'
+                        draggable={false}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* (선택) 약한 페이드 톤 */}
+                  
+                  {(isMobile || isMdLandscape || isMdPortrait) && isExpanded && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.18, duration: 0.16 }}
+                      className='text-[24px] text-white absolute bottom-2 right-2'
+                    >
+                      →
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* 타이틀 */}
+                <motion.h3
+                  className={classNames(
+                    'absolute font-semibold whitespace-nowrap pointer-events-none',
+                    'text-2xl md:text-[22px] md-landscape-coming:text-[22px] lg:text-[28px] ',
+                    isRow ? 'md-landscape-coming:right-0 lg:right-1 top-5 [writing-mode:vertical-rl]' : 'left-3 bottom-3',
+                    isExpanded ? 'text-white' : 'text-zinc-[#666666]',
+                  )}
+                  initial={false}
+                  animate={{ opacity: isExpanded ? 1 : 0.75 }}
+                  transition={fade}
+                >
+                  {project.title}
+                </motion.h3>
+              </Wrapper>
+            </motion.div>
+          )
+        })}
+      </div>
+    </div>
   )
 }

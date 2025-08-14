@@ -267,7 +267,7 @@ export default function Page() {
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106713465?h=79087f8614' />
       <Image Image='/images/projects/cruise/cruise_20.jpg' />
       <Image Image='/images/projects/cruise/cruise_21.jpg' />
-      <Image Image='/images/projects/cruise/cruise_22.jpg' />
+      <Image Image='/images/projects/cruise/cruise_21.jpg' />
 
       <div ref={designedByRef}>
         <Credit
