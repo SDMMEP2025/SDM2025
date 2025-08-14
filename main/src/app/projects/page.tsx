@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <>
       <Header />
-      <div className='overflow-x-hidden absolute w-full top-[58px] md:top-[68px] md-landscape-coming:top-1/2 md-landscape-coming:-translate-y-1/2 lg:h-[calc(100dvh-80px)] lg:-translate-y-0 lg:top-[80px] flex flex-col justify-between items-center'>
+      <div className='overflow-x-hidden  absolute w-full top-[58px] md:top-[68px] md-landscape-coming:top-1/2 md-landscape-coming:-translate-y-1/2 lg:h-[calc(100dvh-80px)] lg:-translate-y-0 lg:top-[80px] flex flex-col justify-between items-center'>
         <ProjectsGrid />
         {!isLandscape && (
           <div className='block w-full'>

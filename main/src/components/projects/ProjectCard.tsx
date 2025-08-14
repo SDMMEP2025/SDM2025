@@ -103,7 +103,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
     const DESKTOP_MIN_EXP_FRAC = 0.7
     const DESKTOP_COLLAPSED_MIN = 22
     const DESKTOP_COLLAPSED_MAX = 109
-    const HEADER_LG = 100 // 페이지에서 lg 헤더 높이와 동일
+    const HEADER_LG = 120
 
     const { isMobile, isMdPortrait, isMdLandscape, isLG } = layoutConfig
 
