@@ -10,10 +10,10 @@ import { FooterOverlay } from '@/components/projects'
 export default function Page() {
   return (
     <>
-      <ScrollOrchestrator />
+      {/* <ScrollOrchestrator />
       <Header />
-      <FooterOverlay />
-      {/* <ComingSoonSection /> */}
+      <FooterOverlay /> */}
+      <ComingSoonSection />
     </>
   )
 }

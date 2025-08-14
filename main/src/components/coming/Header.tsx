@@ -17,7 +17,7 @@ export default function Header() {
           <br />
           Tower A 2F, Gallery 1, 2
           <br />
-          Aug 22 (Fri) – Aug 27 (Tue)
+          Aug 22 (Fri) – Aug 27 (Wed)
         </div>
       </div>
 
@@ -27,7 +27,7 @@ export default function Header() {
           New Formative
         </div>
         <div className="text-center text-neutral-800 text-lg font-medium">
-          Aug 22 (Fri) – Aug 27 (Tue)
+          Aug 22 (Fri) – Aug 27 (Wed)
         </div>
       </div>
 
@@ -37,7 +37,7 @@ export default function Header() {
           New Formative
         </div>
         <div className="text-center text-neutral-800 text-[18px] font-medium">
-          Aug 22 (Fri) – Aug 27 (Tue)
+          Aug 22 (Fri) – Aug 27 (Wed)
         </div>
       </div>
     </>
