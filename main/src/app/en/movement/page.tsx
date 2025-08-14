@@ -2,7 +2,7 @@
 import { Header } from '@/components/projects'
 import { Footer } from '@/components/movement/Footer_Movement'
 import { Main } from '@/components/movement'
-import { EditStep } from '@/components/movement/steps/EditStep'
+import { EditStep } from '@/components/movement/steps/EditEngStep'
 import { ResultStep } from '@/components/movement/steps/ResultStep'
 import { InteractPage } from '@/components/movement/steps/Interact'
 import { useStepManager } from '@/hooks/useStepManager'
