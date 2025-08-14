@@ -1,7 +1,7 @@
 //ProjectGrid.tsx
 
 'use client'
-import { ProjectCard } from '@/components/en/ProjectCard'
+import { ProjectCard } from '@/components/projects/ProjectCard'
 import { useState } from 'react'
 
 interface Project {

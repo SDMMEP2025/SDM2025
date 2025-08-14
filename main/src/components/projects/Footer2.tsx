@@ -4,7 +4,7 @@
 
 export function Footer2() {
   return (
-    <div className='w-full mix-blend-difference flex flex-col-reverse justify-between items-center lg:hidden gap-[12px] px-[61px] py-[14px] md:flex-row md:px-[40px] md:py-[12px] lg:px-[40px] lg:py-[28px]'>
+    <div className='w-full mix-blend-difference flex flex-col-reverse justify-between items-center lg:hidden gap-[12px] md:flex-row px-[61px] py-[14px] md:px-[40px] md:py-[12px] lg:px-[40px] lg:py-[28px]'>
       <div className='left-[40px] top-[28px] justify-start text-sm text-white mb-6 md:mb-0 text-center font-normal capitalize leading-normal md:text-left'>
         © 2025 Samsung Design Membership<span className='md:hidden'>.</span>
         <br className='md:hidden' />
