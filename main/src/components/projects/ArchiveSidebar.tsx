@@ -64,13 +64,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
         }}
         exit={{ opacity: 0, x: HIDDEN_OFFSET }}
         transition={{ duration: 0.3 }}
-        className={`hidden md:flex w-[396px] h-[calc(100vh-80px)] bg-white/50 backdrop-blur-md fixed right-0 z-[000] flex-col`}
-        style={{
-          position: 'fixed',
-          top: '150px',
-          right: '0',
-          height: 'calc(100vh - 150px)',
-        }}
+        className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[000]`}
       >
         <div className='w-[396px] h-full flex flex-row items-start '>
           <div
@@ -98,7 +92,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
             <svg xmlns='http://www.w3.org/2000/svg' className='w-full aspect-square' viewBox='0 0 24 25' fill='none'>
               <path
                 d='M19 6.91L17.59 5.5L12 11.09L6.41 5.5L5 6.91L10.59 12.5L5 18.09L6.41 19.5L12 13.91L17.59 19.5L19 18.09L13.41 12.5L19 6.91Z'
-                fill='##4B4F57'
+                fill='#222'
               />
             </svg>
           </button>
@@ -123,7 +117,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
       >
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className='w-full sticky top-0 z-10 backdrop-blur-md bg-white/50 flex items-center justify-between px-4'
+          className='w-full sticky top-0 z-10 backdrop-blur-md flex items-center justify-between px-4 bg-white/50'
           style={{ height: `${CUT_TOP_MOBILE}px` }}
         >
           <span className='text-[#4B4F57] text-[18px] font-semibold leading-[1.5] tracking-[-0.36px]'>Process Archive</span>
@@ -135,7 +129,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
               <svg xmlns='http://www.w3.org/2000/svg' className='w-full aspect-square' viewBox='0 0 24 25' fill='none'>
                 <path
                   d='M19 6.91L17.59 5.5L12 11.09L6.41 5.5L5 6.91L10.59 12.5L5 18.09L6.41 19.5L12 13.91L17.59 19.5L19 18.09L13.41 12.5L19 6.91Z'
-                  fill='#4B4F57'
+                  fill='#222222'
                 />
               </svg>
             ) : (
