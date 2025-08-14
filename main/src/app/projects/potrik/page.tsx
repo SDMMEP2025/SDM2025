@@ -172,7 +172,7 @@ export default function Page() {
           </>
         }
         credits='강윤권, 박효경, 양현지, 이주은, 주형준'
-        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
+        className='w-[144px] md:w-[180px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
       <MainImage />
       <Divide title='Background' number='01' className='text-[#09C17A]' />
@@ -218,7 +218,7 @@ export default function Page() {
             <a
               href='https://www.notion.so/POTRIK-UX-Process-2315d7e3077e80efab01e92fb7abb053'
               target='_blank'
-              className='underline'
+              className='underline font-semibold'
             >
               ▶ A detail story of their background.
             </a>
@@ -366,7 +366,7 @@ export default function Page() {
         title={<>S3. 중고 거래</>}
         text={
           <>
-            지금 바로, POTRIK으로 보내주세요.
+            "지금 바로, POTRIK으로 보내주세요."
             <br />
             <br />
             카페에서 작업을 하던 중, 노트북 충전기가 고장 났습니다. 지금 바로 중고 거래를 통해 충전기를 구하려면 직접

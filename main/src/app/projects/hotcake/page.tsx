@@ -180,7 +180,7 @@ export default function Page() {
         title={['핫케익', 'Heat it, Play it, Hotcake']}
         description='Hotcake는 공간 제약 없이 즐거운 합주를 할 수 있는 경험을 선사합니다. 마치 한 공간에 함께 있는 듯한 입체적인 사운드를 구현하고, 서로의 타이밍이 정확히 맞아떨어지는 짜릿한 순간을 놓치지 않도록 도와주죠. Hotcake와 함께, 평범한 일상 공간에서도 몰입감 넘치는 유난스러운 합주의 즐거움을 느껴보세요!'
         credits='장우진, 정혜령, 김채은, 이일여, 장은혜'
-        className='w-[80px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[85px] md:w-[96px] lg:w-[clamp(96px,10vw,144px)]'
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='A way of enjoying music' number='01' />
@@ -204,8 +204,8 @@ export default function Page() {
             편안한 공간에서, 더 자유롭고 즐거운 합주를 지향합니다. 박자가 조금 틀리거나 음이 어긋나도 괜찮아요. 그저
             음악에 몸을 맡겨보세요!
             <br /> <br />
-            <a href='https://bio.link/silmul' className='underline' target='_blank'>
-              ▶︎ A more detailed story of Silmul
+            <a href='https://bio.link/silmul' className='underline font-semibold' target='_blank'>
+              ▶︎ 더 자세한 이야기는 여기에
             </a>
           </>
         }
@@ -228,7 +228,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <TitleBody
-        title={'음악에 텍스쳐를 입히다'}
+        title={'음악에 텍스처를 입히다'}
         text={
           '라이브 음악의 묘미는 온몸으로 느껴지는 떨림에 있습니다. Butter는 연주 중인 음악의 파장에 맞춰 햅틱 피드백을 전달함으로써 단순히 귀로 듣기만 하는 음악에 텍스처를 더해 더욱 다이나믹한 라이브 경험을 가능하게 합니다. 또한, 메트로놈 모드로 바꿔 박자를 모니터링하거나 내장된 마이크를 통해 보이스 채팅도 가능합니다.'
         }
@@ -244,7 +244,9 @@ export default function Page() {
 
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
 
-      <MidTitle align='center' text='(2) New Experience with Hotcake' padding={false} />
+      <MidTitle align='center' text='(2) New Experience with Hotcake'/>
+      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
+
       <TitleBody
         title={'빛, 진동, 그리고 소리로\n이어지는 합주 경험'}
         text={

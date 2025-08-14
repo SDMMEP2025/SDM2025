@@ -164,7 +164,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Merlin_logo.svg'        
-        className='w-[80px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[52px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
         title={['멀린', 'Into Your Flow, Merlin OS']}
         description='Merlin OS는 앱 전환과 복잡한 탐색을 줄여 사용자가 빠르게 목표에 도달하도록 돕는 흐름 중심 운영체제입니다. 사용자 상황을 실시간으로 인식하고, 여러 앱에 흩어진 기능을 하나의 흐름으로 연결해 기존의 정적이고 앱 중심적인 UI를 넘어 보다 유연하게 몰입하는 경험을 제공합니다. 흐름을 조율하는 새로운 운영체제, Merlin과 함께 미래의 디지털 여정을 시작해보세요.'
         credits='김유민, 이소은, 안지원, 양준홍, 조서현'
@@ -199,7 +199,7 @@ export default function Page() {
             누르는 ‘익숙한 미로’입니다.
             <br />
             <br />
-            <a href='https://umin.notion.site/merlinos' className='underline' target='_blank'>
+            <a href='https://umin.notion.site/merlinos' className='underline font-semibold' target='_blank'>
               &gt; 더 자세한 이야기는 여기에서
             </a>
           </>
@@ -224,7 +224,7 @@ export default function Page() {
       <Divide number='06' title='Solution' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle text='Into Your Flow, Merlin OS' />
+      <MidTitle text='Into Your Flow, Merlin OS' padding={false} />
       <MidBody
         content={
           '흐름 중심의 차세대 운영 체제 Merlin OS를 소개합니다.\nMerlin OS는 맥락에 따라 기능을 재구성하고, 앱의 경계를 넘어 하나의 연속된 플로우를 제공합니다. \n사용자는 더 이상 조작을 인식하거나 고민하지 않고, 자연스럽게 몰입할 수 있습니다.'

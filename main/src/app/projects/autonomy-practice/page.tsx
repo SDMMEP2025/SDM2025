@@ -161,7 +161,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/AutonomyPractice_logo.svg'
-        className='w-[90px] md:w-[180px] lg:w-[clamp(180px,16vw,229px)]'
+        className='w-[132px] md:w-[180px] lg:w-[clamp(180px,16vw,229px)]'
         title={['오토노미 프랙티스', 'Act Then Build']}
         description='Autonomy Practice는 소재를 다루는 방식에 질문을 던지는 실험적 신발 브랜드입니다. 우리는 CMF를 기존의 영역에 그치지 않고, 환경에 반응해 형상을 조율하는 매개로 바라봅니다. 이러한 관점 아래, 형상기억 폴리머(SMP)를 적용한 자가 해체 구조의 신발을 설계했습니다. 신발이 스스로 구성되고 해체되는 이 구조는, 생산과 소비의 경계를 다시 그리는 하나의 실천입니다.'
         credits='풍제석, 이민희, 하승민, 정민영, 정유진'

@@ -628,7 +628,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
             'h-auto aspect-square',
             //mobile
-            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            'w-[46px]',
             //tablet & desktop & large desktop
             'md:w-[46px]',
             'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
@@ -669,8 +669,8 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
           className={classNames(
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
             // mobile
-            'w-[clamp(182px,calc(185.765px-0.4902vw),184px)]',
-            'h-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            'w-[160px]',
+            'h-[46px]',
             // tablet
             'md:h-[46px]',
             'md:w-[clamp(160px,calc(207.154px-3.27381vw),182px)]',

@@ -164,7 +164,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Merlin_logo.svg'
-        className='w-[80px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[52px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
         title={['Merlin', 'Into Your Flow, Merlin OS']}
         description='Merlin OS is a flow operating system. It helps you reach your goals faster by minimizing app switching and cutting through complexity.  It understands your context in real time and connects features across apps into one seamless experience. Forget rigid, app-centered interfaces. Merlin offers a more flexible, more immersive way to work. Your digital journey starts here.'
         credits='Yumin Kim, Soeun Lee, Jiwon An, Junhong Yang, Seohyeon Cho'
@@ -202,8 +202,8 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
             digital world is a familiar maze—complex on the surface, but made up of the same taps and same turns.
             <br />
             <br />
-            <a href='https://umin.notion.site/merlinos' className='underline' target='_blank'>
-              &gt; More Detailed UX Process
+            <a href='https://umin.notion.site/merlinos' className='underline font-semibold' target='_blank'>
+              ▶︎ More Detailed UX Process
             </a>
           </>
         }
@@ -227,7 +227,7 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
       <Divide number='06' title='Solution' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle text='Into Your Flow, Merlin OS' />
+      <MidTitle text='Into Your Flow, Merlin OS' padding={false}/>
       <MidBody
         content={
           'Merlin OS is the next-generation operating system.\nIt remakes features based on context and breaks down app boundaries to create one seamless, continuous experience.\nYou do not have to think about controls, so you can stay fully focused.'

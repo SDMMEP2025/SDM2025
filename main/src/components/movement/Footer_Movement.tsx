@@ -10,7 +10,7 @@ export function Footer({ className = '' }: FooterProps) {
   return (
     <div
       className={classNames(
-        'absolute bottom-0 left-0 right-0 z-20',
+        'absolute bottom-4 left-0 right-0 z-20',
         'w-full mix-blend-difference',
         'hidden md:flex md:flex-row md:justify-between md:items-center md:gap-[12px] md:px-[44px] md:py-[12px]',
         className,

@@ -183,7 +183,7 @@ export default function Page() {
           </>
         }
         credits='이채원, 윤예현, 강동헌, 김시우, 정채영'
-        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
+        className='w-[142px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
       <MainImage />
       <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
@@ -269,7 +269,7 @@ export default function Page() {
             <a
               href='https://rural-balmoral-f7c.notion.site/NewBe-UX-Process-23d292d2d1938007b54afdf92beb23e8?source=copy_link'
               target='_blank'
-              className='underline'
+              className='underline font-semibold'
             >
               ▶ More Detailed UX Process
             </a>
@@ -367,7 +367,7 @@ export default function Page() {
             <a
               href='https://rural-balmoral-f7c.notion.site/NewBe-Product-Process-23d292d2d19380ba8f5be46de930753e?source=copy_link'
               target='_blank'
-              className='underline'
+              className='underline font-semibold'
             >
               ▶ Product Process
             </a>

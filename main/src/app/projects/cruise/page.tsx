@@ -155,7 +155,7 @@ export default function Page() {
         title={['크루즈', 'Style Our Mile, Drive Our Life']}
         description='자율주행 5단계 시대, 운전의 개념이 사라지고 모든 탑승자가 네비게이터가 되는 변화 속에서, CRUISE는 이동을 능동적이고 역동적인 공유 경험으로 재정의하는 인터랙션 디바이스입니다. 소셜 미디어 속 디깅에 익숙한 이동 혁신 세대의 탐색 방식을 차 안으로 가져와, 모든 탑승자가 끊임없이 ‘움직이는 탐색’을 통해 경험을 공유하고 확장하게 하며, 일상에 새로운 가치와 영감을 더합니다. CRUISE와 함께 새로운 이동 경험을 만나보세요!'
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
-        className='w-[200px] md:w-[200px] lg:w-[clamp(200px,21.3vw,308px)]'
+        className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='Background' number='01' />
@@ -181,7 +181,7 @@ export default function Page() {
             <br />
             <a
               href=' https://www.notion.so/CRUISE-UX-BOOK-23d6cd1a9e8280a68d64f1b14879e6a1?source=copy_link'
-              className='underline'
+              className='underline font-semibold'
               target='_blank'
             >
               ▶ A detailed story of their background
@@ -238,7 +238,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_12.jpg' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
 
-      <MidTitle align='center' padding={false} text='(3) Boundless Playground for Everyone' />
+      <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
         title={'분위기 전환,\n한손으로 간단하게'}
         text='승객이 잠에 들면 불을 꺼주고, 지루해하면 파티를 열어주는 선장처럼 환경의 변화에 따라 순식간에 분위기를 전환할 수 있습니다. 이동 중 흐름이 끊기는 불편함은 CRUISE에서 사라지고, 당겼다 놓는 제스처 하나로 지금의 분위기, 경로, 콘텐츠를 물 흐르듯 즉시 새로고침 할 수 있죠.'
@@ -266,6 +266,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_18.jpg' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106713465?h=79087f8614' />
       <Image Image='/images/projects/cruise/cruise_20.jpg' />
+      <Image Image='/images/projects/cruise/cruise_21.jpg' />
       <Image Image='/images/projects/cruise/cruise_21.jpg' />
 
       <div ref={designedByRef}>

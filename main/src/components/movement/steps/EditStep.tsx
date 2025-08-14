@@ -11,13 +11,18 @@ import animationData from '@/animation/edit_loading.json'
 import { AnimatePresence, motion } from 'framer-motion'
 
 interface EditStepProps {
+  currentData: {
+    initialize: boolean
+    text: string | null
+    colorAnalysis: ColorAnalysisResult | null
+  }
   imageUrl: string
   imageFile: File
   onBack: () => void
   onComplete: (text: string, colorAnalysis: ColorAnalysisResult) => void
 }
 
-export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepProps) {
+export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete }: EditStepProps) {
   const [text, setText] = useState('')
   const [colorAnalysis, setColorAnalysis] = useState<ColorAnalysisResult | null>(null)
 
@@ -25,31 +30,45 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
   const { analyzeImage, isAnalyzing: isAnalyzingText, error: textError } = useImageAnalysis()
   const { analyzeImageColors, isAnalyzing: isAnalyzingColor, error: colorError } = useColorAnalysis()
 
+  const [isActive, setIsActive] = useState(false)
+  const [analyzeError, setAnalyzeError] = useState<boolean>(false)
+
   // 컴포넌트 마운트 시 AI 텍스트 분석 + 색상 분석 동시 실행
   useEffect(() => {
-    const runAnalysis = async () => {
-      try {
-        // 환경변수로 AI 분석 제어
-        const isAiDisabled = process.env.NEXT_PUBLIC_DISABLE_AI === 'false'
+    if (currentData.initialize) {
+      setText(currentData.text || '')
+      setColorAnalysis(currentData.colorAnalysis || null)
+    } else {
+      const runAnalysis = async () => {
+        try {
+          // 환경변수로 AI 분석 제어
+          const isAiDisabled = process.env.NEXT_PUBLIC_DISABLE_AI === 'false'
 
-        if (isAiDisabled) {
-          console.log('🛑 AI Analysis disabled for development')
-          setText('이 순간에 대해 말해주세요...')
-        } else {
-          // AI 텍스트 분석 실행
-          const aiText = await analyzeImage(imageFile)
-          setText(aiText)
+          if (isAiDisabled) {
+            console.log('🛑 AI Analysis disabled for development')
+            setText('이 순간에 대해 말해주세요...')
+          } else {
+            // AI 텍스트 분석 실행
+            const aiText = await analyzeImage(imageFile, 'ko')
+
+            // aiText가 ERROR라는 단어가 있다면
+            if (aiText.includes('ERROR')) {
+              setAnalyzeError(true)
+              setText('이 순간에 대해 말해주세요...')
+            } else {
+              setText(aiText)
+            }
+          }
+
+          // 색상 분석은 항상 실행 (로컬이라 무료)
+          const colors = await analyzeImageColors(imageUrl)
+          setColorAnalysis(colors)
+        } catch (err) {
+          console.error('Analysis failed:', err)
         }
-
-        // 색상 분석은 항상 실행 (로컬이라 무료)
-        const colors = await analyzeImageColors(imageUrl)
-        setColorAnalysis(colors)
-      } catch (err) {
-        console.error('Analysis failed:', err)
       }
+      runAnalysis()
     }
-
-    runAnalysis()
   }, [imageFile, imageUrl, analyzeImage, analyzeImageColors])
 
   const handleSubmit = () => {
@@ -96,8 +115,67 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
           )} */}
 
         {/* 에러 상태 */}
-        {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>}
+        {/* {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>} */}
       </div>
+
+      {/* 에러 및 글자수 초과 모달 */}
+      <AnimatePresence>
+        {analyzeError ||
+          (hasError && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className='absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center z-20'
+            >
+              <div className='bg-white gap-6 md:gap-12 w-[320px] md:w-[480px] md:max-w-none text-center flex flex-col justify-center items-center p-8 md:p-12'>
+                <p className={classNames('font-semibold mb-4', 'text-xl md:text-xl lg:text-2xl')}>
+                  이미지를 분석에 실패했습니다. <br />
+                  다시 시도해 주세요.
+                </p>
+
+                <button
+                  onClick={() => {
+                    onBack()
+                    setAnalyzeError(false)
+                  }}
+                  className={classNames(
+                    'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
+                    // mobile
+                    'h-[46px]',
+                    'w-[150px]',
+                    // tablet
+                    'md:h-[56px]',
+                    'md:w-[160px]',
+                    // desktop
+                    'lg:h-[56px]',
+                    'lg:w-[200px]',
+                    // large desktop
+                    '2xl:w-[200px]',
+                    '2xl:h-[56px]',
+                    'cursor-pointer',
+                  )}
+                >
+                  <div
+                    className={classNames(
+                      'text-white font-medium',
+                      // 모바일
+                      'text-[18px]',
+                      // tablet
+                      'md:text-[20px]',
+                      // desktop
+                      'lg:text-[22px]',
+                      // large desktop
+                      '2xl:text-[24px]',
+                    )}
+                  >
+                    다시 시작하기
+                  </div>
+                </button>
+              </div>
+            </motion.div>
+          ))}
+      </AnimatePresence>
 
       {/* 타이틀 */}
       <div
@@ -151,7 +229,11 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
           >
             Tell Us Your Movement
           </motion.div>
-          <div
+          <motion.div
+            initial={{ opacity: 0.2 }}
+            animate={{ opacity: isAnalyzing ? 0.2 : 1 }}
+            exit={{ opacity: 0.2 }}
+            transition={{ duration: 0.3 }}
             className={classNames(
               'text-center text-[#FFF] font-bold mix-blend-difference',
               // 모바일
@@ -166,7 +248,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
           >
             이미지에는 어떤 순간이 <br className='inline md:hidden' />
             담겨 있나요?
-          </div>
+          </motion.div>
         </div>
 
         {/* textarea */}
@@ -175,7 +257,7 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
             'relative flex justify-center items-center',
             'bg-white rounded-[8px]',
             // 모바일
-            'w-[358px] h-[70px]',
+            'w-[358px] max-w-[320px] md:max-w-none h-[70px]',
             // tablet
             'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)]',
             'md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
@@ -214,12 +296,19 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
             animate={{ opacity: isAnalyzing ? 0 : 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            value={text}
+            value={
+              //text에 온점 제거
+              text.replace(/(\.|,|!|\?)/g, '').trim()
+            }
+            onFocus={() => {
+              !isActive && setIsActive(true)
+            }}
             onChange={(e) => setText(e.target.value)}
             placeholder={'나를 움직이게 하는 이 순간에 대해 적어보세요...'}
             className={classNames(
-              'w-full h-auto text-center bg-transparent text-[#AEB1B6] font-medium',
-              'placeholder-gray-400 focus:text-[#222222] focus:outline-none resize-none',
+              isActive ? (text.length >= 22 ? 'text-[#FF60B9]' : 'text-[#222222]') : 'text-[#AEB1B6]',
+              'w-full h-auto text-center bg-transparent  font-medium',
+              'placeholder-gray-400 focus:outline-none resize-none',
               // 모바일
               'text-[18px] leading-[150%] letterSpacing-[-0.36px]',
               // tablet
@@ -269,17 +358,20 @@ export function EditStep({ imageUrl, imageFile, onBack, onComplete }: EditStepPr
         <motion.button
           type='button'
           initial={{ opacity: 0 }}
-          animate={{ opacity: text.trim() && colorAnalysis && !isAnalyzing ? 1 : 0.2 }}
+          animate={{ opacity: text.length < 22 && text.trim() && colorAnalysis && !isAnalyzing ? 1 : 0.2 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           whileTap={{ scale: 0.95 }}
-          onClick={handleSubmit}
-          disabled={!text.trim() || !colorAnalysis || isAnalyzing}
+          onClick={() => {
+            handleSubmit()
+          }}
+          disabled={!text.trim() || !colorAnalysis || isAnalyzing || text.length >= 22}
           className={classNames(
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
             'h-auto aspect-square',
+            'disabled:cursor-not-allowed',
             //mobile
-            'w-[clamp(46px,calc(64.824px-2.451vw),56px)]',
+            'w-[46px]',
             //tablet & desktop & large desktop
             'md:w-[46px]',
             'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',

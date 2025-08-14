@@ -180,7 +180,7 @@ export default function Page() {
         title={['Hotcake', 'Heat it, Play it, Hotcake']}
         description='Hotcake lets you enjoy playing music with your friends, no matter where you are. It delivers rich, 3D sound that makes it feel like you are all in the same room. Hotcake keeps everyone perfectly in sync, so you can feel magical moments. Experience immersive, unforgettable jam sessions even in your home.'
         credits='Woojin Jang, Hyeryoung Jeong, Chaeeun Kim, Ilyeo Lee, Eunhye Jang'
-        className='w-[80px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[85px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
       />
       <MainImage Image='/images/projects/cruise/image1.png' />
       <Divide title='A way of enjoying music' number='01' />
@@ -204,7 +204,7 @@ export default function Page() {
             a more enjoyable way to connect. Play in your home. It’s fine if the beat or notes slip a bit. Let the music
             take over your soul.
             <br /> <br />
-            <a href='https://bio.link/silmul' className='underline' target='_blank'>
+            <a href='https://bio.link/silmul' className='underline font-semibold' target='_blank'>
               ▶︎ A more detailed story of Silmul
             </a>
           </>
@@ -244,11 +244,13 @@ export default function Page() {
 
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
 
-      <MidTitle align='center' text='(2) New Experience with Hotcake' padding={false} />
+      <MidTitle align='center' text='(2) New Experience with Hotcake'/>
+      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
+
       <TitleBody
         title={'A Live Experience with Light, Vibration, Sound'}
         text={
-          "Set up modular speakers and experience more than just sound. Cake lights up in real time, so you can visually feel your friends’ performances as they play. Pair them with Butter, which is the wearable device. Feel the rhythm and groove through haptic."
+          'Set up modular speakers and experience more than just sound. Cake lights up in real time, so you can visually feel your friends’ performances as they play. Pair them with Butter, which is the wearable device. Feel the rhythm and groove through haptic.'
         }
       />
 

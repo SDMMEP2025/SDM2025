@@ -159,10 +159,10 @@ export default function Page() {
           </>
         }
         credits='Sunil Kim, Suryun Hyeon, Seyeon Park, Hyunbin Seo, Hyeongyeong Yun'
-        className='w-[80px] md:w-[96px] lg:w-[clamp(60px,8.75vw,130px)]'
+        className='w-[74px] md:w-[96px] lg:w-[clamp(96px,8.75vw,130px)]'
       />
       <MainImage />
-      <Divide title='Background' number='01' className='text-[#E30D2D]'/>
+      <Divide title='Background' number='01' className='text-[#E30D2D]' />
       <RightTitleBody
         title='Psychological pressure blocks creativity'
         text={
@@ -176,7 +176,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Discover' number='02' className='text-[#E30D2D]'/>
+      <Divide title='Discover' number='02' className='text-[#E30D2D]' />
       <MidBody
         align='left'
         content={
@@ -192,7 +192,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Limitation' number='03' className='text-[#E30D2D]'/>
+      <Divide title='Limitation' number='03' className='text-[#E30D2D]' />
       <MidBody
         align='center'
         content={<>However, there's still something missing when it comes to creativity in the digital era.</>}
@@ -200,12 +200,12 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <LeftTitle
         text={
-          <a href='https://bio.link/silmul' className='underline text-[#E30D2D]' target='_blank'>
+          <a href='https://bio.link/silmul' className='underline text-[#E30D2D] font-semibold' target='_blank'>
             ▶︎ A more detailed story of Silmul
           </a>
         }
       />
-      <Divide title='Concept' number='04' className='text-[#E30D2D]'/>
+      <Divide title='Concept' number='04' className='text-[#E30D2D]' />
       <LeftTitle
         text={
           <>
@@ -242,7 +242,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Technical problem' number='05' className='text-[#E30D2D]'/>
+      <Divide title='Technical problem' number='05' className='text-[#E30D2D]' />
       <MidBody
         align='center'
         content={
@@ -254,7 +254,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]'/>
+      <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
@@ -269,7 +269,7 @@ export default function Page() {
         title='Product, ‘Realize’ ²'
         text={<>Bring your creation to life—print a object that you can touch and feel.</>}
       />
-      <Divide title='User Scenario' number='07' className='text-[#E30D2D]'/>
+      <Divide title='User Scenario' number='07' className='text-[#E30D2D]' />
       <MidTitle align='center' className='text-[#E30D2D]' text='Sense: The easiest way to start creating' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidBody
@@ -324,8 +324,12 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Extra Value' number='08' className='text-[#E30D2D]'/>
-      <MidTitle align='center' className='text-[#E30D2D]' text='Tagging: Not the end of making - the beginning of expanding' />
+      <Divide title='Extra Value' number='08' className='text-[#E30D2D]' />
+      <MidTitle
+        align='center'
+        className='text-[#E30D2D]'
+        text='Tagging: Not the end of making - the beginning of expanding'
+      />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
         title={null}
@@ -346,11 +350,12 @@ export default function Page() {
             Do you feel tired of your objects?
             <br />
             Try the Melting System: melt them down and recycle into eco-friendly filament.
-            <br/>
+            <br />
             That’s sustainable creativity.
           </>
         }
       />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <MidTitle align='center' className='text-[#E30D2D]' text='Turning real senses into real objects, Silmul' />
