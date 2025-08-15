@@ -82,12 +82,12 @@ export function CursorPlay() {
       wrapper.style.zIndex = '45'
 
       const inner = document.createElement('div')
-      inner.className = 'overflow-hidden'
+      inner.className = 'overflow-hidden rounded-[2px] w-[60%]'
       inner.style.opacity = '0'
       inner.style.willChange = 'opacity, transform'
 
       const img = document.createElement('img')
-      img.style.width = '60%'
+      img.style.width = '100%'
       img.style.height = 'auto'
       img.style.aspectRatio = 'auto'
       img.decoding = 'async'
@@ -125,7 +125,7 @@ export function CursorPlay() {
       let inner = wrapper.firstElementChild as HTMLDivElement | null
       if (!inner) {
         inner = document.createElement('div')
-        inner.className = 'rounded-xl overflow-hidden'
+        inner.className = 'overflow-hidden'
         inner.style.opacity = '0'
         inner.style.willChange = 'opacity, transform'
         wrapper.appendChild(inner)
@@ -227,7 +227,7 @@ export function CursorPlay() {
     >
       <div className='absolute flex flex-col w-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 justify-center items-center select-none'>
         <h1 className='text-[9.86vw] leading-none text-center font-semibold font-english text-[#E1E1E1]'>
-          Steady movement<br/>make us<br/> New Formative
+          Steady movement<br/>makes us<br/> New Formative
         </h1>
       </div>
       <div
