@@ -2,7 +2,7 @@
 'use client'
 
 import { Header, Footer, MainImage, Divide, MidBody, CreditThanksTo } from '@/components/projects'
-import { HeaderBody, Credit, SolutionSentence, TitleBody, Image } from '@/components/about'
+import { HeaderBody, Credit, SolutionSentence, TitleBody, Image, CursorPlay } from '@/components/about'
 import { FooterDocked } from '@/components/projects'
 import classNames from 'classnames'
 type Tutor = { name: string; englishName?: string }
@@ -80,28 +80,36 @@ export default function AboutSection({ embedded = false }: Props) {
         title={'Archive \nMovement'}
         text='전시 준비 과정에서 움직임의 궤적을 놓치지 않기 위해, 형성의 과정에서 만들어진 사진과 영상을 아카이빙합니다. 수많은 시도와 탐색의 과정은 물론, 멈칫하거나 전환되는 순간의 과정까지 움직임의 일부로 포착합니다.'
       />
+
+      {/* 이곳에 브러쉬 */}
+
+      <CursorPlay/>
+
       <Image src='' alt='archive1' />
 
       <Divide title='Identities' number='04' />
-      <SolutionSentence text={'Various Identities \nFrom Various Movements.'} />
       <MidBody content='전시장에서는 9개의 팀과 개인들이 각자의 리듬과 방식으로 걸어온 형성의 과정들이 펼쳐집니다. 저마다의 궤적을 통해 새로운 방향을 실험하고, 그 움직임을 시각화합니다.' />
+      <SolutionSentence text={'9Teams are Formative'} />
+
       <Image src='' />
-      <SolutionSentence text='Welcome to New Formative!' />
       <TitleBody
         title={'New Formative \nBegins Here'}
         text='2025 MEP 〈New Formative〉 전시 공간에서는 여러분의 감각과 해석으로 완성되어 가는 여정을 경험할 수 있습니다. 형성이라는 태도가 우리의 사고와 감각으로 어떻게 확장될 수 있는지 이곳에서 함께 포착해보세요.'
       />
       <Image src='' alt='new formative1' />
+      <Image src='' alt='new formative2' />
+
       <MidBody
         content={
           '삼성디자인멤버십 회원들의 비전과 태도를 드러내는 ‘New Step’을 시작으로, 다양한 분야가 교차하며 새로운 가능성을 모색하는 ‘New Link’, 각자의 고유한 문제의식을 바탕으로 전개된 ‘New Focus’, 마지막으로 감각적 실험이 응집된 ‘New Spark’순으로 이어집니다.'
         }
       />
-      <Image src='' alt='new formative2' />
       <Image src='' alt='new formative3' />
       <Image src='' alt='new formative4' />
-
-      <SolutionSentence type='section' text='Web Exhibition' />
+      <TitleBody
+        title={'Make your\nMovement'}
+        text={'당신을 움직이게 하는 순간은 무엇인가요?\n웹사이트에 이미지를 등록하고, 나만의 Formative Movement를 만들어 공유해보세요.'}
+      />
       <Image src='' alt='web exhibition1' />
       <Image src='' alt='web exhibition2' />
       <Image src='' alt='web exhibition3' />
