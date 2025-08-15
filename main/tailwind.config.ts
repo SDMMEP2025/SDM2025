@@ -42,6 +42,7 @@ export default {
 
         lg: '1440px',
         xl: '1920px',
+        '2xl': '2560px',
       },
       colors: {},
       fontFamily: {

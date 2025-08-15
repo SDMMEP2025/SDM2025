@@ -3,7 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import { InteractMotionControlPanel, InteractMotionParams } from '../InteractMotionControlPanel'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import animationData from '@/animation/interact_loading.json'
 
 interface InteractPageProps {
   interactionData: {
@@ -420,22 +422,25 @@ function FloatingConcentricSquares({
 
 export function InteractPage({ interactionData, onStartOver }: InteractPageProps) {
   const { steps, positions, brandColorName, brandColorHex, refinedColorHex, text } = interactionData
+  const [isLoadingDone, setIsLoadingDone] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
 
+  const lottieRef = useRef<LottieRefCurrentProps>(null)
+
   // 모션 컨트롤 관련 state 추가
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
-    speedBase: 0.08,
-    followSpeedMultiplier: 0.4,
-    followSpeedOffset: 1.0,
+    speedBase: 0.01,
+    followSpeedMultiplier: 2,
+    followSpeedOffset: 1,
     colorInterpolationPower: 0.9,
-    floatAmplitude: 15,
+    floatAmplitude: 8,
     floatSpeed: 0.02,
-    tiltSensitivity: 15,
-    hoverScale: 1.08,
-    shadowIntensity: 1.0,
+    tiltSensitivity: 25,
+    hoverScale: 1.3,
+    shadowIntensity: 0,
     borderRadiusOuter: 8,
-    gyroSensitivity: 1.0,
+    gyroSensitivity: 0.1,
   })
   const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(false)
 
@@ -457,29 +462,35 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // 상단 "New Formative" 텍스트
-    ctx.fillStyle = '#6B7280'
-    ctx.font = '36px "Saans TRIAL", system-ui, -apple-system, sans-serif'
+    ctx.fillStyle = '#4B4F57'
+    ctx.font = '400 40px "saans", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('New Formative', canvas.width / 2, 120)
+    ctx.fillText('New Formative', canvas.width / 2, 82)
+
+    // 두 줄을 아우르는 세로 그라디언트 (검정 70%, 회색 30%)
+    const gradientTop = ctx.createLinearGradient(0, 200, 0, 540)
+    gradientTop.addColorStop(0, '#000000') // 시작
+    gradientTop.addColorStop(0.6, '#000000') // 60% 지점까지 검정 유지
+    gradientTop.addColorStop(1, '#818181') // 나머지 40% 회색
+    ctx.fillStyle = gradientTop
 
     // "Your Movement" 대형 텍스트
-    ctx.fillStyle = '#000000'
-    ctx.font = 'bold 182px "Saans TRIAL", system-ui, -apple-system, sans-serif'
+    ctx.font = 'bold 165px "saans", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
 
     // "Your" 텍스트
-    ctx.fillText('Your', canvas.width / 2, 280)
+    ctx.fillText('Your', canvas.width / 2, 328)
 
     // "Movement" 텍스트
-    ctx.fillText('Movement', canvas.width / 2, 420)
+    ctx.fillText('Movement', canvas.width / 2, 494)
 
     // ConcentricSquares 그리기 (motionParams 적용)
-    const scale = 2.2
+    const scale = 2.3
     const maxWidth = 420
     const maxHeight = 316
     const stepReduction = 25
     const centerX = canvas.width / 2
-    const centerY = 842 // 중앙 위치
+    const centerY = 952 // 중앙 위치
 
     for (let i = 0; i < interactionData.steps; i++) {
       const factor =
@@ -514,18 +525,24 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
       }
     }
 
+    // gradientBottom 그라디언트 (검정 70%, 회색 30%)
+    const gradientBottom = ctx.createLinearGradient(0, 1400, 0, 1760)
+    gradientBottom.addColorStop(0, '#000000')
+    gradientBottom.addColorStop(0.6, '#000000')
+    gradientBottom.addColorStop(1, '#818181')
+    ctx.fillStyle = gradientBottom
+
     // 하단 "Is New Formative" 텍스트
-    ctx.fillStyle = '#000000'
-    ctx.font = 'bold 182px "Saans TRIAL", system-ui, -apple-system, sans-serif'
+    ctx.font = 'bold 182px "saans", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
 
-    ctx.fillText('Is New', canvas.width / 2, 1480)
-    ctx.fillText('Formative', canvas.width / 2, 1620)
+    ctx.fillText('Is New', canvas.width / 2, 1552)
+    ctx.fillText('Formative', canvas.width / 2, 1720)
 
-    ctx.fillStyle = '#6B7280'
-    ctx.font = '37px "Saans TRIAL", system-ui, -apple-system, sans-serif'
+    ctx.fillStyle = '#4B4F57'
+    ctx.font = '400 37px "saans", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('©2025 Samsung Design Membership Emergence Project', canvas.width / 2, 1800)
+    ctx.fillText('©2025 Samsung Design Membership Emergence Project', canvas.width / 2, 1860)
 
     return canvas.toDataURL('image/png')
   }
@@ -546,6 +563,14 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     }
   }
 
+  //1초 후 로딩 완료
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoadingDone(true)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div className='w-full h-full bg-white'>
       {/* 모션 컨트롤 패널 추가 */}
@@ -555,14 +580,71 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         onToggle={() => setIsMotionPanelVisible(!isMotionPanelVisible)}
       />
 
-      <div className='absolute top-[4vh] lg:top-0 z-20 md:z-0 left-1/2 transform -translate-x-1/2 w-full h-fit flex flex-col items-center justify-center relative'>
-        <h3 className=' text-[34px] md:text-[96px] md-landscape:text-[132px] lg:text-[160px] whitespace-nowrap text-center font-semibold text-gray-800 font-english'>
+      {/* loading section */}
+      <AnimatePresence>
+        {!isLoadingDone && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={classNames('absolute inset-0 z-10', 'flex items-center justify-center bg-white')}
+          >
+            <div className={classNames('w-[90%] md:w-[70%]')}>
+              <Lottie
+                lottieRef={lottieRef}
+                animationData={animationData}
+                loop={true}
+                autoplay={true}
+                className='w-full h-full'
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoadingDone ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className={classNames(
+          'w-full h-fit flex flex-col items-center justify-center relative',
+          'absolute md:z-0 left-1/2 transform -translate-x-1/2 z-20',
+          'top-[24vh] gap-[7px] md:gap-[10px] lg:gap-[12px] 2xl:gap-[15px]',
+          'md:top-[20vh]', // 모바일에서 md로 넘어갈 때 위치 조정
+          'md-landscape:top-[15vh]', // md-landscape에서 위치 조정
+          'lg:top-[10vh]', // lg에서 위치 조정
+          '2xl:top-[10vh]', // 2xl에서 위치 조정
+        )}
+      >
+        <h3
+          style={{
+            background: 'linear-gradient(180deg, #000 42%, #818181 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+          className={classNames(
+            'text-[clamp(34px,calc(-20.705px+15.196vw),96px)] leading-[95%] letterSpacing-[-0.68px]', // 모바일→md
+            'md-landscape:text-[132px] md:leading-[100%] md:letterSpacing-[-3.168px]', // md-landscape 전용
+            'lg:text-[clamp(160px,calc(-1.8px+11.25vw),286px)] lg:leading-[100%] lg:letterSpacing-[-3.84px]', // lg→2xl
+            '2xl:text-[286px] 2xl:leading-[100%] 2xl:letterSpacing-[-6.864px]', // 2xl 이상 고정
+            'whitespace-nowrap text-center font-semibold font-english',
+          )}
+        >
           Your Movement
         </h3>
-        <div className='block md:hidden'>{interactionData.text}</div>
-      </div>
+        <div className='text-[#FF60B9] block md:hidden text-[17px] leading-[100%] letterSpacing-[-0.34px]'>
+          {interactionData.text}
+        </div>
+      </motion.div>
 
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoadingDone ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
         className=' flex items-center justify-center w-full h-full md:h-[50vh] md-landscape:h-[60vh] lg:h-[80vh]'
         style={{
           position: 'absolute',
@@ -579,23 +661,31 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
           interactionData={interactionData}
           motionParams={motionParams}
         />
-      </div>
+      </motion.div>
 
       {/* left */}
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoadingDone ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
         className={classNames(
-          'absolute top-1/2 -translate-y-1/2 left-4 md:left-12 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
+          'absolute top-1/2 -translate-y-1/2 left-4 md:left-14 lg:left-16 xl:left-20 2xl:left-32 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
           'font-medium text-white text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
         )}
       >
         <p className='block md:hidden break-keep'>{brandColorName}</p>
         <p className='hidden md:block break-keep'>{text}</p>
-      </div>
+      </motion.div>
 
       {/* right */}
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoadingDone ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
         className={classNames(
-          'absolute top-1/2 -translate-y-1/2 right-4 md:right-12 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
+          'absolute top-1/2 -translate-y-1/2 right-4 md:right-14 lg:right-16 xl:right-20 2xl:right-32 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
           'font-medium text-white text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px]  leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
         )}
       >
@@ -603,9 +693,13 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         <div className='block md:hidden'>{hexToRgb(brandColorHex).replace('rgb(', '').replace(')', '')}</div>
         <div className='hidden md:block whitespace-nowrap'>{brandColorName}</div>
         <div className='hidden md:block whitespace-nowrap'>{hexToRgb(brandColorHex)}</div>
-      </div>
+      </motion.div>
 
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoadingDone ? 1 : 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
         className={classNames(
           'absolute flex bottom-20 left-1/2 transform -translate-x-1/2',
           'gap-4',
@@ -699,7 +793,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
             {isSharing ? 'Sharing...' : 'Share'}
           </div>
         </motion.button>
-      </div>
+      </motion.div>
     </div>
   )
 }

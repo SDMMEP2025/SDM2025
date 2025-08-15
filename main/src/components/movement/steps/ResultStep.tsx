@@ -5,7 +5,8 @@ import classNames from 'classnames'
 import { ColorAnalysisResult } from '@/types/color'
 import { Range, getTrackBackground } from 'react-range'
 import { MotionControlPanel, MotionParams } from '../MotionControlPanel'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useDeviceDetection } from '@/hooks/useDeviceDetection'
 
 interface ResultStepProps {
   imageUrl: string
@@ -320,6 +321,23 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
     })
   }
 
+  const { isMobile, isTablet } = useDeviceDetection()
+
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
+
+  // 모바일/태블릿인 경우에만 모달 표시
+  const shouldShowModal = isMobile || isTablet
+
+  //1초 후에 모달 닫기
+  useEffect(() => {
+    if (shouldShowModal) {
+      const timer = setTimeout(() => {
+        setIsOnboardingComplete(true)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [shouldShowModal])
+
   return (
     <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
       {/* 모션 컨트롤 패널 추가 */}
@@ -329,6 +347,24 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
         onToggle={() => setIsMotionPanelVisible(!isMotionPanelVisible)}
       />
 
+      {/* 온보딩 */}
+      <AnimatePresence>
+        {!isOnboardingComplete && shouldShowModal && (
+          <motion.div
+            className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOnboardingComplete(true)}
+          >
+            <div className='w-fit h-fit flex flex-col gap-4 justify-center items-center'>
+              <div className='w-36 h-auto aspect-square bg-white'></div>
+              <span className='text-white'>드래그하여 Movement를 움직여보세요!</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div
         className={classNames(
           'absolute flex flex-col justify-center items-center inset-x-0 w-full',
@@ -336,16 +372,15 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
           'top-[14.17%]',
           'gap-[30px]', // 모바일
           //tablet
-          'md-landscape:top-[27.01%]',
           'md:top-[21.3%]',
           'md:gap-[50px]', // md
           'md-landscape:gap-[50px]', // md-landscape 조건
-          'md-landscape:top-[17.53%]',
+          'md-landscape:top-[18%]',
           //desktop
-          'lg:top-[17.53%]',
+          'lg:top-[15%]',
           'lg:gap-[30px]', // lg~2xl fluid
           // large desktop
-          '2xl:top-[17.52%]',
+          '2xl:top-[15%]',
           '2xl:gap-[60px]', // 2xl 이상
         )}
       >
@@ -470,8 +505,8 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'left-[calc(54px+(-5.14286px+18.10714vw))] bottom-[18%] inset-y-auto',
-          'md:left-[calc(54px+(-5.14286px+34.10714vw))] md:bottom-[24%] md:inset-y-auto',
+          'left-[calc(50vw-60px)] bottom-[18%] inset-y-auto',
+          'md:left-[calc(50vw-80px)] md:bottom-[18%] md:inset-y-auto',
           'md-landscape:left-[40px] md-landscape:inset-y-0', // md-landscape 전용
           'lg:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
           '2xl:left-[100px] 2xl:inset-y-0', // 2xl 이상 고정
@@ -519,8 +554,8 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'right-[calc(54px+(-5.14286px+18.10714vw))] bottom-[18%] inset-y-auto',
-          'md:right-[calc(54px+(-5.14286px+34.10714vw))] md:bottom-[24%] md:inset-y-auto',
+          'right-[calc(50vw-60px)] bottom-[18%] inset-y-auto',
+          'md:right-[calc(50vw-80px)] md:bottom-[18%] md:inset-y-auto',
           'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
           'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
           '2xl:right-[100px] 2xl:inset-y-0', // 2xl 이상 고정
