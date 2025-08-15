@@ -225,7 +225,7 @@ export function CursorPlay() {
       onMouseMove={onMove}
       className='relative w-full h-[100dvh] overflow-hidden bg-[#FAFAFA]'
     >
-      <div className='absolute flex flex-col w-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 justify-center items-center'>
+      <div className='absolute flex flex-col w-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 justify-center items-center select-none'>
         <h1 className='text-[9.86vw] leading-none text-center font-semibold font-english text-[#E1E1E1]'>
           Steady movement<br/>make us<br/> New Formative
         </h1>
