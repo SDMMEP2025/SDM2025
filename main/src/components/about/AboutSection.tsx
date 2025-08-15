@@ -2,7 +2,7 @@
 'use client'
 
 import { Header, Footer, MainImage, Divide, MidBody, CreditThanksTo } from '@/components/projects'
-import { HeaderBody, Credit, SolutionSentence, TitleBody, Image, CursorPlay } from '@/components/about'
+import { HeaderBody, Credit, SolutionSentence, TitleBody, Image, CursorPlay, GraphicPlay } from '@/components/about'
 import { FooterDocked } from '@/components/projects'
 import classNames from 'classnames'
 type Tutor = { name: string; englishName?: string }
@@ -47,6 +47,10 @@ export default function AboutSection({ embedded = false }: Props) {
       />
 
       <Image src='' alt='main image' />
+      {/* 여기에 인터랙션 */}
+
+      <GraphicPlay/>
+
       <Divide title='Behind Formative' number='01' />
       <TitleBody
         title={'Value of \nNew Formative'}
