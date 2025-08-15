@@ -54,7 +54,7 @@ export function Header() {
     >
       <div className='w-full h-[58px] px-[16px] py-[30px] lg:px-[48px] lg:py-[30px] lg:h-[80px] md:px-[40px] md:py-[30px] md:h-[68px] inline-flex justify-between items-center'>
         <Link
-          href='/#section1'
+          href='#section1'
           className='h-[24px] text-white md:h-[30px] lg:h-[36px] w-auto relative flex justify-center items-center'
         >
           <svg
