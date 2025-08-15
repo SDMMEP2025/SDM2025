@@ -12,7 +12,9 @@ export default function Page() {
     <>
       <ScrollOrchestrator />
       <Header />
-      <FooterOverlay />
+      <div className='hidden md:block'>
+        <FooterOverlay />
+      </div>
       {/* <ComingSoonSection /> */}
     </>
   )
