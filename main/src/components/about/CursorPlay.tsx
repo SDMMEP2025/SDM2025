@@ -15,22 +15,22 @@ const IMAGES = [
   '/images/about/group/9.jpg',
 ]
 
+
 export function CursorPlay() {
   const wrapRef = useRef<HTMLDivElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
 
   const [visible, setVisible] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [inView, setInView] = useState(false)
 
-  // ===== params =====
   const CURSOR_SIZE = 168
   const HALF = CURSOR_SIZE / 2
-  const STEP_PX = 40
+  const STEP_PX = 80
   const GHOST_EVERY_PX = 100
   const GHOST_FADE_MS = 1000
   const GHOST_MAX = 10
 
-  // ===== refs =====
   const posRef = useRef({ x: 0, y: 0 })
   const smoothRef = useRef({ x: 0, y: 0 })
   const rafRef = useRef<number | null>(null)
@@ -43,7 +43,8 @@ export function CursorPlay() {
   const ghostIdxRef = useRef(0)
   const poolReadyRef = useRef(false)
 
-  // preload (브라우저 네이티브 Image)
+  const isInitializedRef = useRef(false)
+
   useEffect(() => {
     IMAGES.forEach((src) => {
       const img = new window.Image()
@@ -51,7 +52,6 @@ export function CursorPlay() {
     })
   }, [])
 
-  // keyframes (한 번)
   useEffect(() => {
     const id = 'cursor-ghost-fade-style'
     if (!document.getElementById(id)) {
@@ -101,12 +101,39 @@ export function CursorPlay() {
     poolReadyRef.current = true
   }, [CURSOR_SIZE, GHOST_MAX])
 
-  // 마운트 시 한 번 시도 (StrictMode 2회 대비 OK)
   useEffect(() => {
     ensurePool()
   }, [ensurePool])
 
-  // 반드시 존재하게: 못 만들었으면 리턴, 비어있으면 즉시 만들기
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting)
+        if (entry.isIntersecting && !isInitializedRef.current) {
+          const rect = wrapRef.current?.getBoundingClientRect()
+          if (rect) {
+            const x = rect.width / 2
+            const y = rect.height / 2
+            posRef.current.x = x
+            posRef.current.y = y
+            smoothRef.current.x = x
+            smoothRef.current.y = y
+            lastPosRef.current = { x, y }
+            isInitializedRef.current = true
+            setVisible(true)
+          }
+        }
+      },
+      { threshold: 0.3 }
+    )
+    
+    if (wrapRef.current) {
+      observer.observe(wrapRef.current)
+    }
+    
+    return () => observer.disconnect()
+  }, [])
+
   const spawnGhost = useCallback(
     (x: number, y: number, imgSrc: string) => {
       if (!poolReadyRef.current) {
@@ -121,7 +148,6 @@ export function CursorPlay() {
 
       const wrapper = pool[i]
 
-      // 안전가드: inner/img가 없으면 즉석 생성
       let inner = wrapper.firstElementChild as HTMLDivElement | null
       if (!inner) {
         inner = document.createElement('div')
@@ -142,22 +168,17 @@ export function CursorPlay() {
 
       img.src = imgSrc
 
-      // 위치 고정: wrapper(translate만)
       const gx = x - HALF
       const gy = y - HALF
       wrapper.style.transform = `translate(${gx}px, ${gy}px)`
 
-      // 애니메이션: inner(opacity/scale만)
       inner.style.animation = 'none'
-      // reflow
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       inner.offsetHeight
       inner.style.animation = `ghostFade ${GHOST_FADE_MS}ms ease forwards`
     },
     [HALF, GHOST_FADE_MS, CURSOR_SIZE, ensurePool],
   )
 
-  // 커서 미리보기 부드럽게
   const loop = useCallback(() => {
     const lerp = 0.2
     smoothRef.current.x += (posRef.current.x - smoothRef.current.x) * lerp
@@ -206,13 +227,57 @@ export function CursorPlay() {
     lastPosRef.current = { x, y }
   }
 
-  const onEnter = () => {
-    ensurePool()
-    setVisible(true)
+  const handleMousePosition = useCallback((e: MouseEvent) => {
+    if (!wrapRef.current || !visible) return
+    const rect = wrapRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+      posRef.current.x = x
+      posRef.current.y = y
+      if (!isInitializedRef.current) {
+        smoothRef.current.x = x
+        smoothRef.current.y = y
+        lastPosRef.current = { x, y }
+        isInitializedRef.current = true
+      }
+    }
+  }, [visible])
+
+  useEffect(() => {
+    if (visible) {
+      document.addEventListener('mousemove', handleMousePosition)
+      return () => document.removeEventListener('mousemove', handleMousePosition)
+    }
+  }, [visible, handleMousePosition])
+
+  const onEnter: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!inView) return
+    const rect = wrapRef.current?.getBoundingClientRect()
+    if (rect) {
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      posRef.current.x = x
+      posRef.current.y = y
+      lastPosRef.current = { x, y }
+    }
   }
+
   const onLeave = () => {
-    setVisible(false)
-    lastPosRef.current = null
+    if (inView) {
+      const rect = wrapRef.current?.getBoundingClientRect()
+      if (rect) {
+        const x = rect.width / 2
+        const y = rect.height / 2
+        posRef.current.x = x
+        posRef.current.y = y
+        lastPosRef.current = { x, y }
+      }
+    } else {
+      setVisible(false)
+      isInitializedRef.current = false
+    }
     travelAccumRef.current = 0
     ghostAccumRef.current = 0
   }
@@ -232,12 +297,15 @@ export function CursorPlay() {
       </div>
       <div
         ref={cursorRef}
-        className={`pointer-events-none absolute z-50 overflow-hidden transition-opacity ${
-          visible ? 'opacity-100' : 'opacity-0'
+        className={`pointer-events-none absolute z-50 overflow-hidden transition-opacity duration-200 ${
+          visible && inView ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
           left: 0,
           top: 0,
+          width: CURSOR_SIZE,
+          height: CURSOR_SIZE,
+          transform: `translate(-${HALF}px, -${HALF}px)`,
           willChange: 'transform, opacity',
         }}
         aria-hidden
