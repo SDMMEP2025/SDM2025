@@ -23,7 +23,7 @@ export function MediaContainer({
   autoplay = false,
   loop = true,
   muted = true,
-  hasAudio = true,           // ★ 추가: 기본값 = 소리 있음(컨트롤 보임)
+  hasAudio = false,
   threshold = 0.45,
   aspect = 'aspect-[16/9]',
   preloadDelayMs = 300,
