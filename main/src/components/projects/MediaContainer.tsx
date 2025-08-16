@@ -31,18 +31,16 @@ export function MediaContainer({
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const [needsTap, setNeedsTap] = useState(false) // ← 사용자 탭 필요 여부
+  const [needsTap, setNeedsTap] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const playerRef = useRef<Player | null>(null)
   const timerRef = useRef<number | null>(null)
   const inViewRef = useRef(false)
 
-  // 환경 탐지
   const saveData = typeof navigator !== 'undefined' && (navigator as any)?.connection?.saveData === true
   const reduceMotion =
     typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  // Vimeo URL 정규화
   const getEmbedSrc = (url?: string) => {
     if (!url) return undefined
     const ps = [
@@ -62,12 +60,9 @@ export function MediaContainer({
   }
   const finalSrc = type === 'video' ? getEmbedSrc(src) : src
 
-  // Vimeo 파라미터
   const getIframeSrc = (baseSrc: string) => {
     const q = new URLSearchParams()
     const isBackground = !hasAudio
-
-    // ⬇ prewarm일 땐 autoplay=0 (모바일에서 첫 시도 차단 방지)
     const shouldAutoplayParam = autoplay && !prewarm
 
     q.append('autoplay', shouldAutoplayParam ? '1' : '0')
@@ -86,7 +81,6 @@ export function MediaContainer({
     return `${baseSrc}${sep}${q.toString()}`
   }
 
-  // 지연 로드 → iframe 생성
   useEffect(() => {
     if (type !== 'video' || !finalSrc) return
     const start = () => {
@@ -100,7 +94,6 @@ export function MediaContainer({
     }
   }, [type, finalSrc, preloadDelayMs])
 
-  // 안전 재생 시도 함수
   const tryPlay = async () => {
     const player = playerRef.current
     if (!player) return
@@ -109,34 +102,28 @@ export function MediaContainer({
       await player.play()
       setNeedsTap(false)
     } catch {
-      // 자동재생 거절됨 → 탭 유도
       setNeedsTap(true)
     }
   }
 
-  // 가시성 + 제스처 복구 + 정책 대응
   useEffect(() => {
     if (type !== 'video' || !loaded || !iframeRef.current) return
     const player = new Player(iframeRef.current)
     playerRef.current = player
 
-    // 초기 상태
     player.setLoop(loop).catch(() => {})
     player.setMuted(!hasAudio ? true : muted).catch(() => {})
 
-    // 정책상 자동재생을 포기해야 하는 환경이면 곧장 탭 유도
     if (saveData || reduceMotion) {
       setNeedsTap(true)
     }
 
-    // ready 후: prewarm이면 즉시 재생 시도하지 않음
     player.ready().then(async () => {
       if (!saveData && !reduceMotion && inViewRef.current && (autoplay || prewarm)) {
         await tryPlay()
       }
     })
 
-    // 인터섹션: 보이면 재생 시도, 벗어나면 정지
     const io = new IntersectionObserver(
       async ([entry]) => {
         inViewRef.current = entry.isIntersecting
@@ -154,7 +141,6 @@ export function MediaContainer({
     )
     io.observe(iframeRef.current!)
 
-    // 탭/키보드 제스처로 복구
     const resumeOnGesture = () => {
       if (!inViewRef.current) return
       tryPlay()
@@ -162,7 +148,6 @@ export function MediaContainer({
     window.addEventListener('pointerdown', resumeOnGesture, { passive: true })
     window.addEventListener('keydown', resumeOnGesture)
 
-    // 탭 나갔다 오면 상태 동기화
     const onVis = async () => {
       try {
         if (document.visibilityState === 'hidden') await player.pause()
@@ -206,11 +191,9 @@ export function MediaContainer({
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen
             title={alt}
-            // prewarm일 땐 eager로 굳이 안 당겨와도 됨. lazy가 안전.
             loading={autoplay ? 'eager' : 'lazy'}
             onError={() => setHasError(true)}
           />
-          {/* 탭 유도 오버레이 */}
           {needsTap && (
             <button
               type="button"
