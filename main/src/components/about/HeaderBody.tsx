@@ -6,7 +6,7 @@ import classNames from 'classnames'
 
 interface HeaderBodyProps {
   title: string | string[]
-  description: string
+  description?: string
   className?: string
 }
 
