@@ -19,26 +19,21 @@ const IMAGES = [
 export function CursorPlay() {
   const wrapRef = useRef<HTMLDivElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
-
   const [visible, setVisible] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const [inView, setInView] = useState(false)
-
   const CURSOR_SIZE = 168
   const HALF = CURSOR_SIZE / 2
   const STEP_PX = 80
   const GHOST_EVERY_PX = 100
   const GHOST_FADE_MS = 1000
   const GHOST_MAX = 10
-
   const posRef = useRef({ x: 0, y: 0 })
   const smoothRef = useRef({ x: 0, y: 0 })
   const rafRef = useRef<number | null>(null)
-
   const lastPosRef = useRef<{ x: number; y: number } | null>(null)
   const travelAccumRef = useRef(0)
   const ghostAccumRef = useRef(0)
-
   const ghostPoolRef = useRef<HTMLDivElement[]>([])
   const ghostIdxRef = useRef(0)
   const poolReadyRef = useRef(false)

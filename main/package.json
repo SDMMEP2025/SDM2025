@@ -16,6 +16,7 @@
     "@ducanh2912/next-pwa": "^10.0.0",
     "@next/third-parties": "^15.1.2",
     "@svgr/webpack": "^8.1.0",
+    "@vimeo/player": "^2.29.3",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.15.0",

@@ -27,6 +27,7 @@ import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import Head from 'next/head'
 
 const tutorData = [
   {
@@ -96,6 +97,7 @@ export default function Page() {
   )
 
   const designedByRef = useRef<HTMLDivElement>(null)
+  const delayFor = (i: number, base = 400) => i * base
 
   const inView = useInView(designedByRef, {
     amount: 0.1, // 10%가 보일 때 inView 상태 변경
@@ -149,6 +151,14 @@ export default function Page() {
 
   return (
     <>
+      <Head>
+        <link rel='dns-prefetch' href='https://player.vimeo.com' />
+        <link rel='dns-prefetch' href='https://i.vimeocdn.com' />
+        <link rel='dns-prefetch' href='https://f.vimeocdn.com' />
+        <link rel='preconnect' href='https://player.vimeo.com' crossOrigin='' />
+        <link rel='preconnect' href='https://i.vimeocdn.com' crossOrigin='' />
+        <link rel='preconnect' href='https://f.vimeocdn.com' crossOrigin='' />
+      </Head>
       <Header />
       <Summary
         svgSrc='/images/logo/CRUISE_logo.svg'
@@ -163,7 +173,15 @@ export default function Page() {
         title='삶의 모든 순간을 채우는 이동'
         text='매일 아침의 출근길, 바쁜 일상 속 짧은 이동, 설레는 주말여행, 그리고 예상치 못한 만남까지, 우리는 삶의 대부분을 이동 속에서 살아갑니다. 이처럼 이동은 우리의 시간과 경험의 큰 비중을 차지하는, 일상에서 결코 분리될 수 없는 중요한 일부입니다.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106711843?h=ba42ab53da' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106711843?h=ba42ab53da'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+        controls
+      />
       <Divide title='Target' number='02' />
       <TitleBody
         title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
@@ -189,7 +207,15 @@ export default function Page() {
           </>
         }
       ></RightTitleBody>
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712041?h=af8b7a7a8a' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712041?h=af8b7a7a8a'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+        controls
+      />
       <MidBody
         align='left'
         content='CRUISE는 이러한 삶의 방식을 이동 경험으로 확장합니다. 이들에게 이동은 이제, 세상의 모든 순간을 자신만의 취향으로 엮어내고, 친구들과 역동적으로 교감하는 하나의 플랫폼이 됩니다. 도로는 생생한 피드로, 차량은 손안에서 자유롭게 상호작용하는 디바이스로 변화합니다. 이를 통해 탑승자 모두가 이동 경험의 주체이자 경험 에디터가 되는 새로운 미래가 펼쳐집니다. 마치 ‘한 배를 탄 듯이’ 말이죠.'
@@ -203,13 +229,30 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Divide title='CRUISE Product' number='04' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712232?h=e815385a12' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712232?h=e815385a12'
+        preloadDelayMs={delayFor(1)}
+        prewarm
+        muted
+        loop
+        controls
+      />
 
       <RightTitleBody
         title='CRUISE - Handle'
         text='CRUISE의 Handle은 새롭게 도래할 자율주행 시대에 기존 핸들을 대체할 새로운 인터랙션 디바이스입니다. 소셜 미디어에 익숙한 세대에게 직관적인 조작 방식으로 구성되어 빠르고 자연스럽게 주변과 상호작용을 가능하게 합니다.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712396?h=954343a016' />
+
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712396?h=954343a016'
+        preloadDelayMs={delayFor(2)}
+        prewarm
+        muted
+        loop
+        controls
+      />
 
       <RightTitleBody
         title='CRUISE - Dash'
@@ -218,7 +261,15 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_9.jpg' />
 
       <RightBody text='부담 없이 아늑한 2인승부터, 친구들 모두가 같이 여행을 떠날 수 있는 다인승까지, CRUISE는 그 어떤 차량 공간 안이라도 자연스럽게 녹아듭니다. 가장 편안한 자세에서 지나가는 외부 공간과 Dash의 정보를 동시에 확인할 수 있고, Handle을 언제든지 꺼내 들고 조작할 수 있죠.' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712557?h=5d7c488384' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712557?h=5d7c488384'
+        preloadDelayMs={delayFor(3)}
+        prewarm
+        muted
+        loop
+        controls
+      />
 
       <Divide title='Scenario' number='05' />
       <MidTitle align='center' padding={false} text='(1) Styling Our Journey, Together' />
@@ -236,20 +287,44 @@ export default function Page() {
       />
 
       <Image Image='/images/projects/cruise/cruise_12.jpg' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712720?h=5da78fb84e'
+        preloadDelayMs={delayFor(4)}
+        prewarm
+        muted
+        loop
+        controls
+      />
 
       <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
         title={'분위기 전환,\n한손으로 간단하게'}
         text='승객이 잠에 들면 불을 꺼주고, 지루해하면 파티를 열어주는 선장처럼 환경의 변화에 따라 순식간에 분위기를 전환할 수 있습니다. 이동 중 흐름이 끊기는 불편함은 CRUISE에서 사라지고, 당겼다 놓는 제스처 하나로 지금의 분위기, 경로, 콘텐츠를 물 흐르듯 즉시 새로고침 할 수 있죠.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712921?h=694cbd3bf9' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712921?h=694cbd3bf9'
+        preloadDelayMs={delayFor(5)}
+        prewarm
+        muted
+        loop
+        controls
+      />
 
       <TitleBody
         title={'이동 페르소나가 되는\n우리의 여정'}
         text='CRUISE에서 우리가 함께 만든 여정은 단순한 경로가 아닌, 사용자의 취향과 발견이 담긴 ‘이동 페르소나’가 됩니다. 누가 언제 어디서 어떤 발견을 했는지 기록된 이 여정은 다른 이들에게 영감을 주고, 우리의 경험은 타인의 시선을 통해 더욱 확장되죠. 우리 모두의 발자취가 끊임없이 진화하는 역동적인 지도가 되어, 새로운 여행을 위한 영감이 됩니다.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106713092?h=1946f5e58b' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106713092?h=1946f5e58b'
+        preloadDelayMs={delayFor(6)}
+        prewarm
+        muted
+        loop
+        controls
+      />
 
       <Divide title='Vision & Expectation' number='06' />
 
@@ -264,7 +339,14 @@ export default function Page() {
       <MidBody content='매번 지루했던 이동이 언제나 개성 넘치는 탐험이 될, 새로운 이동을 경험해 볼 준비가 되셨나요?' />
       <Image Image='/images/projects/cruise/cruise_17.jpg' />
       <Image Image='/images/projects/cruise/cruise_18.jpg' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106713465?h=79087f8614' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106713465?h=79087f8614'
+        preloadDelayMs={delayFor(7)}
+        prewarm
+        loop
+        controls
+      />
       <Image Image='/images/projects/cruise/cruise_20.jpg' />
       <Image Image='/images/projects/cruise/cruise_21.jpg' />
       <Image Image='/images/projects/cruise/cruise_21.jpg' />
