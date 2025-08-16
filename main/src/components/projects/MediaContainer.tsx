@@ -9,11 +9,11 @@ interface MediaContainerProps {
   autoplay?: boolean
   loop?: boolean
   muted?: boolean
-  controls?: boolean
+  hasAudio?: boolean
   threshold?: number
   aspect?: string
-  preloadDelayMs?: number     // 페이지 진입 후 iframe 생성까지 지연
-  prewarm?: boolean           // √ 화면 밖에서 미리 버퍼링: autoplay+muted 후 즉시 pause
+  preloadDelayMs?: number
+  prewarm?: boolean
 }
 
 export function MediaContainer({
@@ -23,19 +23,20 @@ export function MediaContainer({
   autoplay = false,
   loop = true,
   muted = true,
-  controls = true,
+  hasAudio = false,      
   threshold = 0.45,
   aspect = 'aspect-[16/9]',
   preloadDelayMs = 300,
   prewarm = true,
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
-  const [loaded, setLoaded] = useState(false)  // iframe 생성 여부
+  const [loaded, setLoaded] = useState(false) 
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const playerRef = useRef<Player | null>(null)
   const timerRef = useRef<number | null>(null)
   const inViewRef = useRef(false)
 
+  // Vimeo URL 정규화
   const getEmbedSrc = (url?: string) => {
     if (!url) return undefined
     const ps = [
@@ -57,24 +58,29 @@ export function MediaContainer({
   }
   const finalSrc = type === 'video' ? getEmbedSrc(src) : src
 
-  // prewarm이면 autoplay=1 & muted=1로 버퍼를 미리 끌어옴
+  // Vimeo 파라미터 조합
   const getIframeSrc = (baseSrc: string) => {
     const q = new URLSearchParams()
+
+    // 소리 없는 영상: 완전 무UI(배경 모드)
+    const isBackground = !hasAudio
+
     q.append('autoplay', prewarm || autoplay ? '1' : '0')
     q.append('loop', loop ? '1' : '0')
-    q.append('muted', muted ? '1' : '0')
+    q.append('muted', (!hasAudio || muted) ? '1' : '0')
     q.append('playsinline', '1')
     q.append('autopause', '1')
     q.append('byline', '0')
     q.append('title', '0')
     q.append('portrait', '0')
-    q.append('controls', controls ? '1' : '0')
+    q.append('controls', isBackground ? '0' : '1')
     q.append('dnt', '1')
+    if (isBackground) q.append('background', '1')
+
     const sep = baseSrc.includes('?') ? '&' : '?'
     return `${baseSrc}${sep}${q.toString()}`
   }
 
-  // 페이지 진입 후 지연 → iframe 생성(로드 시작)
   useEffect(() => {
     if (type !== 'video' || !finalSrc) return
     const start = () => {
@@ -88,21 +94,20 @@ export function MediaContainer({
     }
   }, [type, finalSrc, preloadDelayMs])
 
-  // 가시성 재생/일시정지 + prewarm 즉시 pause
   useEffect(() => {
     if (type !== 'video' || !loaded || !iframeRef.current) return
     const player = new Player(iframeRef.current)
     playerRef.current = player
 
-    // 기본 세팅
-    player.setMuted(muted).catch(() => {})
+    player.setMuted(!hasAudio ? true : muted).catch(() => {})
     player.setLoop(loop).catch(() => {})
 
-    // 화면 밖에서도 autoplay로 시작될 수 있으니, 준비되면 바로 pause 해서 버퍼만 확보
     player.ready().then(async () => {
-      if (prewarm && !inViewRef.current) {
-        try { await player.pause() } catch {}
-      }
+      try {
+        if (prewarm && !inViewRef.current) {
+          await player.pause()
+        }
+      } catch {}
     })
 
     const io = new IntersectionObserver(
@@ -121,7 +126,7 @@ export function MediaContainer({
       io.disconnect()
       player.unload().catch(() => {})
     }
-  }, [type, loaded, threshold, loop, muted, prewarm])
+  }, [type, loaded, threshold, loop, prewarm, muted, hasAudio])
 
   return (
     <div className={`w-full relative ${aspect} bg-zinc-600 overflow-hidden`}>
@@ -145,7 +150,6 @@ export function MediaContainer({
           allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
           allowFullScreen
           title={alt}
-          // prewarm 중엔 eager로 최대한 빨리 가져오게 힌트
           loading={prewarm || preloadDelayMs === 0 ? 'eager' : 'lazy'}
           onError={() => setHasError(true)}
         />
@@ -153,7 +157,6 @@ export function MediaContainer({
 
       {((!finalSrc || hasError) || (type === 'video' && finalSrc && !loaded)) && (
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          {/* (기존 플레이스홀더 유지) */}
           <div className="relative mb-4">
             <div className="w-12 h-12 xs:w-7 xs:h-7 md:w-7 md:h-7 lg:w-12 lg:h-12 rounded-full border-[5.25px] xs:border-[2.80px] md:border-[2.80px] lg:border-[5.25px] border-white" />
             <div className="w-3 h-3 xs:w-1.5 xs:h-1.5 md:w-1.5 md:h-1.5 lg:w-3 lg:h-3 absolute top-[21px] left-[21px] xs:top-[11px] xs:left-[11px] md:top-[11px] md:left-[11px] lg:top-[21px] lg:left-[21px] rounded-full border-[5.25px] xs:border-[2.80px] md:border-[2.80px] lg:border-[5.25px] border-white" />

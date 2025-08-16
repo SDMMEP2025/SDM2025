@@ -180,7 +180,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
       <Divide title='Target' number='02' />
       <TitleBody
@@ -214,7 +213,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
       <MidBody
         align='left'
@@ -236,7 +234,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
 
       <RightTitleBody
@@ -251,7 +248,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
 
       <RightTitleBody
@@ -268,7 +264,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
 
       <Divide title='Scenario' number='05' />
@@ -294,7 +289,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
 
       <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
@@ -309,7 +303,6 @@ export default function Page() {
         prewarm
         muted
         loop
-        controls
       />
 
       <TitleBody
@@ -320,10 +313,10 @@ export default function Page() {
         type='video'
         src='https://player.vimeo.com/video/1106713092?h=1946f5e58b'
         preloadDelayMs={delayFor(6)}
+        hasAudio={true}
         prewarm
-        muted
         loop
-        controls
+        muted={false}
       />
 
       <Divide title='Vision & Expectation' number='06' />
@@ -345,7 +338,6 @@ export default function Page() {
         preloadDelayMs={delayFor(7)}
         prewarm
         loop
-        controls
       />
       <Image Image='/images/projects/cruise/cruise_20.jpg' />
       <Image Image='/images/projects/cruise/cruise_21.jpg' />
