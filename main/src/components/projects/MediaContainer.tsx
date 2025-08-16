@@ -23,14 +23,14 @@ export function MediaContainer({
   autoplay = false,
   loop = true,
   muted = true,
-  hasAudio = false,      
+  hasAudio = true,           // ★ 추가: 기본값 = 소리 있음(컨트롤 보임)
   threshold = 0.45,
   aspect = 'aspect-[16/9]',
   preloadDelayMs = 300,
   prewarm = true,
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
-  const [loaded, setLoaded] = useState(false) 
+  const [loaded, setLoaded] = useState(false)  // iframe 생성 여부
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const playerRef = useRef<Player | null>(null)
   const timerRef = useRef<number | null>(null)
@@ -67,20 +67,21 @@ export function MediaContainer({
 
     q.append('autoplay', prewarm || autoplay ? '1' : '0')
     q.append('loop', loop ? '1' : '0')
-    q.append('muted', (!hasAudio || muted) ? '1' : '0')
+    q.append('muted', (!hasAudio || muted) ? '1' : '0')  // 무음 영상은 항상 muted
     q.append('playsinline', '1')
     q.append('autopause', '1')
     q.append('byline', '0')
     q.append('title', '0')
     q.append('portrait', '0')
-    q.append('controls', isBackground ? '0' : '1')
+    q.append('controls', isBackground ? '0' : '1')       // hasAudio=false면 컨트롤 제거
     q.append('dnt', '1')
-    if (isBackground) q.append('background', '1')
+    if (isBackground) q.append('background', '1')        // ★ 완전 배경 모드 (UI/오버레이 없음)
 
     const sep = baseSrc.includes('?') ? '&' : '?'
     return `${baseSrc}${sep}${q.toString()}`
   }
 
+  // 페이지 진입 후 지연 → iframe 생성
   useEffect(() => {
     if (type !== 'video' || !finalSrc) return
     const start = () => {
@@ -94,14 +95,17 @@ export function MediaContainer({
     }
   }, [type, finalSrc, preloadDelayMs])
 
+  // 가시성 + prewarm
   useEffect(() => {
     if (type !== 'video' || !loaded || !iframeRef.current) return
     const player = new Player(iframeRef.current)
     playerRef.current = player
 
+    // 초기 상태
     player.setMuted(!hasAudio ? true : muted).catch(() => {})
     player.setLoop(loop).catch(() => {})
 
+    // ready 후 prewarm이면 pause (버퍼 예열)
     player.ready().then(async () => {
       try {
         if (prewarm && !inViewRef.current) {
@@ -110,6 +114,7 @@ export function MediaContainer({
       } catch {}
     })
 
+    // 인터섹션: 보이면 play, 벗어나면 pause
     const io = new IntersectionObserver(
       async ([entry]) => {
         inViewRef.current = entry.isIntersecting
@@ -130,6 +135,7 @@ export function MediaContainer({
 
   return (
     <div className={`w-full relative ${aspect} bg-zinc-600 overflow-hidden`}>
+      {/* IMAGE */}
       {type === 'image' && finalSrc && !hasError && (
         <img
           src={finalSrc}
@@ -141,6 +147,7 @@ export function MediaContainer({
         />
       )}
 
+      {/* VIDEO */}
       {type === 'video' && finalSrc && !hasError && loaded && (
         <iframe
           ref={iframeRef}
@@ -155,6 +162,7 @@ export function MediaContainer({
         />
       )}
 
+      {/* 플레이스홀더 (로드 전/에러) */}
       {((!finalSrc || hasError) || (type === 'video' && finalSrc && !loaded)) && (
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <div className="relative mb-4">

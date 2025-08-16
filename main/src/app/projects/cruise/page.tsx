@@ -314,10 +314,9 @@ export default function Page() {
         src='https://player.vimeo.com/video/1106713092?h=1946f5e58b'
         preloadDelayMs={delayFor(6)}
         hasAudio={true}
-        prewarm = {false}
+        prewarm
+        muted
         loop
-        autoplay = {true}
-        muted={false}
       />
 
       <Divide title='Vision & Expectation' number='06' />
