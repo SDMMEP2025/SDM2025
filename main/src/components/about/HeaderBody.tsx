@@ -18,11 +18,11 @@ export function HeaderBody({ title, description, className = '' }: HeaderBodyPro
       className={classNames(
         'w-full h-fit bg-white flex flex-col justify-center items-center ',
         //mobile
-        'px-[4.10vw] py-[56px] gap-[12px]',
+        'px-[4.10vw] py-[56px] gap-[56px]',
         //tablet
-        'md:px-[5.2vw] md:py-[48px] md:gap-[20px]',
+        'md:px-[5.2vw] md:py-[48px] md:gap-[48px]',
         //desktop
-        'lg:px-[14.10vw] lg:py-[84px] lg:gap-[24px]',
+        'lg:px-[11.1vw] lg:py-[84px] lg:gap-[84px]',
         className,
       )}
     >
@@ -30,11 +30,11 @@ export function HeaderBody({ title, description, className = '' }: HeaderBodyPro
         className={classNames(
           'font-english font-semibold',
           //mobile
-          'w-full text-[28px] tracking-[-0.56px] leading-[1.1] text-left',
+          'w-full text-[clamp(36px,8.7vw,40px)] tracking-[-0.56px] leading-[1.1] text-center',
           //tablet
-          'md:w-[68vw] md:text-[24px] md:tracking-[-0.48px] md:leading-[1.1] md:text-center',
+          'md:w-[68vw] md:text-[clamp(40px,5.2vw,110px)] md:tracking-[-0.48px] md:leading-[1.1] md:text-center',
           //desktop
-          'lg:w-[790px] lg:text-[40px] lg:tracking-[-0.8px] lg:leading-[1.1] lg:text-center',
+          'lg:w-[77.7vw] lg:text-[7vw] lg:tracking-[-0.8px] lg:leading-[1.1] lg:text-center',
         )}
       >
         {titleLines.map((line, index) => (
@@ -45,7 +45,7 @@ export function HeaderBody({ title, description, className = '' }: HeaderBodyPro
         className={classNames(
           'break-keep',
           //mobile
-          'w-full text-[17px] leading-[1.6] tracking-[-0.34px] font-regular text-left',
+          'w-full text-[17px] leading-[1.6] tracking-[-0.34px] font-regular text-center',
           //tablet
           'md:w-[68vw] md:text-[17px] md:leading-[1.5] md:tracking-[-0.34px] md:font-medium md:text-center',
           //desktop

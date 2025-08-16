@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -161,6 +162,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Merlin_logo.svg'
@@ -227,7 +229,7 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
       <Divide number='06' title='Solution' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle text='Into Your Flow, Merlin OS' padding={false}/>
+      <MidTitle text='Into Your Flow, Merlin OS' padding={false} />
       <MidBody
         content={
           'Merlin OS is the next-generation operating system.\nIt remakes features based on context and breaks down app boundaries to create one seamless, continuous experience.\nYou do not have to think about controls, so you can stay fully focused.'

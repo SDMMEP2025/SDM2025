@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -149,6 +150,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/CRUISE_logo.svg'
@@ -174,7 +176,9 @@ export default function Page() {
         title='Silent passengers to adventurous pioneers, CRUISER'
         text={
           <>
-            Our definition of New Movement Generation, aka CRUISER, fundamentally differs from the past. They not only consume online content but also actively rearrange, explore deeper, and style it to fit their individuality. They naturally share what’s found and bring new value to the table.
+            Our definition of New Movement Generation, aka CRUISER, fundamentally differs from the past. They not only
+            consume online content but also actively rearrange, explore deeper, and style it to fit their individuality.
+            They naturally share what’s found and bring new value to the table.
             <br />
             <br />
             <a
@@ -196,9 +200,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_4.jpg' />
       <MidTitle align='center' text='Road as a feed—sharing every experience.' />
       <Image Image='/images/projects/cruise/cruise_5.jpg' />
-      <MidBody
-        content={'Style Our Mile, Drive Our Life! Let’s explore how CRUISE will change our movement!'}
-      />
+      <MidBody content={'Style Our Mile, Drive Our Life! Let’s explore how CRUISE will change our movement!'} />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Divide title='CRUISE Product' number='04' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712232?h=e815385a12' />
@@ -215,7 +217,7 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise_9.jpg' />
 
-      <RightBody text='From cozy, manageable two-seaters to spacious vehicles that fit all your friends, CRUISE blends in effortlessly into any interior. Allowing for checking both external & Dash information in comfort, all while having Handle within arm’s reach.'/>
+      <RightBody text='From cozy, manageable two-seaters to spacious vehicles that fit all your friends, CRUISE blends in effortlessly into any interior. Allowing for checking both external & Dash information in comfort, all while having Handle within arm’s reach.' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712557?h=5d7c488384' />
 
       <Divide title='Scenario' number='05' />
@@ -252,9 +254,7 @@ export default function Page() {
       <Divide title='Vision & Expectation' number='06' />
 
       <MidTitle align='center' padding={false} text='Future Value of CRUISE' />
-      <MidBody
-        content='CRUISE redefines everyday movement experiences into a dynamic, sharing journey. Proposing a future where people’s personal discoveries and tastes intertwine, every trip is filled with vibrant exploration.'
-      />
+      <MidBody content='CRUISE redefines everyday movement experiences into a dynamic, sharing journey. Proposing a future where people’s personal discoveries and tastes intertwine, every trip is filled with vibrant exploration.' />
       <Image Image='/images/projects/cruise/cruise_16.jpg' />
 
       <MidBody content='Ready to turn all everyday trips into a journey full of discoveries?' />

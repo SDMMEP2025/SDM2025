@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -171,6 +172,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/NewBe_logo.svg'
@@ -185,7 +187,7 @@ export default function Page() {
         className='w-[142px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
       <MainImage />
-      <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
+      <Divide title='Background' number='01' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
@@ -204,7 +206,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Target' number='02' className='text-[#7C8A8D]'/>
+      <Divide title='Target' number='02' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
@@ -231,7 +233,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Problem' number='03' className='text-[#7C8A8D]'/>
+      <Divide title='Problem' number='03' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
@@ -280,7 +282,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Solution' number='04' className='text-[#7C8A8D]'/>
+      <Divide title='Solution' number='04' className='text-[#7C8A8D]' />
       <MidTitle align='center' text=' With NewBe, just staying turns into effortless styling' />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
@@ -316,7 +318,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Scenario' number='05' className='text-[#7C8A8D]'/>
+      <Divide title='Scenario' number='05' className='text-[#7C8A8D]' />
       <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
       <TitleBody
         title={
@@ -446,7 +448,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Expectation' number='06' className='text-[#7C8A8D]'/>
+      <Divide title='Expectation' number='06' className='text-[#7C8A8D]' />
       <MidTitle
         align='center'
         text={
@@ -476,8 +478,10 @@ export default function Page() {
         align='center'
         content={
           <>
-            It is no longer just about making your hair look a certain way.<br/>Embrace natural hair and turn it into a
-            unique style. This is a new way to express who you really are through hairstyling.
+            It is no longer just about making your hair look a certain way.
+            <br />
+            Embrace natural hair and turn it into a unique style. This is a new way to express who you really are
+            through hairstyling.
           </>
         }
       />

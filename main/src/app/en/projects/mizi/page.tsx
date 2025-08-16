@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -143,6 +144,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Mizi_logo.svg'
@@ -248,7 +250,10 @@ Now, with NOMA:Stardust, MIZI’s space avatar, that dream becomes real. Experie
         align='center'
         content={
           <>
-            MIZI redefines what ‘experience’ means in the age of advancing technology. In a world where every sense can be reproduced remotely and in real time, physical limitations no longer apply. From the everyday to the seemingly impossible, any destination is within reach. MIZI offers an on-demand immersive experience that turns distant dreams into reality.
+            MIZI redefines what ‘experience’ means in the age of advancing technology. In a world where every sense can
+            be reproduced remotely and in real time, physical limitations no longer apply. From the everyday to the
+            seemingly impossible, any destination is within reach. MIZI offers an on-demand immersive experience that
+            turns distant dreams into reality.
             <br />
             <br />
             <a

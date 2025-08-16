@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -151,6 +152,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Head>
         <link rel='dns-prefetch' href='https://player.vimeo.com' />
         <link rel='dns-prefetch' href='https://i.vimeocdn.com' />

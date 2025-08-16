@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -151,6 +152,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Layon_logo.svg'
@@ -241,7 +243,7 @@ export default function Page() {
             <a
               href='https://abiding-birth-ce4.notion.site/LAY-ON-Get-Your-Layer-On-23e5dd09e82c80df8013c8496d8fffd2?source=copy_link'
               target='_blank'
-              className='underline font-semibold' 
+              className='underline font-semibold'
             >
               ▶︎ Learn more about detailed story of LAY.ON
             </a>

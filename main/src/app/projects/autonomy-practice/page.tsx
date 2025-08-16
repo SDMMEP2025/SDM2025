@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -158,6 +159,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/AutonomyPractice_logo.svg'
@@ -179,7 +181,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Structure' number='02' className='text-[#949598]'/>
+      <Divide title='Structure' number='02' className='text-[#949598]' />
       <MidBody
         align='left'
         content={
@@ -189,7 +191,7 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='Practice Log' number='03' className='text-[#949598]'/>
+      <Divide title='Practice Log' number='03' className='text-[#949598]' />
       <MidBody
         align='left'
         content={

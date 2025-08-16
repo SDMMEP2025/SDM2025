@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -174,6 +175,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/hotcake_logo.svg'
@@ -244,7 +246,7 @@ export default function Page() {
 
       <Image Image='/images/projects/cruise/cruise_6.jpg' />
 
-      <MidTitle align='center' text='(2) New Experience with Hotcake'/>
+      <MidTitle align='center' text='(2) New Experience with Hotcake' />
       <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
 
       <TitleBody
