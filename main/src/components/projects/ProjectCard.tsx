@@ -188,8 +188,9 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
     [layoutConfig, index, projects, setIndex],
   )
 
-  const getBorderClasses = useCallback((isExpanded: boolean, isRow: boolean) => {
-    if (isExpanded) return 'rounded-[5px] border-none'
+  //펼쳐진 카드의 옆 카드는 보더를 없애기
+  const getBorderClasses = useCallback((isExpanded: boolean, isAdjacent: boolean, isRow: boolean) => {
+    if (isExpanded || isAdjacent) return 'rounded-[5px] border-none'
     let c = 'border-stone-300 border-b'
     c += ' md:border-b md:border-t-0 md:border-l-0'
     if (isRow) {
@@ -251,13 +252,21 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
       <div style={containerStyle}>
         {projects.map((project, i) => {
           const isExpanded = index === i
+          let isAdjacent
+          if (isMdPortrait) {
+            //바로 왼쪽 카드의 순번
+            isAdjacent = i === index - 1
+          } else {
+            //바로 오른쪽 카드의 순번
+            isAdjacent = i === index + 1
+          }
           const p = positions[i]
           const imgW = isRow ? expandedW : W
           const imgH = isRow ? aspectH : dimensions.MOBILE_EXPANDED_H
           return (
             <motion.div
               key={project.id}
-              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded, isRow))}
+              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded, isAdjacent, isRow))}
               animate={{ left: p.left, top: p.top, width: p.width, height: p.height }}
               transition={slide}
             >
