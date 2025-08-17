@@ -5,10 +5,8 @@ import { aboutPhase } from '@/lib/phase'
 import { FooterContent } from '../FooterContent'
 
 export function FooterOverlay() {
-  // 헤더와 동일한 오퍼시티 곡선
   const baseOpacity = useTransform(chromeProgress, [0, 0.2, 0.6], [0, 0, 1])
   const pe = useTransform(baseOpacity, (v) => (v < 0.15 ? 'none' : ('auto' as const)))
-  // 섹션6이 끝나갈수록 페이드아웃 (도킹으로 넘김)
   const hide = useTransform(aboutPhase, [0.98, 1], [0, 1])
   const opacity = useTransform([baseOpacity, hide], ([o, h]: [number, number]) => o * (1 - Number(h)))
 
