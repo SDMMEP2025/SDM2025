@@ -78,15 +78,20 @@ export default function AboutSection({ embedded = false }: Props) {
   return (
     <>
       <Blank />
-      <MediaContainer
-        type='video'
-        src='https://player.vimeo.com/video/1109760722?h=69b2dd590a'
-        preloadDelayMs={delayFor(0)}
-        prewarm
-        muted
-        loop
-        aspect='aspect-[1440/1200]'
-      />
+      <div className='relative w-full aspect-[1440/1200] font-english font-semibold'>
+        <h1 className='hidden md:block absolute text-white z-[1000] md:top-[11.3px] lg:top-[68px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>New Formative</h1>
+        <h2 className='hidden md:block absolute text-white z-[1000] md:top-[11.3px] lg:top-[186px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>Steady Movement<br/>For Progress</h2>
+        <MediaContainer
+          type='video'
+          src='https://player.vimeo.com/video/1109760722?h=69b2dd590a'
+          preloadDelayMs={delayFor(0)}
+          prewarm
+          muted
+          loop
+          aspect='aspect-[1440/1200]'
+          position='absolute'
+        />
+      </div>
       <HeaderBody
         title={['What is New Formative?']}
         description={

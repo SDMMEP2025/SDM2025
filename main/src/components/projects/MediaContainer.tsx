@@ -14,6 +14,7 @@ interface MediaContainerProps {
   aspect?: string
   preloadDelayMs?: number
   prewarm?: boolean
+  position?: string
 }
 
 export function MediaContainer({
@@ -28,6 +29,7 @@ export function MediaContainer({
   aspect = 'aspect-[16/9]',
   preloadDelayMs = 300,
   prewarm = true,
+  position = 'relative'
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -167,7 +169,7 @@ export function MediaContainer({
   }, [type, loaded, threshold, loop, prewarm, muted, hasAudio, autoplay, saveData, reduceMotion])
 
   return (
-    <div className={`w-full relative ${aspect} bg-zinc-600 overflow-hidden`}>
+    <div className={`w-full ${position} ${aspect} bg-zinc-600 overflow-hidden`}>
       {/* IMAGE */}
       {type === 'image' && finalSrc && !hasError && (
         <img
