@@ -85,6 +85,7 @@ export default function AboutSection({ embedded = false }: Props) {
         prewarm
         muted
         loop
+        aspect='aspect-[1/1]'
       />
       <HeaderBody
         title={['What is New Formative?']}
