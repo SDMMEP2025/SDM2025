@@ -1,7 +1,7 @@
 // components/about/AboutSection.tsx
 'use client'
 
-import { Header, Footer, MainImage, Divide, MidBody, CreditThanksTo } from '@/components/projects'
+import { Header, Footer, MainImage, Divide, MidBody, CreditThanksTo, MediaContainer } from '@/components/projects'
 import {
   HeaderBody,
   Credit,
@@ -74,26 +74,32 @@ export default function AboutSection({ embedded = false }: Props) {
     },
   ]
 
+  const delayFor = (i: number, base = 400) => i * base
+
   return (
     <>
       <Blank />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1106712720?h=5da78fb84e'
+        preloadDelayMs={delayFor(0)}
+        prewarm
+        muted
+        loop
+      />
       <HeaderBody
         title={['What is New Formative?']}
         description={
           '새로움을 만드는 데 필요한 것은 대단한 변화나 특별한 순간이 아닌, 자신만의 방향을 탐색하며 꾸준히 움직이는 에너지입니다. 2025 MEP 〈New Formative〉는 새로운 형성을 위해 나아가며 각자의 에너지가 만들어내는 꾸준한 움직임의 과정을 담고 있습니다.'
         }
       />
-
       <Image src='' alt='main image' />
       {/* 여기에 인터랙션 */}
-
       <GraphicPlay />
-
       <Divide title='Movement as a System' number='01' />
       <Image src='' alt='about_3.png' />
       <Image src='' alt='about_4.mp4' />
       <Image src='' alt='about_5.mp4' />
-
       <Divide title='Archive' number='02' />
       <TitleBody
         title={'Archive\nMovement'}
@@ -110,7 +116,6 @@ export default function AboutSection({ embedded = false }: Props) {
         align='center'
       />
       <HeaderBody title={'9Teams are Formative'} />
-
       <Image src='' alt='about_6.mp4' />
       <TitleBody
         title={'New Formative \nBegins Here'}
@@ -118,7 +123,6 @@ export default function AboutSection({ embedded = false }: Props) {
       />
       <Image src='' alt='about_7.jpg' />
       <Image src='' alt='about_8.jpg' />
-
       <MidBody
         content={
           '삼성디자인멤버십 회원들의 비전과 태도를 드러내는 ‘New Step’을 시작으로, 다양한 분야가 교차하며 새로운 가능성을 모색하는 ‘New Link’, 각자의 고유한 문제의식을 바탕으로 전개된 ‘New Focus’, 마지막으로 감각적 실험이 응집된 ‘New Spark’순으로 이어집니다.'
@@ -152,7 +156,6 @@ export default function AboutSection({ embedded = false }: Props) {
           Let's Move
         </Link>
       </div>
-
       <Image src='' alt='about_11.mp4' />
       <Image src='' alt='about_12.mp4' />
       <Image src='' alt='about_13.mp4' />
@@ -167,7 +170,6 @@ export default function AboutSection({ embedded = false }: Props) {
       <Image src='' alt='about_22.jpg' />
       <Image src='' alt='about_23.jpg' />
       <Image src='' alt='about_24.jpg' />
-
       <Credit
         title='Designed By'
         members={[
@@ -234,7 +236,6 @@ export default function AboutSection({ embedded = false }: Props) {
           },
         ]}
       />
-
       <CreditThanksTo title='Thanks to' sections={thankstoData} />
       <FooterDocked />
     </>

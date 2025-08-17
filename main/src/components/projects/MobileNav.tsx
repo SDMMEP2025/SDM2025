@@ -57,7 +57,7 @@ export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, is
               let textColorClass = 'text-zinc-600'
 
               if (isClicked && isCurrentPage) {
-                textColorClass = 'text-[#222222]'
+                textColorClass = 'text-black'
               } else if (isClicked && !isCurrentPage) {
                 textColorClass = 'text-pink-400'
               }

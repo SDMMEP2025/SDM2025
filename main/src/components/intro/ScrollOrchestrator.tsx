@@ -51,10 +51,6 @@ export function ScrollOrchestrator() {
   const vhPx = useVhPx()
   const u = useVminPx()
 
-  // useEffect(() => {
-  //   hasStageRef.current = !!getStageFromURL()
-  // }, [])
-
   useLayoutEffect(() => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual'
@@ -111,7 +107,7 @@ export function ScrollOrchestrator() {
     if (!stageNow) return
 
     let tries = 0
-    const maxTries = 60
+    const maxTries = 10
     const tick = () => {
       tries += 1
       const wrap = wrapRef.current
