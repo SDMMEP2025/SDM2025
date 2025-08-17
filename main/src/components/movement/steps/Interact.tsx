@@ -350,7 +350,7 @@ function FloatingConcentricSquares({
     <>
       {/* 센서 UI들 */}
       {isMobile && gyroStatus === 'pending' && (
-        <div className='absolute bottom-[22vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
+        <div className='absolute bottom-[17vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
           <button
             onClick={handleGyroActivation}
             className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
@@ -361,7 +361,7 @@ function FloatingConcentricSquares({
       )}
 
       {isMobile && isListening && (
-        <div className='absolute bottom-[22vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
+        <div className='absolute bottom-[17vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
           <div className='text-black font-semibold text-sm animate-pulse'>● 디바이스 움직임 감지 중</div>
         </div>
       )}
@@ -427,6 +427,8 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
   const [isSharing, setIsSharing] = useState(false)
 
   const lottieRef = useRef<LottieRefCurrentProps>(null)
+  const shareAttemptRef = useRef<number | null>(null)
+  const appSwitchAttemptRef = useRef<boolean>(false)
 
   // 모션 컨트롤 관련 state 추가
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
@@ -571,6 +573,45 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     return () => clearTimeout(timer)
   }, [])
 
+  // Web Share API
+  const handleShare = async () => {
+    try {
+      setIsSharing(true)
+      shareAttemptRef.current = Date.now()
+      appSwitchAttemptRef.current = false
+
+      // base64 → Blob → File 변환
+      const response = await fetch(await generateShareImageLocally(interactionData))
+      const blob = await response.blob()
+      const photoFile = new File([blob], `your-movement-creation-${Date.now()}.png`, { type: 'image/png' })
+
+      const shareOptions = {
+        title: '',
+        text: `SAMSUNG DESIGN MEMBERSHIP MOVEMENT`,
+        files: [photoFile],
+      }
+
+      const nav = navigator as any
+      if (nav.canShare && nav.canShare(shareOptions)) {
+        await nav.share(shareOptions)
+        // Web Share API 성공 시 바로 인증 완료
+        setIsSharing(false)
+      } else {
+        await nav.share({
+          title: '',
+          text: `SAMSUNG DESIGN MEMBERSHIP MOVEMENT`,
+          url: window.location.href,
+        })
+        setIsSharing(false)
+      }
+    } catch (error) {
+      console.error('공유 실패:', error)
+      shareAttemptRef.current = null
+      appSwitchAttemptRef.current = false
+      setIsSharing(false)
+    }
+  }
+
   return (
     <div className='w-full h-full bg-white'>
       {/* 모션 컨트롤 패널 추가 */}
@@ -611,7 +652,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         className={classNames(
           'w-full h-fit flex flex-col items-center justify-center relative',
           'absolute md:z-0 left-1/2 transform -translate-x-1/2 z-20',
-          'top-[24vh] gap-[7px] md:gap-[10px] lg:gap-[12px] 2xl:gap-[15px]',
+          'top-[18vh] gap-[7px] md:gap-[10px] lg:gap-[12px] 2xl:gap-[15px]',
           'md:top-[20vh]', // 모바일에서 md로 넘어갈 때 위치 조정
           'md-landscape:top-[15vh]', // md-landscape에서 위치 조정
           'lg:top-[10vh]', // lg에서 위치 조정
@@ -701,7 +742,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
         className={classNames(
-          'absolute flex bottom-20 left-1/2 transform -translate-x-1/2',
+          'absolute flex bottom-16 left-1/2 transform -translate-x-1/2',
           'gap-4',
           'md:gap-4',
           'lg:gap-4',
@@ -758,7 +799,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
           transition={{ duration: 0.3 }}
           whileHover={{ opacity: 1 }}
           whileTap={{ scale: 0.95, opacity: 1 }}
-          // onClick={handleDownload}
+          onClick={handleShare}
           disabled={isSharing}
           className={classNames(
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
