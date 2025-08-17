@@ -15,7 +15,7 @@ export function FloatingPhoto({
   base: number
   fade: number[]
 }) {
-  const y = useTransform(p4, (v) => base + v * -4100)
+  const y = useTransform(p4, (v) => base + v * -3000)
   const scale = useTransform(p4, fade, [0.96, 1])
   return (
     <motion.img

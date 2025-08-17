@@ -1,4 +1,4 @@
-// hooks/useSnapP0toP5.ts
+// hooks/useSnapP0toP4.ts
 'use client'
 import { useEffect, useRef } from 'react'
 import type { MotionValue } from 'framer-motion'
@@ -6,13 +6,17 @@ import type { MotionValue } from 'framer-motion'
 type Cut = { start: number; end: number }
 
 export function useSnapP0toP4(
-  wrapRef: React.RefObject<HTMLDivElement | null>,
+  wrapRef: React.RefObject<HTMLElement | null>,
   scrollYProgress: MotionValue<number>,
   cuts: readonly Cut[],
-  opts?: { duration?: number; nearPct?: number },
+  opts?: {
+    duration?: number
+    nearPct?: number
+    scrollerRef?: React.RefObject<HTMLElement | null> // ★ 추가
+  },
 ) {
-  const DUR = opts?.duration ?? 300
-  const NEAR = opts?.nearPct ?? 0.01
+  const DUR = opts?.duration ?? 280
+  const NEAR = opts?.nearPct ?? 0.05
 
   const snapBands: [number, number][] = [
     [0, 1],
@@ -26,8 +30,14 @@ export function useSnapP0toP4(
   const snapRaf = useRef<number | null>(null)
   const prevOverscroll = useRef<string | null>(null)
 
+  const scrollerEl = () =>
+    (opts?.scrollerRef?.current as HTMLElement | null) ||
+    (document.scrollingElement as unknown as HTMLElement) ||
+    (document.documentElement as HTMLElement)
+
   const setOverscroll = (on: boolean) => {
-    const el = document.documentElement
+    const el = scrollerEl()
+    if (!el) return
     if (on) {
       if (prevOverscroll.current == null) prevOverscroll.current = el.style.overscrollBehavior || ''
       el.style.overscrollBehavior = 'contain'
@@ -38,28 +48,33 @@ export function useSnapP0toP4(
       document.body.style.pointerEvents = ''
     }
   }
+
   const progressToTop = (p: number) => {
-    const el = wrapRef.current!
-    const rect = el.getBoundingClientRect()
-    const docTop = window.scrollY + rect.top
-    const total = rect.height
-    return docTop + p * total
+    const wrap = wrapRef.current!
+    const startY = (wrap as HTMLElement).offsetTop // ★ 안정 기준
+    const total = wrap.offsetHeight
+    return startY + p * total
   }
 
   const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
   const animateTo = (targetTop: number, dur = DUR) => {
     if (animating.current) return
+    const scroller = scrollerEl()
+    if (!scroller) return
+    const startTop = scroller.scrollTop
+    if (Math.abs(targetTop - startTop) < 1) return // 이동량 미미하면 생략
+
     animating.current = true
     setOverscroll(true)
-    const startTop = window.scrollY
+
     const delta = targetTop - startTop
     const t0 = performance.now()
 
     const step = (now: number) => {
       const k = Math.min((now - t0) / dur, 1)
       const y = startTop + delta * ease(k)
-      window.scrollTo(0, y)
+      scroller.scrollTo({ top: y, behavior: 'auto' })
       if (k < 1) {
         snapRaf.current = requestAnimationFrame(step)
       } else {
@@ -79,13 +94,13 @@ export function useSnapP0toP4(
     }
     return null
   }
+
   useEffect(() => {
-    const el = wrapRef.current
-    if (!el) return
+    const box = opts?.scrollerRef?.current || window // 이벤트는 box에
 
     const onWheel = (e: WheelEvent) => {
       const band = getActiveBand()
-      if (!band) return // 스냅 영역 밖 → 네이티브
+      if (!band) return
       e.preventDefault()
 
       const [i, j] = band
@@ -95,10 +110,8 @@ export function useSnapP0toP4(
 
       if (animating.current) return
       if (e.deltaY > 0) {
-        // 앞으로: 항상 다음 컷 시작점(b)으로
         animateTo(progressToTop(b))
       } else if (e.deltaY < 0) {
-        // 뒤로: 시작점 근처면 이전 컷으로, 아니면 현재 컷 시작점(a)
         const prev = i - 1 >= 0 ? cuts[i - 1].start : null
         if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev))
         else animateTo(progressToTop(a))
@@ -126,10 +139,8 @@ export function useSnapP0toP4(
 
       if (animating.current) return
       if (dy > 0) {
-        // 위로 스와이프(스크롤 다운) → 다음 컷
         animateTo(progressToTop(b))
       } else {
-        // 아래로 스와이프(스크롤 업) → 이전/현재 시작
         const prev = i - 1 >= 0 ? cuts[i - 1].start : null
         if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev))
         else animateTo(progressToTop(a))
@@ -159,26 +170,18 @@ export function useSnapP0toP4(
       }
     }
 
-    const onScroll = () => {
-      // 스냅 중엔 브라우저 관성/바운스로 대충 멈추는 거 방지
-      if (!getActiveBand() || !animating.current) return
-      // 아무 것도 안 해도 됨 (animateTo가 주도)
-    }
-
-    window.addEventListener('wheel', onWheel as any, { passive: false })
-    window.addEventListener('touchstart', onTouchStart as any, { passive: true })
-    window.addEventListener('touchmove', onTouchMove as any, { passive: false })
-    window.addEventListener('keydown', onKeyDown as any, { passive: false })
-    window.addEventListener('scroll', onScroll, { passive: true })
+    box.addEventListener('wheel', onWheel as EventListener, { passive: false } as any)
+    box.addEventListener('touchstart', onTouchStart as EventListener, { passive: true } as any)
+    box.addEventListener('touchmove', onTouchMove as EventListener, { passive: false } as any)
+    box.addEventListener('keydown', onKeyDown as EventListener, { passive: false } as any)
 
     return () => {
-      window.removeEventListener('wheel', onWheel as any)
-      window.removeEventListener('touchstart', onTouchStart as any)
-      window.removeEventListener('touchmove', onTouchMove as any)
-      window.removeEventListener('keydown', onKeyDown as any)
-      window.removeEventListener('scroll', onScroll)
+      box.removeEventListener('wheel', onWheel as EventListener)
+      box.removeEventListener('touchstart', onTouchStart as EventListener)
+      box.removeEventListener('touchmove', onTouchMove as EventListener)
+      box.removeEventListener('keydown', onKeyDown as EventListener)
       if (snapRaf.current) cancelAnimationFrame(snapRaf.current)
       setOverscroll(false)
     }
-  }, [wrapRef, scrollYProgress, cuts, DUR, NEAR])
+  }, [wrapRef, scrollYProgress, cuts, DUR, NEAR, opts?.scrollerRef])
 }
