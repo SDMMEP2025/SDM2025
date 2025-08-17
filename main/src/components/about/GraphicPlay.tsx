@@ -24,7 +24,7 @@ export function GraphicPlay() {
             borderRadiusOuter: 12,
             dragSmoothing: 0.8,
             rotatePerStepDeg: -1,
-            rotateOffsetDeg: 1,
+            rotateOffsetDeg: 0,
           }}
           size={{ capW: 1200, capH: 630, parentW: 0.98, parentH: 0.86 }}
           
