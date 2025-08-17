@@ -32,6 +32,7 @@ export function ScrollOrchestrator() {
   const isMdPortrait = useMediaQuery('(min-width: 768px)') && isLandscape
 
   const vhPx = useVhPx()
+  const u = useVminPx()
 
   useLayoutEffect(() => {
     if ('scrollRestoration' in history) {
@@ -87,8 +88,11 @@ export function ScrollOrchestrator() {
   })
 
   // ───────────────── Section 1 ─────────────────
-  const TITLE_LIFT_P0 = isMdUp ? -30.2 : -20 * vhPx
-  const SUBTITLE_LIFT_P0 = isMdUp ? 30.2 : 20 * vhPx
+
+  const clampPx = (min: number, ideal: number, max: number) => Math.max(min, Math.min(ideal, max))
+  const GAP = clampPx(36, 61 * u, 250)
+  const TITLE_LIFT_P0 = isMdUp ? -30.2 : -GAP / 2
+  const SUBTITLE_LIFT_P0 = isMdUp ? 30.2 : +GAP / 2
   const TITLE_SCALE_TARGET = isMdUp ? 2.2 : 1.2
   const SUBTITLE_SCALE_TARGET = isMdUp ? 2.2 : 1.2
 
@@ -145,8 +149,7 @@ export function ScrollOrchestrator() {
 
   const lift3 = useTransform(p2, [0.1, 0.8], [0, LIFT_P3])
   const yAll3 = lift3
-  const INFO_OPACITY = isMdPortrait ? 0 : 1
-  const infoFadeOut = useTransform(p2, [0, 0.2], [1, INFO_OPACITY], { ease: easeInOut })
+  const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
   const infoOpacity = useTransform([opacityScale, infoFadeOut], ([a, b]) => Number(a) * Number(b))
 
   // ───────────────── Section 4 ─────────────────
@@ -248,11 +251,11 @@ export function ScrollOrchestrator() {
     <>
       <div className='relative w-full top-0'>
         <div ref={wrapRef}>
-          <section className='relative h-[1400dvh] bg-black'>
-            <div className='sticky h-[100dvh] top-0' style={{ contain: 'layout style paint' }}>
+          <section className='relative h-[1000svh] bg-black'>
+            <div className='sticky h-[100svh] top-0' style={{ contain: 'layout style paint' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
-                <div className='absolute left-1/2 top-[45dvh] -translate-x-1/2 -translate-y-1/2'>
+                <div className='absolute left-1/2 top-[45svh] -translate-x-1/2 -translate-y-1/2'>
                   <motion.div
                     ref={rectRef}
                     initial={false}
@@ -283,21 +286,75 @@ export function ScrollOrchestrator() {
                   />
                 </motion.div>
 
-                <div className='absolute whitespace-nowrap left-1/2 top-[45dvh] -translate-y-[100px] -translate-x-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
+                <div className='md:hidden absolute left-1/2 top-[38svh] -translate-x-1/2 z-[9999] -translate-y-[40px] mix-blend-difference text-center text-white'>
+                  <div className='flex flex-col items-center gap-2 font-english'>
+                    <motion.span
+                      initial={false}
+                      style={{ scale: titleScale, y: titleLift }}
+                      className='font-semibold leading-none text-[clamp(26px,2.17vw,40px)]'
+                    >
+                      New Formative
+                    </motion.span>
+
+                    <motion.span
+                      initial={false}
+                      style={{ opacity: infoOpacity, y: titleLift }}
+                      className='font-medium whitespace-nowrap text-[16px] leading-[120%]'
+                    >
+                      Samsung Design Membership<br/>Emergence Project
+                    </motion.span>
+                  </div>
+                </div>
+
+                <div className='md:hidden absolute left-1/2 top-[48.5svh] -translate-x-1/2 translate-y-[40px] z-[9999] mix-blend-difference text-center text-white'>
+                  <div className='flex flex-col items-center gap-4 font-english'>
+                    <motion.span
+                      initial={false}
+                      style={{ scale: subtitleScale, y: subtitleLift }}
+                      className='font-semibold whitespace-nowrap leading-none text-[clamp(26px,2.77vw,40px)]'
+                    >
+                      Steady Movement
+                      <br />
+                      For Progress
+                    </motion.span>
+
+                    <motion.span
+                      initial={false}
+                      style={{ opacity: infoOpacity }}
+                      className='font-medium text-[16px] leading-[120%]'
+                    >
+                      Aug 22 – 27 (Fri – Wed)
+                      <br />
+                      Open daily 10AM – 5PM
+                    </motion.span>
+                  </div>
+                </div>
+
+                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[44svh] -translate-y-[100px] -translate-x-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: titleScale, y: titleLift }}
-                    className='block leading-none text-[clamp(32px,2.77vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'
+                    className='block leading-none text-[clamp(26px,2.17vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'
                   >
                     New Formative
                   </motion.span>
                 </div>
 
-                <div className='absolute left-1/2 top-[45dvh] left-1/2 -translate-x-1/2 translate-y-[60px] font-english mix-blend-difference text-center text-white font-semibold leading-[270%] z-[9999]'>
+                <div className='hidden md:block absolute left-1/2 top-1/2 -translate-y-[32svh] md:left-1/4 md:top-[42.86svh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] z-[9999]'>
+                  <motion.span
+                    initial={false}
+                    style={{ opacity: infoOpacity }}
+                    className='text-center text-[16px] md:text-[25px]'
+                  >
+                  Samsung Design Membership<br/>Emergence Project
+                  </motion.span>
+                </div>
+
+                <div className='hidden md:block absolute left-1/2 top-[46.5svh] -translate-x-1/2 translate-y-[60px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: subtitleScale, y: subtitleLift }}
-                    className='block whitespace-nowrap text-[clamp(32px,2.77vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'
+                    className='block whitespace-nowrap leading-none text-[clamp(26px,2.77vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'
                   >
                     Steady Movement
                     <br />
@@ -305,15 +362,15 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='absolute text-[20px] left-1/2 top-1/2 -translate-y-[32dvh] leading-[140%] md:left-1/4 md:top-[42.86dvh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-[424px] md:leading-[160%] z-[9999]'>
-                  <motion.span initial={false} style={{ opacity: infoOpacity }} className='block text-[25px]'>
-                    Samsung Design Membership Emergence Project
-                  </motion.span>
-                </div>
-
-                <div className='absolute text-[20px] left-1/2 top-1/2 translate-y-[14dvh] leading-[140%] md:left-3/4 md:top-[42.86dvh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-[305px] md:leading-[160%] z-[9999]'>
-                  <motion.span initial={false} style={{ opacity: infoOpacity }} className='block text-[25px]'>
-                    Aug 22 – 27 (Fri – Wed) Open daily 10AM – 5PM
+                <div className='hidden md:block absolute text-[20px] left-1/2 top-1/2 translate-y-[13vh] leading-[140%] md:left-3/4 md:top-[42.86svh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] z-[9999]'>
+                  <motion.span
+                    initial={false}
+                    style={{ opacity: infoOpacity }}
+                    className='block text-[16px] md:text-[25px]'
+                  >
+                    Aug 22 – 27 (Fri – Wed)
+                    <br />
+                    Open daily 10AM – 5PM
                   </motion.span>
                 </div>
 
@@ -326,7 +383,7 @@ export function ScrollOrchestrator() {
                     ease: 'easeInOut',
                   }}
                   style={{ opacity: arrowOpacity }}
-                  className='absolute left-1/2 bottom-[7.6dvh] -translate-x-1/2 -translate-y-1/2 text-white mix-blend-difference'
+                  className='absolute left-1/2 bottom-[7.6svh] -translate-x-1/2 -translate-y-1/2 text-white mix-blend-difference'
                 >
                   <svg xmlns='http://www.w3.org/2000/svg' width='29' height='16' viewBox='0 0 29 16' fill='none'>
                     <path
@@ -431,4 +488,22 @@ function useVhPx() {
     }
   }, [])
   return vh
+}
+
+function useVminPx() {
+  const [u, setU] = useState(0)
+  useEffect(() => {
+    const get = () => Math.round(Math.min(innerWidth, window.visualViewport?.height ?? innerHeight) / 100)
+    const update = () => setU(get())
+    update()
+    window.visualViewport?.addEventListener?.('resize', update)
+    window.addEventListener('resize', update)
+    window.addEventListener('orientationchange', update)
+    return () => {
+      window.visualViewport?.removeEventListener?.('resize', update)
+      window.removeEventListener('resize', update)
+      window.removeEventListener('orientationchange', update)
+    }
+  }, [])
+  return u
 }
