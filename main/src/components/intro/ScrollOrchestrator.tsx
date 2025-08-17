@@ -229,7 +229,7 @@ export function ScrollOrchestrator() {
   const backY = useTransform([p3, yAll3, sep4], ([t, b, sep]: [number, number, number]) => b + (t > 0 ? +sep * backY_P4 : 0))
 
   // Section 5
-  const planesLiftUp = useTransform(p4, [0, 1], [0, -4100])
+  const planesLiftUp = useTransform(p4, [0, 1], [0, -3000])
   const backYFinal = useTransform([backY, planesLiftUp], ([b, u]: [number, number]) => b + u)
   const midYFinal = useTransform([midY, planesLiftUp], ([m, u]: [number, number]) => m + u)
   const frontYFinal = useTransform([frontY, planesLiftUp], ([f, u]: [number, number]) => f + u)

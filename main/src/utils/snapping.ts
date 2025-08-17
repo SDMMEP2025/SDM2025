@@ -18,7 +18,7 @@ export function useSnapP0toP4(
     [0, 1],
     [1, 2],
     [2, 3],
-    [3, 4]
+    [3, 4],
   ]
 
   const animating = useRef(false)

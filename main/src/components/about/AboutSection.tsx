@@ -75,13 +75,12 @@ export default function AboutSection({ embedded = false }: Props) {
   ]
 
   const delayFor = (i: number, base = 400) => i * base
-
   return (
     <>
       <Blank />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1106712720?h=5da78fb84e'
+        src='https://player.vimeo.com/video/1109760722?h=69b2dd590a'
         preloadDelayMs={delayFor(0)}
         prewarm
         muted
