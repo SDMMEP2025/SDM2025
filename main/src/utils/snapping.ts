@@ -5,20 +5,20 @@ import type { MotionValue } from 'framer-motion'
 
 type Cut = { start: number; end: number }
 
-export function useSnapP0toP5(
+export function useSnapP0toP4(
   wrapRef: React.RefObject<HTMLDivElement | null>,
   scrollYProgress: MotionValue<number>,
   cuts: readonly Cut[],
   opts?: { duration?: number; nearPct?: number },
 ) {
-  const DUR = opts?.duration ?? 500
-  const NEAR = opts?.nearPct ?? 0.05
+  const DUR = opts?.duration ?? 300
+  const NEAR = opts?.nearPct ?? 0.01
 
   const snapBands: [number, number][] = [
     [0, 1],
     [1, 2],
     [2, 3],
-    [3, 4],
+    [3, 4]
   ]
 
   const animating = useRef(false)
@@ -38,8 +38,6 @@ export function useSnapP0toP5(
       document.body.style.pointerEvents = ''
     }
   }
-
-  // progress -> document scrollTop
   const progressToTop = (p: number) => {
     const el = wrapRef.current!
     const rect = el.getBoundingClientRect()

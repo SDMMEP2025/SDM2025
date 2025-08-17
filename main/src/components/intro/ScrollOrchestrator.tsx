@@ -8,15 +8,26 @@ import bgAnim from '@/animation/main.json'
 import AboutSection from '../about/AboutSection'
 import { chromeProgress } from '@/lib/chromeProgress'
 import { aboutPhase } from '@/lib/phase'
-import { useSnapP0toP5 } from '@/utils/snapping'
+import { useSnapP0toP4 } from '@/utils/snapping'
 import ThickPlane from './Cube'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useIsLandscape } from '@/hooks/useIsLandscape'
 import { FloatingPhoto } from './Photo'
-import { useSearchParams } from 'next/navigation'
 
 type Cut = { start: number; end: number }
-const seg = (i: number, N: number): Cut => ({ start: i / N, end: (i + 1) / N })
+
+const WEIGHTS: number[] = [1, 1, 1, 1, 4.2, 2]
+
+function makeCuts(weights: number[]): Cut[] {
+  const total = weights.reduce((a, b) => a + b, 0)
+  let acc = 0
+  return weights.map((w) => {
+    const start = acc / total
+    acc += w
+    return { start, end: acc / total }
+  })
+}
+
 function useSectionProgress(global: MotionValue<number>, cut: Cut) {
   return useTransform(global, [cut.start, cut.end], [0, 1], { clamp: true })
 }
@@ -43,13 +54,17 @@ export function ScrollOrchestrator() {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
   const hasStageRef = useRef<boolean>(typeof window !== 'undefined' && !!getStageFromURL())
 
-  const N = 6
   const isLandscape = useIsLandscape()
   const isMdUp = useMediaQuery('(min-width: 768px)')
   const isMdPortrait = useMediaQuery('(min-width: 768px)') && isLandscape
 
   const vhPx = useVhPx()
   const u = useVminPx()
+
+  const cuts = useMemo(() => makeCuts(WEIGHTS), [])
+
+  const stageIndexByName = { main: 1 } as const
+  type StageName = keyof typeof stageIndexByName
 
   useLayoutEffect(() => {
     if ('scrollRestoration' in history) {
@@ -76,23 +91,25 @@ export function ScrollOrchestrator() {
     return () => window.removeEventListener('pageshow', onPageShow)
   }, [])
 
-  const jumpToStage = useCallback((stage: string) => {
-    const wrapEl = wrapRef.current
-    if (!wrapEl || !stage) return
-    const targets: Record<string, number> = {
-      main: 1 / 6 + (1 / 6) * 0.5,
-    }
-    const t = targets[stage.toLowerCase()]
-    if (typeof t !== 'number') return
-
-    requestAnimationFrame(() => {
+  const jumpToStage = useCallback(
+    (stage: string) => {
+      const wrapEl = wrapRef.current
+      if (!wrapEl || !stage) return
+      const key = stage.toLowerCase() as StageName
+      const idx = stageIndexByName[key]
+      if (idx == null) return
+      const { start, end } = cuts[idx]
+      const center = (start + end) / 2
       requestAnimationFrame(() => {
-        scrollToProgress(wrapEl, t)
+        requestAnimationFrame(() => {
+          scrollToProgress(wrapEl, center)
+        })
       })
-    })
-  }, [])
+    },
+    [cuts],
+  )
 
-    useEffect(() => {
+  useEffect(() => {
     const handler = (e: Event) => {
       const stage = (e as CustomEvent).detail?.stage as string
       if (!stage) return
@@ -105,14 +122,12 @@ export function ScrollOrchestrator() {
   useEffect(() => {
     const stageNow = getStageFromURL()
     if (!stageNow) return
-
     let tries = 0
     const maxTries = 10
     const tick = () => {
       tries += 1
       const wrap = wrapRef.current
       const ready = !!wrap && wrap.offsetHeight > 0 && document.readyState !== 'loading' && !!window.visualViewport
-
       if (ready) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
@@ -135,32 +150,23 @@ export function ScrollOrchestrator() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [jumpToStage])
 
-  // ───────── scrollYProgress 등 나머지 기존 로직 ─────────
   const { scrollYProgress } = useScroll({ target: wrapRef, offset: ['start start', 'end start'] })
-  const cuts = useMemo(() => Array.from({ length: N }, (_, i) => seg(i, N)), [N])
-  const p0 = useSectionProgress(scrollYProgress, cuts[0])
-  const p1 = useSectionProgress(scrollYProgress, cuts[1])
-  const p2 = useSectionProgress(scrollYProgress, cuts[2])
-  const p3 = useSectionProgress(scrollYProgress, cuts[3])
-  const p4 = useSectionProgress(scrollYProgress, cuts[4])
-  const p5 = useSectionProgress(scrollYProgress, cuts[5])
+  const [p0, p1, p2, p3, p4, p5] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
   useMotionValueEvent(p5, 'change', (v) => aboutPhase.set(v))
   const p0Local = p0
   useMotionValueEvent(p0Local, 'change', (v) => chromeProgress.set(v))
 
-  useSnapP0toP5(wrapRef, scrollYProgress, cuts, { duration: 750, nearPct: 0.05 })
+  useSnapP0toP4(wrapRef, scrollYProgress, cuts, { duration: 750, nearPct: 0.05 })
 
   // Section 1
   const clampPx = (min: number, ideal: number, max: number) => Math.max(min, Math.min(ideal, max))
-  const GAP = clampPx(36, 61 * u, 250)
-  const TITLE_LIFT_P0 = isMdUp ? -30.2 : -GAP / 2
+  const GAP = clampPx(36, 61 * u, 240)
+  const TITLE_LIFT_P0 = isMdUp ? -30.2 : -GAP*0.9 / 2
   const SUBTITLE_LIFT_P0 = isMdUp ? 30.2 : +GAP / 2
   const TITLE_SCALE_TARGET = isMdUp ? 2.2 : 1.2
   const SUBTITLE_SCALE_TARGET = isMdUp ? 2.2 : 1.2
 
-  const titleLift_p0 = useTransform(p0Local, [0, 1.0], [1, TITLE_LIFT_P0])
-  const subtitleLift_p0 = useTransform(p0Local, [0, 1.0], [1, SUBTITLE_LIFT_P0])
   const titleScaleIn = useTransform(p0Local, [0, 1.0], [1, TITLE_SCALE_TARGET])
   const subtitleScaleIn = useTransform(p0Local, [0, 1.0], [1, SUBTITLE_SCALE_TARGET])
   const opacityScale = useTransform(chromeProgress, [0, 0.3, 1.0], [0, 0, 1])
@@ -204,9 +210,9 @@ export function ScrollOrchestrator() {
 
   // Section 3
   const planesOpacity = useTransform(p2, [0.0, 0.1], [0, 1], { clamp: true, ease: easeInOut })
-  const planeTiltDegRaw = useTransform(p2, [0, 1], [0, 82])
+  const planeTiltDegRaw = useTransform(p2, [0, 1], [0, 80.5])
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.6 })
-  const LIFT_P3 = isMdUp ? -8 * vhPx : -13 * vhPx
+  const LIFT_P3 = isMdUp ? 6 * vhPx : -4 * vhPx
   const lift3 = useTransform(p2, [0.1, 0.8], [0, LIFT_P3])
   const yAll3 = lift3
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
@@ -214,12 +220,13 @@ export function ScrollOrchestrator() {
 
   // Section 4
   const sep4 = useTransform(p3, [0.0, 0.5, 1.0], [0, 0, 200], { ease: easeInOut })
-  const midY = yAll3
-  const frontY = useTransform(
-    [p3, yAll3, sep4],
-    ([t, b, sep]: [number, number, number]) => b + (t > 0 ? -sep * 0.2 : 0),
-  )
-  const backY = useTransform([p3, yAll3, sep4], ([t, b, sep]: [number, number, number]) => b + (t > 0 ? +sep * 0.6 : 0))
+  const frontY_P4 = isMdUp ? 0.5 : 0.6
+  const midY_P4 = isMdUp ? 0.3 : 0.3
+  const backY_P4 = isMdUp ? 0.1 : 0.2
+
+  const frontY = useTransform([p3, yAll3, sep4], ([t, b, sep]: [number, number, number]) => b + (t > 0 ? -sep * frontY_P4 : 0))
+  const midY = useTransform([p3, yAll3, sep4], ([t, b, sep]: [number, number, number]) => b + (t > 0 ? -sep * midY_P4 : 0))
+  const backY = useTransform([p3, yAll3, sep4], ([t, b, sep]: [number, number, number]) => b + (t > 0 ? +sep * backY_P4 : 0))
 
   // Section 5
   const planesLiftUp = useTransform(p4, [0, 1], [0, -4100])
@@ -229,46 +236,11 @@ export function ScrollOrchestrator() {
 
   const photos = useMemo(
     () => [
-      {
-        src: '/images/intro/1.png',
-        base: 800,
-        left: '20vw',
-        width: isMdPortrait ? '20vw' : '32vw',
-        z: 0,
-        fade: [0.0, 0.35],
-      },
-      {
-        src: '/images/intro/2.png',
-        base: 940,
-        left: '60vw',
-        width: isMdPortrait ? '20vw' : '30vw',
-        z: 10,
-        fade: [0.0, 0.35],
-      },
-      {
-        src: '/images/intro/3.png',
-        base: 1280,
-        left: '23vw',
-        width: isMdPortrait ? '26.66vw' : '30vw',
-        z: 16,
-        fade: [0.0, 0.35],
-      },
-      {
-        src: '/images/intro/4.png',
-        base: 1700,
-        left: '7vw',
-        width: isMdPortrait ? '22vw' : '40vw',
-        z: -8,
-        fade: [0.0, 0.35],
-      },
-      {
-        src: '/images/intro/5.png',
-        base: 1900,
-        left: '65vw',
-        width: isMdPortrait ? '24vw' : '40vw',
-        z: -16,
-        fade: [0.0, 0.35],
-      },
+      { src: '/images/intro/1.png', base: 430, left: '20vw', width: isMdPortrait ? '20vw' : '32vw', z: 0, fade: [0.0, 0.35] as [number, number] },
+      { src: '/images/intro/2.png', base: 633, left: '60vw', width: isMdPortrait ? '20vw' : '30vw', z: 10, fade: [0.0, 0.35] as [number, number] },
+      { src: '/images/intro/3.png', base: 957, left: '23vw', width: isMdPortrait ? '26.66vw' : '30vw', z: 16, fade: [0.0, 0.35] as [number, number] },
+      { src: '/images/intro/4.png', base: 1440, left: '7vw', width: isMdPortrait ? '22vw' : '40vw', z: -8, fade: [0.0, 0.35] as [number, number] },
+      { src: '/images/intro/5.png', base: 1539, left: '65vw', width: isMdPortrait ? '24vw' : '40vw', z: -16, fade: [0.0, 0.35] as [number, number] },
     ],
     [isMdPortrait],
   )
@@ -286,22 +258,10 @@ export function ScrollOrchestrator() {
   const titleShrink_p5 = useTransform(p5, [0.0, 0.3], [1, MdtitleScale_p5], { clamp: true })
   const subtitleShrink_p5 = useTransform(p5, [0.0, 0.3], [1, MdtitleScale_p5], { clamp: true })
 
-  const titleLift = useTransform(
-    [useTransform(p0Local, [0, 1.0], [1, TITLE_LIFT_P0]), titleLift_p5],
-    ([a, b]) => Number(a) + Number(b),
-  )
-  const subtitleLift = useTransform(
-    [useTransform(p0Local, [0, 1.0], [1, SUBTITLE_LIFT_P0]), subtitleLift_p5],
-    ([a, b]) => Number(a) + Number(b),
-  )
-  const titleScale = useTransform(
-    [titleScaleIn, titleShrink_p4, titleShrink_p5],
-    ([a, b, c]) => Number(a) * Number(b) * Number(c),
-  )
-  const subtitleScale = useTransform(
-    [subtitleScaleIn, subtitleShrink_p4, subtitleShrink_p5],
-    ([a, b, c]) => Number(a) * Number(b) * Number(c),
-  )
+  const titleLift = useTransform([useTransform(p0Local, [0, 1.0], [1, TITLE_LIFT_P0]), titleLift_p5], ([a, b]) => Number(a) + Number(b))
+  const subtitleLift = useTransform([useTransform(p0Local, [0, 1.0], [1, SUBTITLE_LIFT_P0]), subtitleLift_p5], ([a, b]) => Number(a) + Number(b))
+  const titleScale = useTransform([titleScaleIn, titleShrink_p4, titleShrink_p5], ([a, b, c]) => Number(a) * Number(b) * Number(c))
+  const subtitleScale = useTransform([subtitleScaleIn, subtitleShrink_p4, subtitleShrink_p5], ([a, b, c]) => Number(a) * Number(b) * Number(c))
 
   const [aboutInteractive, setAboutInteractive] = useState(false)
   useMotionValueEvent(p5, 'change', (v) => {
@@ -333,11 +293,7 @@ export function ScrollOrchestrator() {
                 </div>
 
                 {/* Lottie */}
-                <motion.div
-                  className='absolute inset-0 pointer-events-none overflow-hidden'
-                  aria-hidden
-                  style={{ opacity: lottieOpacity }}
-                >
+                <motion.div className='absolute inset-0 pointer-events-none overflow-hidden' aria-hidden style={{ opacity: lottieOpacity }}>
                   <Lottie
                     lottieRef={lottieRef}
                     animationData={bgAnim}
@@ -349,20 +305,13 @@ export function ScrollOrchestrator() {
                   />
                 </motion.div>
 
+                {/* 모바일 타이틀 */}
                 <div className='md:hidden absolute left-1/2 top-[38svh] -translate-x-1/2 z-[9999] -translate-y-[40px] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col items-center gap-2 font-english'>
-                    <motion.span
-                      initial={false}
-                      style={{ scale: titleScale, y: titleLift }}
-                      className='font-semibold leading-none text-[clamp(26px,2.17vw,40px)]'
-                    >
+                    <motion.span initial={false} style={{ scale: titleScale, y: titleLift }} className='font-semibold leading-none text-[clamp(26px,2.17vw,40px)]'>
                       New Formative
                     </motion.span>
-                    <motion.span
-                      initial={false}
-                      style={{ opacity: infoOpacity, y: titleLift }}
-                      className='font-medium whitespace-nowrap text-[16px] leading-[120%]'
-                    >
+                    <motion.span initial={false} style={{ opacity: infoOpacity, y: titleLift }} className='font-medium whitespace-nowrap text-[16px] leading-[120%]'>
                       Samsung Design Membership
                       <br />
                       Emergence Project
@@ -372,20 +321,12 @@ export function ScrollOrchestrator() {
 
                 <div className='md:hidden absolute left-1/2 top-[48.5svh] -translate-x-1/2 translate-y-[40px] z-[9999] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col items-center gap-4 font-english'>
-                    <motion.span
-                      initial={false}
-                      style={{ scale: subtitleScale, y: subtitleLift }}
-                      className='font-semibold whitespace-nowrap leading-none text-[clamp(26px,2.77vw,40px)]'
-                    >
+                    <motion.span initial={false} style={{ scale: subtitleScale, y: subtitleLift }} className='font-semibold whitespace-nowrap leading-none text-[clamp(26px,2.77vw,40px)]'>
                       Steady Movement
                       <br />
                       For Progress
                     </motion.span>
-                    <motion.span
-                      initial={false}
-                      style={{ opacity: infoOpacity }}
-                      className='font-medium text-[16px] leading-[120%]'
-                    >
+                    <motion.span initial={false} style={{ opacity: infoOpacity }} className='font-medium text-[16px] leading-[120%]'>
                       Aug 22 – 27 (Fri – Wed)
                       <br />
                       Open daily 10AM – 5PM
@@ -395,21 +336,13 @@ export function ScrollOrchestrator() {
 
                 {/* 데스크탑 타이틀/서브 */}
                 <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[44svh] -translate-y-[100px] -translate-x-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ scale: titleScale, y: titleLift }}
-                    className='block leading-none text-[clamp(26px,2.17vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'
-                  >
+                  <motion.span initial={false} style={{ scale: titleScale, y: titleLift }} className='block leading-none text-[clamp(26px,2.17vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'>
                     New Formative
                   </motion.span>
                 </div>
 
                 <div className='hidden md:block absolute left-1/2 top-1/2 -translate-y-[32svh] md:left-1/4 md:top-[42.86svh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ opacity: infoOpacity }}
-                    className='text-center text-[16px] md:text-[25px]'
-                  >
+                  <motion.span initial={false} style={{ opacity: infoOpacity }} className='text-center text-[16px] md:text-[25px]'>
                     Samsung Design Membership
                     <br />
                     Emergence Project
@@ -417,11 +350,7 @@ export function ScrollOrchestrator() {
                 </div>
 
                 <div className='hidden md:block absolute left-1/2 top-[46.5svh] -translate-x-1/2 translate-y-[60px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ scale: subtitleScale, y: subtitleLift }}
-                    className='block whitespace-nowrap leading-none text-[clamp(26px,2.77vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'
-                  >
+                  <motion.span initial={false} style={{ scale: subtitleScale, y: subtitleLift }} className='block whitespace-nowrap leading-none text-[clamp(26px,2.77vw,40px)] lg:text-[clamp(36px,2.77vw,40px)]'>
                     Steady Movement
                     <br />
                     For Progress
@@ -429,11 +358,7 @@ export function ScrollOrchestrator() {
                 </div>
 
                 <div className='hidden md:block absolute text-[20px] left-1/2 top-1/2 translate-y-[13vh] leading-[140%] md:left-3/4 md:top-[42.86svh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ opacity: infoOpacity }}
-                    className='block text-[16px] md:text-[25px]'
-                  >
+                  <motion.span initial={false} style={{ opacity: infoOpacity }} className='block text-[16px] md:text-[25px]'>
                     Aug 22 – 27 (Fri – Wed)
                     <br />
                     Open daily 10AM – 5PM
@@ -471,36 +396,9 @@ export function ScrollOrchestrator() {
                     perspective: 1400,
                   }}
                 >
-                  <ThickPlane
-                    widthPct={isMdPortrait ? 90 : 100}
-                    heightPct={isMdPortrait ? 100 : 305}
-                    color='#FF60B9'
-                    radius={24}
-                    rotateX={planeTiltDeg}
-                    translateY={isMdPortrait ? -15 : 20}
-                    y={backYFinal}
-                    origin='center center'
-                  />
-                  <ThickPlane
-                    widthPct={isMdPortrait ? 80 : 90}
-                    heightPct={isMdPortrait ? 80 : 305}
-                    color='#FFF790'
-                    radius={24}
-                    rotateX={planeTiltDeg}
-                    translateY={isMdPortrait ? -25 : 0}
-                    y={midYFinal}
-                    origin='center center'
-                  />
-                  <ThickPlane
-                    widthPct={isMdPortrait ? 72 : 72}
-                    heightPct={isMdPortrait ? 72 : 305}
-                    color='#FF5E1F'
-                    radius={40}
-                    rotateX={planeTiltDeg}
-                    translateY={isMdPortrait ? -30 : -20}
-                    y={frontYFinal}
-                    origin='center center'
-                  />
+                  <ThickPlane widthPct={isMdPortrait ? 90 : 90} heightPct={isMdPortrait ? 100 : 305} color='#FF60B9' radius={10} rotateX={planeTiltDeg} translateY={isMdPortrait ? 0 : 20} y={backYFinal} origin='center center' />
+                  <ThickPlane widthPct={isMdPortrait ? 80 : 80} heightPct={isMdPortrait ? 80 : 305} color='#FFF790' radius={10} rotateX={planeTiltDeg} translateY={isMdPortrait ? -40 : 0} y={midYFinal} origin='center center' />
+                  <ThickPlane widthPct={isMdPortrait ? 72 : 64} heightPct={isMdPortrait ? 72 : 305} color='#FF5E1F' radius={10} rotateX={planeTiltDeg} translateY={isMdPortrait ? -80 : -20} y={frontYFinal} origin='center center' />
                 </motion.div>
               </div>
 
@@ -508,15 +406,7 @@ export function ScrollOrchestrator() {
               <div className='absolute inset-0 pointer-events-none z-[100]' style={{ overflow: 'visible' }}>
                 <motion.div className='relative w-full h-full'>
                   {photos.map((ph, i) => (
-                    <FloatingPhoto
-                      key={ph.src ?? i}
-                      p4={p4}
-                      src={ph.src}
-                      left={ph.left}
-                      base={ph.base}
-                      width={ph.width}
-                      fade={ph.fade}
-                    />
+                    <FloatingPhoto key={ph.src ?? i} p4={p4} src={ph.src} left={ph.left} base={ph.base} width={ph.width} fade={ph.fade} />
                   ))}
                 </motion.div>
               </div>

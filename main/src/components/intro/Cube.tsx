@@ -16,7 +16,7 @@ export default function Cube({
   widthPct,
   heightPct,
   color,
-  radius = 16,
+  radius = 5,
   rotateX,
   translateZ = 0,
   translateY=0,
