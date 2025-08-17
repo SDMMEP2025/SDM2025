@@ -279,7 +279,7 @@ export function ScrollOrchestrator() {
   // ---------- Section 6 ----------
   const arrowOpacity = useTransform(p5, [0, 0.2], [1, 0], { ease: easeInOut, clamp: true })
   const MdtitleLift_p5 = isMdUp ? -128 : 0
-  const MdsubtitleLift_p5 = isMdUp ? -220 : 0
+  const MdsubtitleLift_p5 = isMdUp ? -220 : -420
   const MdtitleScale_p5 = isMdUp ? 0.5 : 1
   const titleShrink_p4 = useTransform(p4, [0, 1], [1, 1])
   const subtitleShrink_p4 = useTransform(p4, [0, 1], [1, 1])
@@ -377,7 +377,7 @@ export function ScrollOrchestrator() {
                 </div>
 
                 <div className='md:hidden absolute left-1/2 top-[48.5svh] -translate-x-1/2 translate-y-[40px] z-[9999] mix-blend-difference text-center text-white'>
-                  <div className='flex flex-col items-center gap-4 font-english'>
+                  <div className='flex flex-col-reverse items-center gap-4 font-english'>
                     <motion.span
                       initial={false}
                       style={{ scale: subtitleScale, y: subtitleLift }}
@@ -389,7 +389,7 @@ export function ScrollOrchestrator() {
                     </motion.span>
                     <motion.span
                       initial={false}
-                      style={{ opacity: infoOpacity }}
+                      style={{ opacity: infoOpacity, y: subtitleLift }}
                       className='font-medium text-[16px] leading-[120%]'
                     >
                       Aug 22 – 27 (Fri – Wed)
@@ -461,7 +461,7 @@ export function ScrollOrchestrator() {
                     />
                   </svg>
                 </motion.div>
-                <div className='aboslute aspect-[1440/1200]'>
+                <div className='w-full aspect-[1440/1200]'>
                   <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
@@ -541,7 +541,7 @@ export function ScrollOrchestrator() {
           </section>
 
           {/* About */}
-          <section aria-label='About' className='relative bg-white'>
+          <section aria-label='About' className='relative bg-white mt-[-50svh] md:mt-0'>
             <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : 'pointer-events-none'}>
               <AboutSection />
             </motion.div>
