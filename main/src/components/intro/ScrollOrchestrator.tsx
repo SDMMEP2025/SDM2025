@@ -212,7 +212,7 @@ export function ScrollOrchestrator() {
   const planesOpacity = useTransform(p2, [0.0, 0.1], [0, 1], { clamp: true, ease: easeInOut })
   const planeTiltDegRaw = useTransform(p2, [0, 1], [0, 80.5])
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.6 })
-  const LIFT_P3 = isMdUp ? 6 * vhPx : -4 * vhPx
+  const LIFT_P3 = isMdUp ? 0 * vhPx : -4 * vhPx
   const lift3 = useTransform(p2, [0.1, 0.8], [0, LIFT_P3])
   const yAll3 = lift3
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
@@ -220,8 +220,8 @@ export function ScrollOrchestrator() {
 
   // Section 4
   const sep4 = useTransform(p3, [0.0, 0.5, 1.0], [0, 0, 200], { ease: easeInOut })
-  const frontY_P4 = isMdUp ? 0.5 : 0.6
-  const midY_P4 = isMdUp ? 0.3 : 0.3
+  const frontY_P4 = isMdUp ? 0.3 : 0.6
+  const midY_P4 = isMdUp ? 0.15 : 0.3
   const backY_P4 = isMdUp ? 0.1 : 0.2
 
   const frontY = useTransform([p3, yAll3, sep4], ([t, b, sep]: [number, number, number]) => b + (t > 0 ? -sep * frontY_P4 : 0))
