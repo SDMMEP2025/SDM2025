@@ -84,9 +84,24 @@ export default function ConcentricSquares({
     if (!el) return
     const ro = new ResizeObserver(() => {
       const r = el.getBoundingClientRect()
-      const W = Math.min(size.capW ?? 720, r.width * (size.parentW ?? 0.98))
-      const H = Math.min(size.capH ?? 560, r.height * (size.parentH ?? 0.85))
-      setMax({ w: Math.max(220, W), h: Math.max(160, H) })
+
+      const capW = size.capW ?? 720
+      const capH = size.capH ?? 560
+      const aspect = capW / capH
+
+      const availW = r.width * (size.parentW ?? 0.98)
+      const availH = r.height * (size.parentH ?? 0.85)
+
+      const wByHeight = availH * aspect
+      const hByWidth = availW / aspect
+
+      const w = Math.min(availW, wByHeight)
+      const h = Math.min(availH, hByWidth)
+
+      const W = Math.max(220, Math.floor(w))
+      const H = Math.max(160, Math.floor(h))
+
+      setMax({ w: W, h: H })
     })
     ro.observe(el)
     return () => ro.disconnect()
@@ -94,11 +109,11 @@ export default function ConcentricSquares({
 
   const stepReduction = Math.max(15, max.w * (motionParams.stepReductionRatio ?? 0.045))
 
-  const [positions, setPositions] = useState<Array<{ x: number; y: number }>>(
-    () => Array.from({ length: steps }, () => ({ x: 0, y: 0 }))
+  const [positions, setPositions] = useState<Array<{ x: number; y: number }>>(() =>
+    Array.from({ length: steps }, () => ({ x: 0, y: 0 })),
   )
   useEffect(() => {
-    setPositions(prev => Array.from({ length: steps }, (_, i) => prev[i] ?? { x: 0, y: 0 }))
+    setPositions((prev) => Array.from({ length: steps }, (_, i) => prev[i] ?? { x: 0, y: 0 }))
   }, [steps])
   useEffect(() => {
     onPositionsChange?.(positions)
@@ -108,31 +123,37 @@ export default function ConcentricSquares({
   const draggingRef = useRef(false)
   const [isDragging, setIsDragging] = useState(false)
 
-  const clampToSize = useCallback((ix: number, iy: number, i: number) => {
-    const width = Math.max(20, max.w - stepReduction * i)
-    const height = Math.max(20, max.h - stepReduction * i)
-    const limX = (max.w - width) / 2
-    const limY = (max.h - height) / 2
-    return {
-      x: Math.max(-limX, Math.min(limX, ix)),
-      y: Math.max(-limY, Math.min(limY, iy)),
-    }
-  }, [max.w, max.h, stepReduction])
+  const clampToSize = useCallback(
+    (ix: number, iy: number, i: number) => {
+      const width = Math.max(20, max.w - stepReduction * i)
+      const height = Math.max(20, max.h - stepReduction * i)
+      const limX = (max.w - width) / 2
+      const limY = (max.h - height) / 2
+      return {
+        x: Math.max(-limX, Math.min(limX, ix)),
+        y: Math.max(-limY, Math.min(limY, iy)),
+      }
+    },
+    [max.w, max.h, stepReduction],
+  )
 
-  const getLocal = useCallback((clientX: number, clientY: number) => {
-    const host = wrapRef.current
-    if (!host) return { x: 0, y: 0 }
-    const rect = host.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const rawX = (clientX - cx) / motionParams.dragSmoothing
-    const rawY = (clientY - cy) / motionParams.dragSmoothing
-    const lastIdx = steps - 1
-    return clampToSize(rawX, rawY, lastIdx)
-  }, [steps, motionParams.dragSmoothing, clampToSize])
+  const getLocal = useCallback(
+    (clientX: number, clientY: number) => {
+      const host = wrapRef.current
+      if (!host) return { x: 0, y: 0 }
+      const rect = host.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const rawX = (clientX - cx) / motionParams.dragSmoothing
+      const rawY = (clientY - cy) / motionParams.dragSmoothing
+      const lastIdx = steps - 1
+      return clampToSize(rawX, rawY, lastIdx)
+    },
+    [steps, motionParams.dragSmoothing, clampToSize],
+  )
 
   const activePointerRef = useRef<number | null>(null)
-  
+
   const handlersRef = useRef({
     onMove: (e: PointerEvent) => {
       if (!draggingRef.current || activePointerRef.current !== e.pointerId) return
@@ -145,9 +166,9 @@ export default function ConcentricSquares({
         activePointerRef.current = null
         setIsDragging(false)
       }
-    }
+    },
   })
-  
+
   useEffect(() => {
     handlersRef.current.onMove = (e: PointerEvent) => {
       if (!draggingRef.current || activePointerRef.current !== e.pointerId) return
@@ -166,11 +187,11 @@ export default function ConcentricSquares({
   useEffect(() => {
     const onMove = (e: PointerEvent) => handlersRef.current.onMove(e)
     const onUp = (e: PointerEvent) => handlersRef.current.onUp(e)
-    
+
     document.addEventListener('pointermove', onMove, { passive: false })
     document.addEventListener('pointerup', onUp, { passive: false })
     document.addEventListener('pointercancel', onUp, { passive: false })
-    
+
     return () => {
       document.removeEventListener('pointermove', onMove)
       document.removeEventListener('pointerup', onUp)
@@ -178,76 +199,81 @@ export default function ConcentricSquares({
     }
   }, [])
 
-  const onPointerDown: React.PointerEventHandler<HTMLDivElement> = useCallback((e) => {
-    const host = wrapRef.current
-    if (!host || draggingRef.current) return
+  const onPointerDown: React.PointerEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      const host = wrapRef.current
+      if (!host || draggingRef.current) return
 
-    e.preventDefault()
-    e.stopPropagation()
-    
-    draggingRef.current = true
-    activePointerRef.current = e.pointerId
-    targetRef.current = getLocal(e.clientX, e.clientY)
-    setIsDragging(true)
-  }, [getLocal])
+      e.preventDefault()
+      e.stopPropagation()
 
-  const onSmallestPointerDown: React.PointerEventHandler<HTMLDivElement> = useCallback((e) => {
-    if (draggingRef.current) return
-    
-    e.preventDefault()
-    e.stopPropagation()
-    
-    draggingRef.current = true
-    activePointerRef.current = e.pointerId
-    targetRef.current = getLocal(e.clientX, e.clientY)
-    setIsDragging(true)
-  }, [getLocal])
+      draggingRef.current = true
+      activePointerRef.current = e.pointerId
+      targetRef.current = getLocal(e.clientX, e.clientY)
+      setIsDragging(true)
+    },
+    [getLocal],
+  )
+
+  const onSmallestPointerDown: React.PointerEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      if (draggingRef.current) return
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      draggingRef.current = true
+      activePointerRef.current = e.pointerId
+      targetRef.current = getLocal(e.clientX, e.clientY)
+      setIsDragging(true)
+    },
+    [getLocal],
+  )
 
   useEffect(() => {
     let raf = 0
     let lastTime = 0
-    
+
     const tick = (currentTime: number) => {
       if (currentTime - lastTime < 16.67) {
         raf = requestAnimationFrame(tick)
         return
       }
       lastTime = currentTime
-      
-      setPositions(prev => {
+
+      setPositions((prev) => {
         const next = [...prev]
         const last = steps - 1
         let hasChanged = false
-        
+
         if (last >= 0) {
           const L = next[last]
           const target = targetRef.current
           const newX = L.x + (target.x - L.x) * motionParams.speedBase
           const newY = L.y + (target.y - L.y) * motionParams.speedBase
           const clamped = clampToSize(newX, newY, last)
-          
+
           if (Math.abs(clamped.x - L.x) > 0.001 || Math.abs(clamped.y - L.y) > 0.001) {
             next[last] = clamped
             hasChanged = true
           }
         }
-        
+
         for (let i = last - 1; i >= 0; i--) {
           const cur = next[i]
           const lead = next[i + 1]
           const sp =
-            motionParams.speedBase *
-            (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
+            motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
           const newX = cur.x + (lead.x - cur.x) * sp
           const newY = cur.y + (lead.y - cur.y) * sp
           const clamped = clampToSize(newX, newY, i)
-          
+
           if (Math.abs(clamped.x - cur.x) > 0.001 || Math.abs(clamped.y - cur.y) > 0.001) {
             next[i] = clamped
             hasChanged = true
           }
         }
-        
+
         return hasChanged ? next : prev
       })
       raf = requestAnimationFrame(tick)
@@ -256,18 +282,21 @@ export default function ConcentricSquares({
     return () => cancelAnimationFrame(raf)
   }, [steps, motionParams, clampToSize])
 
-  const colorAt = useCallback((i: number) => {
-    if (colors && colors[i]) return colors[i]
-    const t = steps > 1 ? Math.pow(i / (steps - 1), motionParams.colorInterpolationPower) : 0
-    return interpolate(brandColorHex, refinedColorHex, t)
-  }, [colors, steps, motionParams.colorInterpolationPower, brandColorHex, refinedColorHex])
+  const colorAt = useCallback(
+    (i: number) => {
+      if (colors && colors[i]) return colors[i]
+      const t = steps > 1 ? Math.pow(i / (steps - 1), motionParams.colorInterpolationPower) : 0
+      return interpolate(brandColorHex, refinedColorHex, t)
+    },
+    [colors, steps, motionParams.colorInterpolationPower, brandColorHex, refinedColorHex],
+  )
 
   const getCursorStyle = useCallback(() => {
     if (isDragging) return 'grabbing'
     if (hitArea === 'host') return 'grab'
     return 'default'
   }, [isDragging, hitArea])
-  
+
   const boxes = useMemo(() => {
     const rp = motionParams.rotatePerStepDeg ?? 10
     const ro = motionParams.rotateOffsetDeg ?? 0
@@ -307,19 +336,13 @@ export default function ConcentricSquares({
       {boxes.map(({ i, width, height, color, p, angle }) => {
         const isSmallest = i === steps - 1
         const isInteractive = hitArea === 'smallest' && isSmallest
-        
+
         return (
           <div
             key={i}
+            className='absolute top-[50%] left-[50%] flex justify-fenter items-center'
             style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
               transform: `translate(calc(-50% + ${p.x}px), calc(-50% + ${p.y}px))`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              willChange: 'transform',
               cursor: isInteractive ? (isDragging ? 'grabbing' : 'grab') : 'default',
               pointerEvents: isInteractive ? 'auto' : 'none',
             }}
