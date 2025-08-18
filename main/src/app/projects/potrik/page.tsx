@@ -527,7 +527,7 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/silmul/silmul_thumbnail_1.jpg',
             englishName: 'Silmul',
             koreanName: '실물',
             linkUrl: '/projects/silmul',
@@ -535,7 +535,7 @@ export default function Page() {
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/newbe/newbe_thumbnail_1.jpg',
             englishName: 'Newbe',
             koreanName: '뉴비',
             linkUrl: '/projects/newbe',

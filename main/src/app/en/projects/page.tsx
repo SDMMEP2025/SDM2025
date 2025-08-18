@@ -1,7 +1,7 @@
 'use client'
 
 import { Header, Footer2 } from '@/components/projects'
-import ProjectsGrid from '@/components/projects/ProjectsGrid'
+import ProjectsGrid from '@/components/en/ProjectsGrid'
 import { useIsLandscape } from '@/hooks/useIsLandscape'
 
 export default function Page() {

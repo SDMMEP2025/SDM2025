@@ -491,16 +491,16 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'Cruise',
+            imageUrl: '/images/projects/cruise/cruise1_thumbnail_1.jpg',
+            englishName: 'CRUISE',
             koreanName: '크루즈',
             linkUrl: '/projects/cruise',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'Potrik',
+            imageUrl: '/images/projects/potrik/potrik_thumbnail_1.jpg',
+            englishName: 'PORTIK',
             koreanName: '포트릭',
             linkUrl: '/projects/potrik',
           }}

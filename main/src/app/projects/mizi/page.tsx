@@ -394,13 +394,13 @@ export default function Page() {
         <CreditTutor title='Tutor' sections={tutorData} />
         <MobileNavigation
           previousItem={{ label: 'Previous', url: '/projects/autonomy-practice' }}
-          nextItem={{ label: 'Next', url: '/projects/mizi' }}
+          nextItem={{ label: 'Next', url: '/projects/cruise' }}
         />
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/autonomy_practice/autonomy_practice_thumbnail_1.jpg',
             englishName: 'AUTONOMY PRACTICE',
             koreanName: '오토노미 프랙티스',
             linkUrl: '/projects/autonomy-practice',
@@ -408,10 +408,10 @@ export default function Page() {
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'mizi',
+            imageUrl: '/images/projects/cruise/cruise1_thumbnail_1.jpg',
+            englishName: 'CRUISE',
             koreanName: '크루즈',
-            linkUrl: '/projects/mizi',
+            linkUrl: '/projects/cruise',
           }}
         />
         <AnimatePresence>

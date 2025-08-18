@@ -81,30 +81,28 @@ export default function Page() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
-  const [currentPoint, setCurrentPoint] = useState(
-    points[0], // 초기값으로 첫 번째 포인트 설정
-  )
+  const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
 
   const inView = useInView(designedByRef, {
-    amount: 0.1, // 10%가 보일 때 inView 상태 변경
-    once: false, // 한번만 감지하지 않도록 설정
+    amount: 0.1,
+    once: false,
   })
 
   useEffect(() => {
     if (inView) {
-      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
+      setIsSidebarShown(false)
     } else {
-      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
+      setIsSidebarShown(true)
     }
   }, [inView, setIsSidebarShown])
 
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
-      setIsMobile(width < 768) // 768px 미만은 모바일
-      setIsTablet(width >= 768 && width < 1440) // 768px 이상 1440px 미만은 테블릿
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1440)
     }
 
     checkDeviceType()
@@ -115,39 +113,25 @@ export default function Page() {
     }
   }, [])
 
-  // 마우스 위치 추적 (PC에서만)
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // 모바일이나 테블릿이면 마우스 추적하지 않음
       if (isMobile || isTablet) return
-
       const windowWidth = window.innerWidth
       const mouseX = event.clientX
-
-      // 오른쪽 1/3 지점 계산 (화면 너비의 2/3 지점부터)
       const rightThirdThreshold = windowWidth * (2 / 3)
-
       setIsMouseInRightThird(mouseX >= rightThirdThreshold)
     }
 
-    // 마우스 이동 이벤트 리스너 추가
     window.addEventListener('mousemove', handleMouseMove)
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [isMobile, isTablet])
 
-  // 사이드바 확장 상태 변경 핸들러
   const handleSidebarExpandedChange = (expanded: boolean) => {
     setIsSidebarExpanded(expanded)
   }
 
-  // 사이드바 표시 여부 결정:
-  // - 모바일에서는 항상 true
-  // - 테블릿에서는 항상 true (새로 추가된 조건)
-  // - PC에서는 마우스가 오른쪽 1/3에 있거나 확장된 상태일 때
   const shouldShowSidebar = isMobile || isTablet || isMouseInRightThird || isSidebarExpanded
 
   return (
@@ -169,8 +153,15 @@ export default function Page() {
         credits='Haeri Ryoo, Seohyun Kim, Minhee Kim, Yubin Seo, Wanhyeok Choi'
         className='w-[133px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <MainImage />
+
+      {/* HERO */}
+      <MainImage Image='/images/projects/layon/layon_main.jpg' />
+
       <Divide title='Background' number='01' className='text-[#417EB4]' />
+
+      {/* Background image (same 위치 as KR) */}
+      <Image Image='/images/projects/layon/layon_01.jpg' />
+
       <TitleBody
         title={
           <>
@@ -188,8 +179,12 @@ export default function Page() {
           </>
         }
       />
+
       <Divide title='Problem' number='02' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* Problem key visual */}
+      <Image Image='/images/projects/layon/layon_02.webp' />
+
       <TitleBody
         title={
           <>
@@ -206,9 +201,20 @@ export default function Page() {
           </>
         }
       />
+
       <Divide title='Project Overview' number='03' className='text-[#417EB4]' />
       <MidTitle align='center' text='Get your layer on, LAY.ON' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* Overview video */}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694544?h=be020ad889'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <MidBody
         align='left'
         content={
@@ -221,8 +227,12 @@ export default function Page() {
           </>
         }
       />
+
       <Divide title='Design Strategy' number='04' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* Strategy image */}
+      <Image Image='/images/projects/layon/layon_04.jpg' />
+
       <TitleBody
         title={
           <>
@@ -250,6 +260,7 @@ export default function Page() {
           </>
         }
       />
+
       <Divide title='Our Product' number='05' className='text-[#417EB4]' />
       <LeftTitle
         text={
@@ -260,7 +271,17 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* Product intro video */}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694602?h=5a3ef9adbc'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <MidBody
         align='left'
         content={
@@ -271,7 +292,10 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* Product images */}
+      <Image Image='/images/projects/layon/layon_06.jpg' />
+
       <TitleBody
         title={
           <>
@@ -288,8 +312,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_07.jpg' />
+      <Image Image='/images/projects/layon/layon_08.jpg' />
+
       <TitleBody
         title={
           <>
@@ -306,11 +331,22 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* Modular swap video */}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694665?h=3f29f60aef'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <ImageGallery
-        images={['/images/projects/cruise/cruise_2.jpg', '/images/projects/cruise/cruise_2.jpg']}
+        images={['/images/projects/layon/layon_10.jpg', '/images/projects/layon/layon_11.jpg']}
         alt='LAY.ON Image Gallery'
       />
+
       <MidBody
         align='center'
         content={
@@ -320,7 +356,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      <Image Image='/images/projects/layon/layon_12.jpg' />
+
       <TitleBody
         title={
           <>
@@ -337,10 +375,22 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_13.jpg' />
+
       <Divide title='Our OS' number='06' className='text-[#417EB4]' />
       <LeftTitle text={<>A new paradigm that knows what you need.</>} />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* OS video (has audio) */}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694674?h=0d98a04f83'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
+      />
+
       <MidBody
         align='left'
         content={
@@ -360,7 +410,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      <Image Image='/images/projects/layon/layon_15.webp' />
+
       <TitleBody
         title={<>Vision is the trigger</>}
         text={
@@ -370,10 +422,12 @@ export default function Page() {
           </>
         }
       />
+
       <ImageGallery
-        images={['/images/projects/cruise/cruise_2.jpg', '/images/projects/cruise/cruise_2.jpg']}
+        images={['/images/projects/layon/layon_16.jpg', '/images/projects/layon/layon_17.jpg']}
         alt='LAY.ON Image Gallery'
       />
+
       <RightBody
         text={
           <>
@@ -382,7 +436,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      <Image Image='/images/projects/layon/layon_18.jpg' />
+
       <TitleBody
         title={
           <>
@@ -398,7 +454,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      <Image Image='/images/projects/layon/layon_19.jpg' />
+
       <TitleBody
         title={
           <>
@@ -415,9 +473,10 @@ export default function Page() {
           </>
         }
       />
+
       <Divide title='Our Vision' number='07' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_20.jpg' />
+      <Image Image='/images/projects/layon/layon_21.jpg' />
 
       <div ref={designedByRef}>
         <Credit
@@ -492,16 +551,16 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'NEWBE',
+            imageUrl: '/images/projects/newbe/newbe_thumbnail_1.jpg',
+            englishName: 'Newbe',
             koreanName: '뉴비',
             linkUrl: '/en/projects/newbe',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'HOTCAKE',
+            imageUrl: '/images/projects/hotcake/hotcake_thumbnail_1.jpg',
+            englishName: 'Hotcake',
             koreanName: '핫케익',
             linkUrl: '/en/projects/hotcake',
           }}

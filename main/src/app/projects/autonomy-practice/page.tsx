@@ -316,7 +316,7 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/merlin/merlin_thumbnail_1.jpg',
             englishName: 'Merlin',
             koreanName: '멀린',
             linkUrl: '/projects/merlin',
@@ -324,7 +324,7 @@ export default function Page() {
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/mizi/mizi_thumbnail_1.jpg',
             englishName: 'MIZI',
             koreanName: '미지',
             linkUrl: '/projects/mizi',

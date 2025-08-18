@@ -521,16 +521,16 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'NEWBE',
+            imageUrl: '/images/projects/newbe/newbe_thumbnail_1.jpg',
+            englishName: 'Newbe',
             koreanName: '뉴비',
             linkUrl: '/projects/newbe',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'HOTCAKE',
+            imageUrl: '/images/projects/hotcake/hotcake_thumbnail_1.jpg',
+            englishName: 'Hotcake',
             koreanName: '핫케익',
             linkUrl: '/projects/hotcake',
           }}

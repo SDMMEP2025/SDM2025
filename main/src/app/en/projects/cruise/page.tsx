@@ -28,6 +28,7 @@ import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import Head from 'next/head'
 
 const tutorData = [
   {
@@ -92,54 +93,39 @@ export default function Page() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
-  const [currentPoint, setCurrentPoint] = useState(
-    points[0], // 초기값으로 첫 번째 포인트 설정
-  )
+  const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
+  const delayFor = (i: number, base = 200) => i * base
 
   const inView = useInView(designedByRef, {
-    amount: 0.1, // 10%가 보일 때 inView 상태 변경
-    once: false, // 한번만 감지하지 않도록 설정
+    amount: 0.1,
+    once: false,
   })
 
   useEffect(() => {
-    if (inView) {
-      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
-    } else {
-      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
-    }
+    setIsSidebarShown(!inView)
   }, [inView, setIsSidebarShown])
 
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
-      setIsMobile(width < 768) // 768px 미만은 모바일
-      setIsTablet(width >= 768 && width < 1440) // 768px 이상 1440px 미만은 테블릿
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1440)
     }
-
     checkDeviceType()
     window.addEventListener('resize', checkDeviceType)
-
-    return () => {
-      window.removeEventListener('resize', checkDeviceType)
-    }
+    return () => window.removeEventListener('resize', checkDeviceType)
   }, [])
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       if (isMobile || isTablet) return
-
-      const windowWidth = window.innerWidth
-      const mouseX = event.clientX
-      const rightThirdThreshold = windowWidth * (2 / 3)
-
-      setIsMouseInRightThird(mouseX >= rightThirdThreshold)
+      const rightThirdThreshold = window.innerWidth * (2 / 3)
+      setIsMouseInRightThird(event.clientX >= rightThirdThreshold)
     }
     window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
+    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [isMobile, isTablet])
 
   const handleSidebarExpandedChange = (expanded: boolean) => {
@@ -151,6 +137,14 @@ export default function Page() {
   return (
     <>
       <Blank />
+      <Head>
+        <link rel='dns-prefetch' href='https://player.vimeo.com' />
+        <link rel='dns-prefetch' href='https://i.vimeocdn.com' />
+        <link rel='dns-prefetch' href='https://f.vimeocdn.com' />
+        <link rel='preconnect' href='https://player.vimeo.com' crossOrigin='' />
+        <link rel='preconnect' href='https://i.vimeocdn.com' crossOrigin='' />
+        <link rel='preconnect' href='https://f.vimeocdn.com' crossOrigin='' />
+      </Head>
       <Header />
       <Summary
         svgSrc='/images/logo/CRUISE_logo.svg'
@@ -159,19 +153,22 @@ export default function Page() {
         credits='Yeojun Yun, Hyunggoo Kang, Minji Kwon, Chaeyoung Baek, Minseo Jung'
         className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
       />
-      <MainImage Image='/images/projects/cruise/image1.png' />
+      {/* HERO */}
+      <Image Image='/images/projects/cruise/cruise1_main.jpg' />
+
       <Divide title='Background' number='01' />
       <TitleBody
         title='A lifetime on the road'
         text='Morning commutes, busy day trips, weekend getaways, unexpected meetups—life takes place on the road. Likewise, movement is not just about getting from A to B; it is an inseparable part of everyday life, shaping our time & experiences.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106711843?h=ba42ab53da' />
+      <Image Image='/images/projects/cruise/cruise1_1.jpg' />
+
       <Divide title='Target' number='02' />
       <TitleBody
         title={'The reimagined, new generation of movement'}
-        text='In the time when autonomous driving becomes the norm, when even the steering wheel, our most trusted means of handling, is no longer needed, movement does not simply mean one getting to a destination. The traditional divide between driver and passenger fades, escaping the responsibility to operate the vehicle. Opening new possibilities for the ‘Navigators,’ shaping their own unique experiences and exploration.'
+        text='In the time when autonomous driving becomes the norm, when even the steering wheel, our most trusted means of handling, is no longer needed, movement does not simply mean one getting to a destination. The traditional divide between driver and passenger fades, escaping the responsibility to operate the vehicle. Opening new possibilities for the “Navigators,” shaping their own unique experiences and exploration.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_2.jpg' />
       <RightTitleBody
         title='Silent passengers to adventurous pioneers, CRUISER'
         text={
@@ -182,7 +179,7 @@ export default function Page() {
             <br />
             <br />
             <a
-              href=' https://www.notion.so/CRUISE-UX-BOOK-23d6cd1a9e8280a68d64f1b14879e6a1?source=copy_link'
+              href='https://www.notion.so/CRUISE-UX-BOOK-23d6cd1a9e8280a68d64f1b14879e6a1?source=copy_link'
               className='underline font-semibold'
               target='_blank'
             >
@@ -190,80 +187,134 @@ export default function Page() {
             </a>
           </>
         }
-      ></RightTitleBody>
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712041?h=af8b7a7a8a' />
+      />
+      <Image Image='/images/projects/cruise/cruise1_3.webp' />
+
       <MidBody
         align='left'
         content='CRUISE expands these lifestyles into new movement experiences. To the Cruisers, movement becomes a platform to connect moments through personal preferences and to have fun engaging with friends. Roads become lively feeds, and vehicles transform into interactive devices—everyone becoming the creators and editors of your journey.'
       />
+
       <Divide title='Concept' number='03' />
-      <Image Image='/images/projects/cruise/cruise_4.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_4.jpg' />
       <MidTitle align='center' text='Road as a feed—sharing every experience.' />
-      <Image Image='/images/projects/cruise/cruise_5.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_5.jpg' />
       <MidBody content={'Style Our Mile, Drive Our Life! Let’s explore how CRUISE will change our movement!'} />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708874?h=feee26fc27'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <Divide title='CRUISE Product' number='04' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712232?h=e815385a12' />
+      <Image Image='/images/projects/cruise/cruise1_6.jpg' />
 
       <RightTitleBody
         title='CRUISE - Handle'
         text='CRUISE’s Handle is a new interaction device replacing the traditional steering wheel in the era of future autonomous vehicles. Handle references intuitive gesture controls that can be easily found in a mobile environment, making it possible for natural yet straightforward communication with the world around.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712396?h=954343a016' />
+      <Image Image='/images/projects/cruise/cruise1_8.jpg' />
 
       <RightTitleBody
         title='CRUISE - Dash'
         text='CRUISE Dash features A.I. cameras that recognize boarded passengers to further enhance the experience. The designated slot can easily accommodate the Handle when not in use. Dash is designed to provide core functions with minimized components—bringing the flexibility to be applied in various vehicles and situations.'
       />
-      <Image Image='/images/projects/cruise/cruise_9.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708889?h=dec440477b'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
 
       <RightBody text='From cozy, manageable two-seaters to spacious vehicles that fit all your friends, CRUISE blends in effortlessly into any interior. Allowing for checking both external & Dash information in comfort, all while having Handle within arm’s reach.' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712557?h=5d7c488384' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708908?h=2fda5e80b8'
+        preloadDelayMs={delayFor(1)}
+        hasAudio={true}
+        muted={false}
+        prewarm
+        loop
+      />
 
       <Divide title='Scenario' number='05' />
       <MidTitle align='center' padding={false} text='(1) Styling Our Journey, Together' />
-
       <TitleBody
         title={'What’s the Vibes for Today?'}
         text='Check the map together with friends to start the exploration. Artificial intelligence will recognize all passengers to set group algorithms. Then it suggests destinations and other sets of data to make the perfect journey possible—forming a Signature Map—expeditions showing our individuality.'
       />
-      <Image Image='/images/projects/cruise/cruise_11.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708949?h=fa86847bc0'
+        preloadDelayMs={delayFor(2)}
+        prewarm
+        muted
+        loop
+      />
 
       <MidTitle align='center' padding={false} text='(2) Boundless Playground for Everyone' />
       <TitleBody
         title={'Map with numerous viewpoints'}
         text='Time being spent in moving vehicles turns into a delightful playground with CRUISE. When the Handle is passed around, AI recognizes who’s in charge & changes the algorithm accordingly. All individual perspectives come together on one Collective Map, making every trip a new adventure.'
       />
-
-      <Image Image='/images/projects/cruise/cruise_12.jpg' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712720?h=5da78fb84e' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838360?h=212d7faad8'
+        preloadDelayMs={delayFor(3)}
+        prewarm
+        muted
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838382?h=85299bb0cd'
+        preloadDelayMs={delayFor(4)}
+        prewarm
+        muted
+        loop
+      />
 
       <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
         title={'Switching Vibes, Instantly.'}
         text='CRUISE instantly changes the current ambience with no interruptions. The pull and release gesture makes it possible to refresh your vibes and contents in the flick of your finger.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106712921?h=694cbd3bf9' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708985?h=f47f8b49f2'
+        preloadDelayMs={delayFor(5)}
+        prewarm
+        muted
+        loop
+      />
 
       <TitleBody
         title={'Our journey, Our identity'}
-        text='With CRUISE, our journeys together are more than just trails—they become ‘Mobility Personas,’ containing the user’s tastes and discoveries. Every recorded moment inspires others and grows through different perspectives. Our footsteps create an ever-changing map that fuels inspiration for every new adventure.'
+        text='With CRUISE, our journeys together are more than just trails—they become “Mobility Personas,” containing the user’s tastes and discoveries. Every recorded moment inspires others and grows through different perspectives. Our footsteps create an ever-changing map that fuels inspiration for every new adventure.'
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106713092?h=1946f5e58b' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110709027?h=7a7125da0c'
+        preloadDelayMs={delayFor(6)}
+        prewarm
+        muted
+        loop
+      />
 
       <Divide title='Vision & Expectation' number='06' />
-
       <MidTitle align='center' padding={false} text='Future Value of CRUISE' />
       <MidBody content='CRUISE redefines everyday movement experiences into a dynamic, sharing journey. Proposing a future where people’s personal discoveries and tastes intertwine, every trip is filled with vibrant exploration.' />
-      <Image Image='/images/projects/cruise/cruise_16.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_16.jpg' />
 
       <MidBody content='Ready to turn all everyday trips into a journey full of discoveries?' />
-      <Image Image='/images/projects/cruise/cruise_17.jpg' />
-      <Image Image='/images/projects/cruise/cruise_18.jpg' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1106713465?h=79087f8614' />
-      <Image Image='/images/projects/cruise/cruise_20.jpg' />
-      <Image Image='/images/projects/cruise/cruise_21.jpg' />
-      <Image Image='/images/projects/cruise/cruise_21.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_17.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_18.webp' />
+      <Image Image='/images/projects/cruise/cruise1_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit
@@ -336,15 +387,15 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'Mizi',
+            imageUrl: '/images/projects/mizi/mizi_thumbnail_1.jpg',
+            englishName: 'MIZI',
             koreanName: '미지',
             linkUrl: '/en/projects/mizi',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/silmul/silmul_thumbnail_1.jpg',
             englishName: 'Silmul',
             koreanName: '실물',
             linkUrl: '/en/projects/silmul',
