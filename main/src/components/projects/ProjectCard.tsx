@@ -283,7 +283,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                       transition={slide}
                     >
                       <img
-                        src={project.thumbnail.pc}
+                        src={isMdPortrait ? project.thumbnail.mobile : project.thumbnail.pc}
                         alt={project.title}
                         className='block w-full h-full object-cover'
                         draggable={false}

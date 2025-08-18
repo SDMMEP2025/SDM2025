@@ -30,37 +30,37 @@ export default function ProjectsGrid() {
     {
       id: 'potrik',
       title: 'Potrik',
-      thumbnail: { pc: '/images/projects/potrik/potrik_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/potrik/potrik_thumbnail_1.jpg', mobile: '/images/projects/potrik/potrik_thumbnail_2.jpg' },
     },
     {
       id: 'newbe',
       title: 'Newbe',
-      thumbnail: { pc: '/images/projects/newbe/newbe_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/newbe/newbe_thumbnail_1.jpg', mobile: '/images/projects/newbe/newbe_thumbnail_2.jpg' },
     },
     {
       id: 'layon',
       title: 'Lay.On',
-      thumbnail: { pc: '/images/projects/layon/layon_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/layon/layon_thumbnail_1.jpg', mobile: '/images/projects/layon/layon_thumbnail_2.jpg' },
     },
     {
       id: 'hotcake',
       title: 'Hotcake',
-      thumbnail: { pc: '/images/projects/hotcake/hotcake_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/hotcake/hotcake_thumbnail_1.jpg', mobile: '/images/projects/hotcake/hotcake_thumbnail_2.jpg' },
     },
     {
       id: 'merlin',
       title: 'Merlin',
-      thumbnail: { pc: '/images/projects/merlin/merlin_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/merlin/merlin_thumbnail_1.jpg', mobile: '/images/projects/merlin/merlin_thumbnail_2.jpg' },
     },
     {
       id: 'autonomy-practice',
       title: 'Autonomy Practice',
-      thumbnail: { pc: '/images/projects/autonomy_practice/autonomy_practice_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/autonomy_practice/autonomy_practice_thumbnail_1.jpg', mobile: '/images/projects/autonomy_practice/autonomy_practice_thumbnail_2.jpg' },
     },
     {
       id: 'mizi',
       title: 'Mizi',
-      thumbnail: { pc: '/images/projects/mizi/mizi_thumbnail_1.jpg', mobile: '/images/projects/test-m.png' },
+      thumbnail: { pc: '/images/projects/mizi/mizi_thumbnail_1.jpg', mobile: '/images/projects/mizi/mizi_thumbnail_2.jpg' },
     },
   ]
 
