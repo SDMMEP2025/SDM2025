@@ -98,7 +98,7 @@ export default function Page() {
   )
 
   const designedByRef = useRef<HTMLDivElement>(null)
-  const delayFor = (i: number, base = 400) => i * base
+  const delayFor = (i: number, base = 200) => i * base
 
   const inView = useInView(designedByRef, {
     amount: 0.1, // 10%가 보일 때 inView 상태 변경
@@ -223,7 +223,7 @@ export default function Page() {
         loop
       />
       <Divide title='CRUISE Product' number='04' />
-      <Image Image='/images/projects/cruise/cruise1_7.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_6.jpg' />
 
 
       <RightTitleBody
