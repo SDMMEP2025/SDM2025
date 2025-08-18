@@ -181,7 +181,7 @@ export default function Page() {
         title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
         text='자율주행 안정화 시대의 도래로, 오랫동안 우리와 함께해왔던 조향 장치인 핸들조차 사라진 미래에서 이동은 더 이상 단순한 공간의 변화만을 의미하지 않습니다. 운전자와 동승자라는 전형적인 구분은 사라지고, 모든 탑승자는 운전의 책임에서 해방됩니다. 이는 곧, 개개인이 자신의 이동 경험을 스스로 만들고, 탐험을 즐기는 네비게이터가 될 새로운 가능성이 열리는 것이죠.'
       />
-      <Image Image='/images/projects/cruise/CRUISE_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <RightTitleBody
         title='수동적인 승객이 아닌 경험을 개척하는 CRUISER'
         text={
@@ -208,9 +208,9 @@ export default function Page() {
         content='CRUISE는 이러한 삶의 방식을 이동 경험으로 확장합니다. 이들에게 이동은 이제, 세상의 모든 순간을 자신만의 취향으로 엮어내고, 친구들과 역동적으로 교감하는 하나의 플랫폼이 됩니다. 도로는 생생한 피드로, 차량은 손안에서 자유롭게 상호작용하는 디바이스로 변화합니다. 이를 통해 탑승자 모두가 이동 경험의 주체이자 경험 에디터가 되는 새로운 미래가 펼쳐집니다. 마치 ‘한 배를 탄 듯이’ 말이죠.'
       />
       <Divide title='Concept' number='03' />
-      <Image Image='/images/projects/cruise/CRUISE_4.jpg' />
+      <Image Image='/images/projects/cruise/cruise_4.jpg' />
       <MidTitle align='center' text='도로, 경험을 공유하는 FEED가 되다.' />
-      <Image Image='/images/projects/cruise/CRUISE_5.jpg' />
+      <Image Image='/images/projects/cruise/cruise_5.jpg' />
       <MidBody
         content={'Style Our Mile, Drive Our Life!\n이제 CRUISE가 우리의 이동을 어떻게 바꿔나갈지 함께 살펴볼까요?'}
       />
@@ -329,10 +329,10 @@ export default function Page() {
 개인의 탐색과 취향이 끊임없이 연결되고 확장되며, 모든 여정이 함께 만들어가는 생동감 넘치는 
 ‘움직이는 탐색’이 되는 미래를 제시합니다.'
       />
-      <Image Image='/images/projects/cruise/CRUISE_16.jpg' />
+      <Image Image='/images/projects/cruise/cruise_16.jpg' />
 
       <MidBody content='매번 지루했던 이동이 언제나 개성 넘치는 탐험이 될, 새로운 이동을 경험해 볼 준비가 되셨나요?' />
-      <Image Image='/images/projects/cruise/CRUISE_17.jpg' />
+      <Image Image='/images/projects/cruise/cruise_17.jpg' />
       <Image Image='/images/projects/cruise/CRUISE_18.webp' />
       <Image Image='/images/projects/cruise/CRUISE_19.jpg' />
 
