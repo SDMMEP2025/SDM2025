@@ -44,10 +44,10 @@ export function ProjectNavigation({
        {/* Hover overlay */}
        <div className="w-full h-full left-0 top-0 absolute bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center">
          <div className="w-20 flex-col justify-center items-center hidden lg:flex">
-           <div className="text-center justify-start text-white text-3xl font-bold leading-10">
+           <div className="text-center whitespace-nowrap justify-start text-white text-3xl font-bold leading-10">
              {leftProject.englishName}
            </div>
-           <div className="text-center justify-start text-white text-lg font-bold leading-relaxed">
+           <div className="text-center whitespace-nowrap justify-start text-white text-lg font-bold leading-relaxed">
              {leftProject.koreanName}
            </div>
          </div>
@@ -63,10 +63,10 @@ export function ProjectNavigation({
        {/* Hover overlay */}
        <div className="w-full h-full left-0 top-0 absolute bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center">
          <div className="w-20 flex-col justify-center items-center hidden lg:flex">
-           <div className="text-center justify-start text-white text-3xl font-bold leading-10">
+           <div className="text-center whitespace-nowrap justify-start text-white text-3xl font-bold leading-10">
              {rightProject.englishName}
            </div>
-           <div className="text-center justify-start text-white text-lg font-bold leading-relaxed">
+           <div className="text-center whitespace-nowrap justify-start text-white text-lg font-bold leading-relaxed">
              {rightProject.koreanName}
            </div>
          </div>
