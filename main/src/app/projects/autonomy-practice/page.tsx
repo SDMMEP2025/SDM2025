@@ -171,7 +171,7 @@ export default function Page() {
       <Image Image='/images/projects/autonomy_practice/autonomy_practice_main.jpg' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110685578?h=166f56d7f8'
+        src='https://player.vimeo.com/video/1110918569?h=f95d5d87e2'
         preloadDelayMs={0}
         hasAudio={true}
         prewarm
