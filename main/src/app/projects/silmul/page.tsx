@@ -273,8 +273,8 @@ export default function Page() {
         type='video'
         src='https://player.vimeo.com/video/1110683367?h=168d4cbe88'
         preloadDelayMs={0}
+        hasAudio={true}
         prewarm
-        muted
         loop
       />
       <Image Image='/images/projects/silmul/silmul_7.jpg' />
