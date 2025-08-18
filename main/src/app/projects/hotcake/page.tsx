@@ -278,7 +278,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110677441?h=a243b7dd77'
+        src='https://player.vimeo.com/video/1110677453?h=9dfe315642'
         preloadDelayMs={0}
         prewarm
         loop
@@ -299,7 +299,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110677461?h=46c61658c5'
+        src='https://player.vimeo.com/video/1110677477?h=6e7bb30ead'
         preloadDelayMs={0}
         prewarm
         loop
@@ -313,7 +313,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110677477?h=6e7bb30ead'
+        src='https://player.vimeo.com/video/1110677496?h=9764a64822'
         preloadDelayMs={0}
         prewarm
         loop
@@ -330,7 +330,13 @@ export default function Page() {
         alt='HOTCAKE Image Gallery'
       />
       <MidTitle align='center' text='Heat it, Play It, Groove It, Melt It, Drop It, Fade It, Link It, Hotcake' />
-      <Image Image='/images/projects/hotcake/hotcake_18.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680480?h=9740795744'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <Image Image='/images/projects/hotcake/hotcake_19.jpg' />
       <Image Image='/images/projects/hotcake/hotcake_20.webp' />
       <div ref={designedByRef}>
