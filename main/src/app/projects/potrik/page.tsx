@@ -406,7 +406,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110679343?h=9669b8cb9c4'
+        src='https://player.vimeo.com/video/1110679343?h=9669b8cb9c'
         preloadDelayMs={0}
         prewarm
         muted

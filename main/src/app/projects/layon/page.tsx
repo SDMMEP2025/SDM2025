@@ -22,7 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
-  Blank
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -152,7 +152,7 @@ export default function Page() {
 
   return (
     <>
-    <Blank/>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Layon_logo.svg'
@@ -172,8 +172,9 @@ export default function Page() {
         credits='유해리, 김서현, 김민희, 서유빈, 최완혁'
         className='w-[133px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <MainImage />
+      <Image Image='/images/projects/layon/layon_main.jpg' />
       <Divide title='Background' number='01' className='text-[#417EB4]' />
+      <Image Image='/images/projects/layon/layon_01.jpg' />
       <TitleBody
         title={
           <>
@@ -193,7 +194,8 @@ export default function Page() {
         }
       />
       <Divide title='Problem' number='02' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_02.webp' />
+
       <TitleBody
         title={
           <>
@@ -212,7 +214,14 @@ export default function Page() {
       />
       <Divide title='Project Overview' number='03' className='text-[#417EB4]' />
       <MidTitle align='center' text='Get your layer on, LAY.ON' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694544?h=be020ad889'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='left'
         content={
@@ -225,7 +234,7 @@ export default function Page() {
         }
       />
       <Divide title='Design Strategy' number='04' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_04.jpg' />
       <TitleBody
         title={
           <>
@@ -261,7 +270,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694602?h=5a3ef9adbc'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='left'
         content={
@@ -272,7 +288,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_06.jpg' />
       <TitleBody
         title={
           <>
@@ -287,8 +303,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_07.jpg' />
+      <Image Image='/images/projects/layon/layon_08.jpg' />
       <TitleBody
         title={
           <>
@@ -304,9 +320,16 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694665?h=3f29f60aef'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <ImageGallery
-        images={['/images/projects/cruise/cruise_2.jpg', '/images/projects/cruise/cruise_2.jpg']}
+        images={['/images/projects/layon/layon_10.jpg', '/images/projects/layon/layon_11.jpg']}
         alt='LAY.ON Image Gallery'
       />
       <MidBody
@@ -319,7 +342,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_12.jpg' />
       <TitleBody
         title={
           <>
@@ -335,10 +358,18 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_13.jpg' />
       <Divide title='Our OS' number='06' className='text-[#417EB4]' />
       <LeftTitle text={<>필요한 경험이 먼저 제안되는 새로운 질서</>} />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694674?h=0d98a04f83'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='left'
         content={
@@ -360,7 +391,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_15.webp' />
       <TitleBody
         title={<>트리거가 되는 시선.</>}
         text={
@@ -371,7 +402,7 @@ export default function Page() {
         }
       />
       <ImageGallery
-        images={['/images/projects/cruise/cruise_2.jpg', '/images/projects/cruise/cruise_2.jpg']}
+        images={['/images/projects/layon/layon_16.jpg', '/images/projects/layon/layon_17.jpg']}
         alt='LAY.ON Image Gallery'
       />
       <RightBody
@@ -382,7 +413,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_18.jpg' />
       <TitleBody
         title={
           <>
@@ -397,7 +428,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_19.jpg' />
       <TitleBody
         title={
           <>
@@ -414,8 +445,8 @@ export default function Page() {
         }
       />
       <Divide title='Our Vision' number='07' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_20.jpg' />
+      <Image Image='/images/projects/layon/layon_21.jpg' />
 
       <div ref={designedByRef}>
         <Credit
