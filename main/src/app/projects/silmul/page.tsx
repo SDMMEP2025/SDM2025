@@ -93,6 +93,7 @@ export default function Page() {
   const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
+  const delayFor = (i: number, base = 200) => i * base
 
   const inView = useInView(designedByRef, {
     amount: 0.1,
@@ -163,7 +164,7 @@ export default function Page() {
         credits='김선일, 현수련, 박세연, 서현빈, 윤현경'
         className='w-[74px] md:w-[96px] lg:w-[clamp(96px,8.75vw,130px)]'
       />
-      <MainImage />
+      <Image Image='/images/projects/silmul/silmul_main.jpg' />
       <Divide title='Background' number='01' className='text-[#E30D2D]' />
       <RightTitleBody
         title='창작을 망설이게 하는 심리적 부담감'
@@ -179,7 +180,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_1.webp' />
       <Divide title='Discover' number='02' className='text-[#E30D2D]' />
       <MidBody
         align='left'
@@ -197,10 +198,10 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_2.webp' />
       <Divide title='Limitation' number='03' className='text-[#E30D2D]' />
       <MidBody align='center' content={<>그러나, 디지털 시대의 창작에 대한 아쉬움의 목소리는 여전히 존재합니다.</>} />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_3.webp' />
       <LeftTitle
         text={
           <a href='https://bio.link/silmul' className='underline font-semibold' target='_blank'>
@@ -230,7 +231,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683335?h=f11057a475'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <RightTitleBody
         title='실감을 실물로 구현하는 창작 경험'
         text={
@@ -258,10 +267,17 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_5.webp' />
       <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683367?h=168d4cbe88'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <Image Image='/images/projects/silmul/silmul_7.jpg' />
       <RightTitleBody
         title='Product, ‘Sense’ ¹'
         text={
@@ -276,7 +292,14 @@ export default function Page() {
       />
       <Divide title='User Scenario' number='07' className='text-[#E30D2D]' />
       <MidTitle align='center' text='Sense: The easiest way to start creating' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683387?h=8e744e1286'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
@@ -287,7 +310,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_9.webp' />
       <RightTitleBody
         title={null}
         text={
@@ -298,8 +321,14 @@ export default function Page() {
         }
       />
       <MidTitle align='center' text='Service: Generate experiences through Gen-AI' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683395?h=844ef70dd2'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightTitleBody
         title={null}
         text={
@@ -310,11 +339,34 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683901?h=7e32a7979c'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody align='center' content={<>원하는 결과물이 만들어졌다면, 이제는 진짜 실물로 출력해 보죠!</>} />
+      <Image Image='/images/projects/silmul/silmul_12.webp' />
+
       <MidTitle align='center' text='Realize: From experience to real object' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683419?h=ca560c55e3'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683432?h=9ee46753e1'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
@@ -325,14 +377,21 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_15.webp' />
       <Divide title='Extra Value' number='08' className='text-[#E30D2D]' />
       <MidTitle
         align='center'
         text='Tagging: Not the end of making - the beginning of expanding'
         className='text-[#E30D2D]'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683441?h=cb28511544'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightTitleBody
         title={null}
         text={
@@ -343,7 +402,7 @@ export default function Page() {
         }
       />
       <MidTitle align='center' text='Melting: Sustainable cycle of Silmul' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_17.webp' />
       <MidBody
         align='center'
         content={
@@ -354,9 +413,10 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_18.webp' />
+      <Image Image='/images/projects/silmul/silmul_19.jpg' />
+      <Image Image='/images/projects/silmul/silmul_20.jpg' />
+
       <MidTitle align='center' text='Turning real senses into real objects, Silmul' className='text-[#E30D2D]' />
 
       <div ref={designedByRef}>
