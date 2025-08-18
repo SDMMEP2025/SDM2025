@@ -187,7 +187,7 @@ export default function Page() {
         credits='이채원, 윤예현, 강동헌, 김시우, 정채영'
         className='w-[142px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <MainImage />
+      <Image Image='/images/projects/newbe/newbe_main.jpg'/>
       <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
       <TitleBody
         title={
@@ -206,7 +206,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_1.webp' />
       <Divide title='Target' number='02' className='text-[#7C8A8D]'/>
       <TitleBody
         title={
@@ -223,7 +223,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_2.jpg' />
       <RightBody
         text={
           <>
@@ -249,7 +249,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_3.webp' />
       <RightBody
         text={
           <>
@@ -258,7 +258,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_4.jpg' />
       <MidBody
         align='center'
         content={
@@ -280,7 +280,14 @@ export default function Page() {
       />
       <Divide title='Solution' number='04' className='text-[#7C8A8D]'/>
       <MidTitle align='center' text='머무름 자체가 곧 스타일링이 되는 NewBe' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696517?h=428d2ad897'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={
           <>
@@ -296,9 +303,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_6.jpg' />
       <MidTitle align='center' text='#0 Meet My Hair Combo' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_7.jpg' />
       <TitleBody
         title={
           <>
@@ -313,7 +320,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696594?h=7ba0530ce0'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='Scenario' number='05' className='text-[#7C8A8D]'/>
       <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
       <TitleBody
@@ -332,7 +346,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696620?h=812fda0809'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightBody
         text={
           <>
@@ -341,7 +362,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696638?h=16e5dc3df6'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={
           <>
@@ -357,7 +385,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_11.webp' />
       <MidBody
         align='center'
         content={
@@ -376,7 +404,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+     <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696671?h=aaf756f866'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
@@ -387,7 +422,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696722?h=023bb05217'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidTitle align='center' padding={false} text='#2 우리의 New-Ing이 계속 즐거울 수 있게' />
       <TitleBody
         title={
@@ -402,7 +444,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_14.jpg' />
       <TitleBody
         title={
           <>
@@ -418,7 +460,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696762?h=801d824d82'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidTitle align='center' padding={false} text='#3 확장되는 우리의 헤어 스타일링 씬' />
       <TitleBody
         title={
@@ -436,7 +485,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696762?h=801d824d82'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='Expectation' number='06' className='text-[#7C8A8D]'/>
       <MidTitle
         align='center'
@@ -447,7 +503,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_17.webp' />
       <MidBody
         align='center'
         content={
@@ -458,7 +514,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_18.webp' />
       <MidBody
         align='center'
         content={
@@ -468,7 +524,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit

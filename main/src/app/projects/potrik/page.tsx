@@ -176,7 +176,7 @@ export default function Page() {
         credits='강윤권, 박효경, 양현지, 이주은, 주형준'
         className='w-[144px] md:w-[180px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
-      <MainImage />
+      <Image Image="/images/projects/potrik/potrik_main.jpg"/>
       <Divide title='Background' number='01' className='text-[#09C17A]' />
       <TitleBody
         title={
@@ -198,7 +198,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_1.webp' />
       <Divide title='New Lifestyle' number='02' className='text-[#09C17A]' />
       <TitleBody
         title={
@@ -227,7 +227,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_2.webp' />
       <Divide title='Solution' number='03' className='text-[#09C17A]' />
       <MidTitle align='center' padding={false} text='[Here] to [Here]' className='text-[#09C17A]' />
       <MidBody
@@ -241,7 +241,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838249?h=90094e419f'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='System' number='04' className='text-[#09C17A]' />
       <TitleBody
         title={<>POTRIK</>}
@@ -252,12 +259,18 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679279?h=743bbc4061'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <ImageGallery
         images={[
-          '/images/projects/cruise/cruise_2.jpg',
-          '/images/projects/cruise/cruise_2.jpg',
-          '/images/projects/cruise/cruise_2.jpg',
+          '/images/projects/potrik/potrik_5.jpg',
+          '/images/projects/potrik/potrik_6.jpg',
         ]}
       />
       <TitleBody
@@ -273,7 +286,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_7.webp' />
       <TitleBody
         title={<>Storage Module</>}
         text={
@@ -287,9 +300,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_8.webp' />
       <MidTitle align='center' text='그럼 POTRIK을 사용해 볼까요?' padding={true} className='text-[#09C17A]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_9.jpg' />
       <Divide title='Scenario' number='05' className='text-[#09C17A]' />
       <TitleBody
         title={<>S1. 여행 중 쇼핑</>}
@@ -307,7 +320,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838275?h=68e0552247'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='How to use' number='06' className='text-[#09C17A]' />
       <TitleBody
         title={<>❶ Call & Send</>}
@@ -322,7 +342,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679295?h=4876bbe421'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>❷ Move</>}
         text={
@@ -335,7 +362,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679309?h=eb8a3101fb'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>❸ Receive</>}
         text={
@@ -346,7 +380,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+       <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679326?h=078a6f5ad4'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>S2. 장본 뒤 놀이터</>}
         text={
@@ -363,7 +404,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679343?h=9669b8cb9c4'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>S3. 중고 거래</>}
         text={
@@ -379,7 +427,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679347?h=1697312987'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='Vision' number='07' className='text-[#09C17A]' />
       <MidTitle align='center' padding={false} text='Start [Blank], End [Blank].' className='text-[#09C17A]' />
       <MidBody
@@ -393,12 +448,12 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_16.webp' />
       <MidTitle align='center' text='당신의 순간을 가볍게 하는 퍼스널 딜리버리 시스템, POTRIK' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_17.jpg' />
       <Divide title='Branding' number='08' className='text-[#09C17A]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_18.jpg' />
+      <Image Image='/images/projects/potrik/potrik_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit
