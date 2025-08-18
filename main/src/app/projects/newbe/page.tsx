@@ -286,7 +286,7 @@ export default function Page() {
         preloadDelayMs={0}
         hasAudio={true}
         prewarm
-        muted={true}
+        muted={false}
         loop
       />
       <TitleBody

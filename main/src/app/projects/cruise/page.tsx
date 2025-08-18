@@ -250,7 +250,7 @@ export default function Page() {
         src='https://player.vimeo.com/video/1110708908?h=2fda5e80b8'
         preloadDelayMs={delayFor(1)}
         hasAudio={true}
-        muted={true}
+        muted={false}
         prewarm
         loop
       />
