@@ -182,7 +182,12 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'블록처럼 쌓여있는\n정적인 UI'}
+        title={[
+          <>
+            블록처럼 쌓여있는 <br className='hidden md:block' />
+            정적인 UI
+          </>,
+        ]}
         text='모든 사용자는 저마다 서로 다른 방식으로 모바일을 사용합니다. 자주 사용하는 앱과 기능, 홈 화면의 배치는 물론이고, 모바일을 쥐는 방식, 손이 닿는 영역과 터치할 때의 압력까지도요.'
       />
       <MediaContainer
@@ -204,13 +209,23 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'디지털 드리블을 수없이\n반복하는 Z세대'}
+        title={[
+          <>
+            디지털 드리블을 수없이 <br className='hidden md:block' />
+            반복하는 Z세대
+          </>,
+        ]}
         text='모두에게 똑같이 제공되는 정적인 UI 구조는 짧은 시간 동안 여러 앱을 넘나드는 Z세대의 탐색 방식과 충돌합니다. Z세대는 탭을 빠른 속도로 전환하며 인터랙션하는 패턴을 보이며, 탐색 과정에서 런처 또는 최근 탭 목록을 반복적으로 오가는 ‘디지털 드리블’을 경험합니다.'
       />
       <Divide number='03' title='Research' />
       <Image Image='/images/projects/merlin/merlin_4.jpg' />
       <TitleBody
-        title={'‘익숙한 미로’ 같은\n디지털 길찾기'}
+        title={[
+          <>
+            '익숙한 미로' 같은 <br className='hidden md:block' />
+            디지털 길찾기
+          </>,
+        ]}
         text={
           <>
             Z세대는 앱이나 기능 전체보다는 일부 특정 기능을 집중적으로 사용하고 있습니다. 이들의 모바일에는 평균 130개의
@@ -235,7 +250,13 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'목표는 하나지만,\n 몰입을 끊는 수많은\n 중간 페이지들'}
+        title={[
+          <>
+            목표는 하나지만, <br className='block' />
+            몰입을 끊는 수많은 <br className='hidden md:block' />
+            중간 페이지들
+          </>,
+        ]}
         text={
           'Z세대는 습관적이고 빠르게 디지털을 사용하지만, 현재는 단 하나의 명확한 목적을 달성하기 위해서도 홈 화면, 앱 서랍, 최근 탭, 앱 내 탐색을 오가며 불필요한 시간과 에너지를 소모하고 있습니다. 이처럼 중간 과정에 해당하는 화면들이 방지턱처럼 작용해 사용자의 흐름을 끊으며, 과도한 인지적 부하와 피로를 유발하고 있습니다.'
         }
@@ -243,7 +264,14 @@ export default function Page() {
       <Divide number='05' title='Insight' />
       <Image Image='/images/projects/merlin/merlin_6.webp' />
       <TitleBody
-        title={'Z세대에게 필요한 것은\n 앱이 아닌 흐름'}
+        title={[
+          <>
+            Z세대에게 필요한 것은 
+            {' '}
+            <br className='hidden md:block' />
+            앱이 아닌 흐름
+          </>
+        ]}
         text={
           '애플리케이션은 기능을 담는 공간이지만, 오히려 이 구조가 흐름을 끊는 걸림돌이 되고 있습니다. 사용자가 직접 여러 레이어를 오가며 원하는 기능을 찾아 헤매는 대신, 처음부터 필요한 기능들이 하나의 흐름 위에 자연스럽게 연결된다면 어떨까요? 사용자의 행동 패턴을 이해하고 다음에 할 일을 예측해 자연스럽게 이어주는 ‘흐름 중심’의 새로운 디지털 구조가 필요합니다.'
         }
@@ -269,7 +297,13 @@ export default function Page() {
       />
 
       <TitleBody
-        title={'흐름으로 연결되는\n세 가지 경험'}
+        title={[
+          <>
+            흐름으로 연결되는
+            {' '}
+            <br className='hidden md:block' />세 가지 경험
+          </>
+        ]}
         text={
           'Merlin OS는 Contextual Flow, Appless Interface, Flexible UI 세 가지 원칙을 바탕으로, 사용자의 맥락과 습관에 맞춘 흐름 중심의 새로운 디지털 몰입 환경을 제공합니다. 사용자는 앱을 탐색하거나 UI를 학습하지 않아도, 상황에 따라 재배치된 기능 흐름을 자연스럽게 따라가며 원하는 작업에 빠르게 도달할 수 있습니다.'
         }
@@ -282,7 +316,14 @@ export default function Page() {
         loop
       />
       <RightTitleBody
-        title='지금 바로 내게 딱 맞는 기능들만 모아, Contextual Flow'
+        title={[
+          <>
+            지금 바로 내게 딱 맞는 기능들만 모아,
+            {' '}
+            <br className='block md:hidden' />
+            Contextual Flow
+          </>
+        ]}
         text='시간대, 장소, 그립 패턴 등 사용자의 상황과 맥락을 이해하고, 그에 맞는 흐름을 제공합니다. 맥락에 맞게 재배치된 흐름을 통해 사용자는 자신을 둘러싼 환경에 최적화된 디지털 여정을 경험할 수 있습니다.'
       />
       <MediaContainer
@@ -301,7 +342,14 @@ export default function Page() {
         loop
       />
       <RightTitleBody
-        title='전환 없이 하나로 이어지는 경험, Appless Interface'
+        title={[
+          <>
+            전환 없이 하나로 이어지는 경험,
+            {' '}
+            <br className='block md:hidden' />
+            Appless Interface
+          </>
+        ]}
         text='애플리케이션 중심이 아닌, 흐름 중심의 경험을 제공합니다. 사용자가 앱 안으로 들어가 기능을 찾지 않아도 하나의 화면에서 필요한 기능이 자연스럽게 이어집니다.'
       />
       <MediaContainer
@@ -348,7 +396,14 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'끊김 없는 몰입,\n나를 닮은 OS'}
+        title={[
+          <>
+            끊김 없는 몰입,
+            {' '}
+            <br className='hidden md:block' />
+            나를 닮은 OS
+          </>,
+        ]}
         text={
           'Merlin OS는 앱 전환 없이 이어지는 단일 플로우로 인지적∙조작적 피로를 줄이고, 사용자가 본연의 목적에 곧바로 몰입할 수 있도록 돕습니다. 명시적인 설정 없이도 사용자의 선택과 인터랙션을 학습해 점차 정교하게 개인화된 알고리즘형 OS로 진화합니다.'
         }
@@ -361,7 +416,14 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'흐름으로 연결된\n사용자 경험'}
+        title={[
+          <>
+            흐름으로 연결된
+            {' '} 
+            <br className='hidden md:block' />
+            사용자 경험
+          </>
+        ]}
         text={
           'Merlin OS는 모바일을 중심으로 동작하지만, AR, 태블릿, 데스크탑 등 다양한 디바이스와 연동해 유연하게 확장됩니다. 여러 하드웨어에서 일관된 흐름 기반의 아키텍처를 제공함으로써 사용자에게는 경계를 초월해 통합되는 경험을, 기업에는 지속 가능한 멀티 플랫폼 생태계의 기틀을 제공합니다.'
         }

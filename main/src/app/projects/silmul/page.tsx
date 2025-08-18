@@ -153,7 +153,14 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Silmul_logo.svg'
-        title={['실물', 'Turning real senses into real objects']}
+        title={['실물',
+           <>
+          'Turning real senses
+          {' '}
+          <br className='block md:hidden'/>
+          into real objects'
+          </>
+        ]}
         description={
           <>
             Silmul은 자신의 실제 감각과 경험을 실물로 구현할 수 있는 새로운 창작 과정을 제안합니다. 나의 감각과 경험이
@@ -214,7 +221,8 @@ export default function Page() {
       <LeftTitle
         text={
           <>
-            Turning real senses into real objects , Silmul <br />
+            Turning real senses into real objects , Silmul 
+          <br/>
             실감을 실물로 구현하다
           </>
         }
@@ -262,7 +270,7 @@ export default function Page() {
         content={
           <>
             3D 프린터는 근미래에 가정에서도 사용할 수 있을 만큼 발전하고 있지만,
-            <br />
+            <br className='hidden md:block'/>
             여전히 가정 환경에서 창작 도구로 활용하기에 형태나 사용 방식은 적합하지 않습니다.
           </>
         }
@@ -306,7 +314,7 @@ export default function Page() {
         content={
           <>
             일상에서 마주하는 모든 감각[실감]은 창작의 밑거름이 됩니다.
-            <br />
+            <br className='hidden md:block'/>
             Sense를 활용하면 ‘무엇을 어떻게 만들지’ 고민하지 않아도 자연스럽게 창작을 시작할 수 있습니다.
           </>
         }
@@ -351,7 +359,15 @@ export default function Page() {
       <MidBody align='center' content={<>원하는 결과물이 만들어졌다면, 이제는 진짜 실물로 출력해 보죠!</>} />
       <Image Image='/images/projects/silmul/silmul_12.webp' />
 
-      <MidTitle align='center' text='Realize: From experience to real object' className='text-[#E30D2D]' />
+      <MidTitle align='center' 
+      text={[
+        <>
+        Realize: From experience
+        <br className='block md:hidden'/>
+        to real object
+        </>
+      ]}
+     className='text-[#E30D2D]' />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110683419?h=ca560c55e3'
@@ -373,7 +389,7 @@ export default function Page() {
         content={
           <>
             실물로 출력하기 위해서는 필라멘트와 잉크만 준비하면 됩니다.
-            <br />
+            <br className='hidden md:block'/>
             상상 속 이미지가 실물로 구현되는 과정을 지켜보며, 창작의 즐거움에 푹 빠져보세요!
           </>
         }
@@ -382,7 +398,13 @@ export default function Page() {
       <Divide title='Extra Value' number='08' className='text-[#E30D2D]' />
       <MidTitle
         align='center'
-        text='Tagging: Not the end of making - the beginning of expanding'
+        text={[
+          <>
+          Tagging: Not the end of making 
+          <br className='block md:hidden'/>
+          - the beginning of expanding
+          </>
+        ]}
         className='text-[#E30D2D]'
       />
       <MediaContainer

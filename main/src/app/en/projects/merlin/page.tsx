@@ -140,7 +140,13 @@ export default function Page() {
       <Summary
         svgSrc='/images/logo/Merlin_logo.svg'
         className='w-[52px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
-        title={['Merlin', 'Into Your Flow, Merlin OS']}
+        title={[
+          'Merlin',
+          <>
+            Into Your Flow, <br className='block md:hidden' />
+            Merlin OS
+          </>,
+        ]}
         description='Merlin OS is a flow operating system. It helps you reach your goals faster by minimizing app switching and cutting through complexity. It understands your context in real time and connects features across apps into one seamless experience. Forget rigid, app-centered interfaces—Merlin offers a more flexible, immersive way to work. Your digital journey starts here.'
         credits='Yumin Kim, Soeun Lee, Jiwon An, Junhong Yang, Seohyeon Cho'
       />
@@ -158,7 +164,12 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'Static UI,\nlayered like blocks'}
+        title={[
+          <>
+            Static UI, <br className='hidden md:block' />
+            layered like blocks
+          </>,
+        ]}
         text='Everyone uses their phone differently: the apps they use, how they arrange the home screen, how they hold it, even how hard they press.'
       />
       <MediaContainer
@@ -182,7 +193,12 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'Gen Z, caught in endless digital dribbling'}
+        title={[
+          <>
+            Gen Z, caught in endless <br className='block md:hidden' />
+            digital dribbling
+          </>,
+        ]}
         text='Static UI clashes with how Gen Z explores: rapid tab switching, hopping between launcher and recent tabs—repeating “digital dribbling” just to move forward.'
       />
 
@@ -216,7 +232,12 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'One goal,\ntoo many distractions'}
+        title={[
+          <>
+            One goal, <br className='hidden md:block' />
+            too many distractions
+          </>,
+        ]}
         text='Even to achieve a clear, single objective, people bounce through home screens, drawers, recents, and in-app navigation—wasting time and energy. These “speed bumps” break flow and add cognitive fatigue.'
       />
 
@@ -224,7 +245,14 @@ export default function Page() {
       <Divide number='05' title='Insight' />
       <Image Image='/images/projects/merlin/merlin_6.webp' />
       <TitleBody
-        title={'Gen Z needs flow,\nnot apps'}
+        title={[
+          <>
+            Gen Z needs flow,
+            {' '}
+            <br className='hidden md:block' />
+            not apps
+          </>
+        ]}
         text='Apps are containers for features—but that container often interrupts flow. What if the needed features were connected into one continuous path from the start, guided by context and prediction?'
       />
 
@@ -336,7 +364,14 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'Seamless focus,\nan OS that learns you'}
+      title={[
+        <>
+        Seamless focus
+        {' '}
+        <br className='hidden md:block'/>
+        an OS that learns you
+        </>
+      ]}
         text='With one uninterrupted flow (no app switching), Merlin reduces cognitive and operational fatigue—letting you focus immediately. Without explicit setup, it learns from your choices and interactions, evolving into a refined, personalized, algorithmic OS.'
       />
       <MediaContainer

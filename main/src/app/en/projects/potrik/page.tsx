@@ -146,7 +146,11 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['POTRIK', 'No pack, No stop. Just POTRIK']}
+        title={['POTRIK',
+           <>
+          'No pack, No stop. <br className='md:hidden'/>Just POTRIK'
+          </>
+        ]}
         description={
           <>
             POTRIK offers a new way of living—one where you no longer have to carry your baggage by hand. No more
@@ -169,7 +173,9 @@ export default function Page() {
         title={
           <>
             Free to Move,
-            <br /> Heavy to Carry
+            {' '}
+            <br className='hidden md:block'/>
+            Heavy to Carry
           </>
         }
         text={
@@ -303,7 +309,8 @@ export default function Page() {
         title={
           <>
             S1.
-            <br /> Shopping During Trip
+            {' '}
+            <br className='hidden md:block'/>Shopping During Trip
           </>
         }
         text={
@@ -395,7 +402,9 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            S2. <br />
+            S2.
+            {' '}
+            <br className='hidden md:block'/>
             After shopping, your hands-free
           </>
         }

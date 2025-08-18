@@ -138,7 +138,14 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Silmul_logo.svg'
-        title={['Silmul', 'Turning real senses into real objects']}
+        title={['Silmul', 
+          <>
+          'Turning real senses
+          {' '}
+          <br className='block md:hidden'/>
+          into real objects'
+          </>
+          ]}
         description={
           <>
             Enjoy a new way to create. Turn your senses and experiences into physical products. If you could touch your
@@ -204,7 +211,7 @@ export default function Page() {
         text={
           <>
             Turning real senses into real objects, Silmul
-            <br />
+            <br/>
             Bring your senses to life.
           </>
         }
@@ -251,7 +258,7 @@ export default function Page() {
         content={
           <>
             3D printers are evolving toward home use,
-            <br />
+            <br className='hidden md:block'/>
             but their forms and usage still aren’t friendly as everyday creative tools.
           </>
         }
@@ -296,7 +303,7 @@ export default function Page() {
         content={
           <>
             Every sensation in daily life becomes the seed of creativity.
-            <br />
+            <br className='hidden md:block'/>
             With Sense, you can start creating naturally—without worrying about “what” or “how.”
           </>
         }
@@ -342,7 +349,15 @@ export default function Page() {
       <MidBody align='center' content={<>Got it? Now, let’s make it real.</>} />
       <Image Image='/images/projects/silmul/silmul_12.webp' />
 
-      <MidTitle align='center' className='text-[#E30D2D]' text='Realize: From experience to real object' />
+      <MidTitle align='center' className='text-[#E30D2D]'
+      text={[
+        <>
+        Realize: From experience
+        <br className='block md:hidden'/>
+        to real object
+        </>
+      ]}
+       />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110683419?h=ca560c55e3'
@@ -364,7 +379,7 @@ export default function Page() {
         content={
           <>
             All you need to print is filament and ink.
-            <br />
+            <br className='hidden md:block'/>
             Watch your imagination take physical form—and enjoy the joy of making.
           </>
         }
@@ -375,7 +390,13 @@ export default function Page() {
       <MidTitle
         align='center'
         className='text-[#E30D2D]'
-        text='Tagging: Not the end of making — the beginning of expanding'
+        text={[
+          <>
+          Tagging: Not the end of making 
+          <br className='block md:hidden'/>
+          - the beginning of expanding
+          </>
+        ]}
       />
       <MediaContainer
         type='video'

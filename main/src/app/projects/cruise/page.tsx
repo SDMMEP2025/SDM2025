@@ -164,7 +164,13 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/CRUISE_logo.svg'
-        title={['크루즈', 'Style Our Mile, Drive Our Life']}
+        title={[
+          '크루즈',
+          <>
+            Style Our Mile, <br className='md:hidden' />
+            Drive Our Life
+          </>,
+        ]}
         description='자율주행 5단계 시대, 운전의 개념이 사라지고 모든 탑승자가 네비게이터가 되는 변화 속에서, CRUISE는 이동을 능동적이고 역동적인 공유 경험으로 재정의하는 인터랙션 디바이스입니다. 소셜 미디어 속 디깅에 익숙한 이동 혁신 세대의 탐색 방식을 차 안으로 가져와, 모든 탑승자가 끊임없이 ‘움직이는 탐색’을 통해 경험을 공유하고 확장하게 하며, 일상에 새로운 가치와 영감을 더합니다. CRUISE와 함께 새로운 이동 경험을 만나보세요!'
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
         className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
@@ -178,7 +184,12 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise1_1.jpg' />
       <Divide title='Target' number='02' />
       <TitleBody
-        title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
+        title={[
+          <>
+            이동의 경험을 새롭게 <br className='hidden md:block' />
+            정의하는 이동 혁신 세대
+          </>,
+        ]}
         text='자율주행 안정화 시대의 도래로, 오랫동안 우리와 함께해왔던 조향 장치인 핸들조차 사라진 미래에서 이동은 더 이상 단순한 공간의 변화만을 의미하지 않습니다. 운전자와 동승자라는 전형적인 구분은 사라지고, 모든 탑승자는 운전의 책임에서 해방됩니다. 이는 곧, 개개인이 자신의 이동 경험을 스스로 만들고, 탐험을 즐기는 네비게이터가 될 새로운 가능성이 열리는 것이죠.'
       />
       <Image Image='/images/projects/cruise/cruise1_2.jpg' />
@@ -224,7 +235,6 @@ export default function Page() {
       />
       <Divide title='CRUISE Product' number='04' />
       <Image Image='/images/projects/cruise/cruise1_6.jpg' />
-
 
       <RightTitleBody
         title='CRUISE - Handle'
@@ -273,7 +283,12 @@ export default function Page() {
 
       <MidTitle align='center' padding={false} text='(2) Boundless Playground for Everyone' />
       <TitleBody
-        title={'서로의 시선으로\n함께 완성되는 지도'}
+        title={[
+          <>
+            서로의 시선으로 <br className='hidden md:block' />
+            함께 완성되는 지도
+          </>,
+        ]}
         text='운항 중인 크루즈 안에서 탑승자들이 각자의 보물 지도를 펼쳐 보이듯, CRUISE는 달리는 차 안을 우리 모두의 플레이그라운드로 만듭니다. Handle이 넘겨지는 순간 AI는 현재 사용자를 즉시 인식하여, 그들의 고유한 알고리즘을 불러올 수 있습니다. 이로써 각자의 시선이 담긴 정보들이 하나의 공유 지도 위에 통합되어 새로운 탐험의 재미를 선사하죠!'
       />
       <MediaContainer
@@ -294,7 +309,12 @@ export default function Page() {
       />
       <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
-        title={'분위기 전환,\n한손으로 간단하게'}
+        title={[
+          <>
+            분위기 전환, <br className='hidden md:block' />
+            한손으로 간단하게
+          </>,
+        ]}
         text='승객이 잠에 들면 불을 꺼주고, 지루해하면 파티를 열어주는 선장처럼 환경의 변화에 따라 순식간에 분위기를 전환할 수 있습니다. 이동 중 흐름이 끊기는 불편함은 CRUISE에서 사라지고, 당겼다 놓는 제스처 하나로 지금의 분위기, 경로, 콘텐츠를 물 흐르듯 즉시 새로고침 할 수 있죠.'
       />
       <MediaContainer
@@ -307,7 +327,12 @@ export default function Page() {
       />
 
       <TitleBody
-        title={'이동 페르소나가 되는\n우리의 여정'}
+        title={[
+          <>
+            이동 페르소나가 되는 <br className='hidden md:block' />
+            우리의 여정
+          </>,
+        ]}
         text='CRUISE에서 우리가 함께 만든 여정은 단순한 경로가 아닌, 사용자의 취향과 발견이 담긴 ‘이동 페르소나’가 됩니다. 누가 언제 어디서 어떤 발견을 했는지 기록된 이 여정은 다른 이들에게 영감을 주고, 우리의 경험은 타인의 시선을 통해 더욱 확장되죠. 우리 모두의 발자취가 끊임없이 진화하는 역동적인 지도가 되어, 새로운 여행을 위한 영감이 됩니다.'
       />
       <MediaContainer
@@ -329,11 +354,17 @@ export default function Page() {
       />
       <Image Image='/images/projects/cruise/cruise1_16.jpg' />
 
-      <MidBody content='매번 지루했던 이동이 언제나 개성 넘치는 탐험이 될, 새로운 이동을 경험해 볼 준비가 되셨나요?' />
+      <MidBody
+        content={[
+          <>
+            매번 지루했던 이동이 언제나 개성 넘치는 <br className='md:hidden' />
+            탐험이 될, 새로운 이동을 경험해 볼 준비가 되셨나요?
+          </>,
+        ]}
+      />
       <Image Image='/images/projects/cruise/cruise1_17.jpg' />
       <Image Image='/images/projects/cruise/cruise1_18.webp' />
       <Image Image='/images/projects/cruise/cruise1_19.jpg' />
-
 
       <div ref={designedByRef}>
         <Credit

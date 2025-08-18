@@ -160,7 +160,13 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/NewBe_logo.svg'
-        title={['NewBe', 'The New Hair Station, Made to Fit You']}
+        title={['NewBe', 
+          <>
+            The New Hair Station,
+            <br/>
+            Made to Fit You
+          </>
+        ]}
         description={
           <>
             NewBe is a hair styling station. Take a seat when you want to freshen up your look. Explore different hair
@@ -179,7 +185,8 @@ export default function Page() {
         title={
           <>
             The Moment You
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             Need Style, Now
           </>
         }
@@ -199,7 +206,8 @@ export default function Page() {
         title={
           <>
             I Want to Be New,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Styling’s Always ON
           </>
         }
@@ -227,7 +235,9 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Styling, <br />
+            Styling,
+             {' '}
+            <br className='hidden md:block' />
             Stuck in Skill
           </>
         }
@@ -293,7 +303,8 @@ export default function Page() {
         title={
           <>
             New Station,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             New Style
           </>
         }
@@ -339,7 +350,8 @@ export default function Page() {
         title={
           <>
             Signature Style,
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             Crafted by Me
           </>
         }
@@ -380,7 +392,8 @@ export default function Page() {
         title={
           <>
             Where I Stay,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Style Happens
           </>
         }
@@ -447,7 +460,8 @@ export default function Page() {
         title={
           <>
             NewBe, Always Fits
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Always Me
           </>
         }
@@ -464,7 +478,8 @@ export default function Page() {
         title={
           <>
             Keep the Styles
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             You Love
           </>
         }
@@ -492,7 +507,8 @@ export default function Page() {
         title={
           <>
             That Hair,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Now New Me
           </>
         }
@@ -520,7 +536,8 @@ export default function Page() {
         text={
           <>
             NewBe
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Styling for Tomorrow
           </>
         }

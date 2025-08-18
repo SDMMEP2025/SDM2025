@@ -162,7 +162,11 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['포트릭', 'No pack, No stop. Just POTRIK']}
+        title={['포트릭', 
+          <>
+          'No pack, No stop. <br className='md:hidden'/>Just POTRIK'
+          </>
+          ]}
         description={
           <>
             POTRIK은 손에 들고 다니는 짐이 사라진 새로운 라이프스타일을 제공합니다. 복잡한 예약도, 물건을 들고 이동할
@@ -181,7 +185,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            자유로운 이동, <br />
+            자유로운 이동, <br className='hidden md:block'/>
             여전히 무거운 짐
           </>
         }
@@ -450,7 +454,15 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/potrik/potrik_16.webp' />
-      <MidTitle align='center' text='당신의 순간을 가볍게 하는 퍼스널 딜리버리 시스템, POTRIK' />
+      <MidTitle align='center'
+      text={[
+        <>
+        당신의 순간을 가볍게 하는
+        {' '}
+        <br className='md:hidden'/>
+        퍼스널 딜리버리 시스템, POTRIK
+        </>
+      ]}/>
       <Image Image='/images/projects/potrik/potrik_17.jpg' />
       <Divide title='Branding' number='08' className='text-[#09C17A]' />
       <Image Image='/images/projects/potrik/potrik_18.jpg' />

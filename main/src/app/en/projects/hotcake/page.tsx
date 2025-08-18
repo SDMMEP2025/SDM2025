@@ -120,7 +120,12 @@ export default function Page() {
 
       <Divide title='A way of enjoying music' number='01' />
       <TitleBody
-        title={'Eventually,\nYou Want to Play'}
+        title={[
+          <>
+            Eventually, <br className='hidden md:block' />
+            You Want to Play
+          </>,
+        ]}
         text='Music is a part of everyday life. Some people want to truly engage and participate. Which means some people grab an instrument and begin their journey as a “bedroom musician’’.'
       />
 
@@ -128,14 +133,24 @@ export default function Page() {
       <Image Image='/images/projects/hotcake/hotcake_1.jpg' />
       <Divide title='The joy of being together' number='02' />
       <TitleBody
-        title={'Playing Alone,\nGrooving Together'}
+        title={[
+          <>
+            Playing Alone,
+            <br className='hidden md:block' /> Grooving Together
+          </>,
+        ]}
         text='Music is never complete when played alone. As different instruments come together, the sound gets richer and joyful. At first, you might play alone in your room. But before long, you will want to play with others. You just can’t fully enjoy the thrill of trading rhythms and locking into a groove when you’re playing solo.'
       />
       <Image Image='/images/projects/hotcake/hotcake_2.jpg' />
 
       {/* 5 */}
       <TitleBody
-        title={'Playing Together\nShould Be Fun'}
+        title={[
+          <>
+            Playing Together,
+            <br className='hidden md:block' /> Should Be Fun
+          </>,
+        ]}
         text={
           <>
             Jam sessions used to require going to a rehearsal studio. You had to carry heavy instruments and pay a fee.
@@ -167,14 +182,25 @@ export default function Page() {
 
       {/* 7,8 */}
       <TitleBody
-        title={'Online Jam,\nPerfected\nCake & Butter'}
+        title={[
+          <>
+            Online Jam,
+            <br className='hidden md:block' /> Perfected
+            <br className='hidden md:block' /> Cake & Butter
+          </>,
+        ]}
         text='Hotcake includes Cake, a modular speaker and woofer system, and Butter, a wearable device that lets you feel the music. Hotcake turns the sounds from your jam session into immersive 3D audio, making it feel like you’re all playing in the same room. Butter also sends vibrations, so you can feel the beat as you play.'
       />
       <Image Image='/images/projects/hotcake/hotcake_5.jpg' />
 
       {/* 9,10,11 */}
       <TitleBody
-        title={'Half a World Away,\nStill in Sync'}
+        title={[
+          <>
+            Half a World Away,
+            <br className='hidden md:block' /> Still in Sync
+          </>,
+        ]}
         text='Perfect timing is very important for online jam sessions. Cake makes sure there is no delay or freezing, so everything feels smooth. Cake stays connected through a wired Ethernet, delivering real-time audio no matter the distance. Each module picks up the live sound from the station via a 2.4GHz RF channel, making sure your online jam feels smooth and perfectly in sync.'
       />
       <ImageGallery
@@ -184,7 +210,12 @@ export default function Page() {
 
       {/* 12,13 */}
       <TitleBody
-        title={'Adding Texture to Music'}
+        title={[
+          <>
+            Adding Texture
+            <br className='hidden md:block' /> to Music
+          </>,
+        ]}
         text="What makes live music special is the way you can feel it in your body. Butter brings this feeling. It syncs haptics to the music you're playing, adding a rich layer to the sound. Also, you can switch to metronome mode to stay on beat or use the built-in mic to chat with others."
       />
       <Image Image='/images/projects/hotcake/hotcake_8.jpg' />
@@ -192,22 +223,50 @@ export default function Page() {
       <Divide title='Scenario' number='04' />
       <MidTitle align='center' text='(1) Connection with Sessions' padding={false} />
       <TitleBody
-        title={'Your Instant Band,\nAnytime, Anywhere'}
+        title={[
+          <>
+            Your Instant Band,
+            <br className='hidden md:block' /> Anytime, Anywhere
+          </>,
+        ]}
         text='If there is no one around to jam with, just open Hotcake’s community. You can find new bandmates who share your taste in music, or start a session with a friend from your list. Missing a player? An AI musician will jump in and play along with your rhythm, so you can always enjoy a full and immersive session.'
       />
 
       {/* 14 */}
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677417?h=849f8b5e1f' preloadDelayMs={0} prewarm loop />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677417?h=849f8b5e1f'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
 
       <MidTitle align='center' text='(2) New Experience with Hotcake' />
       <TitleBody
-        title={'A Live Experience with Light, Vibration, Sound'}
-        text="Set up modular speakers and experience more than just sound. Cake lights up in real time, so you can visually feel your friends’ performances as they play. Pair them with Butter, the wearable device, and feel the rhythm and groove through haptics."
+        title={[
+          <>
+            A Live Experience
+            <br className='hidden md:block' /> with Light, Vibration, Sound
+          </>,
+        ]}
+        text='Set up modular speakers and experience more than just sound. Cake lights up in real time, so you can visually feel your friends’ performances as they play. Pair them with Butter, the wearable device, and feel the rhythm and groove through haptics.'
       />
 
       {/* 15,16,17 */}
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677428?h=24666f17bc' preloadDelayMs={0} prewarm loop />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677453?h=9dfe315642' preloadDelayMs={0} prewarm loop />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677428?h=24666f17bc'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677453?h=9dfe315642'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
 
       <TitleBody
         title={'At Home, But Louder, More Fun'}
@@ -215,21 +274,49 @@ export default function Page() {
       />
 
       {/* 18,19 */}
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677453?h=9dfe315642' preloadDelayMs={0} prewarm loop />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677477?h=6e7bb30ead' preloadDelayMs={0} prewarm loop />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677453?h=9dfe315642'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677477?h=6e7bb30ead'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
 
       <MidTitle align='center' text='(3) Frame the Heated Moment' padding={false} />
       <TitleBody
-        title={'Return To The\nHeat Of The Jam'}
+        title={[
+          <>
+            Return To The <br className='hidden md:block' />
+            Heat Of The Jam
+          </>,
+        ]}
         text='After the jam, AI automatically edits your solo parts and highlights them into a complete video. Share it with your bandmates to keep the feeling going. Replay your performance and relive the spark of the session anytime.'
       />
 
       {/* 20 */}
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677496?h=9764a64822' preloadDelayMs={0} prewarm loop />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677496?h=9764a64822'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
 
       <Divide title='New Expandability' number='05' />
       <TitleBody
-        title={'Playing Together,\nFor Everyone'}
+        title={[
+          <>
+            Playing Together, <br className='hidden md:block' />
+            For Everyone
+          </>
+        ]}
         text='Hotcake becomes a platform where everyone can enjoy jamming, without changing how you normally play. For those who are deaf or hard of hearing, Butter’s music haptics help you feel the rhythm and join the session. Studio Mode headphones provide immersive playing anywhere. Your personal expression becomes part of a new music ecosystem.'
       />
 
@@ -242,7 +329,13 @@ export default function Page() {
       <MidTitle align='center' text='Heat it, Play It, Groove It, Melt It, Drop It, Fade It, Link It, Hotcake' />
 
       {/* 22 */}
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110680480?h=9740795744' preloadDelayMs={0} prewarm loop />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680480?h=9740795744'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
 
       {/* 23,24 */}
       <Image Image='/images/projects/hotcake/hotcake_19.jpg' />

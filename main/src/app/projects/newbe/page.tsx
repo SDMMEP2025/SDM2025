@@ -176,7 +176,13 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/NewBe_logo.svg'
-        title={['뉴비', 'The New Hair Station, Made to Fit You']}
+        title={['뉴비',
+          <>
+            The New Hair Station,
+            <br/>
+            Made to Fit You
+          </>
+        ]}
         description={
           <>
             NewBe는 머무르는 순간 자연스럽게 시작되는 나만의 새로운 헤어 스타일링 스테이션입니다. 스타일링이 필요한
@@ -193,7 +199,8 @@ export default function Page() {
         title={
           <>
             헤어 스타일링이
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             필요한 순간, 지금 NOW
           </>
         }
@@ -237,7 +244,8 @@ export default function Page() {
         title={
           <>
             숙련도에 갇힌
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             헤어 스타일링 경험
           </>
         }
@@ -292,7 +300,9 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            나만의 새로운 <br />
+            나만의 새로운
+            {' '}
+            <br className='hidden md:block' />
             헤어 스타일링 스테이션
           </>
         }
@@ -335,7 +345,8 @@ export default function Page() {
         title={
           <>
             나만의 헤어 스타일링
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             생성하기
           </>
         }
@@ -375,7 +386,8 @@ export default function Page() {
         title={
           <>
             내가 머무는 곳이
-            <br />곧 스타일링
+            {' '}
+            <br className='hidden md:block' />곧 스타일링
           </>
         }
         text={
@@ -435,7 +447,8 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            NewBe는 언제든 <br />내 머리에 Fit하니까
+            NewBe는 언제든{' '}
+            <br className='hidden md:block' />내 머리에 Fit하니까
           </>
         }
         text={
@@ -473,7 +486,8 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            그 머리, 이제 <br />내 머리에도 New Me
+            그 머리, 이제 {' '}
+            <br className='hidden md:block' />내 머리에도 New Me
           </>
         }
         text={

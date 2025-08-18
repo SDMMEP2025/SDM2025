@@ -166,7 +166,8 @@ export default function Page() {
         title={
           <>
             AI understands
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             the world like you do
           </>
         }
@@ -189,7 +190,8 @@ export default function Page() {
         title={
           <>
             Preparing for
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             the future
           </>
         }
@@ -237,7 +239,8 @@ export default function Page() {
         title={
           <>
             As much
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             as you need
           </>
         }
@@ -300,7 +303,8 @@ export default function Page() {
         title={
           <>
             Only the essentials,
-            <br />
+           {' '}
+            <br className='hidden md:block'/>
             kept light.
           </>
         }
@@ -319,7 +323,8 @@ export default function Page() {
         title={
           <>
             The perfect pick for
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             today’s vibe.
           </>
         }
@@ -363,7 +368,8 @@ export default function Page() {
         title={
           <>
             Not in use,
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             still in style
           </>
         }
@@ -443,7 +449,8 @@ export default function Page() {
         title={
           <>
             Options for what
-            <br />
+           {' '}
+            <br className='hidden md:block'/>
             matters most
           </>
         }
@@ -461,7 +468,8 @@ export default function Page() {
         title={
           <>
             Natural,
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             yet Clear
           </>
         }

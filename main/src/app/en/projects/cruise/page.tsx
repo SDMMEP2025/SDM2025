@@ -148,7 +148,13 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/CRUISE_logo.svg'
-        title={['CRUISE', 'Style Our Mile, Drive Our Life']}
+        title={[
+          'CRUISE',
+          <>
+            Style Our Mile, <br className='md:hidden' />
+            Drive Our Life
+          </>,
+        ]}
         description='In the age of level 5 autonomous vehicles, where every passenger is liberated from driving, CRUISE is an interactive device that reimagines travel as a dynamic, sharing experience. Inspired by familiar and intuitive gestures, CRUISE brings new significance and enthusiasm to everyday trips. Meet the new movement experience with CRUISE!'
         credits='Yeojun Yun, Hyunggoo Kang, Minji Kwon, Chaeyoung Baek, Minseo Jung'
         className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
@@ -165,7 +171,13 @@ export default function Page() {
 
       <Divide title='Target' number='02' />
       <TitleBody
-        title={'The reimagined, new generation of movement'}
+        title={[
+          <>
+            The reimagined,
+            <br />
+            new generation of movement
+          </>,
+        ]}
         text='In the time when autonomous driving becomes the norm, when even the steering wheel, our most trusted means of handling, is no longer needed, movement does not simply mean one getting to a destination. The traditional divide between driver and passenger fades, escaping the responsibility to operate the vehicle. Opening new possibilities for the “Navigators,” shaping their own unique experiences and exploration.'
       />
       <Image Image='/images/projects/cruise/cruise1_2.jpg' />
@@ -199,7 +211,14 @@ export default function Page() {
       <Image Image='/images/projects/cruise/cruise1_4.jpg' />
       <MidTitle align='center' text='Road as a feed—sharing every experience.' />
       <Image Image='/images/projects/cruise/cruise1_5.jpg' />
-      <MidBody content={'Style Our Mile, Drive Our Life! Let’s explore how CRUISE will change our movement!'} />
+      <MidBody
+        content={[
+          <>
+            Style Our Mile, Drive Our Life! <br className='md:hidden' />
+            Let’s explore how CRUISE will change our movement!
+          </>,
+        ]}
+      />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110708874?h=feee26fc27'
@@ -259,7 +278,12 @@ export default function Page() {
 
       <MidTitle align='center' padding={false} text='(2) Boundless Playground for Everyone' />
       <TitleBody
-        title={'Map with numerous viewpoints'}
+        title={[
+          <>
+            Map with <br className='hidden md:block' />
+            numerous viewpoints
+          </>,
+        ]}
         text='Time being spent in moving vehicles turns into a delightful playground with CRUISE. When the Handle is passed around, AI recognizes who’s in charge & changes the algorithm accordingly. All individual perspectives come together on one Collective Map, making every trip a new adventure.'
       />
       <MediaContainer
@@ -281,7 +305,12 @@ export default function Page() {
 
       <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
-        title={'Switching Vibes, Instantly.'}
+        title={[
+          <>
+            Switching Vibes, <br className='hidden md:block' />
+            Instantly.
+          </>,
+        ]}
         text='CRUISE instantly changes the current ambience with no interruptions. The pull and release gesture makes it possible to refresh your vibes and contents in the flick of your finger.'
       />
       <MediaContainer
@@ -294,7 +323,12 @@ export default function Page() {
       />
 
       <TitleBody
-        title={'Our journey, Our identity'}
+        title={[
+          <>
+            Our journey, <br className='hidden md:block' />
+            Our identity
+          </>,
+        ]}
         text='With CRUISE, our journeys together are more than just trails—they become “Mobility Personas,” containing the user’s tastes and discoveries. Every recorded moment inspires others and grows through different perspectives. Our footsteps create an ever-changing map that fuels inspiration for every new adventure.'
       />
       <MediaContainer

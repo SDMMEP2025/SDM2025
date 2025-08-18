@@ -1,7 +1,7 @@
 import classNames from "classnames"
 
 interface SummaryProps {
-  title?: string[]
+  title?: React.ReactNode[]
   description?: string | React.ReactNode
   credits?: string
   SVGLogo?: React.ComponentType<{ className?: string }> // 기존 그대로 유지

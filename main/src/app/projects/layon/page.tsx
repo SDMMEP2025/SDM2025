@@ -178,7 +178,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            인간과 닮은 방식으로 <br />
+            인간과 닮은 방식으로 <br className='hidden md:block'/>
             세상을 이해하는 AI
           </>
         }
@@ -199,7 +199,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            미래로 나아가기 <br />
+            미래로 나아가기 <br className='hidden md:block'/>
             위한 준비
           </>
         }
@@ -238,7 +238,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            필요한 만큼, <br />
+            필요한 만큼, <br className='hidden md:block'/>
             거슬리지 않는
           </>
         }
@@ -292,7 +292,9 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            꼭 필요한 기술만을 <br />
+            꼭 필요한 기술만을 
+            {' '}
+            <br className='hidden md:block'/>
             가볍게 담아.
           </>
         }
@@ -308,7 +310,9 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            오늘의 나에게 <br />
+            오늘의 나에게 
+            {' '}
+            <br className='hidden md:block'/>
             가장 어울리는 선택.
           </>
         }
@@ -337,7 +341,7 @@ export default function Page() {
         content={
           <>
             오늘의 코디와 내 기분에 맞춰 마음에 드는 Face를 끼워보세요. 다양한 스타일의 Face는 내가 어떤 곳에 가든,{' '}
-            <br />
+            <br className='hidden lg:block'/>
             무슨 옷을 입고 있든 비전 데이터를 수집할 수 있게 해줍니다.
           </>
         }
@@ -346,7 +350,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            쓰지 않을 때조차 <br />
+            쓰지 않을 때조차 <br className='hidden md:block' />
             즐거운.
           </>
         }
@@ -418,7 +422,8 @@ export default function Page() {
         title={
           <>
             가장 필요한 것,
-            <br />그 하나를 위한 선택지.
+            {' '}
+            <br className='hidden md:block'/>그 하나를 위한 선택지.
           </>
         }
         text={
@@ -432,7 +437,9 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            자연스러운, <br />
+            자연스러운, 
+            {' '}
+            <br className='hidden md:block '/>
             그러나 분명하게.
           </>
         }

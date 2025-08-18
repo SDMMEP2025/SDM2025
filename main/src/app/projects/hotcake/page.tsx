@@ -187,7 +187,12 @@ export default function Page() {
       <Image Image='/images/projects/hotcake/hotcake_main.jpg' />
       <Divide title='A way of enjoying music' number='01' />
       <TitleBody
-        title='음악은 결국 하고 싶어지니까'
+        title={[
+          <>
+            음악은 결국 <br className='hidden md:block' />
+            하고 싶어지니까
+          </>,
+        ]}
         text='음악은 우리 삶 곳곳에 스며든 일상 그 자체입니다. 음악을 즐기는 방식은 저마다 다르지만, 어떤 이들은 단순히 듣기만 하는 것을 넘어 더 깊이 음악에 다가가 참여하고 싶어 하죠. 그렇게 누군가는 악기를 손에 쥐고, ‘방구석 뮤지션’으로서 첫발을 내딛습니다.'
       />
       <Image Image='/images/projects/hotcake/hotcake_1.jpg' />
@@ -198,7 +203,12 @@ export default function Page() {
       />
       <Image Image='/images/projects/hotcake/hotcake_2.jpg' />
       <TitleBody
-        title={'합주는 당연히\n즐거워야 하니까'}
+        title={[
+          <>
+            합주는 당연히 <br className='hidden md:block' />
+            즐거워야 하니까
+          </>,
+        ]}
         text={
           <>
             합주는 늘 합주실에 가야만 가능한 일이었습니다. 무거운 악기를 들고, 비용을 지급해 예약한 공간에서는 괜히
@@ -224,14 +234,24 @@ export default function Page() {
         loop
       />
       <TitleBody
-        title={'온라인 합주의 완성\nCake & Butter'}
+        title={[
+          <>
+            온라인 합주의 완성 <br className='hidden md:block' />
+            Cake & BUtter
+          </>
+        ]}
         text={
           'Hotcake는 모듈 스피커와 우퍼 스테이션으로 구성된 Cake와 햅틱 웨어러블 디바이스인 Butter로 구성되어 있습니다. Cake와 Butter는 각 세션이 연주하고 있는 소리를 공간 음향으로 구현해 실제 합주를 하는 듯한 경험을 제공하고, 연주하고 있는 음악의 파장을 햅틱 피드백으로 전달해 음악을 피부로 느낄 수 있도록 합니다.'
         }
       />
       <Image Image='/images/projects/hotcake/hotcake_5.jpg' />
       <TitleBody
-        title={'지구 반대편에서도\n함께 합주하는 경험'}
+        title={[
+          <>
+            지구 반대편에서도 <br className='hidden md:block' />
+            함께 합주하는 경험
+          </>
+        ]}
         text={
           '합주에서 타이밍은 생명이기에, 온라인 합주에서는 딜레이 없는 환경이 필수입니다. Cake 스테이션은 유선 이더넷을 통해 안정적인 네트워크 연결을 유지하며, 거리의 제한 없이 연주 중인 음원을 실시간으로 수신합니다. 또한 각 모듈은 스테이션과 2.4GHz RF 채널을 통해 각 세션이 연주 중인 음원을 전달받아 레이턴시 없는 온라인 합주 경험을 가능하게 합니다.'
         }
@@ -250,7 +270,12 @@ export default function Page() {
       <Divide title='Scenario' number='04' />
       <MidTitle align='center' text='(1) Connection with Sessions' padding={false} />
       <TitleBody
-        title={'손쉽게 구하는\n나만의 즉흥 밴드'}
+        title={[
+          <>
+            손쉽게 구하는 <br className='hidden md:block' />
+            나만의 즉흥 밴드
+          </>
+        ]}
         text={
           '당장 합주를 즐기고 싶어도 주변에 함께할 사람이 없을 때가 있죠. 오픈 커뮤니티를 통해 나와 음악 취향이 잘 맞는 친구를 찾아 밴드를 꾸릴 수 있고, 친구 리스트를 통해 기존에 친한 친구와도 손쉽게 합주를 시작할 수 있습니다. 만약 세션이 부족할 때는 AI 세션이 나의 리듬에 맞춰 함께 연주하며, 몰입감 있는 퍼포먼스를 완성해 줍니다.'
         }
@@ -263,6 +288,13 @@ export default function Page() {
         loop
       />
       <MidTitle align='center' text='(2) New Experience with Hotcake' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677428?h=24666f17bc'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <TitleBody
         title={'빛, 진동, 그리고 소리로\n이어지는 합주 경험'}
         text={
@@ -271,7 +303,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110677428?h=24666f17bc'
+        src='https://player.vimeo.com/video/1110677441?h=a243b7dd77'
         preloadDelayMs={0}
         prewarm
         loop
@@ -285,7 +317,12 @@ export default function Page() {
       />
 
       <TitleBody
-        title={'집에서도, 더 유난스럽고\n더 재미있게'}
+        title={[
+          <>
+            집에서도, 더 유난스럽고
+            <br className='hidden md:block' /> 더 재미있게
+          </>,
+        ]}
         text={
           '합주의 가장 큰 재미 요소는 무엇보다도 박자가 딱 맞아떨어지는 그 순간이죠. 합이 딱 맞춰지는 순간 Cake 모듈 스피커에서 나오는 LED 라이팅이 방 안을 작은 무대로 꾸밉니다. 연주가 클라이맥스에 달하면 모션 제스처를 통한 사운드 이펙트로 뜨거움이 가득한 합주를 경험해 보세요.'
         }
@@ -306,7 +343,12 @@ export default function Page() {
       />
       <MidTitle align='center' text='(3) Frame the Heated Moment' padding={false} />
       <TitleBody
-        title={'뜨거운 합주의\n순간으로 돌아가기'}
+        title={[
+          <>
+            뜨거운 합주의
+            <br className='hidden md:block' /> 순간으로 돌아가기
+          </>
+        ]}
         text={
           '합주가 끝난 후에는 AI가 솔로 파트나 하이라이트를 자동으로 편집해 줍니다. 완성된 영상은 함께 연주한 친구들과 바로 공유할 수 있어, 그 여운이 자연스럽게 이어집니다. 또한 모니터링 영상 속 나의 연주를 되돌아보며, 합주의 순간을 다시 돌아볼 수 있습니다.'
         }
@@ -320,7 +362,14 @@ export default function Page() {
       />
       <Divide title='New Expandability' number='05' />
       <TitleBody
-        title={'모두가 합주의 즐거움을\n느낄 수 있도록'}
+        title={[
+          <>
+            모두가 합주의 즐거움을
+            {' '}
+            <br className='hidden md:block' />
+            느낄 수 있도록
+          </>
+        ]}
         text={
           'Hotcake는 기존의 연주 방식을 해치지 않으면서, 누구나 쉽게 합주를 즐길 수 있는 접근성 중심의 플랫폼으로 확장됩니다. Butter의 뮤직 햅틱 기능은 소리를 온전히 듣기 어려운 사람도 리듬을 피부로 느끼며 합주에 참여할 수 있게 합니다. 또한, 헤드폰 기반 스튜디오 모드는 언제 어디서든 몰입감 있는 연주 환경을 제공하며, 개인의 감각적 표현이 콘텐츠가 되는 새로운 음악 생태계를 만들어갑니다.'
         }
