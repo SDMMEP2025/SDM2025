@@ -169,26 +169,19 @@ export default function Page() {
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
         className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
       />
-      <MainImage Image='/images/projects/cruise/image1.png' />
+      <Image Image='/images/projects/cruise/CRUISE_main.jpg' />
       <Divide title='Background' number='01' />
       <TitleBody
         title='삶의 모든 순간을 채우는 이동'
         text='매일 아침의 출근길, 바쁜 일상 속 짧은 이동, 설레는 주말여행, 그리고 예상치 못한 만남까지, 우리는 삶의 대부분을 이동 속에서 살아갑니다. 이처럼 이동은 우리의 시간과 경험의 큰 비중을 차지하는, 일상에서 결코 분리될 수 없는 중요한 일부입니다.'
       />
-      <MediaContainer
-        type='video'
-        src='https://player.vimeo.com/video/1106711843?h=ba42ab53da'
-        preloadDelayMs={0}
-        prewarm
-        muted
-        loop
-      />
+      <Image Image='/images/projects/cruise/CRUISE_1.jpg' />
       <Divide title='Target' number='02' />
       <TitleBody
         title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
         text='자율주행 안정화 시대의 도래로, 오랫동안 우리와 함께해왔던 조향 장치인 핸들조차 사라진 미래에서 이동은 더 이상 단순한 공간의 변화만을 의미하지 않습니다. 운전자와 동승자라는 전형적인 구분은 사라지고, 모든 탑승자는 운전의 책임에서 해방됩니다. 이는 곧, 개개인이 자신의 이동 경험을 스스로 만들고, 탐험을 즐기는 네비게이터가 될 새로운 가능성이 열리는 것이죠.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/CRUISE_2.jpg' />
       <RightTitleBody
         title='수동적인 승객이 아닌 경험을 개척하는 CRUISER'
         text={
@@ -208,61 +201,55 @@ export default function Page() {
           </>
         }
       ></RightTitleBody>
-      <MediaContainer
-        type='video'
-        src='https://player.vimeo.com/video/1106712041?h=af8b7a7a8a'
-        preloadDelayMs={0}
-        prewarm
-        muted
-        loop
-      />
+      <Image Image='/images/projects/cruise/CRUISE_3.webp' />
+
       <MidBody
         align='left'
         content='CRUISE는 이러한 삶의 방식을 이동 경험으로 확장합니다. 이들에게 이동은 이제, 세상의 모든 순간을 자신만의 취향으로 엮어내고, 친구들과 역동적으로 교감하는 하나의 플랫폼이 됩니다. 도로는 생생한 피드로, 차량은 손안에서 자유롭게 상호작용하는 디바이스로 변화합니다. 이를 통해 탑승자 모두가 이동 경험의 주체이자 경험 에디터가 되는 새로운 미래가 펼쳐집니다. 마치 ‘한 배를 탄 듯이’ 말이죠.'
       />
       <Divide title='Concept' number='03' />
-      <Image Image='/images/projects/cruise/cruise_4.jpg' />
+      <Image Image='/images/projects/cruise/CRUISE_4.jpg' />
       <MidTitle align='center' text='도로, 경험을 공유하는 FEED가 되다.' />
-      <Image Image='/images/projects/cruise/cruise_5.jpg' />
+      <Image Image='/images/projects/cruise/CRUISE_5.jpg' />
       <MidBody
         content={'Style Our Mile, Drive Our Life!\n이제 CRUISE가 우리의 이동을 어떻게 바꿔나갈지 함께 살펴볼까요?'}
       />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Divide title='CRUISE Product' number='04' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1106712232?h=e815385a12'
-        preloadDelayMs={delayFor(1)}
+        src='https://player.vimeo.com/video/1110708874?h=feee26fc27'
+        preloadDelayMs={0}
         prewarm
         muted
         loop
       />
+      <Divide title='CRUISE Product' number='04' />
+      <Image Image='/images/projects/cruise/CRUISE_7.jpg' />
+
 
       <RightTitleBody
         title='CRUISE - Handle'
         text='CRUISE의 Handle은 새롭게 도래할 자율주행 시대에 기존 핸들을 대체할 새로운 인터랙션 디바이스입니다. 소셜 미디어에 익숙한 세대에게 직관적인 조작 방식으로 구성되어 빠르고 자연스럽게 주변과 상호작용을 가능하게 합니다.'
       />
-
-      <MediaContainer
-        type='video'
-        src='https://player.vimeo.com/video/1106712396?h=954343a016'
-        preloadDelayMs={delayFor(2)}
-        prewarm
-        muted
-        loop
-      />
+      <Image Image='/images/projects/cruise/CRUISE_8.jpg' />
 
       <RightTitleBody
         title='CRUISE - Dash'
         text='CRUISE의 Dash는 내장된 AI 카메라로 사용자를 인식하여 CRUISE 경험을 보조합니다. Handle 미사용 시에는 지정된 슬롯에 간편하게 수납할 수 있죠. 무엇보다 Dash는 기능을 유지하면서도 센서 등의 구성요소를 최소화해 다양한 형태와 목적의 차량에 확장 적용이 가능하도록 설계되어, CRUISE가 선사할 새로운 이동 경험이 정해진 규격에 얽매이지 않도록 합니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_9.jpg' />
-
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708889?h=dec440477b'
+        preloadDelayMs={delayFor(1)}
+        prewarm
+        muted
+        loop
+      />
       <RightBody text='부담 없이 아늑한 2인승부터, 친구들 모두가 같이 여행을 떠날 수 있는 다인승까지, CRUISE는 그 어떤 차량 공간 안이라도 자연스럽게 녹아듭니다. 가장 편안한 자세에서 지나가는 외부 공간과 Dash의 정보를 동시에 확인할 수 있고, Handle을 언제든지 꺼내 들고 조작할 수 있죠.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1106712557?h=5d7c488384'
+        src='https://player.vimeo.com/video/1110708908?h=2fda5e80b8'
         preloadDelayMs={delayFor(3)}
+        hasAudio={true}
         prewarm
         muted
         loop
@@ -275,24 +262,37 @@ export default function Page() {
         title={'오늘의 여정, 어떤 분위기로\n 시작해 볼까요?'}
         text='항해를 떠나기 전, 지도를 펼쳐 경로를 탐색하는 항해사처럼 친구들과 지도를 펼쳐 탐색을 시작합니다. AI가 탑승자들을 인식하여 알고리즘 반경을 생성하고, 우리만을 위한 특별한 경로를 만들 수 있도록 제안하죠. 이처럼 여정 자체가 우리의 개성을 담은 Signature Map이 됩니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_11.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110708949?h=fa86847bc0'
+        preloadDelayMs={delayFor(3)}
+        hasAudio={true}
+        prewarm
+        muted
+        loop
+      />
 
       <MidTitle align='center' padding={false} text='(2) Boundless Playground for Everyone' />
       <TitleBody
         title={'서로의 시선으로\n함께 완성되는 지도'}
         text='운항 중인 크루즈 안에서 탑승자들이 각자의 보물 지도를 펼쳐 보이듯, CRUISE는 달리는 차 안을 우리 모두의 플레이그라운드로 만듭니다. Handle이 넘겨지는 순간 AI는 현재 사용자를 즉시 인식하여, 그들의 고유한 알고리즘을 불러올 수 있습니다. 이로써 각자의 시선이 담긴 정보들이 하나의 공유 지도 위에 통합되어 새로운 탐험의 재미를 선사하죠!'
       />
-
-      <Image Image='/images/projects/cruise/cruise_12.jpg' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1106712720?h=5da78fb84e'
+        src='https://player.vimeo.com/video/1110838360?h=212d7faad8'
         preloadDelayMs={delayFor(4)}
         prewarm
         muted
         loop
       />
-
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838382?h=85299bb0cd'
+        preloadDelayMs={delayFor(5)}
+        prewarm
+        muted
+        loop
+      />
       <MidTitle align='center' padding={false} text='(3) Single Gesture, Dramatic Transition' />
       <TitleBody
         title={'분위기 전환,\n한손으로 간단하게'}
@@ -300,8 +300,8 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1106712921?h=694cbd3bf9'
-        preloadDelayMs={delayFor(5)}
+        src='https://player.vimeo.com/video/1110708985?h=f47f8b49f2'
+        preloadDelayMs={delayFor(6)}
         prewarm
         muted
         loop
@@ -313,7 +313,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1106713092?h=1946f5e58b'
+        src='https://player.vimeo.com/video/1110709027?h=7a7125da0c'
         preloadDelayMs={delayFor(6)}
         hasAudio={true}
         prewarm
@@ -329,21 +329,13 @@ export default function Page() {
 개인의 탐색과 취향이 끊임없이 연결되고 확장되며, 모든 여정이 함께 만들어가는 생동감 넘치는 
 ‘움직이는 탐색’이 되는 미래를 제시합니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_16.jpg' />
+      <Image Image='/images/projects/cruise/CRUISE_16.jpg' />
 
       <MidBody content='매번 지루했던 이동이 언제나 개성 넘치는 탐험이 될, 새로운 이동을 경험해 볼 준비가 되셨나요?' />
-      <Image Image='/images/projects/cruise/cruise_17.jpg' />
-      <Image Image='/images/projects/cruise/cruise_18.jpg' />
-      <MediaContainer
-        type='video'
-        src='https://player.vimeo.com/video/1106713465?h=79087f8614'
-        preloadDelayMs={delayFor(7)}
-        prewarm
-        loop
-      />
-      <Image Image='/images/projects/cruise/cruise_20.jpg' />
-      <Image Image='/images/projects/cruise/cruise_21.jpg' />
-      <Image Image='/images/projects/cruise/cruise_21.jpg' />
+      <Image Image='/images/projects/cruise/CRUISE_17.jpg' />
+      <Image Image='/images/projects/cruise/CRUISE_18.webp' />
+      <Image Image='/images/projects/cruise/CRUISE_19.jpg' />
+
 
       <div ref={designedByRef}>
         <Credit
