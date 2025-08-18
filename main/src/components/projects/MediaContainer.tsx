@@ -25,7 +25,7 @@ export function MediaContainer({
   loop = true,
   muted = true,
   hasAudio = false,
-  threshold = 0.45,
+  threshold = 0.2,
   aspect = 'aspect-[16/9]',
   preloadDelayMs = 300,
   prewarm = true,

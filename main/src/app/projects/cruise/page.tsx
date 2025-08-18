@@ -239,7 +239,7 @@ export default function Page() {
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110708889?h=dec440477b'
-        preloadDelayMs={delayFor(1)}
+        preloadDelayMs={0}
         prewarm
         muted
         loop
@@ -248,7 +248,7 @@ export default function Page() {
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110708908?h=2fda5e80b8'
-        preloadDelayMs={delayFor(3)}
+        preloadDelayMs={delayFor(1)}
         hasAudio={true}
         prewarm
         muted
@@ -265,8 +265,7 @@ export default function Page() {
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110708949?h=fa86847bc0'
-        preloadDelayMs={delayFor(3)}
-        hasAudio={true}
+        preloadDelayMs={delayFor(2)}
         prewarm
         muted
         loop
@@ -280,7 +279,7 @@ export default function Page() {
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110838360?h=212d7faad8'
-        preloadDelayMs={delayFor(4)}
+        preloadDelayMs={delayFor(3)}
         prewarm
         muted
         loop
@@ -288,7 +287,7 @@ export default function Page() {
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110838382?h=85299bb0cd'
-        preloadDelayMs={delayFor(5)}
+        preloadDelayMs={delayFor(4)}
         prewarm
         muted
         loop
@@ -301,7 +300,7 @@ export default function Page() {
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110708985?h=f47f8b49f2'
-        preloadDelayMs={delayFor(6)}
+        preloadDelayMs={delayFor(5)}
         prewarm
         muted
         loop
@@ -315,7 +314,6 @@ export default function Page() {
         type='video'
         src='https://player.vimeo.com/video/1110709027?h=7a7125da0c'
         preloadDelayMs={delayFor(6)}
-        hasAudio={true}
         prewarm
         muted
         loop
