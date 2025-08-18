@@ -71,16 +71,16 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/projects/cruise/archive/1.jpg',
-      '/images/projects/cruise/archive/2.jpg',
-      '/images/projects/cruise/archive/3.jpg',
-      '/images/projects/cruise/archive/4.jpg',
-      '/images/projects/cruise/archive/5.jpg',
-      '/images/projects/cruise/archive/6.jpg',
-      '/images/projects/cruise/archive/7.jpg',
-      '/images/projects/cruise/archive/8.jpg',
-      '/images/projects/cruise/archive/9.jpg',
-      '/images/projects/cruise/archive/10.jpg',
+      '/images/projects/merlin/archive/1.jpg',
+      '/images/projects/merlin/archive/2.jpg',
+      '/images/projects/merlin/archive/3.jpg',
+      '/images/projects/merlin/archive/4.jpg',
+      '/images/projects/merlin/archive/5.jpg',
+      '/images/projects/merlin/archive/6.jpg',
+      '/images/projects/merlin/archive/7.jpg',
+      '/images/projects/merlin/archive/8.jpg',
+      '/images/projects/merlin/archive/9.jpg',
+      '/images/projects/merlin/archive/10.jpg',
     ],
   },
 ]
@@ -91,73 +91,46 @@ export default function Page() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
-  const [currentPoint, setCurrentPoint] = useState(
-    points[0], // 초기값으로 첫 번째 포인트 설정
-  )
+  const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
 
   const inView = useInView(designedByRef, {
-    amount: 0.1, // 10%가 보일 때 inView 상태 변경
-    once: false, // 한번만 감지하지 않도록 설정
+    amount: 0.1,
+    once: false,
   })
 
   useEffect(() => {
-    if (inView) {
-      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
-    } else {
-      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
-    }
-  }, [inView, setIsSidebarShown])
+    // Hide sidebar when the Credits section is visible
+    setIsSidebarShown(!inView)
+  }, [inView])
 
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
-      setIsMobile(width < 768) // 768px 미만은 모바일
-      setIsTablet(width >= 768 && width < 1440) // 768px 이상 1440px 미만은 테블릿
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1440)
     }
-
     checkDeviceType()
     window.addEventListener('resize', checkDeviceType)
-
-    return () => {
-      window.removeEventListener('resize', checkDeviceType)
-    }
+    return () => window.removeEventListener('resize', checkDeviceType)
   }, [])
 
-  // 마우스 위치 추적 (PC에서만)
+  // Track mouse position on desktop only
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // 모바일이나 테블릿이면 마우스 추적하지 않음
       if (isMobile || isTablet) return
-
-      const windowWidth = window.innerWidth
-      const mouseX = event.clientX
-
-      // 오른쪽 1/3 지점 계산 (화면 너비의 2/3 지점부터)
-      const rightThirdThreshold = windowWidth * (2 / 3)
-
-      setIsMouseInRightThird(mouseX >= rightThirdThreshold)
+      const rightThirdThreshold = window.innerWidth * (2 / 3)
+      setIsMouseInRightThird(event.clientX >= rightThirdThreshold)
     }
-
-    // 마우스 이동 이벤트 리스너 추가
     window.addEventListener('mousemove', handleMouseMove)
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
+    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [isMobile, isTablet])
 
-  // 사이드바 확장 상태 변경 핸들러
   const handleSidebarExpandedChange = (expanded: boolean) => {
     setIsSidebarExpanded(expanded)
   }
 
-  // 사이드바 표시 여부 결정:
-  // - 모바일에서는 항상 true
-  // - 테블릿에서는 항상 true (새로 추가된 조건)
-  // - PC에서는 마우스가 오른쪽 1/3에 있거나 확장된 상태일 때
   const shouldShowSidebar = isMobile || isTablet || isMouseInRightThird || isSidebarExpanded
 
   return (
@@ -168,122 +141,218 @@ export default function Page() {
         svgSrc='/images/logo/Merlin_logo.svg'
         className='w-[52px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
         title={['Merlin', 'Into Your Flow, Merlin OS']}
-        description='Merlin OS is a flow operating system. It helps you reach your goals faster by minimizing app switching and cutting through complexity.  It understands your context in real time and connects features across apps into one seamless experience. Forget rigid, app-centered interfaces. Merlin offers a more flexible, more immersive way to work. Your digital journey starts here.'
+        description='Merlin OS is a flow operating system. It helps you reach your goals faster by minimizing app switching and cutting through complexity. It understands your context in real time and connects features across apps into one seamless experience. Forget rigid, app-centered interfaces—Merlin offers a more flexible, immersive way to work. Your digital journey starts here.'
         credits='Yumin Kim, Soeun Lee, Jiwon An, Junhong Yang, Seohyeon Cho'
       />
-      <MainImage Image='/images/projects/cruise/image1.png' />
+
+      <Image Image='/images/projects/merlin/merlin_main.jpg' />
+
+      {/* 01. Background */}
       <Divide title='Background' number='01' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984354?h=fdebbff948'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={'Static UI,\nlayered like blocks'}
-        text='Everyone uses their phone differently: the apps they use, how they arrange their home screen, how they hold it, even how hard they press the screen.'
+        text='Everyone uses their phone differently: the apps they use, how they arrange the home screen, how they hold it, even how hard they press.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <RightBody
-        text='However, today’s mobile interfaces weren’t designed for these differences.
-They offer the same buttons, in the same spots, to every people. 
-Features are stacked like blocks on a fixed grid, waiting passively for you to learn and adapt.'
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984418?h=fa502d17c2'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
       />
+      <RightBody text="Yet today's mobile interfaces ignore these differences. The same buttons sit in the same places for everyone. Features stack like blocks on a fixed grid, passively waiting for you to learn and adapt." />
+
+      {/* 02. Target */}
       <Divide number='02' title='Target' />
-
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-
-      <TitleBody
-        title={'Gen Z, Caught in Endless Digital Dribbling'}
-        text='For Gen Z, Current User Interaction doesn’t match how they use apps. Gen Z tends to interact through quick tab switching and often experiences “digital dribbling” repeatedly going back and forth between launchers or recent tabs during their exploration.'
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984446?h=68d550246a'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
       />
-      <Divide number='03' title='Research' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-
       <TitleBody
-        title={'The Same Maze,\nThe Same Moves'}
+        title={'Gen Z, caught in endless digital dribbling'}
+        text='Static UI clashes with how Gen Z explores: rapid tab switching, hopping between launcher and recent tabs—repeating “digital dribbling” just to move forward.'
+      />
+
+      {/* 03. Research */}
+      <Divide number='03' title='Research' />
+      <Image Image='/images/projects/merlin/merlin_4.jpg' />
+      <TitleBody
+        title={'The familiar maze,\n the same moves'}
         text={
           <>
-            Gen Z uses only the features. They might have around 130 apps on their phones, but typically use just 12 of
-            them more than 10 times a week. Even within those apps, they stick to a few familiar actions. For them, the
-            digital world is a familiar maze—complex on the surface, but made up of the same taps and same turns.
+            Gen Z tends to focus on a small subset of features. They may have ~130 apps installed, but on average use
+            only about 12 more than 10 times a week. Even inside those apps, a few actions dominate. The digital world
+            becomes a familiar maze—complex on the surface, but navigated by the same taps and turns.
             <br />
             <br />
             <a href='https://umin.notion.site/merlinos' className='underline font-semibold' target='_blank'>
-              ▶︎ More Detailed UX Process
+              ▶︎ More detailed UX process
             </a>
           </>
         }
       />
+
+      {/* 04. Problem */}
       <Divide number='04' title='Problem' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <TitleBody
-        title={'One goal,\nToo much Distractions.'}
-        text={
-          'Gen Z uses digital tools quickly, but they often jump between lots of screens to achieve a single goal. Like the home, app drawer, recent apps, and search. They waste time and energy. These interruptions slow them down, break their flow, and make them tired.'
-        }
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984480?h=8e144c0440'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
       />
+      <TitleBody
+        title={'One goal,\ntoo many distractions'}
+        text='Even to achieve a clear, single objective, people bounce through home screens, drawers, recents, and in-app navigation—wasting time and energy. These “speed bumps” break flow and add cognitive fatigue.'
+      />
+
+      {/* 05. Insight */}
       <Divide number='05' title='Insight' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/merlin/merlin_6.webp' />
       <TitleBody
         title={'Gen Z needs flow,\nnot apps'}
-        text={
-          'Apps are built to deliver features. But this setup often interrupts the flow. What if the features needed were all connected in one seamless path—no digging through layers? A flow design that understands work and predicts what comes next, guiding progress.'
-        }
+        text='Apps are containers for features—but that container often interrupts flow. What if the needed features were connected into one continuous path from the start, guided by context and prediction?'
       />
+
+      {/* 06. Solution */}
       <Divide number='06' title='Solution' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/merlin/merlin_7.jpg' />
+      <Image Image='/images/projects/merlin/merlin_8.jpg' />
       <MidTitle text='Into Your Flow, Merlin OS' padding={false} />
       <MidBody
         content={
-          'Merlin OS is the next-generation operating system.\nIt remakes features based on context and breaks down app boundaries to create one seamless, continuous experience.\nYou do not have to think about controls, so you can stay fully focused.'
+          'Meet Merlin OS, a flow-first operating system.\nMerlin reshapes functions by context and bridges app boundaries to deliver one continuous experience.\nYou no longer think about the controls—you stay in the zone.'
         }
       />
+
+      {/* 07. Scenario */}
       <Divide number='07' title='Scenario' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680696?h=deddf9c47a'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
+      />
       <TitleBody
-        title={'Three experiences, all flowing together'}
-        text={
-          'Merlin OS is a flow-centered experience. Merlin OS is designed with your context and habits, built on three key principles: Contextual Flow, Appless Interface, and Flexible UI. So you can follow a natural flow and get things done faster without learning complex interfaces.'
-        }
+        title={'Three experiences,\nall flowing together'}
+        text='Built on three principles—Contextual Flow, Appless Interface, and Flexible UI—Merlin adapts to your context and habits. You simply follow the flow and arrive faster, without learning complex interfaces.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680719?h=578ca2f36a'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+
+      {/* Contextual Flow */}
       <RightTitleBody
-        title={'Contextual Flow:\nJust what you need, at just the right time.'}
-        text='Merlin OS understands your time, place, and even how you hold your device—and adjusts the flow to match. Experience the new digital journey that feels effortless and naturally in sync with your world.'
+        title={'Contextual Flow:\nJust what you need, right when you need it'}
+        text='Merlin understands time, place, and even your grip patterns to compose flows that match your situation—so your digital journey feels natural and effortless.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <RightBody text='Merlin OS recognizes your time, location, and habits to automatically organize the right set of tools. No more jumping between apps. Merlin OS opens what you need instantly. So you can get things done without any extra searching.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680726?h=34144850a1'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <RightBody text='By recognizing your time, location, and habits, Merlin automatically assembles the right tools. No redundant app hopping—what you need opens together on one screen.' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680730?h=e5b347252a'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+
+      {/* Appless Interface */}
       <RightTitleBody
-        title={'Appless Interface:\nOne seamless experience. No distractions.'}
-        text='Experience flow, not apps. No more digging through menus—everything you need comes together seamlessly on one screen.'
+        title={'Appless Interface:\nOne seamless experience'}
+        text='Experience flows—not apps. You never dig through menus; functions come together on a single, continuous surface.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <RightBody text='Flow smoothly, without any interruptions or distractions. No more switching between apps or navigating complicated steps. Everything you need happens seamlessly on a single screen, making it effortless to get things done.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680738?h=3a7f1783f6'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <RightBody text='No laddering through hierarchies or switching between containers. The entire process happens in sequence on one screen—frictionless, distraction-free.' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680745?h=4bc8cbf305'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+
+      {/* Flexible UI */}
       <RightTitleBody
-        title='Flexible UI: so you stay focused'
-        text='Flexible UI provides interactions built around the essential roles of focus and control. Information and controls remain separate—an information layer designed for deep focus, and a control layer crafted to move naturally.'
+        title='Flexible UI: immersion, made practical'
+        text='Interactions align to their essential roles—information for deep focus, controls for natural action—kept in distinct layers instead of being crammed together.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <RightBody text='Based on your hand position, habits, and interactions, controls are intelligently arranged. So you can access what you need easily.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680752?h=4ce0509902'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <RightBody text='Controls recompose around your hand position, habits, and patterns—so you reach intended actions with minimal movement.' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680764?h=b30313eef1'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+
+      {/* 08. Value */}
       <Divide number='08' title='Value' />
       <MidTitle text='Merlin OS’s new digital flow' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <TitleBody
-        title={'Focus with an OS\nthat gets you'}
-        text={
-          'Merlin OS reduces mental and physical stress by using a seamless flow—no more app switching. So you can focus on what matters right away. With no setup needed, Merlin OS learns from your choices and adapts over time, becoming a smart, personalized OS made just for you.'
-        }
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680777?h=f57c2cbfec'
+        preloadDelayMs={0}
+        prewarm
+        loop
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
       <TitleBody
-        title={'User experiences connected by flow'}
-        text={
-          'Merlin OS provides a consistent, flow-based architecture across multiple devices. It delivers a seamless, boundary-free experience. If you have a business, Merlin OS gives you a solid foundation to build a sustainable multi-platform ecosystem.'
-        }
+        title={'Seamless focus,\nan OS that learns you'}
+        text='With one uninterrupted flow (no app switching), Merlin reduces cognitive and operational fatigue—letting you focus immediately. Without explicit setup, it learns from your choices and interactions, evolving into a refined, personalized, algorithmic OS.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984503?h=34ff1adeac'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <TitleBody
+        title={'User experiences\nconnected by flow'}
+        text='Merlin runs primarily on mobile, yet extends fluidly to AR, tablets, and desktops. A consistent, flow-based architecture brings boundary-less experiences to people and gives businesses a durable foundation for a multi-platform ecosystem.'
+      />
+      <Image Image='/images/projects/merlin/merlin_19.webp' />
+      <Image Image='/images/projects/merlin/merlin_20.jpg' />
+      <Image Image='/images/projects/merlin/merlin_21.webp' />
 
       <div ref={designedByRef}>
         <Credit
@@ -322,7 +391,6 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
                 instagram: 'https://instagram.com/2woniee',
               },
             },
-
             {
               name: '양준홍',
               role: 'VD',
@@ -349,6 +417,7 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
         />
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
+
         <MobileNavigation
           previousItem={{ label: 'Previous', url: '/en/projects/hotcake' }}
           nextItem={{ label: 'Next', url: '/en/projects/autonomy-practice' }}
@@ -357,7 +426,7 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/hotcake/hotcake_thumbnail_1.jpg',
             englishName: 'HOTCAKE',
             koreanName: '핫케익',
             linkUrl: '/en/projects/hotcake',
@@ -365,12 +434,13 @@ Features are stacked like blocks on a fixed grid, waiting passively for you to l
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/autonomy_practice/autonomy_practice_thumbnail_1.jpg',
             englishName: 'AUTONOMY PRACTICE',
             koreanName: '오토노미 프랙티스',
             linkUrl: '/en/projects/autonomy-practice',
           }}
         />
+
         <AnimatePresence>
           {shouldShowSidebar && (
             <ArchiveSidebar

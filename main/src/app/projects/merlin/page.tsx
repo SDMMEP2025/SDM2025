@@ -71,16 +71,16 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/projects/cruise/archive/1.jpg',
-      '/images/projects/cruise/archive/2.jpg',
-      '/images/projects/cruise/archive/3.jpg',
-      '/images/projects/cruise/archive/4.jpg',
-      '/images/projects/cruise/archive/5.jpg',
-      '/images/projects/cruise/archive/6.jpg',
-      '/images/projects/cruise/archive/7.jpg',
-      '/images/projects/cruise/archive/8.jpg',
-      '/images/projects/cruise/archive/9.jpg',
-      '/images/projects/cruise/archive/10.jpg',
+      '/images/projects/merlin/archive/1.jpg',
+      '/images/projects/merlin/archive/2.jpg',
+      '/images/projects/merlin/archive/3.jpg',
+      '/images/projects/merlin/archive/4.jpg',
+      '/images/projects/merlin/archive/5.jpg',
+      '/images/projects/merlin/archive/6.jpg',
+      '/images/projects/merlin/archive/7.jpg',
+      '/images/projects/merlin/archive/8.jpg',
+      '/images/projects/merlin/archive/9.jpg',
+      '/images/projects/merlin/archive/10.jpg',
     ],
   },
 ]
@@ -171,26 +171,44 @@ export default function Page() {
         description='Merlin OS는 앱 전환과 복잡한 탐색을 줄여 사용자가 빠르게 목표에 도달하도록 돕는 흐름 중심 운영체제입니다. 사용자 상황을 실시간으로 인식하고, 여러 앱에 흩어진 기능을 하나의 흐름으로 연결해 기존의 정적이고 앱 중심적인 UI를 넘어 보다 유연하게 몰입하는 경험을 제공합니다. 흐름을 조율하는 새로운 운영체제, Merlin과 함께 미래의 디지털 여정을 시작해보세요.'
         credits='김유민, 이소은, 안지원, 양준홍, 조서현'
       />
-      <MainImage Image='/images/projects/cruise/image1.png' />
+      <Image Image='/images/projects/merlin/merlin_main.jpg' />
       <Divide title='Background' number='01' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984354?h=fdebbff948'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={'블록처럼 쌓여있는\n정적인 UI'}
         text='모든 사용자는 저마다 서로 다른 방식으로 모바일을 사용합니다. 자주 사용하는 앱과 기능, 홈 화면의 배치는 물론이고, 모바일을 쥐는 방식, 손이 닿는 영역과 터치할 때의 압력까지도요.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984418?h=fa502d17c2'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightBody text='하지만, 현재의 모바일 인터페이스는 이러한 차이를 고려하지 않은 채, 모든 사용자에게 매번 동일한 위치에서 동일한 버튼을 제공하고 있습니다. 정적인 그리드 안에서 블록처럼 쌓인 기능들은, 사용자에게 학습되고 적응되기를 기다리며 수동적으로 존재합니다.' />
       <Divide number='02' title='Target' />
-
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984446?h=68d550246a'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={'디지털 드리블을 수없이\n반복하는 Z세대'}
         text='모두에게 똑같이 제공되는 정적인 UI 구조는 짧은 시간 동안 여러 앱을 넘나드는 Z세대의 탐색 방식과 충돌합니다. Z세대는 탭을 빠른 속도로 전환하며 인터랙션하는 패턴을 보이며, 탐색 과정에서 런처 또는 최근 탭 목록을 반복적으로 오가는 ‘디지털 드리블’을 경험합니다.'
       />
       <Divide number='03' title='Research' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-
+      <Image Image='/images/projects/merlin/merlin_4.jpg' />
       <TitleBody
         title={'‘익숙한 미로’ 같은\n디지털 길찾기'}
         text={
@@ -208,7 +226,14 @@ export default function Page() {
         }
       />
       <Divide number='04' title='Problem' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984480?h=8e144c0440'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={'목표는 하나지만,\n 몰입을 끊는 수많은\n 중간 페이지들'}
         text={
@@ -216,7 +241,7 @@ export default function Page() {
         }
       />
       <Divide number='05' title='Insight' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/merlin/merlin_6.webp' />
       <TitleBody
         title={'Z세대에게 필요한 것은\n 앱이 아닌 흐름'}
         text={
@@ -224,8 +249,8 @@ export default function Page() {
         }
       />
       <Divide number='06' title='Solution' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/merlin/merlin_7.jpg' />
+      <Image Image='/images/projects/merlin/merlin_8.jpg' />
       <MidTitle text='Into Your Flow, Merlin OS' padding={false} />
       <MidBody
         content={
@@ -233,55 +258,117 @@ export default function Page() {
         }
       />
       <Divide number='07' title='Scenario' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680696?h=deddf9c47a'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
+      />
+
       <TitleBody
         title={'흐름으로 연결되는\n세 가지 경험'}
         text={
           'Merlin OS는 Contextual Flow, Appless Interface, Flexible UI 세 가지 원칙을 바탕으로, 사용자의 맥락과 습관에 맞춘 흐름 중심의 새로운 디지털 몰입 환경을 제공합니다. 사용자는 앱을 탐색하거나 UI를 학습하지 않아도, 상황에 따라 재배치된 기능 흐름을 자연스럽게 따라가며 원하는 작업에 빠르게 도달할 수 있습니다.'
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680719?h=578ca2f36a'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <RightTitleBody
         title='지금 바로 내게 딱 맞는 기능들만 모아, Contextual Flow'
         text='시간대, 장소, 그립 패턴 등 사용자의 상황과 맥락을 이해하고, 그에 맞는 흐름을 제공합니다. 맥락에 맞게 재배치된 흐름을 통해 사용자는 자신을 둘러싼 환경에 최적화된 디지털 여정을 경험할 수 있습니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680726?h=34144850a1'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <RightBody text='사용자의 시간, 위치, 습관을 인식해 상황에 맞춰 최적화된 기능 모음이 자동으로 구성됩니다. 중복된 앱 탐색 없이, 지금 필요한 기능 모음이 한 화면에서 곧바로 열리며 복잡한 탐색 없이 곧바로 원하는 결과에 도달할 수 있습니다.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680730?h=e5b347252a'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <RightTitleBody
         title='전환 없이 하나로 이어지는 경험, Appless Interface'
         text='애플리케이션 중심이 아닌, 흐름 중심의 경험을 제공합니다. 사용자가 앱 안으로 들어가 기능을 찾지 않아도 하나의 화면에서 필요한 기능이 자연스럽게 이어집니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680738?h=3a7f1783f6'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <RightBody text='조작 과정에서의 방해나 몰입을 끊는 요소 없이 모바일 경험이 하나의 흐름으로 이어집니다. 계층 구조를 오르내리거나 분절된 단계를 거치지 않고, 앱을 전환하거나 메뉴를 헤맬 필요가 없습니다. 여러 앱을 거치지 않고 필요한 과정을 한 화면에서 연속적으로 해결할 수 있죠.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680745?h=4bc8cbf305'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <RightTitleBody
         title='몰입을 몰입답게, Flexible UI'
         text='몰입과 조작 각각의 본질적 역할에 맞는 인터랙션 경험을 제공합니다. 정보와 조작을 한 화면에 억지로 섞지 않고, 몰입을 위한 정보 레이어와 손의 동작을 고려한 조작 레이어로 구분합니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680752?h=4ce0509902'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <RightBody text='사용자의 손 위치, 습관, 인터랙션 패턴을 바탕으로 필요한 컨트롤러를 재구성해, 사용자는 최소한의 동작으로 원하는 액션에 바로 접근할 수 있습니다.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680764?h=b30313eef1'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <Divide number='08' title='Value' />
       <MidTitle text='Merlin OS가 설계한 새로운 디지털 흐름' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110680777?h=f57c2cbfec'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <TitleBody
         title={'끊김 없는 몰입,\n나를 닮은 OS'}
         text={
           'Merlin OS는 앱 전환 없이 이어지는 단일 플로우로 인지적∙조작적 피로를 줄이고, 사용자가 본연의 목적에 곧바로 몰입할 수 있도록 돕습니다. 명시적인 설정 없이도 사용자의 선택과 인터랙션을 학습해 점차 정교하게 개인화된 알고리즘형 OS로 진화합니다.'
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110984503?h=34ff1adeac'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <TitleBody
         title={'흐름으로 연결된\n사용자 경험'}
         text={
           'Merlin OS는 모바일을 중심으로 동작하지만, AR, 태블릿, 데스크탑 등 다양한 디바이스와 연동해 유연하게 확장됩니다. 여러 하드웨어에서 일관된 흐름 기반의 아키텍처를 제공함으로써 사용자에게는 경계를 초월해 통합되는 경험을, 기업에는 지속 가능한 멀티 플랫폼 생태계의 기틀을 제공합니다.'
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-
+      <Image Image='/images/projects/merlin/merlin_19.webp' />
+      <Image Image='/images/projects/merlin/merlin_20.jpg' />
+      <Image Image='/images/projects/merlin/merlin_21.webp' />
       <div ref={designedByRef}>
         <Credit
           title='Designed By'
