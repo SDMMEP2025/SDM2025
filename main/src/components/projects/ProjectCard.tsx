@@ -12,6 +12,7 @@ type Project = {
   id: string
   title: string
   thumbnail: { pc: string; mobile: string }
+  color: string
 }
 
 interface ProjectCardProps {
@@ -277,7 +278,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                     style={{ width: imgW, height: imgH }}
                   >
                     <motion.div
-                      className='w-full h-full'
+                      className='w-full h-full relative'
                       initial={false}
                       animate={{ clipPath: getClipPath(isExpanded, originSide as 'left' | 'right') }}
                       transition={slide}
@@ -288,6 +289,10 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                         className='block w-full h-full object-cover'
                         draggable={false}
                       />
+
+                      {isMdPortrait && isExpanded && (
+                        <div className='pointer-events-none absolute inset-0 bg-gradient-to-b from-neutral-800/0 to-neutral-800/30' />
+                      )}
                     </motion.div>
                   </div>
 
@@ -313,8 +318,10 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                     isExpanded ? 'text-white' : 'text-zinc-[#666666]',
                   )}
                   initial={false}
-                  animate={{ opacity: isExpanded ? 1 : 0.75 }}
                   transition={fade}
+                  style={{
+                    color: !isExpanded ? '#4B4F57' : isMdPortrait ? '#FFF' : project.color,
+                  }}
                 >
                   {project.title}
                 </motion.h3>
