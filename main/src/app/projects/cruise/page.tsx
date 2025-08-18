@@ -169,19 +169,19 @@ export default function Page() {
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
         className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
       />
-      <Image Image='/images/projects/cruise/CRUISE_main.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_main.jpg' />
       <Divide title='Background' number='01' />
       <TitleBody
         title='삶의 모든 순간을 채우는 이동'
         text='매일 아침의 출근길, 바쁜 일상 속 짧은 이동, 설레는 주말여행, 그리고 예상치 못한 만남까지, 우리는 삶의 대부분을 이동 속에서 살아갑니다. 이처럼 이동은 우리의 시간과 경험의 큰 비중을 차지하는, 일상에서 결코 분리될 수 없는 중요한 일부입니다.'
       />
-      <Image Image='/images/projects/cruise/CRUISE_1.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_1.jpg' />
       <Divide title='Target' number='02' />
       <TitleBody
         title={'이동의 경험을 새롭게\n정의하는 이동 혁신 세대'}
         text='자율주행 안정화 시대의 도래로, 오랫동안 우리와 함께해왔던 조향 장치인 핸들조차 사라진 미래에서 이동은 더 이상 단순한 공간의 변화만을 의미하지 않습니다. 운전자와 동승자라는 전형적인 구분은 사라지고, 모든 탑승자는 운전의 책임에서 해방됩니다. 이는 곧, 개개인이 자신의 이동 경험을 스스로 만들고, 탐험을 즐기는 네비게이터가 될 새로운 가능성이 열리는 것이죠.'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_2.jpg' />
       <RightTitleBody
         title='수동적인 승객이 아닌 경험을 개척하는 CRUISER'
         text={
@@ -201,16 +201,16 @@ export default function Page() {
           </>
         }
       ></RightTitleBody>
-      <Image Image='/images/projects/cruise/CRUISE_3.webp' />
+      <Image Image='/images/projects/cruise/cruise1_3.webp' />
 
       <MidBody
         align='left'
         content='CRUISE는 이러한 삶의 방식을 이동 경험으로 확장합니다. 이들에게 이동은 이제, 세상의 모든 순간을 자신만의 취향으로 엮어내고, 친구들과 역동적으로 교감하는 하나의 플랫폼이 됩니다. 도로는 생생한 피드로, 차량은 손안에서 자유롭게 상호작용하는 디바이스로 변화합니다. 이를 통해 탑승자 모두가 이동 경험의 주체이자 경험 에디터가 되는 새로운 미래가 펼쳐집니다. 마치 ‘한 배를 탄 듯이’ 말이죠.'
       />
       <Divide title='Concept' number='03' />
-      <Image Image='/images/projects/cruise/cruise_4.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_4.jpg' />
       <MidTitle align='center' text='도로, 경험을 공유하는 FEED가 되다.' />
-      <Image Image='/images/projects/cruise/cruise_5.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_5.jpg' />
       <MidBody
         content={'Style Our Mile, Drive Our Life!\n이제 CRUISE가 우리의 이동을 어떻게 바꿔나갈지 함께 살펴볼까요?'}
       />
@@ -223,14 +223,14 @@ export default function Page() {
         loop
       />
       <Divide title='CRUISE Product' number='04' />
-      <Image Image='/images/projects/cruise/CRUISE_7.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_7.jpg' />
 
 
       <RightTitleBody
         title='CRUISE - Handle'
         text='CRUISE의 Handle은 새롭게 도래할 자율주행 시대에 기존 핸들을 대체할 새로운 인터랙션 디바이스입니다. 소셜 미디어에 익숙한 세대에게 직관적인 조작 방식으로 구성되어 빠르고 자연스럽게 주변과 상호작용을 가능하게 합니다.'
       />
-      <Image Image='/images/projects/cruise/CRUISE_8.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_8.jpg' />
 
       <RightTitleBody
         title='CRUISE - Dash'
@@ -329,12 +329,12 @@ export default function Page() {
 개인의 탐색과 취향이 끊임없이 연결되고 확장되며, 모든 여정이 함께 만들어가는 생동감 넘치는 
 ‘움직이는 탐색’이 되는 미래를 제시합니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_16.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_16.jpg' />
 
       <MidBody content='매번 지루했던 이동이 언제나 개성 넘치는 탐험이 될, 새로운 이동을 경험해 볼 준비가 되셨나요?' />
-      <Image Image='/images/projects/cruise/cruise_17.jpg' />
-      <Image Image='/images/projects/cruise/CRUISE_18.webp' />
-      <Image Image='/images/projects/cruise/CRUISE_19.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_17.jpg' />
+      <Image Image='/images/projects/cruise/cruise1_18.webp' />
+      <Image Image='/images/projects/cruise/cruise1_19.jpg' />
 
 
       <div ref={designedByRef}>
