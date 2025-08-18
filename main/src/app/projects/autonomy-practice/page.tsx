@@ -173,8 +173,9 @@ export default function Page() {
         type='video'
         src='https://player.vimeo.com/video/1110685578?h=166f56d7f8'
         preloadDelayMs={0}
+        hasAudio={true}
         prewarm
-        muted
+        muted={false}
         loop
       />
       <Divide title='Context' number='01' className='text-[#949598]' />

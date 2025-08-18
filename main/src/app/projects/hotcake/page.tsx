@@ -214,7 +214,14 @@ export default function Page() {
       />
       <Image Image='/images/projects/hotcake/hotcake_3.jpg' />
       <MidTitle align='center' text='Heat It, Play It, Hotcake' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677386?h=40b3b7092a' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677386?h=40b3b7092a'
+        hasAudio={true}
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <TitleBody
         title={'온라인 합주의 완성\nCake & Butter'}
         text={
@@ -247,7 +254,13 @@ export default function Page() {
           '당장 합주를 즐기고 싶어도 주변에 함께할 사람이 없을 때가 있죠. 오픈 커뮤니티를 통해 나와 음악 취향이 잘 맞는 친구를 찾아 밴드를 꾸릴 수 있고, 친구 리스트를 통해 기존에 친한 친구와도 손쉽게 합주를 시작할 수 있습니다. 만약 세션이 부족할 때는 AI 세션이 나의 리듬에 맞춰 함께 연주하며, 몰입감 있는 퍼포먼스를 완성해 줍니다.'
         }
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677417?h=849f8b5e1f' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677417?h=849f8b5e1f'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <MidTitle align='center' text='(2) New Experience with Hotcake' />
       <TitleBody
         title={'빛, 진동, 그리고 소리로\n이어지는 합주 경험'}
@@ -255,8 +268,20 @@ export default function Page() {
           'Cake의 모듈 스피커를 공간에 배치하면, 단순히 소리를 재생하는 것을 넘어 빛을 통해 친구들의 연주를 실시간으로 경험할 수 있습니다. 웨어러블 기기인 Butter를 함께 사용하면, 사운드에 맞춰 반응하는 햅틱을 통해 리듬과 그루브를 느낄 수 있습니다.'
         }
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677428?h=24666f17bc' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677441?h=a243b7dd77' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677428?h=24666f17bc'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677441?h=a243b7dd77'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
 
       <TitleBody
         title={'집에서도, 더 유난스럽고\n더 재미있게'}
@@ -264,8 +289,20 @@ export default function Page() {
           '합주의 가장 큰 재미 요소는 무엇보다도 박자가 딱 맞아떨어지는 그 순간이죠. 합이 딱 맞춰지는 순간 Cake 모듈 스피커에서 나오는 LED 라이팅이 방 안을 작은 무대로 꾸밉니다. 연주가 클라이맥스에 달하면 모션 제스처를 통한 사운드 이펙트로 뜨거움이 가득한 합주를 경험해 보세요.'
         }
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677453?h=9dfe315642' />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677461?h=46c61658c5' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677453?h=9dfe315642'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677461?h=46c61658c5'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <MidTitle align='center' text='(3) Frame the Heated Moment' padding={false} />
       <TitleBody
         title={'뜨거운 합주의\n순간으로 돌아가기'}
@@ -273,7 +310,13 @@ export default function Page() {
           '합주가 끝난 후에는 AI가 솔로 파트나 하이라이트를 자동으로 편집해 줍니다. 완성된 영상은 함께 연주한 친구들과 바로 공유할 수 있어, 그 여운이 자연스럽게 이어집니다. 또한 모니터링 영상 속 나의 연주를 되돌아보며, 합주의 순간을 다시 돌아볼 수 있습니다.'
         }
       />
-      <MediaContainer type='video' src='https://player.vimeo.com/video/1110677477?h=6e7bb30ead' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110677477?h=6e7bb30ead'
+        preloadDelayMs={0}
+        prewarm
+        loop
+      />
       <Divide title='New Expandability' number='05' />
       <TitleBody
         title={'모두가 합주의 즐거움을\n느낄 수 있도록'}

@@ -186,10 +186,11 @@ export default function Page() {
 
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110676481?h=7c5679d04aa'
+        src='https://player.vimeo.com/video/1110676481?h=c5679d04aa'
         preloadDelayMs={0}
+        hasAudio={true}
         prewarm
-        muted
+        muted={false}
         loop
       />
       <TitleBody

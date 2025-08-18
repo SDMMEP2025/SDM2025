@@ -263,8 +263,9 @@ export default function Page() {
         type='video'
         src='https://player.vimeo.com/video/1110679279?h=743bbc4061'
         preloadDelayMs={0}
+        hasAudio={true}
         prewarm
-        muted
+        muted = {false}
         loop
       />
       <ImageGallery

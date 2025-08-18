@@ -284,8 +284,9 @@ export default function Page() {
         type='video'
         src='https://player.vimeo.com/video/1110696517?h=428d2ad897'
         preloadDelayMs={0}
+        hasAudio={true}
         prewarm
-        muted
+        muted={false}
         loop
       />
       <TitleBody
