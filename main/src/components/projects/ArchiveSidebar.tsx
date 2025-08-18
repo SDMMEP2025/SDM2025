@@ -101,26 +101,23 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
 
       <motion.div
         ref={mobileScrollRef}
-        initial={{ y: '100%', opacity: 0 }}
-        animate={{
-          y: isVisible ? (isExpanded ? '0%' : `calc(100% - ${CUT_TOP_MOBILE}px)`) : '100%',
-          opacity: isVisible ? 1 : 0,
+        initial={false}
+        animate={!isVisible ? 'hidden' : isExpanded ? 'open' : 'collapsed'}
+        variants={{
+          hidden: { y: '100%', opacity: 0 },
+          collapsed: { y: `calc(100% - ${CUT_TOP_MOBILE}px)`, opacity: 1 },
+          open: { y: '0%', opacity: 1 },
         }}
-        exit={{ y: '100%', opacity: 0 }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
-        className='md:hidden fixed bottom-0 left-0 right-0 z-50 w-full backdrop-blur-md'
-        style={{
-          maxHeight: '100dvh',
-          WebkitOverflowScrolling: 'touch',
-          overscrollBehavior: 'contain',
-        }}
-      >
+        className='md:hidden fixed bottom-0 left-0 right-0 z-50 w-full backdrop-blur-md'>
         <div
           onClick={() => setIsExpanded(!isExpanded)}
           className='w-full sticky top-0 z-10 backdrop-blur-md flex items-center justify-between px-4 bg-white/50'
           style={{ height: `${CUT_TOP_MOBILE}px` }}
         >
-          <span className='text-[#4B4F57] text-[18px] font-semibold leading-[1.5] tracking-[-0.36px]'>Process Archive</span>
+          <span className='text-[#4B4F57] text-[18px] font-semibold leading-[1.5] tracking-[-0.36px]'>
+            Process Archive
+          </span>
           <button
             aria-label={isExpanded ? 'Close' : 'Open'}
             className='w-6 h-6 relative flex items-center justify-center cursor-pointer active:scale-95 transition-all'
