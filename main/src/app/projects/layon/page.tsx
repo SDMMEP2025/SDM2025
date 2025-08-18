@@ -367,7 +367,7 @@ export default function Page() {
         preloadDelayMs={0}
         hasAudio={true}
         prewarm
-        muted
+        muted={true}
         loop
       />
       <MidBody

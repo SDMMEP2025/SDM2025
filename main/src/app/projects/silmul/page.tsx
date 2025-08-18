@@ -276,6 +276,7 @@ export default function Page() {
         hasAudio={true}
         prewarm
         loop
+        muted={true}
       />
       <Image Image='/images/projects/silmul/silmul_7.jpg' />
       <RightTitleBody
