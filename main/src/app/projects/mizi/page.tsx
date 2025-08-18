@@ -162,7 +162,7 @@ export default function Page() {
         text='우리는 클릭 한 번이면 음식이 1시간 안에 도착하고, 오늘 주문한 택배가 다음 날 새벽에 도착하며, 터치 한 번이면 영화 한 편을 볼 수 있는 온 디맨드(On-Demand) 사회에 살고 있습니다. 
 퀵커머스, 실시간 스트리밍과 같은 서비스가 우리의 일상이 되며 Z세대에게 기다림이라는 시간은 참기 힘들어졌죠.'
       />
-      <MainImage Image='/images/projects/mizi/mizi_1.webp' />
+      <Image Image='/images/projects/mizi/mizi_1.webp' />
       <TitleBody
         title={'기다림을 요구하는 영역\nTravel'}
         text='그런데 유독, 여행만큼은 아직 기다림을 요구하는 영역으로 남아있습니다. 떠나기로 다짐하고, 계획을 세우고, 여행을 가는 당일까지 기다리는 과정이 여전히 필수적으로 남아있죠. 사람들은 이 과정의 기다림조차 여행의 일부이자 의미 있는 시간이라고 이야기하고는 합니다. 
