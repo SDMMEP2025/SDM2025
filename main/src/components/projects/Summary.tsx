@@ -31,7 +31,7 @@ export function Summary({
             <img
               src={svgSrc}
               alt=''
-              className={classNames('block w-auto max-w-full overflow-visible', className)}
+              className={classNames('block max-w-full overflow-visible', className)}
               draggable={false}
             />
           ) : SVGLogo ? (

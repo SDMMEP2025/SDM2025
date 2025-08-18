@@ -162,7 +162,7 @@ export default function Page() {
           </>
         }
         credits='Yungwon Kang, Hyogyeong Park, Hyeonji Yang, Jueun Lee, Hyeongjoon Joo'
-        className='w-[144px] md:w-[180px] lg:w-[clamp(180px,21.3vw,308px)]'
+        className='w-[144px] md:w-[144px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
 
       {/* HERO */}

@@ -174,7 +174,7 @@ export default function Page() {
           </>
         }
         credits='Chaewon Lee, Yehyeon Yoon, Dongheon Kang, Siwoo Kim, Chaeyoung Jung'
-        className='w-[142px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
+        className='w-[142px] md:w-[142px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
 
       {/* HERO */}

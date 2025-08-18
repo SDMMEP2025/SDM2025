@@ -151,7 +151,7 @@ export default function Page() {
           </>
         }
         credits='Haeri Ryoo, Seohyun Kim, Minhee Kim, Yubin Seo, Wanhyeok Choi'
-        className='w-[133px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
+        className='w-[133px] md:w-[133px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
 
       {/* HERO */}

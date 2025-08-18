@@ -155,7 +155,7 @@ export default function Page() {
           </>
         }
         credits='Sunil Kim, Suryun Hyeon, Seyeon Park, Hyunbin Seo, Hyeongyeong Yun'
-        className='w-[74px] md:w-[96px] lg:w-[clamp(96px,8.75vw,130px)]'
+        className='w-[74px] md:w-[74px] lg:w-[clamp(96px,8.75vw,130px)]'
       />
       <MainImage Image='/images/projects/silmul/silmul_main.jpg' />
 

@@ -178,7 +178,7 @@ export default function Page() {
           </>
         }
         credits='강윤권, 박효경, 양현지, 이주은, 주형준'
-        className='w-[144px] md:w-[180px] lg:w-[clamp(180px,21.3vw,308px)]'
+        className='w-[144px] md:w-[144px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
       <Image Image="/images/projects/potrik/potrik_main.jpg"/>
       <Divide title='Background' number='01' className='text-[#09C17A]' />

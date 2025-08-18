@@ -170,7 +170,7 @@ export default function Page() {
           </>
         }
         credits='유해리, 김서현, 김민희, 서유빈, 최완혁'
-        className='w-[133px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
+        className='w-[133px] md:w-[133px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
       <Image Image='/images/projects/layon/layon_main.jpg' />
       <Divide title='Background' number='01' className='text-[#417EB4]' />

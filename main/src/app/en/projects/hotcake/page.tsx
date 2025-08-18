@@ -112,7 +112,7 @@ export default function Page() {
         title={['Hotcake', 'Heat it, Play it, Hotcake']}
         description='Hotcake lets you enjoy playing music with your friends, no matter where you are. It delivers rich, 3D sound that makes it feel like you are all in the same room. Hotcake keeps everyone perfectly in sync, so you can feel magical moments. Experience immersive, unforgettable jam sessions even in your home.'
         credits='Woojin Jang, Hyeryoung Jeong, Chaeeun Kim, Ilyeo Lee, Eunhye Jang'
-        className='w-[85px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[85px] md:w-[85px] lg:w-[clamp(100px,10vw,144px)]'
       />
 
       {/* 1 */}

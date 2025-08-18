@@ -139,7 +139,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Merlin_logo.svg'
-        className='w-[52px] md:w-[100px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[52px] md:w-[52px] lg:w-[clamp(100px,10vw,144px)]'
         title={[
           'Merlin',
           <>

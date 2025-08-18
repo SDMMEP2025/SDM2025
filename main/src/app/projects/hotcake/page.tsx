@@ -182,7 +182,7 @@ export default function Page() {
         title={['핫케익', 'Heat it, Play it, Hotcake']}
         description='Hotcake는 공간 제약 없이 즐거운 합주를 할 수 있는 경험을 선사합니다. 마치 한 공간에 함께 있는 듯한 입체적인 사운드를 구현하고, 서로의 타이밍이 정확히 맞아떨어지는 짜릿한 순간을 놓치지 않도록 도와주죠. Hotcake와 함께, 평범한 일상 공간에서도 몰입감 넘치는 유난스러운 합주의 즐거움을 느껴보세요!'
         credits='장우진, 정혜령, 김채은, 이일여, 장은혜'
-        className='w-[85px] md:w-[96px] lg:w-[clamp(96px,10vw,144px)]'
+        className='w-[85px] md:w-[85px] lg:w-[clamp(96px,10vw,144px)]'
       />
       <Image Image='/images/projects/hotcake/hotcake_main.jpg' />
       <Divide title='A way of enjoying music' number='01' />
