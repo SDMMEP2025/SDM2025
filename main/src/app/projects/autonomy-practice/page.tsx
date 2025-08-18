@@ -22,7 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
-  Blank
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -168,19 +168,33 @@ export default function Page() {
         description='Autonomy Practice는 소재를 다루는 방식에 질문을 던지는 실험적 신발 브랜드입니다. 우리는 CMF를 기존의 영역에 그치지 않고, 환경에 반응해 형상을 조율하는 매개로 바라봅니다. 이러한 관점 아래, 형상기억 폴리머(SMP)를 적용한 자가 해체 구조의 신발을 설계했습니다. 신발이 스스로 구성되고 해체되는 이 구조는, 생산과 소비의 경계를 다시 그리는 하나의 실천입니다.'
         credits='풍제석, 이민희, 하승민, 정민영, 정유진'
       />
-      <MainImage Image='/images/projects/cruise/image1.png' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_main.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110685578?h=166f56d7f8'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='Context' number='01' className='text-[#949598]' />
       <MidBody
         align='left'
         content='CMF는 제품의 시각적, 촉각적 완성도를 높이는 요소로 자리해 왔습니다. Autonomy Practice는 이 역할을 재탐색하며, CMF를 주변 환경에 반응하고 제품의 상태를 변화시키는 능동적 재료로 탐구합니다. 이러한 관점은 온도에 반응하여 형태가 바뀌는 SMP(형상기억 폴리머)에 대한 소재 연구로 이어졌고, 나아가 가변적 물성과 제품의 만남에서 비롯되는 새로운 가능성을 모색합니다.'
       />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_2.webp' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110685628?h=2c55296633'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_4.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_5.webp' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_6.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_7.jpg' />
       <Divide title='Structure' number='02' className='text-[#949598]' />
       <MidBody
         align='left'
@@ -188,9 +202,16 @@ export default function Page() {
           'SMP(형상기억 폴리머)는 25°C에서 90°C 사이에 형상기억 온도를 설정할 수 있습니다. 형상기억 온도에 도달한 SMP는 부드러워지며 변형되고, 온도가 내려가면 그 상태로 경화됩니다. 이후 다시 형상기억 온도에 도달하면 원형으로 되돌아갑니다. 우리는 다양한 샘플들을 만져보고, 프로토타입을 직접 신어 보며 테스트하는 과정을 거쳐 80°C라는 형상기억 온도를 설정하게 되었습니다.\n\n이를 바탕으로 고온에서 조립하고, 상온에서 안정적으로 기능하며, 고온에서 다시 간단하게 해체가 가능한 구조를 구현하였습니다. 기존의 접착 구조를 조립 구조로 전환하는 우리의 실천은 신발과 같은 복합 소재 공산품의 생산과 소비 과정에 새로운 방향이 될 수 있습니다.'
         }
       />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_8.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_9.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110685706?h=aabdb47992'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='Practice Log' number='03' className='text-[#949598]' />
       <MidBody
         align='left'
@@ -198,15 +219,31 @@ export default function Page() {
           'Autonomy Practice는 소재를 자율적인 시각으로 해석하고, 그 해석이 어떻게 구조와 형상으로 구체화하는지를 탐색해 왔습니다. 능동적인 물성과 제품의 만남에서 발생한 일련의 설계 과정을 기록하며, 그 흐름을 하나의 실천으로 공유합니다.'
         }
       />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
-      <Image Image='/images/projects/cruise/cruise_6.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_11.webp' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_12.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_13.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_14.jpg' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_15.webp' />
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_16.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110685738?h=4d907155e1'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
+      <Image Image='/images/projects/autonomy_practice/autonomy_practice_18.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110685765?h=7aaba7ed6f'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <div ref={designedByRef}>
         <Credit
           title='Designed By'
