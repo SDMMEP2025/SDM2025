@@ -54,10 +54,10 @@ const tutorData = [
 const thankstoData = [
   {
     title: 'Photographer',
-    tutors: [{ name: '최주혁', englishName: 'Juhyuk Choi' }],
+    tutors: [{ name: '이도겸', englishName: 'Dokyum Lee' }],
   },
   {
-    title: 'Videographer',
+    title: 'Film Director',
     tutors: [{ name: '최주혁', englishName: 'Juhyuk Choi' }],
   },
   {
@@ -228,7 +228,11 @@ export default function Page() {
             편안한 공간에서, 더 자유롭고 즐거운 합주를 지향합니다. 박자가 조금 틀리거나 음이 어긋나도 괜찮아요. 그저
             음악에 몸을 맡겨보세요!
             <br /> <br />
-            <a href='https://heyzine.com/flip-book/bf650f1c48.html#page/1' className='underline font-semibold' target='_blank'>
+            <a
+              href='https://heyzine.com/flip-book/bf650f1c48.html#page/1'
+              className='underline font-semibold'
+              target='_blank'
+            >
               ▶︎ 더 자세한 이야기는 여기에
             </a>
           </>
@@ -249,7 +253,7 @@ export default function Page() {
         title={[
           <>
             온라인 합주의 완성 <br className='hidden md:block' />
-            Cake & BUtter
+            Cake & Butter
           </>,
         ]}
         text={
@@ -265,7 +269,7 @@ export default function Page() {
           </>,
         ]}
         text={
-          '합주에서 타이밍은 생명이기에, 온라인 합주에서는 딜레이 없는 환경이 필수입니다. Cake 스테이션은 유선 이더넷을 통해 안정적인 네트워크 연결을 유지하며, 거리의 제한 없이 연주 중인 음원을 실시간으로 수신합니다. 또한 각 모듈은 스테이션과 2.4GHz RF 채널을 통해 각 세션이 연주 중인 음원을 전달받아 레이턴시 없는 온라인 합주 경험을 가능하게 합니다.'
+          '합주에서 타이밍은 생명이기에, 온라인 합주에서는 딜레이 없는 환경이 필수입니다.\nCake 스테이션은 유선 이더넷을 통해 안정적인 네트워크 연결을 유지하며, 거리의 제한 없이 연주 중인 음원을 실시간으로 수신합니다. 또한 각 모듈은 스테이션과 2.4GHz RF 채널을 통해 각 세션이 연주 중인 음원을 전달받아 레이턴시 없는 온라인 합주 경험을 가능하게 합니다.'
         }
       />
       <ImageGallery
@@ -299,7 +303,6 @@ export default function Page() {
         prewarm
         loop
       />
-      <MidTitle align='center' text='(2) New Experience with Hotcake' />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110677428?h=24666f17bc'
@@ -307,6 +310,8 @@ export default function Page() {
         prewarm
         loop
       />
+      <MidTitle align='center' text='(2) New Experience with Hotcake' />
+
       <TitleBody
         title={'빛, 진동, 그리고 소리로\n이어지는 합주 경험'}
         text={
@@ -336,7 +341,7 @@ export default function Page() {
           </>,
         ]}
         text={
-          '합주의 가장 큰 재미 요소는 무엇보다도 박자가 딱 맞아떨어지는 그 순간이죠. 합이 딱 맞춰지는 순간 Cake 모듈 스피커에서 나오는 LED 라이팅이 방 안을 작은 무대로 꾸밉니다. 연주가 클라이맥스에 달하면 모션 제스처를 통한 사운드 이펙트로 뜨거움이 가득한 합주를 경험해 보세요.'
+          '합주의 가장 큰 재미 요소는 무엇보다도 박자가 딱 맞아떨어지는 그 순간이죠.\n합이 딱 맞춰지는 순간 Cake 모듈 스피커에서 나오는 LED 라이팅이 방 안을 작은 무대로 꾸밉니다. 연주가 클라이맥스에 달하면 모션 제스처를 통한 사운드 이펙트로 뜨거움이 가득한 합주를 경험해 보세요.'
         }
       />
       <MediaContainer
@@ -362,7 +367,7 @@ export default function Page() {
           </>,
         ]}
         text={
-          '합주가 끝난 후에는 AI가 솔로 파트나 하이라이트를 자동으로 편집해 줍니다. 완성된 영상은 함께 연주한 친구들과 바로 공유할 수 있어, 그 여운이 자연스럽게 이어집니다. 또한 모니터링 영상 속 나의 연주를 되돌아보며, 합주의 순간을 다시 돌아볼 수 있습니다.'
+          '합주가 끝난 후에는 AI가 솔로 파트나 하이라이트를 자동으로 편집해 줍니다. 완성된 영상은 함께 연주한 친구들과 바로 공유할 수 있어, 그 여운이 자연스럽게 이어집니다.\n또한 모니터링 영상 속 나의 연주를 되돌아보며, 합주의 순간을 다시 돌아볼 수 있습니다.'
         }
       />
       <MediaContainer
