@@ -82,7 +82,7 @@ export default function AboutSection({ embedded = false }: Props) {
   const delayFor = (i: number, base = 400) => i * base
   return (
     <>
-      {/* <div className='relative w-full h-fit md:hidden lg:block'>
+      <div className='relative w-full h-fit md:hidden lg:block'>
         <Blank />
       </div>
       <div className='relative w-full aspect-[1440/1200] font-english font-semibold'>
@@ -104,7 +104,7 @@ export default function AboutSection({ embedded = false }: Props) {
           aspect='aspect-[1440/1200]'
           position='absolute'
         />
-      </div> */}
+      </div>
       <HeaderBody
         title={['What is New Formative?']}
         description={

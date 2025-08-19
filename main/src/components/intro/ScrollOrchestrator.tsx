@@ -37,7 +37,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 1, 1, 1, 4.2, 2]
+const WEIGHTS: number[] = [1, 1, 1, 1, 2.2, 2]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -271,11 +271,10 @@ export function ScrollOrchestrator() {
   )
 
   // ---------- Section 5 ----------
-  const planesLiftUp = useTransform(p4, [0, 1], [0, -3000])
+  const planesLiftUp = useTransform(p4, [0, 1], [0, -2500])
   const backYFinal = useTransform([backY, planesLiftUp], ([b, u]: [number, number]) => b + u)
   const midYFinal = useTransform([midY, planesLiftUp], ([m, u]: [number, number]) => m + u)
   const frontYFinal = useTransform([frontY, planesLiftUp], ([f, u]: [number, number]) => f + u)
-
   // ---------- Section 6 ----------
   const arrowOpacity = useTransform(p5, [0, 0.2], [1, 0], { ease: easeInOut, clamp: true })
   const MdtitleLift_p5 = isMdUp ? -128 : 0
@@ -462,7 +461,7 @@ export function ScrollOrchestrator() {
                   </svg>
                 </motion.div>
 
-                <div className='w-full aspect-[1440/1200]'>
+                <div className='h-full aspect-[1440/1200]'>
                   <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
@@ -532,7 +531,7 @@ export function ScrollOrchestrator() {
                     p4={p4}
                     src={isMdPortrait ? '/images/intro/pc.png' : '/images/intro/mo.png'}
                     left='0'
-                    base={isMdPortrait? 200: 30}
+                    base={isMdPortrait? 200: 0}
                     width='100vw'
                     fade={[10, 10]}
                   />
