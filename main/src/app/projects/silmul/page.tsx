@@ -75,12 +75,15 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/silmul/archive/1.jpg',
+      '/images/projects/silmul/archive/2.jpg',
+      '/images/projects/silmul/archive/3.jpg',
+      '/images/projects/silmul/archive/4.jpg',
+      '/images/projects/silmul/archive/5.jpg',
+      '/images/projects/silmul/archive/6.jpg',
+      '/images/projects/silmul/archive/7.jpg',
     ],
+    labels: ['Idea Sketch', 'Ideation', 'Form Study', 'Form Study', 'Prototyping', 'Visual Study', 'Behind'],
   },
 ]
 

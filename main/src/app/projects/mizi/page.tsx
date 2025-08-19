@@ -64,6 +64,18 @@ const points = [
       '/images/projects/mizi/archive/9.jpg',
       '/images/projects/mizi/archive/10.jpg',
     ],
+    labels: [
+      'Modeling',
+      'Modeling',
+      'Visual Study',
+      'Modling',
+      'Behind',
+      'UI 작업화면',
+      'Visual Study',
+      '프로세스북 가인쇄',
+      'Behind',
+      'Idea Sketch',
+    ],
   },
 ]
 

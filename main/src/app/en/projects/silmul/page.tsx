@@ -75,12 +75,15 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/silmul/archive/1.jpg',
+      '/images/projects/silmul/archive/2.jpg',
+      '/images/projects/silmul/archive/3.jpg',
+      '/images/projects/silmul/archive/4.jpg',
+      '/images/projects/silmul/archive/5.jpg',
+      '/images/projects/silmul/archive/6.jpg',
+      '/images/projects/silmul/archive/7.jpg',
     ],
+    labels: ['Idea Sketch', 'Ideation', 'Form Study', 'Form Study', 'Prototyping', 'Visual Study', 'Behind'],
   },
 ]
 
@@ -138,14 +141,13 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Silmul_logo.svg'
-        title={['Silmul', 
+        title={[
+          'Silmul',
           <>
-          'Turning real senses
-          {' '}
-          <br className='block md:hidden'/>
-          into real objects'
-          </>
-          ]}
+            'Turning real senses <br className='block md:hidden' />
+            into real objects'
+          </>,
+        ]}
         description={
           <>
             Enjoy a new way to create. Turn your senses and experiences into physical products. If you could touch your
@@ -211,7 +213,7 @@ export default function Page() {
         text={
           <>
             Turning real senses into real objects, Silmul
-            <br/>
+            <br />
             Bring your senses to life.
           </>
         }
@@ -258,7 +260,7 @@ export default function Page() {
         content={
           <>
             3D printers are evolving toward home use,
-            <br className='hidden md:block'/>
+            <br className='hidden md:block' />
             but their forms and usage still aren’t friendly as everyday creative tools.
           </>
         }
@@ -303,7 +305,7 @@ export default function Page() {
         content={
           <>
             Every sensation in daily life becomes the seed of creativity.
-            <br className='hidden md:block'/>
+            <br className='hidden md:block' />
             With Sense, you can start creating naturally—without worrying about “what” or “how.”
           </>
         }
@@ -333,8 +335,8 @@ export default function Page() {
         text={
           <>
             Feelings and experiences are invisible. Sense turns them into data and syncs with the Silmul App. Combine
-            the fragments of your senses and generate the image of the object you want with Gen-AI—creating a one-of-a-kind
-            result, born from your own experiences.
+            the fragments of your senses and generate the image of the object you want with Gen-AI—creating a
+            one-of-a-kind result, born from your own experiences.
           </>
         }
       />
@@ -349,15 +351,17 @@ export default function Page() {
       <MidBody align='center' content={<>Got it? Now, let’s make it real.</>} />
       <Image Image='/images/projects/silmul/silmul_12.webp' />
 
-      <MidTitle align='center' className='text-[#E30D2D]'
-      text={[
-        <>
-        Realize: From experience
-        <br className='block md:hidden'/>
-        to real object
-        </>
-      ]}
-       />
+      <MidTitle
+        align='center'
+        className='text-[#E30D2D]'
+        text={[
+          <>
+            Realize: From experience
+            <br className='block md:hidden' />
+            to real object
+          </>,
+        ]}
+      />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110683419?h=ca560c55e3'
@@ -379,7 +383,7 @@ export default function Page() {
         content={
           <>
             All you need to print is filament and ink.
-            <br className='hidden md:block'/>
+            <br className='hidden md:block' />
             Watch your imagination take physical form—and enjoy the joy of making.
           </>
         }
@@ -392,10 +396,9 @@ export default function Page() {
         className='text-[#E30D2D]'
         text={[
           <>
-          Tagging: Not the end of making 
-          <br className='block md:hidden'/>
-          - the beginning of expanding
-          </>
+            Tagging: Not the end of making
+            <br className='block md:hidden' />- the beginning of expanding
+          </>,
         ]}
       />
       <MediaContainer
@@ -479,8 +482,7 @@ export default function Page() {
               englishName: 'HyunBin Seo',
               profileImage: '/images/profile/hyunbinseo.png',
               socialLinks: {
-                linkedin:
-                  'https://www.linkedin.com/in/%EC%84%9C%ED%98%84%EB%B9%88-seo-a493b8331/',
+                linkedin: 'https://www.linkedin.com/in/%EC%84%9C%ED%98%84%EB%B9%88-seo-a493b8331/',
                 behance: 'https://www.behance.net/kyoma',
                 instagram: 'https://instagram.com/_kyoma___',
               },

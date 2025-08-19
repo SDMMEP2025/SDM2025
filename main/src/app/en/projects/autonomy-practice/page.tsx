@@ -73,11 +73,18 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/autonomy_practice/archive/1.jpg',
+      '/images/projects/autonomy_practice/archive/2.jpg',
+      '/images/projects/autonomy_practice/archive/3.jpg',
+      '/images/projects/autonomy_practice/archive/4.jpg',
+      '/images/projects/autonomy_practice/archive/5.jpg',
+    ],
+    labels: [
+      'Form Study',
+      'Idea Sketch',
+      'Experiment',
+      'Form Study',
+      'Modeling',
     ],
   },
 ]

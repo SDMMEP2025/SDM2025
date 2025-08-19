@@ -65,12 +65,27 @@ const points = [
     id: '1',
     top: '50%',
     left: '50%',
-    images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+     images: [
+      '/images/projects/layon/archive/1.jpg',
+      '/images/projects/layon/archive/2.jpg',
+      '/images/projects/layon/archive/3.jpg',
+      '/images/projects/layon/archive/4.jpg',
+      '/images/projects/layon/archive/5.jpg',
+      '/images/projects/layon/archive/6.jpg',
+      '/images/projects/layon/archive/7.jpg',
+      '/images/projects/layon/archive/8.jpg',
+      
+    ],
+    labels: [
+      'Ideation',
+      'Form Study',
+      'Idea Sketch',
+      'Form Study',
+      'Form Study',
+      'Form Study',
+      'Behind',
+      'Behind',
+      'Behind',
     ],
   },
 ]

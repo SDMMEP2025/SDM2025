@@ -72,11 +72,27 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/potrik/archive/1.jpg',
+      '/images/projects/potrik/archive/2.jpg',
+      '/images/projects/potrik/archive/3.jpg',
+      '/images/projects/potrik/archive/4.jpg',
+      '/images/projects/potrik/archive/5.jpg',
+      '/images/projects/potrik/archive/6.jpg',
+      '/images/projects/potrik/archive/7.jpg',
+      '/images/projects/potrik/archive/8.jpg',
+      '/images/projects/potrik/archive/9.jpg',
+      '/images/projects/potrik/archive/10.jpg',
+    ],
+    labels: [
+      'Form Study',
+      'Photoshoot',
+      'Ideation',
+      'Mockup',
+      'Prototyping',
+      'Modeling',
+      'Affinity diagram',
+      'Behind',
+      'Prototyping',
     ],
   },
 ]
@@ -146,10 +162,12 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['POTRIK',
-           <>
-          'No pack, No stop. <br className='md:hidden'/>Just POTRIK'
-          </>
+        title={[
+          'POTRIK',
+          <>
+            'No pack, No stop. <br className='md:hidden' />
+            Just POTRIK'
+          </>,
         ]}
         description={
           <>
@@ -172,9 +190,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Free to Move,
-            {' '}
-            <br className='hidden md:block'/>
+            Free to Move, <br className='hidden md:block' />
             Heavy to Carry
           </>
         }
@@ -265,12 +281,7 @@ export default function Page() {
         muted={false}
         loop
       />
-      <ImageGallery
-        images={[
-          '/images/projects/potrik/potrik_5.jpg',
-          '/images/projects/potrik/potrik_6.jpg',
-        ]}
-      />
+      <ImageGallery images={['/images/projects/potrik/potrik_5.jpg', '/images/projects/potrik/potrik_6.jpg']} />
 
       <TitleBody
         title={<>Driving Module</>}
@@ -308,9 +319,8 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            S1.
-            {' '}
-            <br className='hidden md:block'/>Shopping During Trip
+            S1. <br className='hidden md:block' />
+            Shopping During Trip
           </>
         }
         text={
@@ -402,9 +412,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            S2.
-            {' '}
-            <br className='hidden md:block'/>
+            S2. <br className='hidden md:block' />
             After shopping, your hands-free
           </>
         }

@@ -61,6 +61,18 @@ const points = [
       '/images/projects/hotcake/archive/9.jpg',
       '/images/projects/hotcake/archive/10.jpg',
     ],
+    labels: [
+      'Research',
+      'Interview',
+      'Visual Study',
+      'Visual Study',
+      'Mockup Making',
+      'Mockup Making',
+      'Mockup Shooting',
+      'Visual Study',
+      'Film Shooting',
+      'Film Shooting',
+    ],
   },
 ]
 

@@ -82,6 +82,18 @@ const points = [
       '/images/projects/merlin/archive/9.jpg',
       '/images/projects/merlin/archive/10.jpg',
     ],
+    labels: [
+      'Ideation',
+      'Ideation',
+      'Ideation',
+      'Shooting',
+      'Idea Sketch',
+      'Idea Sketch',
+      'Concept Video',
+      'Experiment',
+      'Affinity diagram',
+      'Insight Clustering',
+    ],
   },
 ]
 

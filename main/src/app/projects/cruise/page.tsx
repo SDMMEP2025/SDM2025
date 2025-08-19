@@ -84,6 +84,18 @@ const points = [
       '/images/projects/cruise/archive/9.jpg',
       '/images/projects/cruise/archive/10.jpg',
     ],
+    labels: [
+      'Ideation',
+      'Idea Sketch',
+      'Behind',
+      'Form Study',
+      'Behind',
+      'Mockup',
+      'Modeling',
+      'Behind',
+      'Behind',
+      'Behind',
+    ],
   },
 ]
 

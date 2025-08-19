@@ -64,7 +64,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
         }}
         exit={{ opacity: 0, x: HIDDEN_OFFSET }}
         transition={{ duration: 0.3 }}
-        className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[000]`}
+        className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[000] `}
       >
         <div className='w-[396px] h-full flex flex-row items-start '>
           <div
@@ -75,13 +75,19 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
               Process Archive
             </div>
           </div>
-          <div className='w-full overflow-y-scroll  h-full pr-[16px] md:mt-[65px] md:pb-[65px] lg:mt-12 lg:pb-12 flex flex-col gap-1 items-start'>
+          <div className='w-full overflow-y-scroll  h-full pr-[16px] md:mt-[65px] md:pb-[90px] lg:mt-12 lg:pb-[80px] flex flex-col gap-1 items-start'>
             {currentPoint?.images?.map((image, index) => (
               <div
                 key={index}
                 className={`w-full h-fit flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
               >
-                <HoverImageCard index={index} src={image} />
+                <HoverImageCard
+                  index={index}
+                  src={typeof image === 'string' ? image : image.src}
+                  label={
+                    currentPoint?.labels?.[index] ?? (typeof image !== 'string' ? image.label : undefined) ?? 'archive'
+                  }
+                />
               </div>
             ))}
           </div>
@@ -109,10 +115,11 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
           open: { y: '0%', opacity: 1 },
         }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
-        className='md:hidden fixed bottom-0 left-0 right-0 z-50 w-full backdrop-blur-md'>
+        className='md:hidden fixed bottom-0 left-0 right-0 z-50 w-full backdrop-blur-md '
+      >
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className='w-full sticky top-0 z-10 backdrop-blur-md flex items-center justify-between px-4 bg-white/50'
+          className='w-full sticky top-0 z-10 backdrop-blur-md flex items-center justify-between px-4 bg-white/50 '
           style={{ height: `${CUT_TOP_MOBILE}px` }}
         >
           <span className='text-[#4B4F57] text-[18px] font-semibold leading-[1.5] tracking-[-0.36px]'>
@@ -144,13 +151,20 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
             overflowY: 'auto',
           }}
         >
-          <div className='w-full flex flex-col gap-1 items-start'>
+          <div className='w-full flex flex-col gap-1 items-start pb-4'>
             {currentPoint?.images?.map((image, index) => (
               <div
                 key={index}
                 className={`w-full h-fit flex items-start ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
               >
-                <HoverImageCard index={index} src={image} />
+                <HoverImageCard
+                  index={index}
+                  src={typeof image === 'string' ? image : image.src}
+                  label={
+                    currentPoint?.labels?.[index] ?? (typeof image !== 'string' ? image.label : undefined) ?? 'archive'
+                  }
+                  isMobile={true}
+                />
               </div>
             ))}
           </div>
@@ -160,7 +174,17 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
   )
 }
 
-const HoverImageCard = ({ index, src }: { index: number; src: string }) => {
+const HoverImageCard = ({
+  index,
+  src,
+  label,
+  isMobile = false,
+}: {
+  index: number
+  src: string
+  label?: string
+  isMobile?: boolean
+}) => {
   const [isHover, setIsHover] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, {
@@ -168,39 +192,52 @@ const HoverImageCard = ({ index, src }: { index: number; src: string }) => {
     once: false,
   })
 
+  const showOverlay = isMobile || isHover
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: isInView ? 1 : 0 }}
       transition={{ duration: 0.3 }}
       ref={ref}
-      onHoverStart={() => {
-        setIsHover(true)
-      }}
-      onHoverEnd={() => {
-        setIsHover(false)
-      }}
-      className='w-[90%] h-auto cursor-pointer z-0 relative group overflow-hidden'
+      onHoverStart={() => setIsHover(true)}
+      onHoverEnd={() => setIsHover(false)}
+      className='w-[100%] h-auto cursor-pointer z-0 relative group overflow-hidden'
     >
       <AnimatePresence>
-        {isHover && (
+        {showOverlay && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className='absolute z-10 inset-0 bg-black/50 transition-opacity duration-300 ease-in-out'
+            className='absolute z-10 inset-0 transition-opacity duration-300 ease-in-out'
           >
-            <div className='absolute flex flex-row justify-center items-center gap-2 top-10 right-4'>
-              <div className='w-[18px] h-[18px] rounded-full' />
-              <div className='justify-start text-white text-lg font-semibold capitalize tracking-[-0.36px] leading-[1.5]'>
-                form study
+
+            {index % 2 === 0 ? (
+              <div className='absolute flex flex-row z-[2000] justify-start items-center gap-2 top-0 left-0'>
+                <div className='text-black text-lg font-semibold capitalize tracking-[-0.36px] leading-[1.5]'>
+                  {label ?? 'archive'}
+                </div>
+                <div className='w-[18px] h-[18px] rounded-full bg-black' />
               </div>
-            </div>
+            ) : (
+              <div className='absolute flex flex-row justify-center items-center gap-2 top-0 right-0'>
+                <div className='w-[18px] h-[18px] rounded-full bg-black' />
+                <div className='text-black text-lg z-[2000] font-semibold capitalize tracking-[-0.36px] leading-[1.5'>
+                  {label ?? 'archive'}
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
-      <img src={src} alt={src} className='w-full h-auto group-hover:scale-105 transition-all duration-200' />
+
+      <img
+        src={src}
+        alt={src}
+        className={`w-[90%] h-auto transition-all duration-200 ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}
+      />
     </motion.div>
   )
 }
