@@ -472,7 +472,8 @@ export default function Page() {
             No more moving things from place to place.
             <br />
             POTRIK works like a new personal and flexible delivery system.
-            <br />
+            {' '}
+            <br className='hidden md:block'/>
             From [Here] to [Here], POTRIK moves with you.
           </>
         }

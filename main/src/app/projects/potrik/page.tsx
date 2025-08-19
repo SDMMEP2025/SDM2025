@@ -465,7 +465,8 @@ export default function Page() {
             이제 물건은 단순히 장소에서 장소로 이동하지 않습니다.
             <br />
             POTRIK은 내가 있는 순간[Here]에서, 필요한 순간[Here]으로,
-            <br />더 유연하고 개인화된 새로운 딜리버리 시스템을 제안합니다.
+            {' '}
+            <br className='hidden md:block'/>더 유연하고 개인화된 새로운 딜리버리 시스템을 제안합니다.
           </>
         }
       />

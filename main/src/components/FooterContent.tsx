@@ -8,10 +8,6 @@ export function FooterContent() {
         <span className="md:block md-landscape-coming:block lg:hidden">All rights reserved</span>
       </div>
 
-      <div className='text-sm text-white mb-6 md:mb-0 text-center font-normal capitalize leading-normal md:text-left hidden md:hidden md-landscape-coming:hidden lg:block'>
-       Samsung Electronics Corporate Design Center 2025
-      </div>
-
       <div className='w-fit h-6 inline-flex justify-center items-center gap-10'>
         <a href='https://www.design.samsung.com/kr/contents/sdm/' target='_blank' rel='noopener noreferrer'
            className='text-white text-sm font-medium underline uppercase text-nowrap leading-tight hover:opacity-80 transition-opacity'>

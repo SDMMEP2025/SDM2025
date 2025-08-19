@@ -68,15 +68,16 @@ const thankstoData = [
     ],
   },
   {
+    title: 'Hair Design Adviser',
+    tutors: [{ name: '고병찬', englishName: 'Byungchan Ko' }],
+  },
+  {
     title: 'Adviser',
     tutors: [
       { name: '김도아', englishName: 'Doa Kim' },
       { name: '박기령', englishName: 'Giryeong Park' },
+      { name: '손건후', englishName:'Geonhoo Son'}
     ],
-  },
-  {
-    title: 'Hair Design Advisor',
-    tutors: [{ name: '고병찬', englishName: 'Byungchan Ko' }],
   },
 ]
 
@@ -339,7 +340,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            New-Know Catching <br />: 나를 가장 잘 아는 콤보
+            New-Know Catching <br />: 나를 잘 아는 콤보
           </>
         }
         text={

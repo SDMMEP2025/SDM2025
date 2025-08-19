@@ -23,12 +23,17 @@ type Props = { embedded?: boolean }
 export default function AboutSection({ embedded = false }: Props) {
   const thankstoData = [
     {
-      title: 'Management',
-      tutors: [
-        { name: '정소영', englishName: 'Soyeong Jeong' },
-        { name: '배석원', englishName: 'Seokwon Bae' },
-        { name: '이희원', englishName: 'Heewon Lee' },
-      ],
+      subSections: [
+        {
+          title: 'Project Director',
+          tutors: [{ name: '정소영', englishName: 'Soyeong Jeong' }],
+        },
+        {
+          title: 'Project Management',
+          tutors: [ { name: '배석원', englishName: 'Seokwon Bae' },
+        { name: '이희원', englishName: 'Heewon Lee' },],
+        },
+      ]
     },
     {
       title: 'Advisory\nProfessor',
