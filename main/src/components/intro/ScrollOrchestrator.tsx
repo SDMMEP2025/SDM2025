@@ -322,7 +322,7 @@ export function ScrollOrchestrator() {
             <div className='sticky top-0' style={{ height: '100lvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
-                <div className='absolute left-1/2 top-[43lvh] -translate-x-1/2 -translate-y-1/2'>
+                <div className='absolute left-1/2 top-[45lvh] -translate-x-1/2 -translate-y-1/2'>
                   <motion.div
                     ref={rectRef}
                     initial={false}
@@ -355,7 +355,7 @@ export function ScrollOrchestrator() {
                 </motion.div>
 
                 {/* 모바일 타이틀 */}
-                <div className='md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[clamp(110px,22.5dvh,150px)] md:-translate-y-[23dvh] z-[9999] -translate-y-[40px] mix-blend-difference text-center text-white'>
+                <div className='md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[clamp(22px,22dvh,140px)] md:-translate-y-[23dvh] z-[9999] -translate-y-[40px] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col items-center gap-2 font-english'>
                     <motion.span
                       initial={false}
@@ -376,7 +376,7 @@ export function ScrollOrchestrator() {
                   </div>
                 </div>
 
-                <div className='md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[7dvh] z-[9999] mix-blend-difference text-center text-white'>
+                <div className='md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[4dvh] z-[9999] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col-reverse items-center gap-4 font-english'>
                     <motion.span
                       initial={false}
@@ -400,7 +400,7 @@ export function ScrollOrchestrator() {
                 </div>
 
                 {/* 데스크탑 타이틀/서브 */}
-                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[44svh] lg:top-[41svh] -translate-y-[100px] -translate-x-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
+                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[46dvh] lg:top-[43dvh] -translate-y-[100px] -translate-x-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: titleScale, y: titleLift }}
@@ -422,7 +422,7 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute left-1/2 top-[43.5svh] -translate-x-1/2 translate-y-[60px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
+                <div className='hidden md:block absolute left-1/2 top-[46dvh] -translate-x-1/2 translate-y-[60px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: subtitleScale, y: subtitleLift }}
