@@ -242,7 +242,7 @@ export function ScrollOrchestrator() {
   const lottieOpacity = useTransform([opacityScale, lottieHardCut], ([a, b]) => Number(a) * Number(b))
 
   // ---------- Section 3 ----------
-  const planesOpacity = useTransform(p2, [0.0, 0.1], [0, 1], { clamp: true, ease: easeInOut })
+  const planesOpacity = useTransform(p2, [0.0, 0.0001], [0, 1], { clamp: true, ease: easeInOut })
   const planeTiltDegRaw = useTransform(p2, [0, 1], [0, 80.5])
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.6 })
   const LIFT_P3 = isMdUp ? 0 * vhPx : -6 * vhPx
@@ -532,7 +532,7 @@ export function ScrollOrchestrator() {
                     p4={p4}
                     src={isMdPortrait ? '/images/intro/pc.png' : '/images/intro/mo.png'}
                     left='0'
-                    base={200}
+                    base={isMdPortrait? 200: 30}
                     width='100vw'
                     fade={[10, 10]}
                   />
