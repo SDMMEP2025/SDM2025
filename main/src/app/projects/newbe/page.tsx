@@ -68,11 +68,11 @@ const thankstoData = [
     ],
   },
   {
-    title: 'Hair Design Adviser',
+    title: 'Hair Design Advisor',
     tutors: [{ name: '고병찬', englishName: 'Byungchan Ko' }],
   },
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [
       { name: '김도아', englishName: 'Doa Kim' },
       { name: '박기령', englishName: 'Giryeong Park' },

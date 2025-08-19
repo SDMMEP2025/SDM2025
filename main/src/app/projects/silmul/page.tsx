@@ -64,7 +64,7 @@ const thankstoData = [
   },
 
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [{ name: '김현준', englishName: 'Hyeonjun Kim' }],
   },
 ]
@@ -213,7 +213,7 @@ export default function Page() {
       <Image Image='/images/projects/silmul/silmul_3.webp' />
       <LeftTitle
         text={
-          <a href='https://bio.link/silmul' className='underline font-semibold' target='_blank'>
+          <a href='https://heyzine.com/flip-book/b1700327c4.html' className='underline font-semibold' target='_blank'>
             ▶︎ A more detailed story of Silmul
           </a>
         }

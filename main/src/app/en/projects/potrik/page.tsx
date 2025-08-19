@@ -56,7 +56,7 @@ const thankstoData = [
     tutors: [{ name: '권진형', englishName: 'Jinhyeong Kwon' }],
   },
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [
       { name: '노영하', englishName: 'Youngha Rho' },
       { name: '서아현', englishName: 'A hyun Seo' },
