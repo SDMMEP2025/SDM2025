@@ -37,7 +37,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 1, 1, 1, 2.2, 2]
+const WEIGHTS: number[] = [1, 1, 1, 1, 1, 1]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -183,7 +183,7 @@ export function ScrollOrchestrator() {
 
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
-    duration: 280,
+    duration: 200,
     nearPct: 0.05,
     scrollerRef: boxRef,
   })
@@ -241,52 +241,53 @@ export function ScrollOrchestrator() {
   const lottieHardCut = useTransform(p2, (v) => (v > 0 ? 0 : 1))
   const lottieOpacity = useTransform([opacityScale, lottieHardCut], ([a, b]) => Number(a) * Number(b))
 
-  // ---------- Section 3 ----------
+  // ---------- Section 3 ---------- 여기가 plane이 눕혀지는 곳
   const planesOpacity = useTransform(p2, [0.0, 0.0001], [0, 1], { clamp: true, ease: easeInOut })
-  const planeTiltDegRaw = useTransform(p2, [0, 1], [0, 80.5])
-  const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.6 })
+  const p2Ease = useTransform(p2, (t) => t * t * (3 - 2 * t))
+  const planeTiltDegRaw = useTransform(p2Ease, [0, 0.1], [40, 80.5])
+  const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.4 })
   const LIFT_P3 = isMdUp ? 0 * vhPx : -6 * vhPx
   const lift3 = useTransform(p2, [0.1, 0.8], [0, LIFT_P3])
   const yAll3 = lift3
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
   const infoOpacity = useTransform([opacityScale, infoFadeOut], ([a, b]) => Number(a) * Number(b))
 
-  // ---------- Section 4 ----------
-  const sep4 = useTransform(p3, [0.0, 0.5, 1.0], [0, 0, 200], { ease: easeInOut })
+  const sep4 = useTransform(p2, [0.0, 0.2], [0, 200], { ease: easeInOut })
   const frontY_P4 = isMdUp ? 0.3 : 0.6
   const midY_P4 = isMdUp ? 0.15 : 0.3
   const backY_P4 = isMdUp ? 0.1 : 0.2
 
   const frontY = useTransform(
-    [p3, yAll3, sep4],
+    [p2, yAll3, sep4],
     ([t, b, sep]: [number, number, number]) => b + (t > 0 ? -sep * frontY_P4 : 0),
   )
   const midY = useTransform(
-    [p3, yAll3, sep4],
+    [p2, yAll3, sep4],
     ([t, b, sep]: [number, number, number]) => b + (t > 0 ? -sep * midY_P4 : 0),
   )
   const backY = useTransform(
-    [p3, yAll3, sep4],
+    [p2, yAll3, sep4],
     ([t, b, sep]: [number, number, number]) => b + (t > 0 ? +sep * backY_P4 : 0),
   )
 
   // ---------- Section 5 ----------
-  const planesLiftUp = useTransform(p4, [0, 1], [0, -2500])
+  const planeLiftMd = isMdUp ? -1570 : -2000
+  const planesLiftUp = useTransform(p3, [0, 1], [0, planeLiftMd])
   const backYFinal = useTransform([backY, planesLiftUp], ([b, u]: [number, number]) => b + u)
   const midYFinal = useTransform([midY, planesLiftUp], ([m, u]: [number, number]) => m + u)
   const frontYFinal = useTransform([frontY, planesLiftUp], ([f, u]: [number, number]) => f + u)
   // ---------- Section 6 ----------
-  const arrowOpacity = useTransform(p5, [0, 0.2], [1, 0], { ease: easeInOut, clamp: true })
-  const MdtitleLift_p5 = isMdUp ? -8 : 0
-  const MdsubtitleLift_p5 = isMdUp ? -220 : 0
+  const arrowOpacity = useTransform(p4, [0, 0.2], [1, 0], { ease: easeInOut, clamp: true })
+  const MdtitleLift_p5 = isMdUp ? -80 : 0
+  const MdsubtitleLift_p5 = isMdUp ? -240 : 0
   const MdtitleScale_p5 = isMdUp ? 0.5 : 1
-  const titleShrink_p4 = useTransform(p4, [0, 1], [1, 1])
-  const subtitleShrink_p4 = useTransform(p4, [0, 1], [1, 1])
+  const titleShrink_p4 = useTransform(p3, [0, 1], [1, 1])
+  const subtitleShrink_p4 = useTransform(p3, [0, 1], [1, 1])
 
-  const titleLift_p5 = useTransform(p5, [0.0, 0.3], [0, MdtitleLift_p5], { clamp: true })
-  const subtitleLift_p5 = useTransform(p5, [0.0, 0.3], [0, MdsubtitleLift_p5], { clamp: true })
-  const titleShrink_p5 = useTransform(p5, [0.0, 0.3], [1, MdtitleScale_p5], { clamp: true })
-  const subtitleShrink_p5 = useTransform(p5, [0.0, 0.3], [1, MdtitleScale_p5], { clamp: true })
+  const titleLift_p5 = useTransform(p4, [0.0, 0.3], [0, MdtitleLift_p5], { clamp: true })
+  const subtitleLift_p5 = useTransform(p4, [0.0, 0.3], [0, MdsubtitleLift_p5], { clamp: true })
+  const titleShrink_p5 = useTransform(p4, [0.0, 0.3], [1, MdtitleScale_p5], { clamp: true })
+  const subtitleShrink_p5 = useTransform(p4, [0.0, 0.3], [1, MdtitleScale_p5], { clamp: true })
 
   const titleLift = useTransform(
     [useTransform(p0, [0, 1.0], [1, TITLE_LIFT_P0]), titleLift_p5],
@@ -306,18 +307,18 @@ export function ScrollOrchestrator() {
   )
 
   const [aboutInteractive, setAboutInteractive] = useState(false)
-  useMotionValueEvent(p5, 'change', (v) => {
+  useMotionValueEvent(p4, 'change', (v) => {
     if (!aboutInteractive && v >= 0.999) setAboutInteractive(true)
     if (aboutInteractive && v < 0.98) setAboutInteractive(false)
   })
-  const vimeoFadeIn = useTransform(p5, [0, 0.2], [0, 1], { clamp: true })
+  const vimeoFadeIn = useTransform(p4, [0, 0.001], [0, 1], { clamp: true })
   const vimeoOpacity = useTransform([opacityScale, vimeoFadeIn], ([a, b]) => Number(a) * Number(b))
 
   return (
     <>
       <div ref={boxRef} className='fixed inset-0 overflow-y-auto overscroll-none'>
-        <div ref={wrapRef} style={{ height: '1000lvh' }}>
-          <section className='relative' style={{ height: '1000lvh' }}>
+        <div ref={wrapRef} style={{ height: '2300lvh' }}>
+          <section className='relative' style={{ height: '2300lvh' }}>
             <div className='sticky top-0' style={{ height: '100lvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
@@ -460,9 +461,8 @@ export function ScrollOrchestrator() {
                     />
                   </svg>
                 </motion.div>
-
-                <div className='aspect-[1440/1200]'>
-                  <motion.div initial={false} style={{opacity: vimeoOpacity, willChange: 'opacity' }}>
+                <div className='aspect-[1440/1200] h-auto w-full absolute left-1/2 top-[45lvh] md:top-1/2 -translate-x-1/2 -translate-y-1/2'>
+                  <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
                       src='https://player.vimeo.com/video/1109760722?h=69b2dd590a'
@@ -528,10 +528,10 @@ export function ScrollOrchestrator() {
               <div className='inset-0 pointer-events-none z-[100]' style={{ overflow: 'visible' }}>
                 <motion.div className='relative w-full h-full'>
                   <FloatingPhoto
-                    p4={p4}
+                    p3={p3}
                     src={isMdPortrait ? '/images/intro/pc.png' : '/images/intro/mo.png'}
                     left='0'
-                    base={isMdPortrait? 200: 0}
+                    base={isMdPortrait ? 200 : 0}
                     width='100vw'
                     fade={[10, 10]}
                   />

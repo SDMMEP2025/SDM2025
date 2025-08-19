@@ -22,7 +22,6 @@ export function useSnapP0toP4(
     [0, 1],
     [1, 2],
     [2, 3],
-    [3, 4],
   ]
 
   const animating = useRef(false)
@@ -98,6 +97,10 @@ export function useSnapP0toP4(
   useEffect(() => {
     const box = opts?.scrollerRef?.current || window // 이벤트는 box에
 
+    const isCoarsePointer = typeof matchMedia !== 'undefined' ? matchMedia('(pointer: coarse)').matches : false
+    const DUR_TOUCH = Math.max(80, Math.round(DUR * 0.5))
+    const DY_MIN = isCoarsePointer ? 2 : 6
+
     const onWheel = (e: WheelEvent) => {
       const band = getActiveBand()
       if (!band) return
@@ -129,7 +132,7 @@ export function useSnapP0toP4(
       const y0 = touchStartY.current
       if (y0 == null) return
       const dy = y0 - (e.touches[0]?.clientY ?? y0)
-      if (Math.abs(dy) < 6) return
+      if (Math.abs(dy) < DY_MIN) return
       e.preventDefault()
 
       const [i, j] = band
@@ -138,12 +141,17 @@ export function useSnapP0toP4(
       const b = cuts[j].start
 
       if (animating.current) return
+      const fastSwipe = Math.abs(dy) > 40
+      const dur = isCoarsePointer ? (fastSwipe ? Math.max(60, DUR_TOUCH - 40) : DUR_TOUCH) : DUR
+
       if (dy > 0) {
-        animateTo(progressToTop(b))
+        // 위로 스와이프 = 아래로 스크롤 → 밴드 끝
+        animateTo(progressToTop(b), dur)
       } else {
+        // 아래로 스와이프 = 위로 스크롤
         const prev = i - 1 >= 0 ? cuts[i - 1].start : null
-        if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev))
-        else animateTo(progressToTop(a))
+        if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev), dur)
+        else animateTo(progressToTop(a), dur)
       }
     }
 
