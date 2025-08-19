@@ -277,8 +277,8 @@ export function ScrollOrchestrator() {
   const frontYFinal = useTransform([frontY, planesLiftUp], ([f, u]: [number, number]) => f + u)
   // ---------- Section 6 ----------
   const arrowOpacity = useTransform(p5, [0, 0.2], [1, 0], { ease: easeInOut, clamp: true })
-  const MdtitleLift_p5 = isMdUp ? -128 : 0
-  const MdsubtitleLift_p5 = isMdUp ? -220 : -420
+  const MdtitleLift_p5 = isMdUp ? -8 : 0
+  const MdsubtitleLift_p5 = isMdUp ? -220 : 0
   const MdtitleScale_p5 = isMdUp ? 0.5 : 1
   const titleShrink_p4 = useTransform(p4, [0, 1], [1, 1])
   const subtitleShrink_p4 = useTransform(p4, [0, 1], [1, 1])
@@ -321,11 +321,11 @@ export function ScrollOrchestrator() {
             <div className='sticky top-0' style={{ height: '100lvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
-                <div className='absolute left-1/2 top-[43lvh] md:top-[45lvh] -translate-x-1/2 -translate-y-1/2'>
+                <div className='absolute left-1/2 top-[45lvh] md:top-[45lvh] -translate-x-1/2 -translate-y-1/2'>
                   <motion.div
                     ref={rectRef}
                     initial={false}
-                    className='bg-[#FF60B9] w-[clamp(208px,17vw,236px)] aspect-[236/120] h-auto'
+                    className='bg-[#FF60B9] w-[clamp(208px,17vw,256px)] aspect-[236/120] h-auto'
                     style={{
                       borderRadius: '5px',
                       scale: rectScale,
@@ -354,7 +354,7 @@ export function ScrollOrchestrator() {
                 </motion.div>
 
                 {/* 모바일 타이틀 */}
-                <div className='md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[clamp(22px,28dvh,150px)] md:-translate-y-[23dvh] z-[9999] -translate-y-[40px] mix-blend-difference text-center text-white'>
+                <div className='md:hidden absolute left-1/2 top-[45lvh] -translate-x-1/2 -translate-y-[90px] z-[9999] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col items-center gap-2 font-english'>
                     <motion.span
                       initial={false}
@@ -375,7 +375,7 @@ export function ScrollOrchestrator() {
                   </div>
                 </div>
 
-                <div className='md:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[7dvh] z-[9999] mix-blend-difference text-center text-white'>
+                <div className='md:hidden absolute left-1/2 top-[45lvh] -translate-x-1/2 translate-y-[0px] z-[9999] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col-reverse items-center gap-4 font-english'>
                     <motion.span
                       initial={false}
@@ -399,17 +399,7 @@ export function ScrollOrchestrator() {
                 </div>
 
                 {/* 데스크탑 타이틀/서브 */}
-                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[46dvh] lg:top-[43dvh] -translate-y-[100px] -translate-x-1/2 font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ scale: titleScale, y: titleLift }}
-                    className='block leading-none text-[26px] lg:text-[clamp(36px,2.77vw,40px)]'
-                  >
-                    New Formative
-                  </motion.span>
-                </div>
-
-                <div className='hidden md:block absolute left-1/2 top-1/2 -translate-y-[32svh] md:left-1/4 md:top-[42.86svh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] z-[9999]'>
+                <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ opacity: infoOpacity }}
@@ -421,11 +411,21 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute left-1/2 top-[46dvh] -translate-x-1/2 translate-y-[60px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
+                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43lvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
+                  <motion.span
+                    initial={false}
+                    style={{ scale: titleScale, y: titleLift }}
+                    className='block leading-none text-[26px] lg:text-[40px]'
+                  >
+                    New Formative
+                  </motion.span>
+                </div>
+
+                <div className='hidden md:block absolute left-1/2 top-[43lvh] -translate-x-1/2 md:translate-y-[80px] lg:translate-y-[90px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: subtitleScale, y: subtitleLift }}
-                    className='block whitespace-nowrap leading-none text-[26px] lg:text-[clamp(36px,2.77vw,40px)]'
+                    className='block whitespace-nowrap leading-none text-[26px] lg:text-[40px]'
                   >
                     Steady Movement
                     <br />
@@ -433,7 +433,7 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute text-[20px] left-1/2 top-1/2 translate-y-[13vh] leading-[140%] md:left-3/4 md:top-[42.86svh] -translate-x-1/2 md:-translate-y-1/2 font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] z-[9999]'>
+                <div className='hidden md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ opacity: infoOpacity }}
@@ -461,8 +461,8 @@ export function ScrollOrchestrator() {
                   </svg>
                 </motion.div>
 
-                <div className='h-full aspect-[1440/1200]'>
-                  <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
+                <div className='aspect-[1440/1200]'>
+                  <motion.div initial={false} style={{opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
                       src='https://player.vimeo.com/video/1109760722?h=69b2dd590a'
