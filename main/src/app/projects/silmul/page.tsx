@@ -223,7 +223,9 @@ export default function Page() {
       <LeftTitle
         text={
           <>
-            Turning real senses into real objects , Silmul
+            Turning real senses 
+            <br className='block md:hidden'/>
+            into real objects , Silmul
             <br />
             실감을 실물로 구현하다
           </>

@@ -410,7 +410,7 @@ export default function Page() {
             <br />
             <br />
             <a
-              href='https://heyzine.com/flip-book/041d1f584b.html'
+              href='https://heyzine.com/flip-book/aaeae0cf1f.html'
               className='underline text-[#FF2A00] font-semibold'
               target='_blank'
             >
@@ -453,7 +453,7 @@ export default function Page() {
             },
             {
               name: '나승환',
-              role: 'PL',
+              role: 'ID',
               englishName: 'Seunghwan Ra',
               profileImage: '/images/profile/seunghwanra.png',
               socialLinks: {
