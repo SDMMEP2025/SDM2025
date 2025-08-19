@@ -178,7 +178,7 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Merlin_logo.svg'
-        className='w-[52px] md:w-[52px] lg:w-[clamp(100px,10vw,144px)]'
+        className='w-[150px] md:w-[150px] lg:w-[clamp(150px,20vw,200px)]'
         title={['멀린', 'Into Your Flow, Merlin OS']}
         description='Merlin OS는 앱 전환과 복잡한 탐색을 줄여 사용자가 빠르게 목표에 도달하도록 돕는 흐름 중심 운영체제입니다. 사용자 상황을 실시간으로 인식하고, 여러 앱에 흩어진 기능을 하나의 흐름으로 연결해 기존의 정적이고 앱 중심적인 UI를 넘어 보다 유연하게 몰입하는 경험을 제공합니다. 흐름을 조율하는 새로운 운영체제, Merlin과 함께 미래의 디지털 여정을 시작해보세요.'
         credits='김유민, 이소은, 안지원, 양준홍, 조서현'
@@ -210,7 +210,11 @@ export default function Page() {
         muted
         loop
       />
-      <RightBody text={'하지만, 현재의 모바일 인터페이스는 이러한 차이를 고려하지 않은 채, 모든 사용자에게 매번 동일한 위치에서 동일한 버튼을 제공하고 있습니다.\n정적인 그리드 안에서 블록처럼 쌓인 기능들은, 사용자에게 학습되고 적응되기를 기다리며 수동적으로 존재합니다.' }/>
+      <RightBody
+        text={
+          '하지만, 현재의 모바일 인터페이스는 이러한 차이를 고려하지 않은 채, 모든 사용자에게 매번 동일한 위치에서 동일한 버튼을 제공하고 있습니다.\n정적인 그리드 안에서 블록처럼 쌓인 기능들은, 사용자에게 학습되고 적응되기를 기다리며 수동적으로 존재합니다.'
+        }
+      />
       <Divide number='02' title='Target' />
       <MediaContainer
         type='video'
@@ -278,11 +282,9 @@ export default function Page() {
       <TitleBody
         title={[
           <>
-            Z세대에게 필요한 것은 
-            {' '}
-            <br className='hidden md:block' />
+            Z세대에게 필요한 것은 <br className='hidden md:block' />
             앱이 아닌 흐름
-          </>
+          </>,
         ]}
         text={
           '애플리케이션은 기능을 담는 공간이지만, 오히려 이 구조가 흐름을 끊는 걸림돌이 되고 있습니다. 사용자가 직접 여러 레이어를 오가며 원하는 기능을 찾아 헤매는 대신, 처음부터 필요한 기능들이 하나의 흐름 위에 자연스럽게 연결된다면 어떨까요? 사용자의 행동 패턴을 이해하고 다음에 할 일을 예측해 자연스럽게 이어주는 ‘흐름 중심’의 새로운 디지털 구조가 필요합니다.'
@@ -311,10 +313,8 @@ export default function Page() {
       <TitleBody
         title={[
           <>
-            흐름으로 연결되는
-            {' '}
-            <br className='hidden md:block' />세 가지 경험
-          </>
+            흐름으로 연결되는 <br className='hidden md:block' />세 가지 경험
+          </>,
         ]}
         text={
           'Merlin OS는 Contextual Flow, Appless Interface, Flexible UI 세 가지 원칙을 바탕으로, 사용자의 맥락과 습관에 맞춘 흐름 중심의 새로운 디지털 몰입 환경을 제공합니다. 사용자는 앱을 탐색하거나 UI를 학습하지 않아도, 상황에 따라 재배치된 기능 흐름을 자연스럽게 따라가며 원하는 작업에 빠르게 도달할 수 있습니다.'
@@ -331,9 +331,9 @@ export default function Page() {
         title={[
           <>
             지금 바로 내게 딱 맞는 기능들만 모아,
-            <br/>
+            <br />
             Contextual Flow
-          </>
+          </>,
         ]}
         text='시간대, 장소, 그립 패턴 등 사용자의 상황과 맥락을 이해하고, 그에 맞는 흐름을 제공합니다. 맥락에 맞게 재배치된 흐름을 통해 사용자는 자신을 둘러싼 환경에 최적화된 디지털 여정을 경험할 수 있습니다.'
       />
@@ -358,7 +358,7 @@ export default function Page() {
             전환 없이 하나로 이어지는 경험,
             <br />
             Appless Interface
-          </>
+          </>,
         ]}
         text='애플리케이션 중심이 아닌, 흐름 중심의 경험을 제공합니다. 사용자가 앱 안으로 들어가 기능을 찾지 않아도 하나의 화면에서 필요한 기능이 자연스럽게 이어집니다.'
       />
@@ -408,9 +408,7 @@ export default function Page() {
       <TitleBody
         title={[
           <>
-            끊김 없는 몰입,
-            {' '}
-            <br className='hidden md:block' />
+            끊김 없는 몰입, <br className='hidden md:block' />
             나를 닮은 OS
           </>,
         ]}
@@ -428,11 +426,9 @@ export default function Page() {
       <TitleBody
         title={[
           <>
-            흐름으로 연결된
-            {' '} 
-            <br className='hidden md:block' />
+            흐름으로 연결된 <br className='hidden md:block' />
             사용자 경험
-          </>
+          </>,
         ]}
         text={
           'Merlin OS는 모바일을 중심으로 동작하지만, AR, 태블릿, 데스크탑 등 다양한 디바이스와 연동해 유연하게 확장됩니다. 여러 하드웨어에서 일관된 흐름 기반의 아키텍처를 제공함으로써 사용자에게는 경계를 초월해 통합되는 경험을, 기업에는 지속 가능한 멀티 플랫폼 생태계의 기틀을 제공합니다.'
