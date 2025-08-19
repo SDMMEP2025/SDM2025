@@ -14,6 +14,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useIsLandscape } from '@/hooks/useIsLandscape'
 import { FloatingPhoto } from './Photo'
 import { MediaContainer } from '../projects'
+import AboutSectionWithoutLottie from '../about/AboutSectionWithoutLottie'
 
 function useStableVh() {
   useEffect(() => {
@@ -543,7 +544,7 @@ export function ScrollOrchestrator() {
           {/* About */}
           <section aria-label='About' className='relative bg-white md:mt-0'>
             <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : 'pointer-events-none'}>
-              <AboutSection />
+              <AboutSectionWithoutLottie />
             </motion.div>
           </section>
         </div>
