@@ -171,7 +171,7 @@ export default function Page() {
             take over your soul.
             <br />
             <br />
-            <a href='https://tundra-talk-9d4.notion.site/Hotcake-UX-23c419ac077480f7be94d69f7267860a?pvs=143' className='underline font-semibold' target='_blank'>
+            <a href='https://heyzine.com/flip-book/bf650f1c48.html#page/1' className='underline font-semibold' target='_blank'>
               ▶︎ More Detailed Story
             </a>
           </>

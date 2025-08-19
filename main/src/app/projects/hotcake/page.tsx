@@ -228,7 +228,7 @@ export default function Page() {
             편안한 공간에서, 더 자유롭고 즐거운 합주를 지향합니다. 박자가 조금 틀리거나 음이 어긋나도 괜찮아요. 그저
             음악에 몸을 맡겨보세요!
             <br /> <br />
-            <a href='https://tundra-talk-9d4.notion.site/Hotcake-UX-23c419ac077480f7be94d69f7267860a?pvs=143' className='underline font-semibold' target='_blank'>
+            <a href='https://heyzine.com/flip-book/bf650f1c48.html#page/1' className='underline font-semibold' target='_blank'>
               ▶︎ 더 자세한 이야기는 여기에
             </a>
           </>
