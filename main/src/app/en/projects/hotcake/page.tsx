@@ -171,8 +171,8 @@ export default function Page() {
             take over your soul.
             <br />
             <br />
-            <a href='https://bio.link/silmul' className='underline font-semibold' target='_blank'>
-              ▶︎ A more detailed story of Silmul
+            <a href='https://tundra-talk-9d4.notion.site/Hotcake-UX-23c419ac077480f7be94d69f7267860a?pvs=143' className='underline font-semibold' target='_blank'>
+              ▶︎ More Detailed Story
             </a>
           </>
         }
@@ -288,7 +288,7 @@ export default function Page() {
       {/* 18,19 */}
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110677453?h=9dfe315642'
+        src='https://player.vimeo.com/video/1110677461?h=46c61658c5'
         preloadDelayMs={0}
         prewarm
         loop
