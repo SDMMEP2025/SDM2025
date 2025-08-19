@@ -210,7 +210,7 @@ export default function Page() {
         muted
         loop
       />
-      <RightBody text='하지만, 현재의 모바일 인터페이스는 이러한 차이를 고려하지 않은 채, 모든 사용자에게 매번 동일한 위치에서 동일한 버튼을 제공하고 있습니다. 정적인 그리드 안에서 블록처럼 쌓인 기능들은, 사용자에게 학습되고 적응되기를 기다리며 수동적으로 존재합니다.' />
+      <RightBody text={'하지만, 현재의 모바일 인터페이스는 이러한 차이를 고려하지 않은 채, 모든 사용자에게 매번 동일한 위치에서 동일한 버튼을 제공하고 있습니다.\n정적인 그리드 안에서 블록처럼 쌓인 기능들은, 사용자에게 학습되고 적응되기를 기다리며 수동적으로 존재합니다.' }/>
       <Divide number='02' title='Target' />
       <MediaContainer
         type='video'
@@ -247,7 +247,7 @@ export default function Page() {
             <br />
             <br />
             <a href='https://umin.notion.site/merlinos' className='underline font-semibold' target='_blank'>
-              &gt; 더 자세한 이야기는 여기에서
+              ▶︎ 더 자세한 이야기는 여기에서
             </a>
           </>
         }
@@ -331,8 +331,7 @@ export default function Page() {
         title={[
           <>
             지금 바로 내게 딱 맞는 기능들만 모아,
-            {' '}
-            <br className='block md:hidden' />
+            <br/>
             Contextual Flow
           </>
         ]}
@@ -357,8 +356,7 @@ export default function Page() {
         title={[
           <>
             전환 없이 하나로 이어지는 경험,
-            {' '}
-            <br className='block md:hidden' />
+            <br />
             Appless Interface
           </>
         ]}
@@ -380,7 +378,7 @@ export default function Page() {
         loop
       />
       <RightTitleBody
-        title='몰입을 몰입답게, Flexible UI'
+        title={'몰입을 몰입답게,\nFlexible UI'}
         text='몰입과 조작 각각의 본질적 역할에 맞는 인터랙션 경험을 제공합니다. 정보와 조작을 한 화면에 억지로 섞지 않고, 몰입을 위한 정보 레이어와 손의 동작을 고려한 조작 레이어로 구분합니다.'
       />
       <MediaContainer
