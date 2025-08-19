@@ -209,7 +209,7 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   )
 
   // 애니메이션 설정
-  const slide = { type: 'spring', stiffness: 270, damping: 42 }
+  const slide = { type: 'spring', stiffness: 130, damping: 42 }
   const fade = { duration: 0.22, ease: 'easeOut' }
   const { isMdLandscape, isMdPortrait, isMobile, isRow } = layoutConfig
   const { expandedW, aspectH } = dimensions
