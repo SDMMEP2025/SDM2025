@@ -188,7 +188,7 @@ export function ScrollOrchestrator() {
     duration: 900,
     nearPct: 0.05,
     scrollerRef: boxRef,
-    ignore:[4,5]
+    ignore:[4]
   })
 
   // ---------- Section 1 ----------
