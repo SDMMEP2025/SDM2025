@@ -5,29 +5,35 @@ import type { MotionValue } from 'framer-motion'
 
 type Cut = { start: number; end: number }
 
+type SnapOptions = {
+  duration?: number
+  nearPct?: number
+  scrollerRef?: React.RefObject<HTMLElement | null>
+  ignore?: number[]
+}
+
+
 export function useSnapP0toP4(
-  wrapRef: React.RefObject<HTMLElement | null>,
+wrapRef: React.RefObject<HTMLElement | null>,
   scrollYProgress: MotionValue<number>,
   cuts: readonly Cut[],
-  opts?: {
-    duration?: number
-    nearPct?: number
-    scrollerRef?: React.RefObject<HTMLElement | null> // ★ 추가
-  },
+  opts: SnapOptions = {}, 
 ) {
   const DUR = opts?.duration ?? 280
   const NEAR = opts?.nearPct ?? 0.05
+  const ignoreSet = new Set(opts?.ignore ?? [])
 
-  const snapBands: [number, number][] = [
-    [0, 1],
-    [1, 2],
-    [2, 3],
-  ]
 
   const animating = useRef(false)
   const touchStartY = useRef<number | null>(null)
   const snapRaf = useRef<number | null>(null)
   const prevOverscroll = useRef<string | null>(null)
+
+  const snapBands: [number, number][] = []
+  for (let i = 0; i < cuts.length - 1; i++) {
+    if (ignoreSet.has(i) || ignoreSet.has(i + 1)) continue
+    snapBands.push([i, i + 1])
+  }
 
   const scrollerEl = () =>
     (opts?.scrollerRef?.current as HTMLElement | null) ||
