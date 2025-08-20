@@ -367,6 +367,7 @@ export default function Page() {
         text={
           <>
             Realize: From experience
+            {' '}
             <br className='block md:hidden' />
             to real object
           </>

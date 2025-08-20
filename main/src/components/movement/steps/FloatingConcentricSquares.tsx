@@ -349,7 +349,7 @@ function FloatingConcentricSquares({
             onClick={handleGyroActivation}
             className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
           >
-            <div className='text-[14px]'>디바이스로 움직이기</div>
+            <div className='text-[14px] underline'>Movement 움직이기</div>
           </button>
         </div>
       )}
@@ -403,7 +403,7 @@ function FloatingConcentricSquares({
                   translateZ(${i * 4 * scale}px)
                 `,
                 boxShadow: isHovered
-                  ? `0 ${(15 + i * 8) * scale * motionParams.shadowIntensity}px ${(30 + i * 8) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.15)`
+                  ? `0 ${(15 + i * 8) * scale * motionParams.shadowIntensity}px ${(10 + i * 8) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.15)`
                   : `0 ${(5 + i * 2) * scale * motionParams.shadowIntensity}px ${(10 + i * 2) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.05)`,
               }}
             />

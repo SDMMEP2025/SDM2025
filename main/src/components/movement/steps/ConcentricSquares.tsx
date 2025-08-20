@@ -115,6 +115,7 @@ export default function ConcentricSquares({
   useEffect(() => {
     setPositions((prev) => Array.from({ length: steps }, (_, i) => prev[i] ?? { x: 0, y: 0 }))
   }, [steps])
+  
   useEffect(() => {
     onPositionsChange?.(positions)
   }, [positions, onPositionsChange])

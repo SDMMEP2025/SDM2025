@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import classNames from 'classnames'
 import { ColorAnalysisResult } from '@/types/color'
 import { Range, getTrackBackground } from 'react-range'
@@ -100,6 +100,12 @@ function ConcentricSquares({
   const targetRef = useRef({ x: 0, y: 0 })
   const dragRef = useRef(false)
 
+  const lastTailRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+  useEffect(() => {
+    const tail = positions[positions.length - 1]
+    if (tail) lastTailRef.current = tail
+  }, [positions])
+
   // 화면 크기 변경 감지
   useEffect(() => {
     const handleResize = () => {
@@ -111,8 +117,18 @@ function ConcentricSquares({
   }, [])
 
   // steps가 바뀌면 positions 크기 맞추기
-  useEffect(() => {
-    setPositions((prev) => Array.from({ length: steps }, (_, i) => prev[i] || { x: 0, y: 0 }))
+  useLayoutEffect(() => {
+    setPositions((prev) => {
+      if (steps === prev.length) return prev
+      if (steps > prev.length) {
+        const last = prev.length > 0 ? prev[prev.length - 1] : { x: 0, y: 0 }
+        const next = prev.slice()
+        next.length = steps
+        for (let i = prev.length; i < steps; i++) next[i] = last
+        return next
+      }
+      return prev.slice(0, steps)
+    })
   }, [steps])
 
   // positions가 변경될 때마다 부모에게 알림
@@ -255,7 +271,7 @@ function ConcentricSquares({
         const height = maxHeight - stepReduction * i
         const color = interpolateColor(brandColorHex, refinedColorHex, factor)
         const isSmallest = i === steps - 1
-        const { x, y } = positions[i] || { x: 0, y: 0 }
+        const { x, y } = positions[i] ?? lastTailRef.current
 
         return (
           <div
@@ -340,13 +356,6 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
 
   return (
     <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
-      {/* 모션 컨트롤 패널 추가 */}
-      <MotionControlPanel
-        onMotionParamsChange={handleMotionParamsChange}
-        isVisible={isMotionPanelVisible}
-        onToggle={() => setIsMotionPanelVisible(!isMotionPanelVisible)}
-      />
-
       {/* 온보딩 */}
       <AnimatePresence>
         {!isOnboardingComplete && shouldShowModal && (
@@ -357,7 +366,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
             exit={{ opacity: 0 }}
             onClick={() => setIsOnboardingComplete(true)}
           >
-            <div className='w-fit h-fit flex flex-col gap-4 justify-center items-center'>
+            <div className='w-fit h-fit flex flex-col gap-4 justify-center items-center gap-2'>
               <div className='w-36 h-auto aspect-square bg-white'></div>
               <span className='text-white'>드래그하여 Movement를 움직여보세요!</span>
             </div>
@@ -372,12 +381,12 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
           'top-[14.17%]',
           'gap-[30px]', // 모바일
           //tablet
-          'md:top-[21.3%]',
+          'md:top-[15%]',
           'md:gap-[50px]', // md
-          'md-landscape:gap-[50px]', // md-landscape 조건
+          'md-landscape:gap-[20px]', // md-landscape 조건
           'md-landscape:top-[18%]',
           //desktop
-          'lg:top-[15%]',
+          'lg:top-[14%]',
           'lg:gap-[30px]', // lg~2xl fluid
           // large desktop
           '2xl:top-[15%]',
@@ -499,14 +508,43 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
               )}
             />
           </div>
+
+          <div
+            className={classNames(
+              'w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
+              'hidden md-landscape:block lg:block',
+              'bottom-[17.41%]',
+              'md:bottom-[15.32%]',
+              'lg:bottom-[13.58%]',
+              '2xl:bottom-[13.60%]',
+            )}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className={classNames(
+                'aspect-[62/14] h-auto',
+                'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
+                'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
+                '2xl:w-[62px]', // 2xl 이상 고정
+              )}
+              viewBox='0 0 62 14'
+              fill='none'
+            >
+              <circle cx='7' cy='7' r='7' fill={'#222222'} />
+              <circle cx='31' cy='7' r='7' fill={'#222222'} />
+              <circle cx='55' cy='7' r='7' fill={'#F2F2F2'} />
+            </svg>
+          </div>
         </div>
       </div>
       {/* left button */}
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'left-[calc(50vw-60px)] bottom-[18%] inset-y-auto',
-          'md:left-[calc(50vw-80px)] md:bottom-[18%] md:inset-y-auto',
+          'left-[calc(50vw-60px)] bottom-[14.3%] inset-y-auto',
+          isMobile ? 'md:bottom-[14.3%]' : 'md:bottom-[50%]',
+          isMobile ? 'md:left-[calc(50vw-80px)]' : 'md:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)]',
+          'md:inset-y-auto',
           'md-landscape:left-[40px] md-landscape:inset-y-0', // md-landscape 전용
           'lg:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
           '2xl:left-[100px] 2xl:inset-y-0', // 2xl 이상 고정
@@ -554,8 +592,10 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'right-[calc(50vw-60px)] bottom-[18%] inset-y-auto',
-          'md:right-[calc(50vw-80px)] md:bottom-[18%] md:inset-y-auto',
+          'right-[calc(50vw-60px)] bottom-[14.3%] inset-y-auto',
+          isMobile ? 'md:bottom-[14.3%]' : 'md:bottom-[50%]',
+          isMobile ? 'md:right-[calc(50vw-80px)]' : 'md:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)]',
+          'md:inset-y-auto',
           'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
           'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
           '2xl:right-[100px] 2xl:inset-y-0', // 2xl 이상 고정

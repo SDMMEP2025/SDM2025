@@ -20,6 +20,7 @@
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.15.0",
+    "grapheme-splitter": "^1.0.4",
     "gyronorm": "^2.0.6",
     "lottie-react": "^2.4.1",
     "next": "^15.1.7",

@@ -348,24 +348,7 @@ function FloatingConcentricSquares({
 
   return (
     <>
-      {/* 센서 UI들 */}
-      {isMobile && gyroStatus === 'pending' && (
-        <div className='absolute bottom-[17vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
-          <button
-            onClick={handleGyroActivation}
-            className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
-          >
-            <div className='text-[14px]'>디바이스로 움직이기</div>
-          </button>
-        </div>
-      )}
-
-      {isMobile && isListening && (
-        <div className='absolute bottom-[17vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
-          <div className='text-black font-semibold text-sm animate-pulse'>● 디바이스 움직임 감지 중</div>
-        </div>
-      )}
-
+      {' '}
       {/* 메인 컨테이너 - 부모 크기에 맞게 자동 스케일링 */}
       <div
         ref={containerRef}
@@ -416,6 +399,25 @@ function FloatingConcentricSquares({
           )
         })}
       </div>
+      
+      {/* 센서 UI들 */}
+      {isMobile && gyroStatus === 'pending' && (
+        <div className='absolute z-50 top-20'>
+          <button
+            onClick={handleGyroActivation}
+            className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
+          > 
+            <div className='text-[14px]'>디바이스로 움직이기</div>
+          </button>
+        </div>
+      )}
+      {isMobile && isListening && (
+        <div className='z-50'>
+          <div className='text-black font-semibold whitespace-nowrap text-sm animate-pulse'>
+            ● 디바이스 움직임 감지 중
+          </div>
+        </div>
+      )}
     </>
   )
 }
@@ -477,7 +479,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     ctx.fillStyle = gradientTop
 
     // "Your Movement" 대형 텍스트
-    ctx.font = 'bold 165px "saans", system-ui, -apple-system, sans-serif'
+    ctx.font = 'bold 182px "saans", system-ui, -apple-system, sans-serif'
     ctx.textAlign = 'center'
 
     // "Your" 텍스트
@@ -650,15 +652,66 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
         className={classNames(
-          'w-full h-fit flex flex-col items-center justify-center relative',
-          'absolute md:z-0 left-1/2 transform -translate-x-1/2 z-20',
+          'w-fit h-full flex flex-col items-center justify-center relative',
+          'left-1/2 transform -translate-x-1/2 ',
           'top-[18vh] gap-[7px] md:gap-[10px] lg:gap-[12px] 2xl:gap-[15px]',
           'md:top-[20vh]', // 모바일에서 md로 넘어갈 때 위치 조정
-          'md-landscape:top-[15vh]', // md-landscape에서 위치 조정
+          'md-landscape:top-[15vh] ', // md-landscape에서 위치 조정
           'lg:top-[10vh]', // lg에서 위치 조정
           '2xl:top-[10vh]', // 2xl에서 위치 조정
         )}
       >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isLoadingDone ? 1 : 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className='absolute left-1/2 -translate-x-1/2 flex flex-col justify-center items-center z-[10] h-[70dvh] w-[100vw] gap-4 top-[0] lg:top-[10dvh]'
+        >
+          <FloatingConcentricSquares
+            steps={steps}
+            positions={positions}
+            brandColorHex={brandColorHex}
+            refinedColorHex={refinedColorHex}
+            interactionData={interactionData}
+            motionParams={motionParams}
+          />
+        </motion.div>
+
+        <div className='absolute z-[40] flex flex-row justify-between w-[90vw] md:w-full pt-[50dvh]'>
+          {/* left */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isLoadingDone ? 1 : 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={classNames(
+              'w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
+              'font-medium text-black text-[18px] z-[40] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
+            )}
+          >
+            <p className='block md:hidden break-keep z-[40]'>{'Primary\n' + brandColorName}</p>
+            <p className='hidden md:block break-keep z-[40]'>{text}</p>
+          </motion.div>
+
+          {/* right */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isLoadingDone ? 1 : 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={classNames(
+              'z-[60] w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
+              'font-medium text-black text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px]  leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
+            )}
+          >
+            <div className='block md:hidden'>Rgb</div>
+            <div className='block md:hidden'>{hexToRgb(brandColorHex).replace('rgb(', '').replace(')', '')}</div>
+            <div className='hidden md:block whitespace-nowrap'>{brandColorName}</div>
+            <div className='hidden md:block whitespace-nowrap'>{hexToRgb(brandColorHex)}</div>
+          </motion.div>
+        </div>
+
         <h3
           style={{
             background: 'linear-gradient(180deg, #000 42%, #818181 100%)',
@@ -667,7 +720,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
             WebkitTextFillColor: 'transparent',
           }}
           className={classNames(
-            'text-[clamp(34px,calc(-20.705px+15.196vw),96px)] leading-[95%] letterSpacing-[-0.68px]', // 모바일→md
+            'display-none z-[0] text-[clamp(34px,calc(-20.705px+15.196vw),126px)] leading-[95%] letterSpacing-[-0.68px]', // 모바일→md
             'md-landscape:text-[132px] md:leading-[100%] md:letterSpacing-[-3.168px]', // md-landscape 전용
             'lg:text-[clamp(160px,calc(-1.8px+11.25vw),286px)] lg:leading-[100%] lg:letterSpacing-[-3.84px]', // lg→2xl
             '2xl:text-[286px] 2xl:leading-[100%] 2xl:letterSpacing-[-6.864px]', // 2xl 이상 고정
@@ -676,6 +729,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         >
           Your Movement
         </h3>
+
         <div className='text-[#FF60B9] block md:hidden text-[17px] leading-[100%] letterSpacing-[-0.34px]'>
           {interactionData.text}
         </div>
@@ -686,63 +740,8 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         animate={{ opacity: isLoadingDone ? 1 : 0 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className=' flex items-center justify-center w-full h-full md:h-[50vh] md-landscape:h-[60vh] lg:h-[80vh]'
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <FloatingConcentricSquares
-          steps={steps}
-          positions={positions}
-          brandColorHex={brandColorHex}
-          refinedColorHex={refinedColorHex}
-          interactionData={interactionData}
-          motionParams={motionParams}
-        />
-      </motion.div>
-
-      {/* left */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoadingDone ? 1 : 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
         className={classNames(
-          'absolute top-1/2 -translate-y-1/2 left-4 md:left-14 lg:left-16 xl:left-20 2xl:left-32 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
-          'font-medium text-white text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
-        )}
-      >
-        <p className='block md:hidden break-keep'>{brandColorName}</p>
-        <p className='hidden md:block break-keep'>{text}</p>
-      </motion.div>
-
-      {/* right */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoadingDone ? 1 : 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className={classNames(
-          'absolute top-1/2 -translate-y-1/2 right-4 md:right-14 lg:right-16 xl:right-20 2xl:right-32 w-fit max-w-28 md:max-w-36 md-landscape:max-w-48 lg:max-w-56 text-center',
-          'font-medium text-white text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px]  leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
-        )}
-      >
-        <div className='block md:hidden'>Rgb</div>
-        <div className='block md:hidden'>{hexToRgb(brandColorHex).replace('rgb(', '').replace(')', '')}</div>
-        <div className='hidden md:block whitespace-nowrap'>{brandColorName}</div>
-        <div className='hidden md:block whitespace-nowrap'>{hexToRgb(brandColorHex)}</div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoadingDone ? 1 : 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className={classNames(
-          'absolute flex bottom-16 left-1/2 transform -translate-x-1/2',
+          'absolute flex bottom-[14.3%] left-1/2 transform -translate-x-1/2',
           'gap-4',
           'md:gap-4',
           'lg:gap-4',
