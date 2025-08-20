@@ -185,9 +185,9 @@ export function ScrollOrchestrator() {
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
     duration: 600,
-    nearPct: 0.02,
+    nearPct: 0.008,
     scrollerRef: boxRef,
-    ignore: [4]
+    ignore: [4],
   })
 
   // ---------- Section 1 ----------
@@ -254,7 +254,7 @@ export function ScrollOrchestrator() {
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
   const infoOpacity = useTransform([opacityScale, infoFadeOut], ([a, b]) => Number(a) * Number(b))
 
-  const sep4 = useTransform(p2, [0.3,1.0], [0, 200], { ease: easeInOut })
+  const sep4 = useTransform(p2, [0.3, 1.0], [0, 200], { ease: easeInOut })
   const frontY_P4 = isMdUp ? 0.3 : 0.6
   const midY_P4 = isMdUp ? 0.15 : 0.3
   const backY_P4 = isMdUp ? 0.1 : 0.2
@@ -318,7 +318,16 @@ export function ScrollOrchestrator() {
 
   return (
     <>
-      <div ref={boxRef} className='fixed inset-0 overflow-y-auto overscroll-none'>
+      <div
+        ref={boxRef}
+        className='fixed inset-0 overflow-y-auto overscroll-none'
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          contain: 'layout style paint',
+          willChange: 'transform',
+          transform: 'translateZ(0)',
+        }}
+      >
         <div ref={wrapRef} style={{ height: '2300lvh' }}>
           <section className='relative' style={{ height: '2300lvh' }}>
             <div className='sticky top-0' style={{ height: '100lvh', contain: 'layout style' }}>
@@ -465,15 +474,7 @@ export function ScrollOrchestrator() {
                 </motion.div>
                 <div className='aspect-[1440/1500] h-auto w-full absolute left-1/2 top-[45lvh] md:top-1/2 -translate-x-1/2 -translate-y-1/2'>
                   <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
-                    <MediaContainer
-                      type='video'
-                      src='https://player.vimeo.com/video/1111520640?h=e5f32a5864'
-                      preloadDelayMs={0}
-                      prewarm
-                      muted
-                      loop
-                      aspect='aspect-[1440/1500]'
-                    />
+
                   </motion.div>
                 </div>
               </div>
