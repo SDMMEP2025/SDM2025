@@ -39,7 +39,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 1, 3, 3, 1]
+const WEIGHTS: number[] = [1, 2, 3,0.5]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -178,15 +178,15 @@ export function ScrollOrchestrator() {
     target: wrapRef,
     offset: ['start start', 'end start'],
   })
-  const [p0, p1, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
+  const [p0, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
   useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
 
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
-    duration: 900,
-    nearPct: 0.05,
+    duration: 1400,
+    nearPct: 0.03,
     scrollerRef: boxRef,
   })
 

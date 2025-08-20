@@ -4,17 +4,40 @@ import type { MotionValue } from 'framer-motion'
 
 type Cut = { start: number; end: number }
 
+// 섹션별 규칙 타입
+type SectionDurationRule =
+  | number
+  | {
+      /** 해당 섹션으로 "들어갈 때"(toIdx===섹션) 우선 적용 */
+      enter?: number
+      /** 해당 섹션에서 "나갈 때"(fromIdx===섹션) 우선 적용 */
+      leave?: number
+      /** 방향별 보정(enter/leave와 함께 쓰면 더 높은 우선순위로 병합) */
+      forward?: number
+      backward?: number
+      /** 최종적으로 컨텍스트 기반으로 직접 계산하고 싶을 때 */
+      fn?: (
+        fromIdx: number,
+        toIdx: number,
+        ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
+      ) => number | undefined
+    }
+
 type SnapOptions = {
   duration?: number
   nearPct?: number
   scrollerRef?: React.RefObject<HTMLElement | null>
   ignore?: number[]
+  /** i->j 구간 쌍 기준 */
   durationTable?: Partial<Record<`${number}->${number}`, number>>
+  /** 완전 커스텀 */
   getDuration?: (
     fromIdx: number,
     toIdx: number,
     ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
   ) => number | undefined
+  /** ★ 섹션 기준(예: 3번 섹션일 때) */
+  sectionDurations?: Partial<Record<number, SectionDurationRule>>
 }
 
 export function useSnapP0toP4(
@@ -104,6 +127,36 @@ export function useSnapP0toP4(
     return null
   }
 
+  // ★ 섹션 규칙 해석
+  const resolveBySectionRule = (
+    rule: SectionDurationRule | undefined,
+    fromIdx: number,
+    toIdx: number,
+    ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
+  ): number | undefined => {
+    if (rule == null) return undefined
+    if (typeof rule === 'number') return rule
+
+    // fn이 있으면 최우선
+    const byFn = rule.fn?.(fromIdx, toIdx, ctx)
+    if (typeof byFn === 'number' && !Number.isNaN(byFn)) return Math.max(0, byFn)
+
+    // enter/leave 우선
+    let candidate: number | undefined
+    if (toIdx in (opts.sectionDurations ?? {})) {
+      if (rule.enter != null && toIdx !== fromIdx) candidate = rule.enter
+    }
+    if (fromIdx in (opts.sectionDurations ?? {})) {
+      if (rule.leave != null && toIdx !== fromIdx) candidate = rule.leave
+    }
+
+    // 방향별 보정이 있으면 그걸로 치환
+    if (ctx.direction === 'forward' && rule.forward != null) candidate = rule.forward
+    if (ctx.direction === 'backward' && rule.backward != null) candidate = rule.backward
+
+    return typeof candidate === 'number' ? Math.max(0, candidate) : undefined
+  }
+
   // 구간별/방향별 지속시간 결정
   const resolveDuration = (
     fromIdx: number,
@@ -111,17 +164,37 @@ export function useSnapP0toP4(
     ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
   ) => {
     // 1) 사용자 함수가 있으면 최우선
-    const byFn = opts.getDuration?.(fromIdx, toIdx, ctx)
-    if (typeof byFn === 'number' && !Number.isNaN(byFn)) return Math.max(0, byFn)
+    {
+      const byFn = opts.getDuration?.(fromIdx, toIdx, ctx)
+      if (typeof byFn === 'number' && !Number.isNaN(byFn)) return Math.max(0, byFn)
+    }
 
-    // 2) durationTable "i->j"
-    const key = `${fromIdx}->${toIdx}` as const
-    const byTable = opts.durationTable?.[key]
-    let base = typeof byTable === 'number' ? byTable : DUR
+    // 2) ★ 섹션 규칙(들어가거나 나갈 때, 방향별 등)
+    {
+      const secRules = opts.sectionDurations
+      if (secRules) {
+        const ruleFrom = secRules[fromIdx]
+        const ruleTo = secRules[toIdx]
+        // 우선 to(enter) → from(leave) 순서로 시도
+        const byTo = resolveBySectionRule(ruleTo, fromIdx, toIdx, ctx)
+        if (typeof byTo === 'number') return byTo
+        const byFrom = resolveBySectionRule(ruleFrom, fromIdx, toIdx, ctx)
+        if (typeof byFrom === 'number') return byFrom
+      }
+    }
 
-    // 3) 포인터/스와이프 보정 (기존 동작 유지 + 약간의 유틸리티)
+    // 3) i->j 테이블
+    {
+      const key = `${fromIdx}->${toIdx}` as const
+      const byTable = opts.durationTable?.[key]
+      if (typeof byTable === 'number') return Math.max(0, byTable)
+    }
+
+    // 4) 기본값
+    let base = DUR
+
+    // 포인터/스와이프 보정(기존 로직 유지)
     if (ctx.pointer === 'coarse') {
-      // 터치 기본 단축
       base = Math.max(200, Math.round(base * 0.9))
       if (ctx.fastSwipe) {
         base = Math.max(60, base - 120)
@@ -129,33 +202,67 @@ export function useSnapP0toP4(
     }
     return base
   }
-
   useEffect(() => {
-    const box = (opts?.scrollerRef?.current as unknown as HTMLElement) || window
+    let targetEl: HTMLElement | Window | null = null
+    let rafId: number | null = null
 
-    const isCoarsePointer = typeof matchMedia !== 'undefined' ? matchMedia('(pointer: coarse)').matches : false
-    const DY_MIN = isCoarsePointer ? 1 : 2
+    const getScroller = () => (opts?.scrollerRef?.current as HTMLElement | null) || null // 컨테이너 준비 전엔 null 반환
 
+    const bind = (el: HTMLElement | Window) => {
+      // wheel/touch는 요소에, keyboard는 window에
+      const wheelTarget = (el as HTMLElement) ?? window
+      const touchTarget = (el as HTMLElement) ?? window
+
+      wheelTarget.addEventListener('wheel', onWheel as EventListener, { passive: false } as any)
+      touchTarget.addEventListener('touchstart', onTouchStart as EventListener, { passive: true } as any)
+      touchTarget.addEventListener('touchmove', onTouchMove as EventListener, { passive: false } as any)
+      window.addEventListener('keydown', onKeyDown as EventListener, { passive: false } as any)
+
+      targetEl = el
+    }
+
+    const unbind = () => {
+      if (!targetEl) return
+      const wheelTarget = (targetEl as HTMLElement) ?? window
+      const touchTarget = (targetEl as HTMLElement) ?? window
+
+      wheelTarget.removeEventListener('wheel', onWheel as EventListener)
+      touchTarget.removeEventListener('touchstart', onTouchStart as EventListener)
+      touchTarget.removeEventListener('touchmove', onTouchMove as EventListener)
+      window.removeEventListener('keydown', onKeyDown as EventListener)
+      targetEl = null
+    }
+
+    const ensureBound = () => {
+      const scroller = getScroller()
+      if (scroller && targetEl !== scroller) {
+        unbind()
+        bind(scroller)
+        return
+      }
+      if (!scroller && targetEl !== window) {
+        // 초기 로딩 단계: 임시로 window에 바인딩
+        unbind()
+        bind(window)
+      }
+      rafId = requestAnimationFrame(ensureBound)
+    }
+
+    // 핸들러들은 기존 함수(onWheel/onTouch*/onKeyDown)를 그대로 참조하도록
     const onWheel = (e: WheelEvent) => {
       const band = getActiveBand()
       if (!band) return
       e.preventDefault()
       if (animating.current) return
-
       const [i, j] = band
-      const p = scrollYProgress.get()
-      const a = cuts[i].start
-      const b = cuts[j].start
-
       if (e.deltaY > 0) {
-        // 아래로 스크롤 → forward: i -> j
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'fine', fastSwipe: false })
-        animateTo(progressToTop(b), dur)
+        animateTo(progressToTop(cuts[j].start), dur)
       } else if (e.deltaY < 0) {
-        // 위로 스크롤 → backward: j의 시작점 쪽으로 갈지, 이전(prev)로 갈지
+        const p = scrollYProgress.get()
+        const a = cuts[i].start
         const prev = i - 1 >= 0 ? i - 1 : null
-        let toIdx = i
-        if (prev != null && p - a <= NEAR) toIdx = prev
+        const toIdx = prev != null && p - a <= NEAR ? prev : i
         const target = toIdx === i ? a : cuts[toIdx].start
         const dur = resolveDuration(i, toIdx, { direction: 'backward', pointer: 'fine', fastSwipe: false })
         animateTo(progressToTop(target), dur)
@@ -172,28 +279,22 @@ export function useSnapP0toP4(
       if (!band) return
       const y0 = touchStartY.current
       if (y0 == null) return
-
       const dy = y0 - (e.touches[0]?.clientY ?? y0)
+      const isCoarse = typeof matchMedia !== 'undefined' ? matchMedia('(pointer: coarse)').matches : false
+      const DY_MIN = isCoarse ? 1 : 2
       if (Math.abs(dy) < DY_MIN) return
       e.preventDefault()
       if (animating.current) return
-
       const [i, j] = band
-      const p = scrollYProgress.get()
       const a = cuts[i].start
-      const b = cuts[j].start
-
       const fastSwipe = Math.abs(dy) > 20
-
       if (dy > 0) {
-        // 위로 스와이프(아래로 스크롤) → forward
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'coarse', fastSwipe })
-        animateTo(progressToTop(b), dur)
+        animateTo(progressToTop(cuts[j].start), dur)
       } else {
-        // 아래로 스와이프(위로 스크롤) → backward
+        const p = scrollYProgress.get()
         const prev = i - 1 >= 0 ? i - 1 : null
-        let toIdx = i
-        if (prev != null && p - a <= NEAR) toIdx = prev
+        const toIdx = prev != null && p - a <= NEAR ? prev : i
         const target = toIdx === i ? a : cuts[toIdx].start
         const dur = resolveDuration(i, toIdx, { direction: 'backward', pointer: 'coarse', fastSwipe })
         animateTo(progressToTop(target), dur)
@@ -203,44 +304,44 @@ export function useSnapP0toP4(
     const onKeyDown = (e: KeyboardEvent) => {
       const band = getActiveBand()
       if (!band) return
-
       const downKeys = [' ', 'PageDown', 'ArrowDown', 'End']
       const upKeys = ['PageUp', 'ArrowUp', 'Home']
       if (![...downKeys, ...upKeys].includes(e.key)) return
-
       e.preventDefault()
       if (animating.current) return
-
       const [i, j] = band
-      const p = scrollYProgress.get()
       const a = cuts[i].start
-      const b = cuts[j].start
-
       if (downKeys.includes(e.key)) {
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'fine', fastSwipe: false })
-        animateTo(progressToTop(b), dur)
+        animateTo(progressToTop(cuts[j].start), dur)
       } else {
+        const p = scrollYProgress.get()
         const prev = i - 1 >= 0 ? i - 1 : null
-        let toIdx = i
-        if (prev != null && p - a <= NEAR) toIdx = prev
+        const toIdx = prev != null && p - a <= NEAR ? prev : i
         const target = toIdx === i ? a : cuts[toIdx].start
         const dur = resolveDuration(i, toIdx, { direction: 'backward', pointer: 'fine', fastSwipe: false })
         animateTo(progressToTop(target), dur)
       }
     }
 
-    box.addEventListener('wheel', onWheel as EventListener, { passive: false } as any)
-    box.addEventListener('touchstart', onTouchStart as EventListener, { passive: true } as any)
-    box.addEventListener('touchmove', onTouchMove as EventListener, { passive: false } as any)
-    box.addEventListener('keydown', onKeyDown as EventListener, { passive: false } as any)
+    ensureBound()
 
     return () => {
-      box.removeEventListener('wheel', onWheel as EventListener)
-      box.removeEventListener('touchstart', onTouchStart as EventListener)
-      box.removeEventListener('touchmove', onTouchMove as EventListener)
-      box.removeEventListener('keydown', onKeyDown as EventListener)
+      if (rafId) cancelAnimationFrame(rafId)
+      unbind()
       if (snapRaf.current) cancelAnimationFrame(snapRaf.current)
       setOverscroll(false)
     }
-  }, [wrapRef, scrollYProgress, cuts, DUR, NEAR, opts?.scrollerRef, opts.durationTable, opts.getDuration])
+    // wrapRef, cuts, scrollYProgress 등 의존성은 동일
+  }, [
+    wrapRef,
+    scrollYProgress,
+    cuts,
+    DUR,
+    NEAR,
+    opts?.scrollerRef,
+    opts.durationTable,
+    opts.getDuration,
+    opts.sectionDurations,
+  ])
 }
