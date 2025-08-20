@@ -202,7 +202,11 @@ export default function Page() {
 
       <LeftTitle
         text={
-          <a href='https://heyzine.com/flip-book/b1700327c4.html' className='underline text-[#E30D2D] font-semibold' target='_blank'>
+          <a
+            href='https://heyzine.com/flip-book/b1700327c4.html'
+            className='underline text-[#E30D2D] font-semibold'
+            target='_blank'
+          >
             ▶︎ A more detailed story of Silmul
           </a>
         }
@@ -434,8 +438,8 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/silmul/silmul_18.webp' />
-      <Image Image='/images/projects/silmul/silmul_19.jpg' />
-      <Image Image='/images/projects/silmul/silmul_20.jpg' />
+
+      <Image Image={['/images/projects/silmul/silmul_19.jpg', '/images/projects/silmul/silmul_20.jpg']} />
 
       <MidTitle align='center' className='text-[#E30D2D]' text='Turning real senses into real objects, Silmul' />
 

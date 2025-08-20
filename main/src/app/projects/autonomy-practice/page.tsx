@@ -171,7 +171,7 @@ export default function Page() {
         }
         credits='풍제석, 이민희, 하승민, 정민영, 정유진'
       />
-      <Image Image='/images/projects/autonomy_practice/autonomy_practice_main.jpg' />
+      <Image isFirst Image='/images/projects/autonomy_practice/autonomy_practice_main.jpg' />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110918569?h=f95d5d87e2'

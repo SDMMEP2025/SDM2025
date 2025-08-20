@@ -149,15 +149,13 @@ export default function Page() {
       <Divide title='Background' number='01' className='text-[#FF2A00]' />
 
       <TitleBody
-      title={[
-        <>
-          The 'Instant' Society Life,
-          {' '}
-          <br className='hidden md:block'/>
-          On demand
-        </>
-      ]}
-      text='We live in an on-demand world—where a single click gets food delivered in under an hour, a package ordered today arrives by dawn, and a simple tap streams a full movie. Services like quick commerce and real-time streaming have become part of daily life, and for Generation Z, the idea of waiting has become almost unbearable.'
+        title={[
+          <>
+            The 'Instant' Society Life, <br className='hidden md:block' />
+            On demand
+          </>,
+        ]}
+        text='We live in an on-demand world—where a single click gets food delivered in under an hour, a package ordered today arrives by dawn, and a simple tap streams a full movie. Services like quick commerce and real-time streaming have become part of daily life, and for Generation Z, the idea of waiting has become almost unbearable.'
       />
 
       {/* Background visuals */}
@@ -165,13 +163,11 @@ export default function Page() {
 
       <TitleBody
         title={[
-        <>
-          Travel,
-          {' '}
-          <br className='hidden md:block'/>
-          The Last Realm of Waiting
-        </>
-      ]}
+          <>
+            Travel, <br className='hidden md:block' />
+            The Last Realm of Waiting
+          </>,
+        ]}
         text='And yet, travel remains one of the few experiences that still demands waiting.Even after deciding to go, we must plan, prepare, and wait for the departure day to arrive. Many say this waiting is part of the journey—an essential, meaningful phase. But what if, in all that waiting, we’ve missed the moment we were meant to leave?'
       />
 
@@ -187,19 +183,19 @@ export default function Page() {
       <Image Image='/images/projects/mizi/mizi_3.jpg' />
 
       <Divide title='Hypothesis' number='03' className='text-[#FF2A00]' />
-      <MidTitle align='left' padding={false} 
-      text={[
-        <>
-        In the Years Ahead, 
-        {' '}
-        <br className='block md:hidden'/>
-        How Technology Will Redefine Experience
-        </>
-      ]}/>
+      <MidTitle
+        align='left'
+        padding={false}
+        text={[
+          <>
+            In the Years Ahead, <br className='block md:hidden' />
+            How Technology Will Redefine Experience
+          </>,
+        ]}
+      />
       <RightBody text='By definition, experience is what we see, hear, or feel—and the knowledge or skill gained from it. We perceive and understand the world by receiving sensory input, processing it in the brain, and storing it as memory. Now, technologies that extend perception by digitizing our senses—through XR and haptics—are evolving rapidly. In the near future, we’ll be able to replicate all senses in real time, reaching a point where the line between reality and the virtual dissolves. When that day comes, even the meaning of “I’ve been there” will change—and with it, the very way we define experience.' />
 
-      <Image Image='/images/projects/mizi/mizi_4.jpg' />
-      <Image Image='/images/projects/mizi/mizi_5.jpg' />
+      <Image Image={['/images/projects/mizi/mizi_4.jpg', '/images/projects/mizi/mizi_5.jpg']} />
 
       <Divide title='Project Overview' number='04' className='text-[#FF2A00]' />
       <MidTitle align='center' className='text-[#FF2A00]' text='Into the Moment, MIZI' />
@@ -291,14 +287,12 @@ export default function Page() {
       <Divide title='Feature 03' number='08' className='text-[#FF2A00]' />
 
       <TitleBody
-      title={[
-        <>
-        On-Off
-        {' '}
-        <br className='hidden md:block'/>
-        Hybrid Experience
-        </>
-      ]}
+        title={[
+          <>
+            On-Off <br className='hidden md:block' />
+            Hybrid Experience
+          </>,
+        ]}
         text='Through MIZI’s avatar, users can explore objects in real time across various locations around the world. Items available for purchase on-site can be browsed remotely, and if desired, users can complete the transaction through the on-site system and the MIZI app. Purchased items are packaged and delivered later to the user’s own space. It’s a hybrid experience—merging the physical presence of offline with the convenience of online—offering the best of both worlds.'
       />
 
@@ -401,14 +395,12 @@ Now, with NOMA:Stardust, MIZI’s space avatar, that dream becomes real. Experie
       <Divide title='MIZI Branding Story' number='14' className='text-[#FF2A00]' />
 
       <TitleBody
-      title={[
-        <>
-        Into a New World,
-        {' '}
-        <br/>
-        with Broadened Vision
-        </>
-      ]}
+        title={[
+          <>
+            Into a New World, <br />
+            with Broadened Vision
+          </>,
+        ]}
         text='MIZI empowers users to expand their own personal worlds through the avatar NOMA. Even uncertain or undefined realms become clearer with MIZI by your side. At its core, MIZI is built on the value of expanding perception—a vision that shapes its unique brand identity.'
       />
 

@@ -178,11 +178,13 @@ export default function Page() {
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['포트릭', 
+        title={[
+          '포트릭',
           <>
-          'No pack, No stop. <br className='md:hidden'/>Just POTRIK'
-          </>
-          ]}
+            'No pack, No stop. <br className='md:hidden' />
+            Just POTRIK'
+          </>,
+        ]}
         description={
           <>
             POTRIK은 손에 들고 다니는 짐이 사라진 새로운 라이프스타일을 제공합니다. 복잡한 예약도, 물건을 들고 이동할
@@ -196,12 +198,12 @@ export default function Page() {
         credits='강윤권, 박효경, 양현지, 이주은, 주형준'
         className='w-[144px] md:w-[144px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
-      <Image Image="/images/projects/potrik/potrik_main.jpg"/>
+      <Image isFirst Image='/images/projects/potrik/potrik_main.jpg' />
       <Divide title='Background' number='01' className='text-[#09C17A]' />
       <TitleBody
         title={
           <>
-            자유로운 이동, <br className='hidden md:block'/>
+            자유로운 이동, <br className='hidden md:block' />
             여전히 무거운 짐
           </>
         }
@@ -285,15 +287,10 @@ export default function Page() {
         preloadDelayMs={0}
         hasAudio={true}
         prewarm
-        muted = {false}
+        muted={false}
         loop
       />
-      <ImageGallery
-        images={[
-          '/images/projects/potrik/potrik_5.jpg',
-          '/images/projects/potrik/potrik_6.jpg',
-        ]}
-      />
+      <ImageGallery images={['/images/projects/potrik/potrik_5.jpg', '/images/projects/potrik/potrik_6.jpg']} />
       <TitleBody
         title={<>Driving Module</>}
         text={
@@ -401,7 +398,7 @@ export default function Page() {
           </>
         }
       />
-       <MediaContainer
+      <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110679326?h=078a6f5ad4'
         preloadDelayMs={0}
@@ -464,22 +461,21 @@ export default function Page() {
           <>
             이제 물건은 단순히 장소에서 장소로 이동하지 않습니다.
             <br />
-            POTRIK은 내가 있는 순간[Here]에서, 필요한 순간[Here]으로,
-            {' '}
-            <br className='hidden md:block'/>더 유연하고 개인화된 새로운 딜리버리 시스템을 제안합니다.
+            POTRIK은 내가 있는 순간[Here]에서, 필요한 순간[Here]으로, <br className='hidden md:block' />더 유연하고
+            개인화된 새로운 딜리버리 시스템을 제안합니다.
           </>
         }
       />
       <Image Image='/images/projects/potrik/potrik_16.webp' />
-      <MidTitle align='center'
-      text={[
-        <>
-        당신의 순간을 가볍게 하는
-        {' '}
-        <br className='md:hidden'/>
-        퍼스널 딜리버리 시스템, POTRIK
-        </>
-      ]}/>
+      <MidTitle
+        align='center'
+        text={[
+          <>
+            당신의 순간을 가볍게 하는 <br className='md:hidden' />
+            퍼스널 딜리버리 시스템, POTRIK
+          </>,
+        ]}
+      />
       <Image Image='/images/projects/potrik/potrik_17.jpg' />
       <Divide title='Branding' number='08' className='text-[#09C17A]' />
       <Image Image='/images/projects/potrik/potrik_18.jpg' />

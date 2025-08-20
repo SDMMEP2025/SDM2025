@@ -22,7 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
-  Blank
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -76,7 +76,7 @@ const thankstoData = [
     tutors: [
       { name: '김도아', englishName: 'Doa Kim' },
       { name: '박기령', englishName: 'Giryeong Park' },
-      { name: '손건후', englishName:'Geonhoo Son'}
+      { name: '손건후', englishName: 'Geonhoo Son' },
     ],
   },
 ]
@@ -97,7 +97,6 @@ const points = [
       '/images/projects/newbe/archive/8.jpg',
       '/images/projects/newbe/archive/9.jpg',
       '/images/projects/newbe/archive/10.jpg',
-      
     ],
     labels: [
       'Experiment',
@@ -110,7 +109,7 @@ const points = [
       'Experiment',
       'Behind',
       'Modeling',
-      'Tutoring'
+      'Tutoring',
     ],
   },
 ]
@@ -192,16 +191,17 @@ export default function Page() {
 
   return (
     <>
-    <Blank/>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/NewBe_logo.svg'
-        title={['뉴비',
+        title={[
+          '뉴비',
           <>
             The New Hair Station,
-            <br/>
+            <br />
             Made to Fit You
-          </>
+          </>,
         ]}
         description={
           <>
@@ -213,14 +213,12 @@ export default function Page() {
         credits='이채원, 윤예현, 강동헌, 김시우, 정채영'
         className='w-[142px] md:w-[142px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <Image Image='/images/projects/newbe/newbe_main.jpg'/>
-      <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
+      <Image isFirst Image='/images/projects/newbe/newbe_main.jpg' />
+      <Divide title='Background' number='01' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
-            헤어 스타일링이
-            {' '}
-            <br className='hidden md:block' />
+            헤어 스타일링이 <br className='hidden md:block' />
             필요한 순간, 지금 NOW
           </>
         }
@@ -234,7 +232,7 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/newbe/newbe_1.webp' />
-      <Divide title='Target' number='02' className='text-[#7C8A8D]'/>
+      <Divide title='Target' number='02' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
@@ -259,13 +257,11 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Problem' number='03' className='text-[#7C8A8D]'/>
+      <Divide title='Problem' number='03' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
-            숙련도에 갇힌
-            {' '}
-            <br className='hidden md:block' />
+            숙련도에 갇힌 <br className='hidden md:block' />
             헤어 스타일링 경험
           </>
         }
@@ -306,7 +302,7 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Solution' number='04' className='text-[#7C8A8D]'/>
+      <Divide title='Solution' number='04' className='text-[#7C8A8D]' />
       <MidTitle align='center' text='머무름 자체가 곧 스타일링이 되는 NewBe' />
       <MediaContainer
         type='video'
@@ -320,9 +316,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            나만의 새로운
-            {' '}
-            <br className='hidden md:block' />
+            나만의 새로운 <br className='hidden md:block' />
             헤어 스타일링 스테이션
           </>
         }
@@ -359,14 +353,12 @@ export default function Page() {
         muted
         loop
       />
-      <Divide title='Scenario' number='05' className='text-[#7C8A8D]'/>
+      <Divide title='Scenario' number='05' className='text-[#7C8A8D]' />
       <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
       <TitleBody
         title={
           <>
-            나만의 헤어 스타일링
-            {' '}
-            <br className='hidden md:block' />
+            나만의 헤어 스타일링 <br className='hidden md:block' />
             생성하기
           </>
         }
@@ -405,9 +397,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            내가 머무는 곳이
-            {' '}
-            <br className='hidden md:block' />곧 스타일링
+            내가 머무는 곳이 <br className='hidden md:block' />곧 스타일링
           </>
         }
         text={
@@ -437,7 +427,7 @@ export default function Page() {
           </>
         }
       />
-     <MediaContainer
+      <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1110696671?h=aaf756f866'
         preloadDelayMs={0}
@@ -467,8 +457,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            NewBe는 언제든{' '}
-            <br className='hidden md:block' />내 머리에 Fit하니까
+            NewBe는 언제든 <br className='hidden md:block' />내 머리에 Fit하니까
           </>
         }
         text={
@@ -506,8 +495,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            그 머리, 이제 {' '}
-            <br className='hidden md:block' />내 머리에도 New Me
+            그 머리, 이제 <br className='hidden md:block' />내 머리에도 New Me
           </>
         }
         text={
@@ -528,7 +516,7 @@ export default function Page() {
         muted
         loop
       />
-      <Divide title='Expectation' number='06' className='text-[#7C8A8D]'/>
+      <Divide title='Expectation' number='06' className='text-[#7C8A8D]' />
       <MidTitle
         align='center'
         text={

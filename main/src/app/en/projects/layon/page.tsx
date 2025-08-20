@@ -65,7 +65,7 @@ const points = [
     id: '1',
     top: '50%',
     left: '50%',
-     images: [
+    images: [
       '/images/projects/layon/archive/1.jpg',
       '/images/projects/layon/archive/2.jpg',
       '/images/projects/layon/archive/3.jpg',
@@ -74,7 +74,6 @@ const points = [
       '/images/projects/layon/archive/6.jpg',
       '/images/projects/layon/archive/7.jpg',
       '/images/projects/layon/archive/8.jpg',
-      
     ],
     labels: [
       'Ideation',
@@ -180,9 +179,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            AI understands
-            {' '}
-            <br className='hidden md:block'/>
+            AI understands <br className='hidden md:block' />
             the world like you do
           </>
         }
@@ -204,9 +201,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Preparing for
-            {' '}
-            <br className='hidden md:block'/>
+            Preparing for <br className='hidden md:block' />
             the future
           </>
         }
@@ -253,9 +248,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            As much
-            {' '}
-            <br className='hidden md:block'/>
+            As much <br className='hidden md:block' />
             as you need
           </>
         }
@@ -317,9 +310,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Only the essentials,
-           {' '}
-            <br className='hidden md:block'/>
+            Only the essentials, <br className='hidden md:block' />
             kept light.
           </>
         }
@@ -337,9 +328,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            The perfect pick for
-            {' '}
-            <br className='hidden md:block'/>
+            The perfect pick for <br className='hidden md:block' />
             today’s vibe.
           </>
         }
@@ -382,9 +371,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Not in use,
-            {' '}
-            <br className='hidden md:block'/>
+            Not in use, <br className='hidden md:block' />
             still in style
           </>
         }
@@ -463,9 +450,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Options for what
-           {' '}
-            <br className='hidden md:block'/>
+            Options for what <br className='hidden md:block' />
             matters most
           </>
         }
@@ -482,9 +467,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            Natural,
-            {' '}
-            <br className='hidden md:block'/>
+            Natural, <br className='hidden md:block' />
             yet Clear
           </>
         }
@@ -498,8 +481,8 @@ export default function Page() {
       />
 
       <Divide title='Our Vision' number='07' className='text-[#417EB4]' />
-      <Image Image='/images/projects/layon/layon_20.jpg' />
-      <Image Image='/images/projects/layon/layon_21.jpg' />
+
+      <Image Image={['/images/projects/layon/layon_20.jpg', '/images/projects/layon/layon_21.jpg']} />
 
       <div ref={designedByRef}>
         <Credit

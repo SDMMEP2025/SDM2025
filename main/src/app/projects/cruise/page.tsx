@@ -187,7 +187,7 @@ export default function Page() {
         credits='윤여준, 강형구, 권민지, 백채영, 정민서'
         className='w-[177px] md:w-[177px] lg:w-[clamp(177px,21.3vw,308px)]'
       />
-      <Image Image='/images/projects/cruise/cruise1_main.jpg' />
+      <Image isFirst Image='/images/projects/cruise/cruise1_main.jpg' />
       <Divide title='Background' number='01' />
       <TitleBody
         title='삶의 모든 순간을 채우는 이동'

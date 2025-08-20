@@ -196,7 +196,7 @@ export default function Page() {
         credits='장우진, 정혜령, 김채은, 이일여, 장은혜'
         className='w-[85px] md:w-[85px] lg:w-[clamp(96px,10vw,144px)]'
       />
-      <Image Image='/images/projects/hotcake/hotcake_main.jpg' />
+      <Image isFirst Image='/images/projects/hotcake/hotcake_main.jpg' />
       <Divide title='A way of enjoying music' number='01' />
       <TitleBody
         title={[

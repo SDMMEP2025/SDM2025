@@ -163,7 +163,7 @@ export default function Page() {
         credits='Yumin Kim, Soeun Lee, Jiwon An, Junhong Yang, Seohyeon Cho'
       />
 
-      <Image Image='/images/projects/merlin/merlin_main.jpg' />
+      <Image isFirst Image='/images/projects/merlin/merlin_main.jpg' />
 
       {/* 01. Background */}
       <Divide title='Background' number='01' />
@@ -259,19 +259,16 @@ export default function Page() {
       <TitleBody
         title={[
           <>
-            Gen Z needs flow,
-            {' '}
-            <br className='hidden md:block' />
+            Gen Z needs flow, <br className='hidden md:block' />
             not apps
-          </>
+          </>,
         ]}
         text='Apps are containers for features—but that container often interrupts flow. What if the needed features were connected into one continuous path from the start, guided by context and prediction?'
       />
 
       {/* 06. Solution */}
       <Divide number='06' title='Solution' />
-      <Image Image='/images/projects/merlin/merlin_7.jpg' />
-      <Image Image='/images/projects/merlin/merlin_8.jpg' />
+      <Image Image={['/images/projects/merlin/merlin_7.jpg', '/images/projects/merlin/merlin_8.jpg']} />
       <MidTitle text='Into Your Flow, Merlin OS' padding={false} />
       <MidBody
         content={
@@ -376,14 +373,12 @@ export default function Page() {
         loop
       />
       <TitleBody
-      title={[
-        <>
-        Seamless focus
-        {' '}
-        <br className='hidden md:block'/>
-        an OS that learns you
-        </>
-      ]}
+        title={[
+          <>
+            Seamless focus <br className='hidden md:block' />
+            an OS that learns you
+          </>,
+        ]}
         text='With one uninterrupted flow (no app switching), Merlin reduces cognitive and operational fatigue—letting you focus immediately. Without explicit setup, it learns from your choices and interactions, evolving into a refined, personalized, algorithmic OS.'
       />
       <MediaContainer

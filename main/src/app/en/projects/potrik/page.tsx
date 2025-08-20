@@ -184,7 +184,7 @@ export default function Page() {
       />
 
       {/* HERO */}
-      <Image Image='/images/projects/potrik/potrik_main.jpg' />
+      <Image isFirst Image='/images/projects/potrik/potrik_main.jpg' />
 
       <Divide title='Background' number='01' className='text-[#09C17A]' />
       <TitleBody
@@ -471,9 +471,7 @@ export default function Page() {
           <>
             No more moving things from place to place.
             <br />
-            POTRIK works like a new personal and flexible delivery system.
-            {' '}
-            <br className='hidden md:block'/>
+            POTRIK works like a new personal and flexible delivery system. <br className='hidden md:block' />
             From [Here] to [Here], POTRIK moves with you.
           </>
         }

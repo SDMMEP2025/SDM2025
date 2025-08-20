@@ -173,7 +173,7 @@ export default function Page() {
         credits='김선일, 현수련, 박세연, 서현빈, 윤현경'
         className='w-[74px] md:w-[74px] lg:w-[clamp(96px,8.75vw,130px)]'
       />
-      <Image Image='/images/projects/silmul/silmul_main.jpg' />
+      <Image isFirst Image='/images/projects/silmul/silmul_main.jpg' />
       <Divide title='Background' number='01' className='text-[#E30D2D]' />
       <RightTitleBody
         title='창작을 망설이게 하는 심리적 부담감'

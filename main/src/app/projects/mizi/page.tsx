@@ -167,6 +167,7 @@ export default function Page() {
         }
         credits='박지민, 나승환, 김도영, 이준영'
       />
+      {/* InView 모션 제거 */}
       <MainImage Image='/images/projects/mizi/mizi_main.jpg' />
       <Divide title='Background' number='01' className='text-[#FF2A00]' />
       <TitleBody
