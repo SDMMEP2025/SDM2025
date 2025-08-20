@@ -310,9 +310,11 @@ export function ScrollOrchestrator() {
 
   const [aboutInteractive, setAboutInteractive] = useState(false)
   useMotionValueEvent(p3, 'change', (v) => {
-    if (!aboutInteractive && v >= 0.999) setAboutInteractive(true)
-    if (aboutInteractive && v < 0.98) setAboutInteractive(false)
+    if (!aboutInteractive && v >= 0.1) setAboutInteractive(true)
+    if (aboutInteractive && v < 0.1) setAboutInteractive(false)
   })
+
+  
   const vimeoFadeIn = useTransform(p3, [0.9, 0.93], [0, 1], { clamp: true })
   const vimeoOpacity = useTransform([opacityScale, vimeoFadeIn], ([a, b]) => Number(a) * Number(b))
 
