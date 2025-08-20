@@ -215,8 +215,8 @@ export default function Page() {
         ]}
       />
       <RightBody text='경험의 사전적 정의는 보거나 듣거나 느끼면서 겪는 것. 또는, 그로 인해 얻은 지식이나 기능을 말합니다. 감각을 통해 정보를 입력받고, 뇌에서 이를 해석하여 기억으로 남기는 과정을 통해 세상을 인식하고 이해하고 있습니다.  그리고 이런 우리의 감각을 데이터화하여 구현하는 지각 확장 기술은 XR과 햅틱을 기반으로 끝없이 발전하고 있습니다. 머지않은 미래에는 모든 감각을 실시간으로 완전히 구현할 수 있어 현실과 가상의 경계가 부서지는 지점에 도달할 것이고, 그 시대가 오면 “다녀왔다”라는 말의 기준, 즉 우리가 경험을 정의하는 방식이 변화할 것입니다.' />
-      <Image Image='/images/projects/mizi/mizi_4.jpg' />
-      <Image Image='/images/projects/mizi/mizi_5.jpg' />
+      {/* 이미지 세트 */}
+      <Image Image={['/images/projects/mizi/mizi_4.jpg', '/images/projects/mizi/mizi_5.jpg']} />
       <Divide title='Project Overview' number='04' className='text-[#FF2A00]' />
       <MidTitle align='center' className='text-[#FF2A00]' text='Into the Moment, MIZI' />
 
@@ -288,11 +288,9 @@ export default function Page() {
       <TitleBody
         title={[
           <>
-            이동이 자유로운 
-            {' '}
-            <br className='hidden md:block' />
+            이동이 자유로운 <br className='hidden md:block' />
             연속적인 몰입 경험
-          </>
+          </>,
         ]}
         text='도착한 장소가 어딘가 아쉽게 느껴지나요? 그렇다면 MIZI:AI에게 더 원하는 느낌을 말해보세요. MIZI:AI가 지금 내 감정에 맞는 장소를 큐레이션 하여 Next 장소로 바로 이동할 수 있습니다. 하나의 공간뿐만 아니라 여러 장소, 다양한 분위기와 감각을 연속적으로 경험하고 나만의 여정을 직접 설계해 보세요!'
       />
@@ -306,13 +304,11 @@ export default function Page() {
       />
       <Divide title='Feature 03' number='08' className='text-[#FF2A00]' />
       <TitleBody
-      title={[
+        title={[
           <>
-            On-Off
-            {' '}
-            <br className='hidden md:block' />
+            On-Off <br className='hidden md:block' />
             하이브리드 경험
-          </>
+          </>,
         ]}
         text='MIZI의 아바타를 통해 전 세계 다양한 공간에서 실시간으로 물건을 탐색할 수 있습니다. 현장에서 구매할 수 있는 물품을 탐색할 수 있고, 구매를 원할 때 현장 시스템과 App을 통해 원격으로 구매를 진행할 수 있습니다. 구매한 물품은 포장되어 추후 내 공간으로 배송받을 수 있죠. 오프라인의 현장감과 온라인의 편리함을 모두 누릴 수 있는 온-오프 하이브리드 경험을 제안합니다.'
       />
@@ -326,13 +322,11 @@ export default function Page() {
       />
       <Divide title='Feature 04' number='09' className='text-[#FF2A00]' />
       <TitleBody
-      title={[
+        title={[
           <>
-            순간을 자동으로
-            {' '}
-            <br className='hidden md:block' />
+            순간을 자동으로 <br className='hidden md:block' />
             기록하는 아카이브
-          </>
+          </>,
         ]}
         text='MIZI를 이용하는 동안 사용자가 사용하고 있는 디바이스들이 사용자의 심장박동, 혈압 등의 신체활동을 감지합니다. 내가 유독 힐링했던 순간, 내가 가장 신났던 순간 등을 인식하고, 그때의 감각들이 자동으로 기록됩니다. 추후 다시 한번 경험하고 싶다면 그때의 감각을 불러와 동일한 순간을 다시 체험할 수 있습니다. 언제든 그때의 몰입감과 감정을 느껴보세요!'
       />
@@ -348,13 +342,10 @@ export default function Page() {
       />
       <Divide title='Scenario 01' number='10' className='text-[#FF2A00]' />
       <TitleBody
-      title={[
+        title={[
           <>
-            경직된 일상에서의 해방
-            {' '}
-            <br className='hidden md:block' />
-            ∞ Dune
-          </>
+            경직된 일상에서의 해방 <br className='hidden md:block' />∞ Dune
+          </>,
         ]}
         text='매일 반복되는 업무와 공간에 갇힌 도시의 직장인, 일상의 답답함에서 벗어나 자유를 갈망합니다. MIZI의 아바타 NOMA: Dune은 사막과 같은 험한 지형에서 사용자가 해방과 속도감을 느낄 수 있는 자유로운 감각을 전달합니다.'
       />
@@ -368,13 +359,10 @@ export default function Page() {
       />
       <Divide title='Scenario 02' number='11' className='text-[#FF2A00]' />
       <TitleBody
-       title={[
+        title={[
           <>
-            바다에 대한 갈망
-            {' '}
-            <br className='hidden md:block' />
-            ∞ Nautilus
-          </>
+            바다에 대한 갈망 <br className='hidden md:block' />∞ Nautilus
+          </>,
         ]}
         text='신체적으로 이동이 불편한 사회적 약자에게 바다란 접근이 어려운 장소 중 하나입니다. 모래사장과 인도를 포함한 접근로를 지나 그들을 위한 특정 유영 공간에 안전하게 들어가는 일조차 쉽지 않습니다. MIZI의 아바타 NOMA: Nautilus는 수중 모듈로 사용자가 재활센터, 수영장 등 어디서든 바닷속을 경험할 수 있도록 감각을 전달합니다.'
       />
@@ -388,13 +376,10 @@ export default function Page() {
       />
       <Divide title='Scenario 03' number='12' className='text-[#FF2A00]' />
       <TitleBody
-      title={[
+        title={[
           <>
-            궁극의 미지에 대한 로망
-            {' '}
-            <br className='hidden md:block' />
-            ∞ Stardust
-          </>
+            궁극의 미지에 대한 로망 <br className='hidden md:block' />∞ Stardust
+          </>,
         ]}
         text='누구나 한 번쯤은 ‘우주에 간 나’를 상상하는 순간이 있습니다. 지금은 소수를 제외하면 갈 수 없는 미지의 공간이지만 MIZI의 아바타 NOMA: Stardust, 우주 모듈을 통해 우리는 모두 지구 너머 우리 은하를 실시간으로 경험할 수 있습니다. MIZI와 함께라면 상상은 현실이 됩니다.'
       />
@@ -422,13 +407,11 @@ export default function Page() {
       <MidTitle align='center' text='A New Way of Seeing the World' />
       <Divide title='MIZI Branding Story' number='14' className='text-[#FF2A00]' />
       <TitleBody
-      title={[
+        title={[
           <>
-            새로운 세계로,
-            {' '}
-            <br className='hidden md:block' />
+            새로운 세계로, <br className='hidden md:block' />
             시야의 확장
-          </>
+          </>,
         ]}
         text='MIZI는 사용자가 아바타 NOMA를 통해 자신만의 새로운 세계를 확장해 나갈 수 있도록 돕습니다. 아직은 불확실하고 모호한 세계를, MIZI와 함께라면 조금 더 또렷하게 바라볼 수 있습니다. MIZI는 ‘새로운 시야의 확장’이라는 가치를 핵심으로 삼고, 이를 바탕으로 MIZI만의 브랜드 아이덴티티를 구축했습니다.'
       />

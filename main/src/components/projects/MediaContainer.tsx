@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Player from '@vimeo/player'
+import { InViewFrame } from '../InViewFrame'
 
 interface MediaContainerProps {
   type?: 'image' | 'video'
@@ -29,7 +30,7 @@ export function MediaContainer({
   aspect = 'aspect-[16/9]',
   preloadDelayMs = 300,
   prewarm = true,
-  position = 'relative'
+  position = 'relative',
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -69,7 +70,7 @@ export function MediaContainer({
 
     q.append('autoplay', shouldAutoplayParam ? '1' : '0')
     q.append('loop', loop ? '1' : '0')
-    q.append('muted', (!hasAudio || muted) ? '1' : '0')
+    q.append('muted', !hasAudio || muted ? '1' : '0')
     q.append('playsinline', '1')
     q.append('autopause', '1')
     q.append('byline', '0')
@@ -139,7 +140,7 @@ export function MediaContainer({
           }
         } catch {}
       },
-      { threshold }
+      { threshold },
     )
     io.observe(iframeRef.current!)
 
@@ -169,16 +170,16 @@ export function MediaContainer({
   }, [type, loaded, threshold, loop, prewarm, muted, hasAudio, autoplay, saveData, reduceMotion])
 
   return (
-    <div className={`w-full ${position} ${aspect} bg-zinc-600 overflow-hidden`}>
+    <InViewFrame className={`w-full ${position} ${aspect} bg-zinc-600 overflow-hidden`}>
       {/* IMAGE */}
       {type === 'image' && finalSrc && !hasError && (
         <img
           src={finalSrc}
           alt={alt}
-          className="absolute inset-0 w-full h-full object-cover"
+          className='absolute inset-0 w-full h-full object-cover'
           onError={() => setHasError(true)}
-          loading="lazy"
-          decoding="async"
+          loading='lazy'
+          decoding='async'
         />
       )}
 
@@ -188,9 +189,9 @@ export function MediaContainer({
           <iframe
             ref={iframeRef}
             src={getIframeSrc(finalSrc)}
-            className="absolute inset-0 w-full h-full"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            className='absolute inset-0 w-full h-full'
+            frameBorder='0'
+            allow='autoplay; fullscreen; picture-in-picture; encrypted-media'
             allowFullScreen
             title={alt}
             loading={autoplay ? 'eager' : 'lazy'}
@@ -198,17 +199,17 @@ export function MediaContainer({
           />
           {needsTap && (
             <button
-              type="button"
+              type='button'
               onClick={tryPlay}
-              className="absolute inset-0 flex items-center justify-center bg-black/30 text-white"
+              className='absolute inset-0 flex items-center justify-center bg-black/30 text-white'
             >
-              <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30">
+              <span className='px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30'>
                 탭하여 재생
               </span>
             </button>
           )}
         </>
       )}
-    </div>
+    </InViewFrame>
   )
 }

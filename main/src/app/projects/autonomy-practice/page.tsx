@@ -197,8 +197,13 @@ export default function Page() {
       />
       <Image Image='/images/projects/autonomy_practice/autonomy_practice_4.jpg' />
       <Image Image='/images/projects/autonomy_practice/autonomy_practice_5.webp' />
-      <Image Image='/images/projects/autonomy_practice/autonomy_practice_6.jpg' />
-      <Image Image='/images/projects/autonomy_practice/autonomy_practice_7.jpg' />
+      {/* 이미지 세트 */}
+      <Image
+        Image={[
+          '/images/projects/autonomy_practice/autonomy_practice_6.jpg',
+          '/images/projects/autonomy_practice/autonomy_practice_7.jpg',
+        ]}
+      />
       <Divide title='Structure' number='02' className='text-[#949598]' />
       <MidBody
         align='left'

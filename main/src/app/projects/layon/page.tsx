@@ -74,7 +74,6 @@ const points = [
       '/images/projects/layon/archive/6.jpg',
       '/images/projects/layon/archive/7.jpg',
       '/images/projects/layon/archive/8.jpg',
-      
     ],
     labels: [
       'Ideation',
@@ -193,7 +192,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            인간과 닮은 방식으로 <br className='hidden md:block'/>
+            인간과 닮은 방식으로 <br className='hidden md:block' />
             세상을 이해하는 AI
           </>
         }
@@ -214,7 +213,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            미래로 나아가기 <br className='hidden md:block'/>
+            미래로 나아가기 <br className='hidden md:block' />
             위한 준비
           </>
         }
@@ -253,7 +252,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            필요한 만큼, <br className='hidden md:block'/>
+            필요한 만큼, <br className='hidden md:block' />
             거슬리지 않는
           </>
         }
@@ -299,8 +298,7 @@ export default function Page() {
           <>
             비전 데이터를 수집하기 위해서는 디바이스가 우리의 눈과 가까운 곳에 있어야 합니다. 따라서 미래에 대중화될
             차세대 디바이스로 손꼽히는 'AR 글래스'는 비전 데이터 수집에 중요한 역할을 맡게 될 것입니다.
-            <br/>
-            이 AR 글래스는 어떤 기술을 담고, 또 어떤 형태여야 할까요?
+            <br />이 AR 글래스는 어떤 기술을 담고, 또 어떤 형태여야 할까요?
           </>
         }
       />
@@ -308,9 +306,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            꼭 필요한 기술만을 
-            {' '}
-            <br className='hidden md:block'/>
+            꼭 필요한 기술만을 <br className='hidden md:block' />
             가볍게 담아.
           </>
         }
@@ -326,9 +322,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            오늘의 나에게 
-            {' '}
-            <br className='hidden md:block'/>
+            오늘의 나에게 <br className='hidden md:block' />
             가장 어울리는 선택.
           </>
         }
@@ -357,7 +351,7 @@ export default function Page() {
         content={
           <>
             오늘의 코디와 내 기분에 맞춰 마음에 드는 Face를 끼워보세요. 다양한 스타일의 Face는 내가 어떤 곳에 가든,{' '}
-            <br className='hidden lg:block'/>
+            <br className='hidden lg:block' />
             무슨 옷을 입고 있든 비전 데이터를 수집할 수 있게 해줍니다.
           </>
         }
@@ -437,9 +431,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            가장 필요한 것,
-            {' '}
-            <br className='hidden md:block'/>그 하나를 위한 선택지.
+            가장 필요한 것, <br className='hidden md:block' />그 하나를 위한 선택지.
           </>
         }
         text={
@@ -453,9 +445,7 @@ export default function Page() {
       <TitleBody
         title={
           <>
-            자연스러운, 
-            {' '}
-            <br className='hidden md:block '/>
+            자연스러운, <br className='hidden md:block ' />
             그러나 분명하게.
           </>
         }
@@ -468,8 +458,8 @@ export default function Page() {
         }
       />
       <Divide title='Our Vision' number='07' className='text-[#417EB4]' />
-      <Image Image='/images/projects/layon/layon_20.jpg' />
-      <Image Image='/images/projects/layon/layon_21.jpg' />
+      {/* 이미지 세트 */}
+      <Image Image={['/images/projects/layon/layon_20.jpg', '/images/projects/layon/layon_21.jpg']} />
 
       <div ref={designedByRef}>
         <Credit

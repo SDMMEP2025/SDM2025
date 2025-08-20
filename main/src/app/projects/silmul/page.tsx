@@ -223,8 +223,8 @@ export default function Page() {
       <LeftTitle
         text={
           <>
-            Turning real senses 
-            <br className='block md:hidden'/>
+            Turning real senses
+            <br className='block md:hidden' />
             into real objects , Silmul
             <br />
             실감을 실물로 구현하다
@@ -442,8 +442,9 @@ export default function Page() {
         }
       />
       <Image Image='/images/projects/silmul/silmul_18.webp' />
-      <Image Image='/images/projects/silmul/silmul_19.jpg' />
-      <Image Image='/images/projects/silmul/silmul_20.jpg' />
+
+      {/* 하나의 이미지 세트 */}
+      <Image Image={['/images/projects/silmul/silmul_19.jpg', '/images/projects/silmul/silmul_20.jpg']} />
 
       <MidTitle align='center' text='Turning real senses into real objects, Silmul' className='text-[#E30D2D]' />
 

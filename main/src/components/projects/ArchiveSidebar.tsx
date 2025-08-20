@@ -202,7 +202,7 @@ const HoverImageCard = ({
       ref={ref}
       onHoverStart={() => setIsHover(true)}
       onHoverEnd={() => setIsHover(false)}
-      className='w-[100%] h-auto cursor-pointer z-0 relative group overflow-hidden'
+      className='w-[100%] h-auto cursor-pointer z-0 relative overflow-hidden'
     >
       <AnimatePresence>
         {showOverlay && (
@@ -213,7 +213,6 @@ const HoverImageCard = ({
             transition={{ duration: 0.3 }}
             className='absolute z-10 inset-0 transition-opacity duration-300 ease-in-out'
           >
-
             {index % 2 === 0 ? (
               <div className='absolute flex flex-row z-[2000] justify-start items-center gap-2 top-0 left-0'>
                 <div className='text-black text-lg font-semibold capitalize tracking-[-0.36px] leading-[1.5]'>
@@ -233,10 +232,13 @@ const HoverImageCard = ({
         )}
       </AnimatePresence>
 
-      <img
+      <motion.img
+        initial={{ scale: 1 }}
+        animate={{ scale: isHover ? 1.1 : 1 }}
+        transition={{ duration: 0.3 }}
         src={src}
         alt={src}
-        className={`w-[90%] h-auto transition-all duration-200 ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}
+        className={`w-[90%] h-auto ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}
       />
     </motion.div>
   )

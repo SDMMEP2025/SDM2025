@@ -291,8 +291,8 @@ export default function Page() {
         }
       />
       <Divide number='06' title='Solution' />
-      <Image Image='/images/projects/merlin/merlin_7.jpg' />
-      <Image Image='/images/projects/merlin/merlin_8.jpg' />
+      {/* 한 세트 */}
+      <Image Image={['/images/projects/merlin/merlin_7.jpg', '/images/projects/merlin/merlin_8.jpg']} />
       <MidTitle text='Into Your Flow, Merlin OS' padding={false} />
       <MidBody
         content={
