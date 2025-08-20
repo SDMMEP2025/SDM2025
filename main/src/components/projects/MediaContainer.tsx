@@ -33,7 +33,7 @@ export function MediaContainer({
   preloadDelayMs = 300,
   prewarm = true,
   position = 'relative',
-  className = ''
+  className = '',
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
