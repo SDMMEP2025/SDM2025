@@ -187,7 +187,6 @@ export function ScrollOrchestrator() {
     duration: 600,
     nearPct: 0.008,
     scrollerRef: boxRef,
-    ignore: [4],
   })
 
   // ---------- Section 1 ----------
