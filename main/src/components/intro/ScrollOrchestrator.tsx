@@ -466,7 +466,7 @@ export function ScrollOrchestrator() {
                   <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
-                      src='https://player.vimeo.com/video/1109760722?h=69b2dd590a'
+                      src='https://player.vimeo.com/video/1110984354?h=fdebbff948'
                       preloadDelayMs={0}
                       prewarm
                       muted
