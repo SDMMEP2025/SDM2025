@@ -245,7 +245,7 @@ export function ScrollOrchestrator() {
   // ---------- Section 3 ---------- 여기가 plane이 눕혀지는 곳
   const planesOpacity = useTransform(p2, [0.0, 0.0001], [0, 1], { clamp: true, ease: easeInOut })
   const p2Ease = useTransform(p2, (t) => t * t * (3 - 2 * t))
-  const planeTiltDegRaw = useTransform(p2Ease, [0, 0.1], [40, 80.5])
+  const planeTiltDegRaw = useTransform(p2Ease, [0, 0.1], [0, 80.5])
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.4 })
   const LIFT_P3 = isMdUp ? 0 * vhPx : -6 * vhPx
   const lift3 = useTransform(p2, [0.1, 0.8], [0, LIFT_P3])
