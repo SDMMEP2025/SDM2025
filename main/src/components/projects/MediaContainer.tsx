@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Player from '@vimeo/player'
 import { InViewFrame } from '../InViewFrame'
+import classNames from 'classnames'
 
 interface MediaContainerProps {
   type?: 'image' | 'video'
@@ -16,6 +17,7 @@ interface MediaContainerProps {
   preloadDelayMs?: number
   prewarm?: boolean
   position?: string
+  className?: string
 }
 
 export function MediaContainer({
@@ -31,6 +33,7 @@ export function MediaContainer({
   preloadDelayMs = 300,
   prewarm = true,
   position = 'relative',
+  className = ''
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -170,7 +173,7 @@ export function MediaContainer({
   }, [type, loaded, threshold, loop, prewarm, muted, hasAudio, autoplay, saveData, reduceMotion])
 
   return (
-    <InViewFrame className={`w-full ${position} ${aspect} bg-zinc-600 overflow-hidden`}>
+    <InViewFrame className={`w-full ${position} ${aspect} ${className} bg-zinc-600 overflow-hidden`}>
       {/* IMAGE */}
       {type === 'image' && finalSrc && !hasError && (
         <img

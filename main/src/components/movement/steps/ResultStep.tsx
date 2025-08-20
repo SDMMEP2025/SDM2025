@@ -427,7 +427,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
           </motion.div>
           <div
             className={classNames(
-              'text-center text-[#FFF] font-bold mix-blend-difference',
+              'text-center text-[#222] font-bold',
               // 모바일
               'text-[30px] leading-[140%] letterSpacing-[-0.6px]',
               // tablet

@@ -105,14 +105,16 @@ export default function Page() {
 
       {step === 'edit' && currentImage && (
         <>
-          <div className='absolute z-0 w-full h-full'>
+          <div className='absolute inset-0 w-full h-full overflow-hidden'>
             <MediaContainer
               type='video'
               src='https://player.vimeo.com/video/1110238461?h=402fd700bc'
               preloadDelayMs={0}
               loop
+              className='w-full h-full object-cover'
             />
           </div>
+
           <EditStep
             currentData={currentData}
             imageUrl={currentImage.url}
@@ -125,12 +127,13 @@ export default function Page() {
 
       {step === 'result' && currentImage && data.text && data.colorAnalysis && (
         <>
-          <div className='absolute z-0 w-full h-full'>
+          <div className='absolute inset-0 w-full h-full overflow-hidden'>
             <MediaContainer
               type='video'
               src='https://player.vimeo.com/video/1110238461?h=402fd700bc'
               preloadDelayMs={0}
               loop
+              className='w-full h-full object-cover'
             />
           </div>
           <ResultStep

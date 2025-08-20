@@ -248,7 +248,7 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
             exit={{ opacity: 0.2 }}
             transition={{ duration: 0.3 }}
             className={classNames(
-              'text-center text-[#FFF] font-bold mix-blend-difference',
+              'text-center text-[#222] font-bold',
               'text-[30px] leading-[140%] letterSpacing-[-0.6px]',
               'md:text-[clamp(30px,calc(28.235px+0.4902vw),32px)] md:leading-[140%] md:letterSpacing-[-0.64px]',
               'lg:text-[clamp(36px,calc(0px+2.5vw),64px)] lg:leading-[140%] lg:letterSpacing-[-0.72px]',
