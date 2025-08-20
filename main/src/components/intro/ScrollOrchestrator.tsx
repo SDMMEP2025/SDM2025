@@ -185,8 +185,8 @@ export function ScrollOrchestrator() {
 
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
-    duration: 600,
-    nearPct: 0.01,
+    duration: 900,
+    nearPct: 0.05,
     scrollerRef: boxRef,
   })
 
@@ -248,7 +248,7 @@ export function ScrollOrchestrator() {
   const p2Ease = useTransform(p2, (t) => t * t * (3 - 2 * t))
   const planeTiltDegRaw = useTransform(p2Ease, [0.1, 0.3], [0, 80.5])
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.4 })
-  const LIFT_P3 = isMdUp ? 0 * vhPx : 0 * vhPx
+  const LIFT_P3 = isMdUp ? 0 * vhPx : -2 * vhPx
   const lift3 = useTransform(p2, [0.1, 0.3], [0, LIFT_P3])
   const yAll3 = lift3
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
@@ -313,7 +313,7 @@ export function ScrollOrchestrator() {
     if (!aboutInteractive && v >= 0.999) setAboutInteractive(true)
     if (aboutInteractive && v < 0.98) setAboutInteractive(false)
   })
-  const vimeoFadeIn = useTransform(p3, [0.8, 1.0], [0, 1], { clamp: true })
+  const vimeoFadeIn = useTransform(p3, [0.9, 0.93], [0, 1], { clamp: true })
   const vimeoOpacity = useTransform([opacityScale, vimeoFadeIn], ([a, b]) => Number(a) * Number(b))
 
   return (
@@ -473,7 +473,7 @@ export function ScrollOrchestrator() {
                   </svg>
                 </motion.div>
                 <motion.div
-                  className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:h-auto absolute flex justify-center items-center   pointer-events-none overflow-hidden'
+                  className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center pointer-events-none overflow-hidden'
                   aria-hidden
                   style={{ opacity: vimeoOpacity, willChange: 'opacity' }}
                 >
@@ -482,7 +482,7 @@ export function ScrollOrchestrator() {
                     autoplay={true}
                     loop={true}
                     rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
-                    className='w-full aspect-[1440/1100] md:aspect-[1440/1500] [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
+                    className='w-full aspect-[1440/1100] md:aspect-[1440/1500] md:h-full md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
                   />
                 </motion.div>
               </div>

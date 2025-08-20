@@ -59,10 +59,10 @@ const thankstoData = [
     tutors: [{ name: '이효재', englishName: 'Hyojae Lee' }],
   },
   {
-    title: 'Textile',
+    title: 'Textile Designer',
     tutors: [
-      { name: '김규림', englishName: 'Gyurim Kim' },
       { name: '박나은', englishName: 'Naeun Pak' },
+      { name: '김규림', englishName: 'Gyurim Kim' },
     ],
   },
 ]
@@ -79,13 +79,7 @@ const points = [
       '/images/projects/autonomy_practice/archive/4.jpg',
       '/images/projects/autonomy_practice/archive/5.jpg',
     ],
-    labels: [
-      'Form Study',
-      'Idea Sketch',
-      'Experiment',
-      'Form Study',
-      'Modeling',
-    ],
+    labels: ['Form Study', 'Idea Sketch', 'Experiment', 'Form Study', 'Modeling'],
   },
 ]
 
