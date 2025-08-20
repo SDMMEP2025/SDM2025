@@ -18,7 +18,7 @@ export function FloatingPhoto({
 }) {
   const isMdUp = useMediaQuery('(min-width: 768px)')
 
-  const planeLiftMd = isMdUp ? -4000 : -2000
+  const planeLiftMd = isMdUp ? -3000 : -2000
   const y = useTransform(p4, [0, 1], [base, base + planeLiftMd], {
     clamp: true,
   })

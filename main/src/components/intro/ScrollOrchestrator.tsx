@@ -180,14 +180,15 @@ export function ScrollOrchestrator() {
   })
   const [p0, p1, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
-  useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
+  useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
 
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
     duration: 900,
     nearPct: 0.05,
     scrollerRef: boxRef,
+    ignore:[4,5]
   })
 
   // ---------- Section 1 ----------
@@ -544,7 +545,7 @@ export function ScrollOrchestrator() {
                     p4={p3}
                     src={isMdPortrait ? '/images/intro/pc.png' : '/images/intro/mo.png'}
                     left='0'
-                    base={isMdPortrait ? 200 : 0}
+                    base={isMdPortrait ? 200 : 20}
                     width='100vw'
                     fade={[0, 1]}
                   />
