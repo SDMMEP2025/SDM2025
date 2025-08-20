@@ -324,9 +324,9 @@ export function ScrollOrchestrator() {
           willChange: 'transform',
         }}
       >
-        <div ref={wrapRef} className='checking' style={{ height: '1300dvh' }}>
-          <section className='relative checking' style={{ height: '1300dvh' }}>
-            <div className='sticky checking top-0' style={{ height: '100dvh', contain: 'layout style' }}>
+        <div ref={wrapRef} style={{ height: '1300dvh' }}>
+          <section className='relative' style={{ height: '1300dvh' }}>
+            <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
                 <div className='absolute left-1/2 top-[45dvh] md:top-[45dvh] -translate-x-1/2 -translate-y-1/2'>
