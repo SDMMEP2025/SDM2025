@@ -185,7 +185,7 @@ export function ScrollOrchestrator() {
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
     duration: 600,
-    nearPct: 0.005,
+    nearPct: 0.02,
     scrollerRef: boxRef,
     ignore: [4]
   })
