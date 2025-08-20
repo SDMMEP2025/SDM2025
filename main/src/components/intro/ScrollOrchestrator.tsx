@@ -463,7 +463,7 @@ export function ScrollOrchestrator() {
                     />
                   </svg>
                 </motion.div>
-                <div className='aspect-[1440/1200] h-auto w-full absolute left-1/2 top-[45lvh] md:top-1/2 -translate-x-1/2 -translate-y-1/2'>
+                <div className='aspect-[1440/1500] h-auto w-full absolute left-1/2 top-[45lvh] md:top-1/2 -translate-x-1/2 -translate-y-1/2'>
                   <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
@@ -472,7 +472,7 @@ export function ScrollOrchestrator() {
                       prewarm
                       muted
                       loop
-                      aspect='aspect-[1440/1200]'
+                      aspect='aspect-[1440/1500]'
                     />
                   </motion.div>
                 </div>

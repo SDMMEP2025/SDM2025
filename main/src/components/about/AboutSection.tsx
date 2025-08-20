@@ -87,7 +87,7 @@ export default function AboutSection({ embedded = false }: Props) {
       <div className='relative w-full h-fit md:hidden lg:block'>
         <Blank />
       </div>
-      <div className='relative w-full aspect-[1440/1200] font-english font-semibold'>
+      <div className='relative w-full aspect-[1440/1500] font-english font-semibold'>
         <h1 className='hidden md:block absolute text-white z-[1000] md:top-[71.3px] lg:top-[68px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
           New Formative
         </h1>
@@ -103,7 +103,7 @@ export default function AboutSection({ embedded = false }: Props) {
           prewarm
           muted
           loop
-          aspect='aspect-[1440/1200]'
+          aspect='aspect-[1440/1500]'
           position='absolute'
         />
       </div>
