@@ -39,7 +39,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 2, 3, 1]
+const WEIGHTS: number[] = [1, 1, 2, 3, 1]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -178,7 +178,7 @@ export function ScrollOrchestrator() {
     target: wrapRef,
     offset: ['start start', 'end start'],
   })
-  const [p0, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
+  const [p0, p1,p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
   useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
@@ -318,15 +318,13 @@ export function ScrollOrchestrator() {
     <>
       <div
         ref={boxRef}
-        className='fixed inset-0 overflow-y-auto overscroll-none'
+        className='fixed inset-0 overflow-y-auto'
         style={{
-          WebkitOverflowScrolling: 'touch',
           contain: 'layout style paint',
           willChange: 'transform',
-          transform: 'translateZ(0)',
         }}
       >
-        <div ref={wrapRef} className='overscroll-none checking touch-pan-x' style={{ height: '1300dvh' }}>
+        <div ref={wrapRef} className='checking' style={{ height: '1300dvh' }}>
           <section className='relative checking' style={{ height: '1300dvh' }}>
             <div className='sticky checking top-0' style={{ height: '100dvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>

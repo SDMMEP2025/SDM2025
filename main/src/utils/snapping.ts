@@ -258,7 +258,7 @@ export function useSnapP0toP4(
       if (animating.current) return
       const [i, j] = band
       const a = cuts[i].start
-      const fastSwipe = Math.abs(dy) > 20
+      const fastSwipe = Math.abs(dy) > 40
       if (dy > 0) {
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'coarse', fastSwipe })
         animateTo(progressToTop(cuts[j].start), dur)
