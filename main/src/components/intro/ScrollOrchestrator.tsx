@@ -15,6 +15,7 @@ import { useIsLandscape } from '@/hooks/useIsLandscape'
 import { FloatingPhoto } from './Photo'
 import { MediaContainer } from '../projects'
 import AboutSectionWithoutLottie from '../about/AboutSectionWithoutLottie'
+import aboutAnim from '@/animation/about_1.json'
 
 function useStableVh() {
   useEffect(() => {
@@ -185,7 +186,7 @@ export function ScrollOrchestrator() {
   /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
     duration: 600,
-    nearPct: 0.008,
+    nearPct: 0.01,
     scrollerRef: boxRef,
   })
 
@@ -247,7 +248,7 @@ export function ScrollOrchestrator() {
   const p2Ease = useTransform(p2, (t) => t * t * (3 - 2 * t))
   const planeTiltDegRaw = useTransform(p2Ease, [0.1, 0.3], [0, 80.5])
   const planeTiltDeg = useSpring(planeTiltDegRaw, { stiffness: 120, damping: 20, mass: 0.4 })
-  const LIFT_P3 = isMdUp ? 0 * vhPx : -6 * vhPx
+  const LIFT_P3 = isMdUp ? 0 * vhPx : 0 * vhPx
   const lift3 = useTransform(p2, [0.1, 0.3], [0, LIFT_P3])
   const yAll3 = lift3
   const infoFadeOut = useTransform(p2, [0, 0.2], [1, 0], { ease: easeInOut })
@@ -327,12 +328,12 @@ export function ScrollOrchestrator() {
           transform: 'translateZ(0)',
         }}
       >
-        <div ref={wrapRef} style={{ height: '2300lvh' }}>
-          <section className='relative' style={{ height: '2300lvh' }}>
-            <div className='sticky top-0' style={{ height: '100lvh', contain: 'layout style' }}>
+        <div ref={wrapRef} style={{ height: '2300dvh' }}>
+          <section className='relative' style={{ height: '2300dvh' }}>
+            <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
-                <div className='absolute left-1/2 top-[45lvh] md:top-[45lvh] -translate-x-1/2 -translate-y-1/2'>
+                <div className='absolute left-1/2 top-[45dvh] md:top-[45dvh] -translate-x-1/2 -translate-y-1/2'>
                   <motion.div
                     ref={rectRef}
                     initial={false}
@@ -365,7 +366,7 @@ export function ScrollOrchestrator() {
                 </motion.div>
 
                 {/* 모바일 타이틀 */}
-                <div className='md:hidden absolute left-1/2 top-[45lvh] -translate-x-1/2 -translate-y-[90px] z-[9999] mix-blend-difference text-center text-white'>
+                <div className='md:hidden absolute left-1/2 top-[45dvh] -translate-x-1/2 -translate-y-[90px] z-[9999] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col items-center gap-2 font-english'>
                     <motion.span
                       initial={false}
@@ -386,7 +387,7 @@ export function ScrollOrchestrator() {
                   </div>
                 </div>
 
-                <div className='md:hidden absolute left-1/2 top-[45lvh] -translate-x-1/2 translate-y-[0px] z-[9999] mix-blend-difference text-center text-white'>
+                <div className='md:hidden absolute left-1/2 top-[45dvh] -translate-x-1/2 translate-y-[0px] z-[9999] mix-blend-difference text-center text-white'>
                   <div className='flex flex-col-reverse items-center gap-4 font-english'>
                     <motion.span
                       initial={false}
@@ -422,7 +423,7 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43lvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
+                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43dvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: titleScale, y: titleLift }}
@@ -432,7 +433,7 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute left-1/2 top-[43lvh] -translate-x-1/2 md:translate-y-[80px] lg:translate-y-[90px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
+                <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] lg:translate-y-[90px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: subtitleScale, y: subtitleLift }}
@@ -471,11 +472,19 @@ export function ScrollOrchestrator() {
                     />
                   </svg>
                 </motion.div>
-                <div className='aspect-[1440/1500] h-auto w-full absolute left-1/2 top-[45lvh] md:top-1/2 -translate-x-1/2 -translate-y-1/2'>
-                  <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
-
-                  </motion.div>
-                </div>
+                <motion.div
+                  className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:h-auto absolute flex justify-center items-center   pointer-events-none overflow-hidden'
+                  aria-hidden
+                  style={{ opacity: vimeoOpacity, willChange: 'opacity' }}
+                >
+                  <Lottie
+                    animationData={aboutAnim}
+                    autoplay={true}
+                    loop={true}
+                    rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
+                    className='w-full aspect-[1440/1100] md:aspect-[1440/1500] [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
+                  />
+                </motion.div>
               </div>
 
               {/* 3D planes */}
@@ -535,7 +544,7 @@ export function ScrollOrchestrator() {
                     left='0'
                     base={isMdPortrait ? 200 : 0}
                     width='100vw'
-                    fade={[10, 10]}
+                    fade={[0, 1]}
                   />
                 </motion.div>
               </div>
@@ -555,10 +564,10 @@ export function ScrollOrchestrator() {
 }
 
 function useVhPx() {
-  const [lvh, setlVh] = useState(0)
+  const [dvh, setdvh] = useState(0)
   useEffect(() => {
     const get = () => Math.round(window.innerHeight / 100)
-    const update = () => setlVh(get())
+    const update = () => setdvh(get())
     update()
     window.addEventListener('resize', update)
     window.addEventListener('orientationchange', update)
@@ -567,7 +576,7 @@ function useVhPx() {
       window.removeEventListener('orientationchange', update)
     }
   }, [])
-  return lvh
+  return dvh
 }
 
 function useVminPx() {
