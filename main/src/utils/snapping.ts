@@ -1,4 +1,3 @@
-// hooks/useSnapP0toP4.ts
 'use client'
 import { useEffect, useRef } from 'react'
 import type { MotionValue } from 'framer-motion'
@@ -10,25 +9,30 @@ type SnapOptions = {
   nearPct?: number
   scrollerRef?: React.RefObject<HTMLElement | null>
   ignore?: number[]
+  durationTable?: Partial<Record<`${number}->${number}`, number>>
+  getDuration?: (
+    fromIdx: number,
+    toIdx: number,
+    ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
+  ) => number | undefined
 }
 
-
 export function useSnapP0toP4(
-wrapRef: React.RefObject<HTMLElement | null>,
+  wrapRef: React.RefObject<HTMLElement | null>,
   scrollYProgress: MotionValue<number>,
   cuts: readonly Cut[],
-  opts: SnapOptions = {}, 
+  opts: SnapOptions = {},
 ) {
   const DUR = opts?.duration ?? 280
   const NEAR = opts?.nearPct ?? 0.05
   const ignoreSet = new Set(opts?.ignore ?? [])
-
 
   const animating = useRef(false)
   const touchStartY = useRef<number | null>(null)
   const snapRaf = useRef<number | null>(null)
   const prevOverscroll = useRef<string | null>(null)
 
+  // i->j로 이어지는 스냅 밴드 목록
   const snapBands: [number, number][] = []
   for (let i = 0; i < cuts.length - 1; i++) {
     if (ignoreSet.has(i) || ignoreSet.has(i + 1)) continue
@@ -56,7 +60,7 @@ wrapRef: React.RefObject<HTMLElement | null>,
 
   const progressToTop = (p: number) => {
     const wrap = wrapRef.current!
-    const startY = (wrap as HTMLElement).offsetTop // ★ 안정 기준
+    const startY = (wrap as HTMLElement).offsetTop
     const total = wrap.offsetHeight
     return startY + p * total
   }
@@ -68,7 +72,7 @@ wrapRef: React.RefObject<HTMLElement | null>,
     const scroller = scrollerEl()
     if (!scroller) return
     const startTop = scroller.scrollTop
-    if (Math.abs(targetTop - startTop) < 1) return // 이동량 미미하면 생략
+    if (Math.abs(targetTop - startTop) < 1) return
 
     animating.current = true
     setOverscroll(true)
@@ -100,30 +104,61 @@ wrapRef: React.RefObject<HTMLElement | null>,
     return null
   }
 
+  // 구간별/방향별 지속시간 결정
+  const resolveDuration = (
+    fromIdx: number,
+    toIdx: number,
+    ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
+  ) => {
+    // 1) 사용자 함수가 있으면 최우선
+    const byFn = opts.getDuration?.(fromIdx, toIdx, ctx)
+    if (typeof byFn === 'number' && !Number.isNaN(byFn)) return Math.max(0, byFn)
+
+    // 2) durationTable "i->j"
+    const key = `${fromIdx}->${toIdx}` as const
+    const byTable = opts.durationTable?.[key]
+    let base = typeof byTable === 'number' ? byTable : DUR
+
+    // 3) 포인터/스와이프 보정 (기존 동작 유지 + 약간의 유틸리티)
+    if (ctx.pointer === 'coarse') {
+      // 터치 기본 단축
+      base = Math.max(200, Math.round(base * 0.9))
+      if (ctx.fastSwipe) {
+        base = Math.max(60, base - 120)
+      }
+    }
+    return base
+  }
+
   useEffect(() => {
-    const box = opts?.scrollerRef?.current || window // 이벤트는 box에
+    const box = (opts?.scrollerRef?.current as unknown as HTMLElement) || window
 
     const isCoarsePointer = typeof matchMedia !== 'undefined' ? matchMedia('(pointer: coarse)').matches : false
-    const DUR_TOUCH = Math.max(80, Math.round(DUR * 0.5))
-    const DY_MIN = isCoarsePointer ? 2 : 6
+    const DY_MIN = isCoarsePointer ? 1 : 2
 
     const onWheel = (e: WheelEvent) => {
       const band = getActiveBand()
       if (!band) return
       e.preventDefault()
+      if (animating.current) return
 
       const [i, j] = band
       const p = scrollYProgress.get()
       const a = cuts[i].start
       const b = cuts[j].start
 
-      if (animating.current) return
       if (e.deltaY > 0) {
-        animateTo(progressToTop(b))
+        // 아래로 스크롤 → forward: i -> j
+        const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'fine', fastSwipe: false })
+        animateTo(progressToTop(b), dur)
       } else if (e.deltaY < 0) {
-        const prev = i - 1 >= 0 ? cuts[i - 1].start : null
-        if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev))
-        else animateTo(progressToTop(a))
+        // 위로 스크롤 → backward: j의 시작점 쪽으로 갈지, 이전(prev)로 갈지
+        const prev = i - 1 >= 0 ? i - 1 : null
+        let toIdx = i
+        if (prev != null && p - a <= NEAR) toIdx = prev
+        const target = toIdx === i ? a : cuts[toIdx].start
+        const dur = resolveDuration(i, toIdx, { direction: 'backward', pointer: 'fine', fastSwipe: false })
+        animateTo(progressToTop(target), dur)
       }
     }
 
@@ -137,50 +172,60 @@ wrapRef: React.RefObject<HTMLElement | null>,
       if (!band) return
       const y0 = touchStartY.current
       if (y0 == null) return
+
       const dy = y0 - (e.touches[0]?.clientY ?? y0)
       if (Math.abs(dy) < DY_MIN) return
       e.preventDefault()
+      if (animating.current) return
 
       const [i, j] = band
       const p = scrollYProgress.get()
       const a = cuts[i].start
       const b = cuts[j].start
 
-      if (animating.current) return
-      const fastSwipe = Math.abs(dy) > 40
-      const dur = isCoarsePointer ? (fastSwipe ? Math.max(60, DUR_TOUCH - 40) : DUR_TOUCH) : DUR
+      const fastSwipe = Math.abs(dy) > 20
 
       if (dy > 0) {
-        // 위로 스와이프 = 아래로 스크롤 → 밴드 끝
+        // 위로 스와이프(아래로 스크롤) → forward
+        const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'coarse', fastSwipe })
         animateTo(progressToTop(b), dur)
       } else {
-        // 아래로 스와이프 = 위로 스크롤
-        const prev = i - 1 >= 0 ? cuts[i - 1].start : null
-        if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev), dur)
-        else animateTo(progressToTop(a), dur)
+        // 아래로 스와이프(위로 스크롤) → backward
+        const prev = i - 1 >= 0 ? i - 1 : null
+        let toIdx = i
+        if (prev != null && p - a <= NEAR) toIdx = prev
+        const target = toIdx === i ? a : cuts[toIdx].start
+        const dur = resolveDuration(i, toIdx, { direction: 'backward', pointer: 'coarse', fastSwipe })
+        animateTo(progressToTop(target), dur)
       }
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
       const band = getActiveBand()
       if (!band) return
+
       const downKeys = [' ', 'PageDown', 'ArrowDown', 'End']
       const upKeys = ['PageUp', 'ArrowUp', 'Home']
       if (![...downKeys, ...upKeys].includes(e.key)) return
+
       e.preventDefault()
+      if (animating.current) return
 
       const [i, j] = band
       const p = scrollYProgress.get()
       const a = cuts[i].start
       const b = cuts[j].start
 
-      if (animating.current) return
       if (downKeys.includes(e.key)) {
-        animateTo(progressToTop(b))
+        const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'fine', fastSwipe: false })
+        animateTo(progressToTop(b), dur)
       } else {
-        const prev = i - 1 >= 0 ? cuts[i - 1].start : null
-        if (prev != null && p - a <= NEAR) animateTo(progressToTop(prev))
-        else animateTo(progressToTop(a))
+        const prev = i - 1 >= 0 ? i - 1 : null
+        let toIdx = i
+        if (prev != null && p - a <= NEAR) toIdx = prev
+        const target = toIdx === i ? a : cuts[toIdx].start
+        const dur = resolveDuration(i, toIdx, { direction: 'backward', pointer: 'fine', fastSwipe: false })
+        animateTo(progressToTop(target), dur)
       }
     }
 
@@ -197,5 +242,5 @@ wrapRef: React.RefObject<HTMLElement | null>,
       if (snapRaf.current) cancelAnimationFrame(snapRaf.current)
       setOverscroll(false)
     }
-  }, [wrapRef, scrollYProgress, cuts, DUR, NEAR, opts?.scrollerRef])
+  }, [wrapRef, scrollYProgress, cuts, DUR, NEAR, opts?.scrollerRef, opts.durationTable, opts.getDuration])
 }
