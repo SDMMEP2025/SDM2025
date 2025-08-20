@@ -46,8 +46,8 @@ export function useSnapP0toP4(
   cuts: readonly Cut[],
   opts: SnapOptions = {},
 ) {
-  const DUR = opts?.duration ?? 280
-  const NEAR = opts?.nearPct ?? 0.05
+  const DUR = opts?.duration ?? 900
+  const NEAR = opts?.nearPct ?? 0.01
   const ignoreSet = new Set(opts?.ignore ?? [])
 
   const animating = useRef(false)
@@ -88,7 +88,7 @@ export function useSnapP0toP4(
     return startY + p * total
   }
 
-  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+  const ease = (t: number) => t
 
   const animateTo = (targetTop: number, dur = DUR) => {
     if (animating.current) return
@@ -280,14 +280,13 @@ export function useSnapP0toP4(
       const y0 = touchStartY.current
       if (y0 == null) return
       const dy = y0 - (e.touches[0]?.clientY ?? y0)
-      const isCoarse = typeof matchMedia !== 'undefined' ? matchMedia('(pointer: coarse)').matches : false
-      const DY_MIN = isCoarse ? 1 : 2
+      const DY_MIN = 1
       if (Math.abs(dy) < DY_MIN) return
       e.preventDefault()
       if (animating.current) return
       const [i, j] = band
       const a = cuts[i].start
-      const fastSwipe = Math.abs(dy) > 20
+      const fastSwipe = Math.abs(dy) > 40
       if (dy > 0) {
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'coarse', fastSwipe })
         animateTo(progressToTop(cuts[j].start), dur)

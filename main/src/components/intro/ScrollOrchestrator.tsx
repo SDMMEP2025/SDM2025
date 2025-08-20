@@ -39,7 +39,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 2, 3,0.5]
+const WEIGHTS: number[] = [1, 2, 3, 0.5]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -183,10 +183,7 @@ export function ScrollOrchestrator() {
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
   useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
 
-  /** 스냅도 container 대상으로 */
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
-    duration: 1400,
-    nearPct: 0.03,
     scrollerRef: boxRef,
   })
 
@@ -198,9 +195,9 @@ export function ScrollOrchestrator() {
   const TITLE_SCALE_TARGET = isMdUp ? 2.2 : 1.2
   const SUBTITLE_SCALE_TARGET = isMdUp ? 2.2 : 1.2
 
-  const titleScaleIn = useTransform(p0, [0, 1.0], [1, TITLE_SCALE_TARGET])
-  const subtitleScaleIn = useTransform(p0, [0, 1.0], [1, SUBTITLE_SCALE_TARGET])
-  const opacityScale = useTransform(chromeProgress, [0, 0.3, 1.0], [0, 0, 1])
+  const titleScaleIn = useTransform(p0, [0, 0.3], [1, TITLE_SCALE_TARGET])
+  const subtitleScaleIn = useTransform(p0, [0, 0.3], [1, SUBTITLE_SCALE_TARGET])
+  const opacityScale = useTransform(chromeProgress, [0, 0.3], [0, 1])
 
   const [coverScale, setCoverScale] = useState(1)
   useLayoutEffect(() => {
@@ -228,8 +225,8 @@ export function ScrollOrchestrator() {
     }
   }, [])
 
-  const rectScale = useTransform(p0, [0, 0.1], [1, coverScale])
-  const rectOpacity = useTransform(p0, [0.2, 0.9], [1, 0], { clamp: true })
+  const rectScale = useTransform(p0, [0, 0.3], [1, coverScale])
+  const rectOpacity = useTransform(p0, [0.2, 0.3], [1, 0], { clamp: true })
 
   const [lottiePlayed, setLottiePlayed] = useState(false)
   useMotionValueEvent(p0, 'change', (v) => {
@@ -292,11 +289,11 @@ export function ScrollOrchestrator() {
   const subtitleShrink_p5 = useTransform(p3, [0.8, 0.9], [1, MdtitleScale_p5], { clamp: true })
 
   const titleLift = useTransform(
-    [useTransform(p0, [0, 1.0], [1, TITLE_LIFT_P0]), titleLift_p5],
+    [useTransform(p0, [0, 0.3], [1, TITLE_LIFT_P0]), titleLift_p5],
     ([a, b]) => Number(a) + Number(b),
   )
   const subtitleLift = useTransform(
-    [useTransform(p0, [0, 1.0], [1, SUBTITLE_LIFT_P0]), subtitleLift_p5],
+    [useTransform(p0, [0, 0.3], [1, SUBTITLE_LIFT_P0]), subtitleLift_p5],
     ([a, b]) => Number(a) + Number(b),
   )
   const titleScale = useTransform(
@@ -314,7 +311,6 @@ export function ScrollOrchestrator() {
     if (aboutInteractive && v < 0.1) setAboutInteractive(false)
   })
 
-  
   const vimeoFadeIn = useTransform(p3, [0.9, 0.93], [0, 1], { clamp: true })
   const vimeoOpacity = useTransform([opacityScale, vimeoFadeIn], ([a, b]) => Number(a) * Number(b))
 
