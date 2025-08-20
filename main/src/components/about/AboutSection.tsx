@@ -96,7 +96,7 @@ export default function AboutSection({ embedded = false }: Props) {
         </h2>
         <MediaContainer
           type='video'
-          src='https://player.vimeo.com/video/1110683367?h=168d4cbe88'
+          src='https://player.vimeo.com/video/1110984354?h=fdebbff948'
           preloadDelayMs={delayFor(0)}
           prewarm
           muted
