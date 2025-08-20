@@ -313,7 +313,7 @@ export function ScrollOrchestrator() {
     if (!aboutInteractive && v >= 0.999) setAboutInteractive(true)
     if (aboutInteractive && v < 0.98) setAboutInteractive(false)
   })
-  const vimeoFadeIn = useTransform(p3, [0.5, 1.0], [0, 1], { clamp: true })
+  const vimeoFadeIn = useTransform(p3, [0.8, 1.0], [0, 1], { clamp: true })
   const vimeoOpacity = useTransform([opacityScale, vimeoFadeIn], ([a, b]) => Number(a) * Number(b))
 
   return (
@@ -467,7 +467,7 @@ export function ScrollOrchestrator() {
                   <motion.div initial={false} style={{ opacity: vimeoOpacity, willChange: 'opacity' }}>
                     <MediaContainer
                       type='video'
-                      src='https://player.vimeo.com/video/1110984354?h=fdebbff948'
+                      src='https://player.vimeo.com/video/1111520640?h=e5f32a5864'
                       preloadDelayMs={0}
                       prewarm
                       muted

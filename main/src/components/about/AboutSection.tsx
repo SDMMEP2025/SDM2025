@@ -30,10 +30,12 @@ export default function AboutSection({ embedded = false }: Props) {
         },
         {
           title: 'Project Management',
-          tutors: [ { name: '배석원', englishName: 'Seokwon Bae' },
-        { name: '이희원', englishName: 'Heewon Lee' },],
+          tutors: [
+            { name: '배석원', englishName: 'Seokwon Bae' },
+            { name: '이희원', englishName: 'Heewon Lee' },
+          ],
         },
-      ]
+      ],
     },
     {
       title: 'Advisory\nProfessor',
@@ -96,7 +98,7 @@ export default function AboutSection({ embedded = false }: Props) {
         </h2>
         <MediaContainer
           type='video'
-          src='https://player.vimeo.com/video/1110984354?h=fdebbff948'
+          src='https://player.vimeo.com/video/1111520640?h=e5f32a5864'
           preloadDelayMs={delayFor(0)}
           prewarm
           muted
