@@ -690,7 +690,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
               'font-medium text-black text-[18px] z-[40] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
             )}
           >
-            <p className='block md:hidden break-keep z-[40]'>{'Primary\n' + brandColorName}</p>
+            <p className='block md:hidden break-keep z-[40]'>{'Original\n' + brandColorName}</p>
             <p className='hidden md:block break-keep z-[40]'>{text}</p>
           </motion.div>
 
