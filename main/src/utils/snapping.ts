@@ -163,34 +163,6 @@ export function useSnapP0toP4(
     toIdx: number,
     ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
   ) => {
-    // 1) 사용자 함수가 있으면 최우선
-    {
-      const byFn = opts.getDuration?.(fromIdx, toIdx, ctx)
-      if (typeof byFn === 'number' && !Number.isNaN(byFn)) return Math.max(0, byFn)
-    }
-
-    // 2) ★ 섹션 규칙(들어가거나 나갈 때, 방향별 등)
-    {
-      const secRules = opts.sectionDurations
-      if (secRules) {
-        const ruleFrom = secRules[fromIdx]
-        const ruleTo = secRules[toIdx]
-        // 우선 to(enter) → from(leave) 순서로 시도
-        const byTo = resolveBySectionRule(ruleTo, fromIdx, toIdx, ctx)
-        if (typeof byTo === 'number') return byTo
-        const byFrom = resolveBySectionRule(ruleFrom, fromIdx, toIdx, ctx)
-        if (typeof byFrom === 'number') return byFrom
-      }
-    }
-
-    // 3) i->j 테이블
-    {
-      const key = `${fromIdx}->${toIdx}` as const
-      const byTable = opts.durationTable?.[key]
-      if (typeof byTable === 'number') return Math.max(0, byTable)
-    }
-
-    // 4) 기본값
     let base = DUR
 
     // 포인터/스와이프 보정(기존 로직 유지)
@@ -200,7 +172,7 @@ export function useSnapP0toP4(
         base = Math.max(60, base - 120)
       }
     }
-    return base
+    return base 
   }
   useEffect(() => {
     let targetEl: HTMLElement | Window | null = null
@@ -286,7 +258,7 @@ export function useSnapP0toP4(
       if (animating.current) return
       const [i, j] = band
       const a = cuts[i].start
-      const fastSwipe = Math.abs(dy) > 40
+      const fastSwipe = Math.abs(dy) > 20
       if (dy > 0) {
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'coarse', fastSwipe })
         animateTo(progressToTop(cuts[j].start), dur)

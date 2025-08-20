@@ -39,7 +39,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 2, 3, 0.5]
+const WEIGHTS: number[] = [1, 2, 3, 1]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -326,9 +326,9 @@ export function ScrollOrchestrator() {
           transform: 'translateZ(0)',
         }}
       >
-        <div ref={wrapRef} style={{ height: '2300dvh' }}>
-          <section className='relative' style={{ height: '2300dvh' }}>
-            <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
+        <div ref={wrapRef} className='overscroll-none checking touch-pan-x' style={{ height: '1300dvh' }}>
+          <section className='relative checking' style={{ height: '1300dvh' }}>
+            <div className='sticky checking top-0' style={{ height: '100dvh', contain: 'layout style' }}>
               <div className='relative w-full h-full bg-white'>
                 {/* 핑크 사각형 */}
                 <div className='absolute left-1/2 top-[45dvh] md:top-[45dvh] -translate-x-1/2 -translate-y-1/2'>
@@ -348,7 +348,7 @@ export function ScrollOrchestrator() {
 
                 {/* Lottie */}
                 <motion.div
-                  className='absolute inset-0 pointer-events-none overflow-hidden'
+                  className='absolute inset-0 overflow-hidden'
                   aria-hidden
                   style={{ opacity: lottieOpacity }}
                 >
@@ -486,7 +486,7 @@ export function ScrollOrchestrator() {
               </div>
 
               {/* 3D planes */}
-              <div className='absolute inset-0 flex items-center justify-center pointer-events-none z-0'>
+              <div className='absolute inset-0 flex items-center justify-center z-0'>
                 <motion.div
                   className='relative w-[84vw] h-[42vw] max-w-[1440px]'
                   style={{
@@ -534,7 +534,7 @@ export function ScrollOrchestrator() {
               </div>
 
               {/* 떠다니는 사진 */}
-              <div className='inset-0 pointer-events-none z-[100]' style={{ overflow: 'visible' }}>
+              <div className='inset-0 z-[100]' style={{ overflow: 'visible' }}>
                 <motion.div className='relative w-full h-full'>
                   <FloatingPhoto
                     p4={p3}
