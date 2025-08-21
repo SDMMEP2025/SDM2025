@@ -103,7 +103,7 @@ export default function AboutSection({ embedded = false }: Props) {
           prewarm
           muted
           loop
-          position='absolute'
+          position='relative'
           aspect='aspect-[1920/1700]'
         />
       </div>
