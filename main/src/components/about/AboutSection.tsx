@@ -177,14 +177,14 @@ export default function AboutSection({ embedded = false }: Props) {
         title={'New Formative \nBegins Here'}
         text='2025 MEP 〈New Formative〉 전시 공간에서는 여러분의 감각과 해석으로 완성되어 가는 여정을 경험할 수 있습니다. 형성이라는 태도가 우리의 사고와 감각으로 어떻게 확장될 수 있는지, 이곳에서 함께 포착해 보세요.'
       />
-      <Image src='' alt='about_7.jpg' />
-      <Image src='' alt='about_8.jpg' />
+      <Image src='/images/about/about_7.jpg' alt='about_7.jpg' />
+      <Image src='/images/about/about_8.jpg' alt='about_8.jpg' />
       <MidBody
         content={
           '삼성디자인멤버십 회원들의 비전과 태도를 드러내는 ‘New Step’을 시작으로, 다양한 분야가 교차하며 새로운 가능성을 모색하는 ‘New Link’, 각자의 고유한 문제의식을 바탕으로 전개된 ‘New Focus’, 마지막으로 감각적 실험이 응집된 ‘New Spark’순으로 이어집니다.'
         }
       />
-      <Image src='' alt='about_9.jpg' />
+      <Image src='/images/about/about_9.jpg' alt='about_9.jpg' />
       <Image src='' alt='about_10.mp4' />
       <TitleBody
         title={'Make your \nMovement'}
@@ -258,14 +258,14 @@ export default function AboutSection({ embedded = false }: Props) {
         position='absolute'
       />
       <Image src='/images/about/about_16.webp' alt='about_16.gif' />
-      <Image src='' alt='about_17.mp4' />
-      <Image src='' alt='about_18.jpg' />
-      <Image src='' alt='about_19.jpg' />
-      <Image src='' alt='about_20.jpg' />
-      <Image src='' alt='about_21.gif' />
-      <Image src='' alt='about_22.jpg' />
-      <Image src='' alt='about_23.jpg' />
-      <Image src='' alt='about_24.jpg' />
+      <Image src='/images/about/about_17.jpg' alt='about_17.jpg' />
+      <Image src='/images/about/about_18.jpg' alt='about_18.jpg' />
+      <Image src='/images/about/about_19.jpg' alt='about_19.jpg' />
+      <Image src='/images/about/about_20.jpg' alt='about_20.jpg' />
+      <Image src='/images/about/about_21.webp' alt='about_21.gif' />
+      <Image src='/images/about/about_22.jpg' alt='about_22.jpg' />
+      <Image src='/images/about/about_23.jpg' alt='about_23.jpg' />
+      <Image src='/images/about/about_24.jpg' alt='about_24.jpg' />
       <Credit
         title='Designed By'
         members={[
