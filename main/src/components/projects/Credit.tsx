@@ -33,7 +33,7 @@ export function Credit({ title = 'Designed By', members }: CreditProps) {
       className={classNames(
         'w-full bg-white flex flex-col justify-start items-start gap-2.5',
         //mobile
-        'px-[4.10vw] py-14',
+        'px-[35px] py-14',
         //tablet
         'md:px-[5.2vw] md:py-[56px]',
         //desktop

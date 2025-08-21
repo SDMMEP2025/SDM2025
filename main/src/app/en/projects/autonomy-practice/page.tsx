@@ -43,6 +43,11 @@ const tutorData = [
       { name: '나하나', englishName: 'Hana Na' },
       { name: '권진형', englishName: 'Jinhyeong Kwon' },
       { name: '정재연', englishName: 'Jaeyun Jung' },
+    ],
+  },
+  {
+    title: 'ID tutor',
+    tutors: [
       { name: '김승우', englishName: 'Seungwoo Kim' },
       { name: '김지윤', englishName: 'Jiyoun Kim' },
     ],

@@ -230,7 +230,7 @@ export function MovementMedia({
             ref={iframeRef}
             src={getIframeSrc(finalSrc)}
             className={classNames(
-              'absolute inset-0 w-full h-full transition-opacity duration-300 will-change-[opacity]',
+              'absolute inset-0 w-full h-full transition-opacity will-change-[opacity]',
               videoReady ? 'opacity-100' : 'opacity-0',
             )}
             style={{
@@ -250,7 +250,7 @@ export function MovementMedia({
             <button
               type="button"
               onClick={tryPlay}
-              className="absolute inset-0 flex items-center justify-center bg-black/30 text-white"
+              className="absolute inset-0 flex items-center justify-center text-white"
             >
               <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30">
                 탭하여 재생
