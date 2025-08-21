@@ -83,7 +83,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
     }
   }, [isMobileMenuOpen])
 
-    function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
+  function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
     const target = '/#main'
 
     if (pathname === '/') {
@@ -92,10 +92,9 @@ export function Header({ useBlendMode = true }: HeaderProps) {
       window.dispatchEvent(new CustomEvent('nf:jump', { detail: { stage: 'main' } }))
     } else {
       e.preventDefault()
-      router.push(target, { scroll: false})
+      router.push(target, { scroll: false })
     }
   }
-
 
   return (
     <div className='w-full h-0 z-30'>
@@ -182,10 +181,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
 
               {/* 언어 드롭다운 */}
               <div className='relative'>
-                <div
-                  className='relative flex flex-row justify-start items-center'
-                  onClick={toggleDropdown}
-                >
+                <div className='relative flex flex-row justify-start items-center' onClick={toggleDropdown}>
                   <div className="left-0 top-0 px-[8.68px] justify-center text-center text-white text-2xl font-semibold font-['Pretendard'] leading-9">
                     {lang}
                   </div>
@@ -239,7 +235,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
         {isMobileMenuOpen && (
           <MobileNav
             isOpen={isMobileMenuOpen}
-            language={lang}
+            lang={lang}
             toggleDropdown={toggleMobileMenu}
             selectLanguage={selectLanguage}
             isDropdownOpen={isDropdownOpen}
