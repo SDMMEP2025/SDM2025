@@ -264,7 +264,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
             transition={{ duration: 0.3 }}
             className={classNames('absolute inset-0 z-10', 'flex items-center justify-center bg-white')}
           >
-            <div className="w-[90%] md:w-[70%]">
+            <div className="w-[90%] md:w-[50%] lg:w-[35%]">
               <Lottie lottieRef={lottieRef} animationData={animationData} loop autoplay className="w-full h-full" />
             </div>
           </motion.div>

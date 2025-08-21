@@ -66,15 +66,9 @@ export interface FloatingConcentricSquaresProps {
   brandColorHex: string
   refinedColorHex: string
   motionParams: InteractMotionParams
-  /** 컨테이너 바깥쪽 안내/버튼 UI를 직접 만들고 싶다면 false로 두세요 */
   showMobileGyroUI?: boolean
 }
 
-/**
- * 자이로 권한 → 즉시 리스너 부착, visibilitychange 재부착, 축 고정 지원
- * 내부에 권한 버튼(UI)까지 포함 (showMobileGyroUI=true일 때)
- * 자동 floating 애니메이션 제거됨 - 원점에 고정
- */
 export default function FloatingConcentricSquares({
   steps,
   positions,
@@ -96,9 +90,18 @@ export default function FloatingConcentricSquares({
   const [isHovered, setIsHovered] = useState(false)
 
   // 꼬리물기 포지션 - 완전 고정모드에서는 사용안함
-  // const [currentPositions, setCurrentPositions] = useState(positions)
+  const [currentPositions, setCurrentPositions] = useState(positions)
   const targetRef = useRef({ x: 0, y: 0 })
   const mouseActiveRef = useRef(false)
+
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  useEffect(() => {
+    if (!isInitialized && positions.length > 0) {
+      setCurrentPositions(positions)
+      setIsInitialized(true)
+    }
+  }, [positions, isInitialized])
 
   // 모바일/자이로
   const [isMobile, setIsMobile] = useState(false)
@@ -154,8 +157,8 @@ export default function FloatingConcentricSquares({
       requestAnimationFrame(() => {
         tickingRef.current = false
 
-        const beta = ev.beta ?? 0    // 앞뒤
-        const gamma = ev.gamma ?? 0  // 좌우
+        const beta = ev.beta ?? 0 // 앞뒤
+        const gamma = ev.gamma ?? 0 // 좌우
 
         const nx = Math.max(-0.5, Math.min(0.5, gamma / 90)) * motionParams.gyroSensitivity
         const ny = Math.max(-0.5, Math.min(0.5, beta / 180)) * motionParams.gyroSensitivity
@@ -277,26 +280,23 @@ export default function FloatingConcentricSquares({
   return (
     <>
       {showMobileGyroUI && isMobile && gyroStatus !== 'granted' && (
-        <div className="relative z-50">
-          <button
-            onClick={handleGyroActivation}
-            className="px-6 py-2 rounded-[100px] text-[#4B4F57] underline"
-          >
+        <div className='relative z-50'>
+          <button onClick={handleGyroActivation} className='px-6 py-2 rounded-[100px] text-[#4B4F57] underline'>
             Movement 움직이기
           </button>
         </div>
       )}
-      {showMobileGyroUI && isMobile && isListening && (
+      {/* {showMobileGyroUI && isMobile && isListening && (
         <div className="z-50">
           <div className="text-black font-semibold whitespace-nowrap text-sm animate-pulse">
             ● 디바이스 움직임 감지 중
           </div>
         </div>
-      )}
+      )} */}
 
       <div
         ref={containerRef}
-        className="relative transition-all duration-500 ease-out"
+        className='relative transition-all duration-500 ease-out'
         style={{
           width: `${maxWidth}px`,
           height: `${maxHeight}px`,
@@ -308,7 +308,7 @@ export default function FloatingConcentricSquares({
           `,
           transformStyle: 'preserve-3d',
           transformOrigin: 'center center',
-          perspective: '700px', 
+          perspective: '700px',
         }}
         onMouseMove={!isMobile ? onMouseMove : undefined}
         onMouseEnter={!isMobile ? onEnter : undefined}
@@ -325,7 +325,7 @@ export default function FloatingConcentricSquares({
           return (
             <div
               key={i}
-              className="absolute transition-all duration-100 ease-out"
+              className='absolute transition-all duration-100 ease-out'
               style={{
                 width: `${w}px`,
                 height: `${h}px`,
