@@ -9,8 +9,8 @@ import { useStepManager } from '@/hooks/useStepManager'
 import { UploadedImage } from '@/types/movement'
 import { ColorAnalysisResult } from '@/types/color'
 import { useState } from 'react'
-import classNames from 'classnames'
 import { MovementMedia } from '@/components/projects/MovementMedia'
+import classNames from 'classnames'
 
 // 인터랙션 데이터 타입 정의
 interface InteractionData {
@@ -103,9 +103,9 @@ export default function Page() {
       {/* 단계별 화면 렌더링 */}
       {step === 'upload' && <Main onUpload={handleFileUpload} />}
 
-      {(step === 'edit' || step === 'result') && (
+      {(step === 'upload' || step === 'edit' || step === 'result') && (
         <>
-          <div className='absolute h-full lg:w-full overflow-hidden'>
+          <div className='absolute h-full w-full  md:h-full md-landscape-coming:w-full lg:w-full overflow-hidden'>
             <MovementMedia
               type='video'
               src='https://player.vimeo.com/video/1111874380?h=69848f162a'
