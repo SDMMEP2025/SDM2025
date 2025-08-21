@@ -104,6 +104,7 @@ export default function AboutSection({ embedded = false }: Props) {
           muted
           loop
           position='absolute'
+          aspect='aspect-[1440/1500]'
         />
       </div>
       <HeaderBody
