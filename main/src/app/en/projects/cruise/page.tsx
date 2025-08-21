@@ -255,7 +255,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708889?h=dec440477b'
+        src='https://player.vimeo.com/video/11113003216?h=95d107c331'
         preloadDelayMs={0}
         prewarm
         muted
@@ -265,7 +265,7 @@ export default function Page() {
       <RightBody text='From cozy, manageable two-seaters to spacious vehicles that fit all your friends, CRUISE blends in effortlessly into any interior. Allowing for checking both external & Dash information in comfort, all while having Handle within arm’s reach.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708908?h=2fda5e80b8'
+        src='https://player.vimeo.com/video/1111300387?h=7edabbd9bc'
         preloadDelayMs={delayFor(1)}
         hasAudio={true}
         muted={false}
@@ -281,7 +281,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708949?h=fa86847bc0'
+        src='https://player.vimeo.com/video/1111300528?h=c33e0e50d3'
         preloadDelayMs={delayFor(2)}
         prewarm
         muted
@@ -300,7 +300,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110838360?h=212d7faad8'
+        src='https://player.vimeo.com/video/1111300591?h=153e96920f'
         preloadDelayMs={delayFor(3)}
         prewarm
         muted
@@ -308,7 +308,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110838382?h=85299bb0cd'
+        src='https://player.vimeo.com/video/1111300631?h=b495fd2006'
         preloadDelayMs={delayFor(4)}
         prewarm
         muted
@@ -327,7 +327,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708985?h=f47f8b49f2'
+        src='https://player.vimeo.com/video/1111300652?h=336ac8888b'
         preloadDelayMs={delayFor(5)}
         prewarm
         muted
@@ -345,7 +345,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110709027?h=7a7125da0c'
+        src='https://player.vimeo.com/video/1111300736?h=b13f251b97'
         preloadDelayMs={delayFor(6)}
         prewarm
         muted
