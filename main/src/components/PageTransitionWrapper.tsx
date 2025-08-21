@@ -39,19 +39,19 @@ export function PageTransitionWrapper({ children, isTransitioning }: PageTransit
 
   const lineVariants = {
     hidden: {
-      y: 80, // 60 → 80 (더 아래에서 시작)
+      y: 0, // 60 → 80 (더 아래에서 시작)
       opacity: 0,
     },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.8, // 0.5 → 0.8
+        duration: 0.3, // 0.5 → 0.8
         ease: [0.16, 1, 0.3, 1],
       },
     },
     exit: {
-      y: -80, // -60 → -80 (더 위로 사라짐)
+      y: 0, // -60 → -80 (더 위로 사라짐)
       opacity: 0,
       transition: {
         duration: 0.6, // 0.4 → 0.6

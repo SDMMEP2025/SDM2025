@@ -41,6 +41,9 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
 
   const count = useMemo(() => splitter.countGraphemes(text), [text])
 
+  const isTextReady = !!text.trim() && !isAnalyzingText
+  const isDimmed = !isTextReady
+
   useEffect(() => {
     if (!isComposing && count > MAX) {
       const clamped = splitter.splitGraphemes(text).slice(0, MAX).join('')
@@ -266,11 +269,12 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
           <div
             className={classNames(
               'relative flex justify-center items-center',
-              'bg-white rounded-[8px]',
+              'rounded-[8px]',
               'w-[358px] max-w-[320px] md:max-w-none h-[70px]',
               'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)] md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
               'lg:w-[clamp(984px,calc(37.714px+65.7143vw),1720px)] lg:h-[clamp(126px,calc(25.7143px+6.96429vw),204px)]',
               '2xl:w-[1720px] 2xl:h-[204px]',
+              isDimmed ? 'bg-white/20' : 'bg-white',
             )}
           >
             {/* 로딩 애니메이션 */}
