@@ -146,10 +146,6 @@ export default function FloatingConcentricSquares({
     return () => removeEventListener('resize', check)
   }, [])
 
-  // 떠다니는 애니메이션 완전 제거됨
-
-  // 꼬리물기 보간 애니메이션 완전 제거됨 - 완전 고정모드
-
   // 자이로 리스너
   const enableGyroscope = () => {
     const onOri = (ev: DeviceOrientationEvent) => {

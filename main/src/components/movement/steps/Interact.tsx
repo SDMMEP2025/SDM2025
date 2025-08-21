@@ -135,7 +135,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     hoverScale: 1.1,
     shadowIntensity: 0,
     borderRadiusOuter: 8,
-    gyroSensitivity: 0.1,
+    gyroSensitivity: 0.9,
     axisLock: 'dominant',       // ← 축 고정 기본값
     axisLockThreshold: 0.1,     // ← 우세 축 전환 히스테리시스
   })
