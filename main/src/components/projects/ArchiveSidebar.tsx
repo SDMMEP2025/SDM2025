@@ -294,14 +294,13 @@ const HoverImageCard = ({
             >
               <div
                 ref={lblRef}
-                className='absolute flex items-center gap-2 whitespace-nowrap'
+                className='absolute flex gap-2 whitespace-nowrap'
                 style={{
                   left: mouse.x,
                   top: mouse.y,
-                  transform: 'translate(-50%, -50%)',
+                  transform: 'translate(16px, -50%)',
                 }}
               >
-                <div className='w-[18px] h-[18px] rounded-full bg-white' />
                 <span className='text-white text-[18px] font-medium capitalize tracking-[-0.36px] leading-[1.5]'>
                   {label ?? 'archive'}
                 </span>
