@@ -115,11 +115,11 @@ export const generateShareImage = async (
   ctx.fillStyle = '#ffffff'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   
-  // 상단 "New Formative" 텍스트
+  // 상단 "2025 MEP New Formative" 텍스트
   ctx.fillStyle = '#6B7280' // text-gray-500
   ctx.font = '36px "Saans TRIAL", system-ui, -apple-system, sans-serif'
   ctx.textAlign = 'center'
-  ctx.fillText('New Formative', canvas.width / 2, 80)
+  ctx.fillText('2025 MEP New Formative', canvas.width / 2, 80)
   
   // "Your Movement" 대형 텍스트
   ctx.fillStyle = '#000000' // text-black
@@ -162,7 +162,7 @@ export const generateShareImage = async (
   
   // 최하단 저작권 텍스트
   ctx.fillStyle = '#6B7280'
-  ctx.font = '37px "Saans TRIAL", system-ui, -apple-system, sans-serif'
+  ctx.font = 'medium 37px "Saans TRIAL", system-ui, -apple-system, sans-serif'
   ctx.textAlign = 'center'
   ctx.fillText('©2025 Samsung Design Membership Emergence Project', canvas.width / 2, 1840)
   

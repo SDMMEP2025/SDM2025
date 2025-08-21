@@ -386,11 +386,11 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
           'md-landscape:gap-[20px]', // md-landscape 조건
           'md-landscape:top-[18%]',
           //desktop
-          'lg:top-[14%]',
+          'lg:bottom-[15.30%]',
           'lg:gap-[30px]', // lg~2xl fluid
           // large desktop
-          '2xl:top-[15%]',
-          '2xl:gap-[60px]', // 2xl 이상
+          '2xl:bottom-[15.30%]',
+          '2xl:gap-[15dvh]', // 2xl 이상
         )}
       >
         <div
@@ -541,8 +541,8 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'left-[calc(50vw-60px)] bottom-[14.3%] inset-y-auto',
-          isMobile ? 'md:bottom-[14.3%]' : 'md:bottom-[50%]',
+          'left-[calc(50vw-60px)] bottom-[10.3%] inset-y-auto',
+          isMobile ? 'md:bottom-[10.3%]' : 'md:bottom-[50%]',
           isMobile ? 'md:left-[calc(50vw-80px)]' : 'md:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)]',
           'md:inset-y-auto',
           'md-landscape:left-[40px] md-landscape:inset-y-0', // md-landscape 전용
@@ -592,8 +592,8 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'right-[calc(50vw-60px)] bottom-[14.3%] inset-y-auto',
-          isMobile ? 'md:bottom-[14.3%]' : 'md:bottom-[50%]',
+          'right-[calc(50vw-60px)] bottom-[10.3%] inset-y-auto',
+          isMobile ? 'md:bottom-[10.3%]' : 'md:bottom-[50%]',
           isMobile ? 'md:right-[calc(50vw-80px)]' : 'md:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)]',
           'md:inset-y-auto',
           'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용

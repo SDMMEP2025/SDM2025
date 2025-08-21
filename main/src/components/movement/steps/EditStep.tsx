@@ -211,7 +211,7 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
       <div
         className={classNames(
           'absolute flex flex-col justify-center items-center inset-x-0 w-full',
-          'top-[16.66%] gap-[102px]',
+          'bottom-[40.30%] gap-[102px] inset-y-auto',
           'md-landscape:top-[34.9%]',
           'md:top-[27.01%] md:gap-[42px] md-landscape:gap-[66px]',
           'lg:top-[28.64%] lg:gap-[clamp(54px,calc(-11.428px+4.55357vw),105px)]',
