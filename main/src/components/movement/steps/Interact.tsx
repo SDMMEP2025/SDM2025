@@ -120,7 +120,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
 
   //이곳에서 변수 수정
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
-    speedBase: 0.01,
+    speedBase: 0.05,
     followSpeedMultiplier: 2,
     followSpeedOffset: 1,
     colorInterpolationPower: 0.9,

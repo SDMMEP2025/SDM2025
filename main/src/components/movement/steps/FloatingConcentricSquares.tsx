@@ -107,9 +107,6 @@ export default function FloatingConcentricSquares({
   const cleanupRef = useRef<(() => void) | null>(null)
   const tickingRef = useRef(false)
 
-  const baselineRef = useRef<{ beta: number; gamma: number } | null>(null)
-  const lastOriRef = useRef<{ beta: number; gamma: number }>({ beta: 0, gamma: 0 })
-
   // 부모 크기 기반 스케일
   useEffect(() => {
     const updateScale = () => {
@@ -149,28 +146,6 @@ export default function FloatingConcentricSquares({
     return () => removeEventListener('resize', check)
   }, [])
 
-  function makeAxisLocker() {
-    const lastAxisRef = { current: 'x' as 'x' | 'y' }
-    return {
-      apply(x: number, y: number, mode: AxisLockMode, thr: number) {
-        if (mode === 'x') return { x, y: 0 }
-        if (mode === 'y') return { x: 0, y }
-        if (mode === 'dominant') {
-          const ax = Math.abs(x)
-          const ay = Math.abs(y)
-          if (ax > ay + thr) lastAxisRef.current = 'x'
-          else if (ay > ax + thr) lastAxisRef.current = 'y'
-          return lastAxisRef.current === 'x' ? { x, y: 0 } : { x: 0, y }
-        }
-        return { x, y }
-      },
-      reset() {
-        lastAxisRef.current = 'x'
-      },
-    }
-  }
-  const axisLocker = makeAxisLocker()
-
   // 자이로 리스너
   const enableGyroscope = () => {
     const onOri = (ev: DeviceOrientationEvent) => {
@@ -179,20 +154,11 @@ export default function FloatingConcentricSquares({
       requestAnimationFrame(() => {
         tickingRef.current = false
 
-        const beta = ev.beta ?? 0 // 앞뒤(기울기)
-        const gamma = ev.gamma ?? 0 // 좌우(기울기)
-        lastOriRef.current = { beta, gamma }
+        const beta = ev.beta ?? 0    // 앞뒤
+        const gamma = ev.gamma ?? 0  // 좌우
 
-        // 처음 들어오면 그 자세를 기준점으로 고정
-        if (!baselineRef.current) baselineRef.current = { beta, gamma }
-        const { beta: b0, gamma: g0 } = baselineRef.current
-
-        // 기준점 대비 상대 각도
-        const betaRel = beta - b0
-        const gammaRel = gamma - g0
-
-        const nx = Math.max(-0.5, Math.min(0.5, gammaRel / 90)) * motionParams.gyroSensitivity
-        const ny = Math.max(-0.5, Math.min(0.5, betaRel / 180)) * motionParams.gyroSensitivity
+        const nx = Math.max(-0.5, Math.min(0.5, gamma / 90)) * motionParams.gyroSensitivity
+        const ny = Math.max(-0.5, Math.min(0.5, beta / 180)) * motionParams.gyroSensitivity
 
         const maxTilt = motionParams.tiltSensitivity * scale
         setTiltOffset({ x: ny * maxTilt * 2, y: nx * maxTilt * 2 })
@@ -200,7 +166,7 @@ export default function FloatingConcentricSquares({
         const range = 150 * scale * motionParams.gyroSensitivity
         let mx = nx * range * 2
         let my = ny * range * 2
-        const locked = axisLocker.apply(
+        const locked = applyAxisLock(
           mx,
           my,
           motionParams.axisLock ?? 'none',
@@ -308,36 +274,29 @@ export default function FloatingConcentricSquares({
     targetRef.current = { x: 0, y: 0 }
   }
 
-  const resetMovement = () => {
-    baselineRef.current = { ...lastOriRef.current }
-    setTiltOffset({ x: 0, y: 0 })
-    targetRef.current = { x: 0, y: 0 }
-    axisLocker.reset()
-  }
-
   return (
     <>
       {showMobileGyroUI && isMobile && gyroStatus !== 'granted' && (
-        <div className='relative z-50'>
-          <button onClick={handleGyroActivation} className='px-6 py-2 rounded-[100px] text-[#4B4F57] underline'>
+        <div className="relative z-50">
+          <button
+            onClick={handleGyroActivation}
+            className="px-6 py-2 rounded-[100px] text-[#4B4F57] underline"
+          >
             Movement 움직이기
           </button>
         </div>
       )}
       {showMobileGyroUI && isMobile && isListening && (
-        <div className='z-50'>
-          <button
-            onClick={resetMovement}
-            className='text-black font-semibold whitespace-nowrap text-sm animate-pulse'
-          >
-            Reset Movement
-          </button>
+        <div className="z-50">
+          <div className="text-black font-semibold whitespace-nowrap text-sm animate-pulse">
+            ● 디바이스 움직임 감지 중
+          </div>
         </div>
       )}
 
       <div
         ref={containerRef}
-        className='relative transition-all duration-500 ease-out'
+        className="relative transition-all duration-500 ease-out"
         style={{
           width: `${maxWidth}px`,
           height: `${maxHeight}px`,
@@ -349,7 +308,7 @@ export default function FloatingConcentricSquares({
           `,
           transformStyle: 'preserve-3d',
           transformOrigin: 'center center',
-          perspective: '700px',
+          perspective: '700px', 
         }}
         onMouseMove={!isMobile ? onMouseMove : undefined}
         onMouseEnter={!isMobile ? onEnter : undefined}
@@ -366,7 +325,7 @@ export default function FloatingConcentricSquares({
           return (
             <div
               key={i}
-              className='absolute transition-all duration-100 ease-out'
+              className="absolute transition-all duration-100 ease-out"
               style={{
                 width: `${w}px`,
                 height: `${h}px`,
