@@ -458,82 +458,85 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
           </div>
 
           {/* 기존 Range 컴포넌트는 그대로 유지 */}
-          <div className='w-full max-w-[366px] px-4'>
-            <Range
-              values={values}
-              step={STEP}
-              min={MIN}
-              max={MAX}
-              onChange={(values) => setValues(values)}
-              renderTrack={({ props, children }) => (
-                <div
-                  onMouseDown={props.onMouseDown}
-                  onTouchStart={props.onTouchStart}
-                  style={{ ...props.style, height: '36px', display: 'flex', width: '100%' }}
-                >
-                  <div
-                    ref={props.ref}
-                    style={{
-                      height: '6px',
-                      width: '100%',
-                      borderRadius: '20px',
-                      background: getTrackBackground({
-                        values,
-                        colors: ['#000', '#ccc'],
-                        min: MIN,
-                        max: MAX,
-                      }),
-                      alignSelf: 'center',
-                    }}
-                  >
-                    {children}
-                  </div>
-                </div>
-              )}
-              renderThumb={({ props }) => (
-                <div
-                  {...props}
-                  key={props.key}
-                  style={{
-                    ...props.style,
-                    height: '14px',
-                    width: '14px',
-                    borderRadius: '20px',
-                    backgroundColor: '#000',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                />
-              )}
-            />
-          </div>
 
-          <div
-            className={classNames(
-              'w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
-              'hidden md-landscape:block lg:block',
-              'bottom-[17.41%]',
-              'md:bottom-[15.32%]',
-              'lg:bottom-[13.58%]',
-              '2xl:bottom-[13.60%]',
-            )}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
+          <div className='flex flex-col w-full max-w-[366px] justify-center items-center gap-[4dvh]'>
+            <div className='w-full max-w-[366px] px-4'>
+              <Range
+                values={values}
+                step={STEP}
+                min={MIN}
+                max={MAX}
+                onChange={(values) => setValues(values)}
+                renderTrack={({ props, children }) => (
+                  <div
+                    onMouseDown={props.onMouseDown}
+                    onTouchStart={props.onTouchStart}
+                    style={{ ...props.style, height: '36px', display: 'flex', width: '100%' }}
+                  >
+                    <div
+                      ref={props.ref}
+                      style={{
+                        height: '6px',
+                        width: '100%',
+                        borderRadius: '20px',
+                        background: getTrackBackground({
+                          values,
+                          colors: ['#000', '#ccc'],
+                          min: MIN,
+                          max: MAX,
+                        }),
+                        alignSelf: 'center',
+                      }}
+                    >
+                      {children}
+                    </div>
+                  </div>
+                )}
+                renderThumb={({ props }) => (
+                  <div
+                    {...props}
+                    key={props.key}
+                    style={{
+                      ...props.style,
+                      height: '14px',
+                      width: '14px',
+                      borderRadius: '20px',
+                      backgroundColor: '#000',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  />
+                )}
+              />
+            </div>
+
+            <div
               className={classNames(
-                'aspect-[62/14] h-auto',
-                'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
-                'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
-                '2xl:w-[62px]', // 2xl 이상 고정
+                'w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
+                'hidden md-landscape:block lg:block',
+                'bottom-[17.41%]',
+                'md:bottom-[15.32%]',
+                'lg:bottom-[13.58%]',
+                '2xl:bottom-[13.60%]',
               )}
-              viewBox='0 0 62 14'
-              fill='none'
             >
-              <circle cx='7' cy='7' r='7' fill={'#222222'} />
-              <circle cx='31' cy='7' r='7' fill={'#222222'} />
-              <circle cx='55' cy='7' r='7' fill={'#F2F2F2'} />
-            </svg>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className={classNames(
+                  'aspect-[62/14] h-auto',
+                  'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
+                  'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
+                  '2xl:w-[62px]', // 2xl 이상 고정
+                )}
+                viewBox='0 0 62 14'
+                fill='none'
+              >
+                <circle cx='7' cy='7' r='7' fill={'#222222'} />
+                <circle cx='31' cy='7' r='7' fill={'#222222'} />
+                <circle cx='55' cy='7' r='7' fill={'#F2F2F2'} />
+              </svg>
+            </div>
           </div>
         </div>
       </div>

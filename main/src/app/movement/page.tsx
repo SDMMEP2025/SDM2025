@@ -108,8 +108,7 @@ export default function Page() {
           <div className='absolute h-full lg:w-full overflow-hidden'>
             <MediaContainer
               type='video'
-              src='https://player.vimeo.com/video/1110238461?h=402fd700bc'
-              preloadDelayMs={0}
+              src='https://player.vimeo.com/video/1111874380?h=69848f162a'              
               loop
               className='h-full lg:w-full lg:h-auto object-cover'
             />
@@ -129,8 +128,7 @@ export default function Page() {
           <div className='absolute h-full lg:w-full overflow-hidden'>
             <MediaContainer
               type='video'
-              src='https://player.vimeo.com/video/1110238461?h=402fd700bc'
-              preloadDelayMs={0}
+              src='https://player.vimeo.com/video/1111874380?h=69848f162a'
               loop
               className='h-full lg:w-full lg:h-auto object-cover'
             />

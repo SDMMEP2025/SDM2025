@@ -261,84 +261,114 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
         </div>
 
         {/* textarea 래퍼 */}
-        <div
-          className={classNames(
-            'relative flex justify-center items-center',
-            'bg-white rounded-[8px]',
-            'w-[358px] max-w-[320px] md:max-w-none h-[70px]',
-            'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)] md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
-            'lg:w-[clamp(984px,calc(37.714px+65.7143vw),1720px)] lg:h-[clamp(126px,calc(25.7143px+6.96429vw),204px)]',
-            '2xl:w-[1720px] 2xl:h-[204px]',
-          )}
-        >
-          {/* 로딩 애니메이션 */}
-          <AnimatePresence>
-            {isAnalyzing && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isAnalyzing ? 1 : 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-              >
-                <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}>
-                  <Lottie
-                    lottieRef={lottieRef}
-                    animationData={animationData}
-                    loop={true}
-                    autoplay={true}
-                    className='w-full h-full'
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
 
-          {/* 입력 */}
-          <motion.textarea
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isAnalyzing ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            value={text}
-            onFocus={() => setIsActive(true)}
-            onBlur={() => setIsActive(false)}
-            onChange={handleChange}
-            onCompositionStart={handleCompositionStart}
-            onCompositionEnd={handleCompositionEnd}
-            onPaste={handlePaste}
-            placeholder={'나를 움직이게 하는 이 순간에 대해 적어보세요.'}
+        <div className='flex flex-col justify-center items-center gap-[4dvh]'>
+          <div
             className={classNames(
-              // MAX 도달 시 포커스와 무관하게 핑크
-              count >= MAX ? 'text-[#FF60B9]' : isActive ? 'text-[#222222]' : 'text-[#AEB1B6]',
-              'w-full h-auto text-center bg-transparent font-medium',
-              'placeholder-gray-400 focus:outline-none resize-none',
-              'text-[18px] leading-[150%] letterSpacing-[-0.36px]',
-              'md:text-[clamp(18px,calc(5.647px+3.43137vw),32px)] md:leading-[150%] md:letterSpacing-[-0.64px]',
-              'lg:text-[clamp(32px,calc(1.1429px+2.14286vw),56px)] lg:leading-[150%] lg:letterSpacing-[-0.64px]',
-              '2xl:text-[56px] 2xl:leading-[150%] 2xl:letterSpacing-[-1.12px]',
-            )}
-            disabled={isAnalyzing}
-            rows={1}
-          />
-
-          {/* 카운터 (보이는 글자 수 기준) */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isAnalyzing ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className={classNames(
-              'absolute right-0 md:right-[14px] bottom-[-30px] md:bottom-[14px] flex justify-between text-[#AEB1B6] font-medium',
-              'text-[15px]',
-              'lg:text-[clamp(15px,calc(0.85714px+0.982143vw),26px)]',
-              '2xl:text-[26px]',
+              'relative flex justify-center items-center',
+              'bg-white rounded-[8px]',
+              'w-[358px] max-w-[320px] md:max-w-none h-[70px]',
+              'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)] md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
+              'lg:w-[clamp(984px,calc(37.714px+65.7143vw),1720px)] lg:h-[clamp(126px,calc(25.7143px+6.96429vw),204px)]',
+              '2xl:w-[1720px] 2xl:h-[204px]',
             )}
           >
-            <span>
-              {count}/{MAX}
-            </span>
-          </motion.div>
+            {/* 로딩 애니메이션 */}
+            <AnimatePresence>
+              {isAnalyzing && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isAnalyzing ? 1 : 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                >
+                  <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}>
+                    <Lottie
+                      lottieRef={lottieRef}
+                      animationData={animationData}
+                      loop={true}
+                      autoplay={true}
+                      className='w-full h-full'
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* 입력 */}
+            <motion.textarea
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isAnalyzing ? 0 : 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              value={text}
+              onFocus={() => setIsActive(true)}
+              onBlur={() => setIsActive(false)}
+              onChange={handleChange}
+              onCompositionStart={handleCompositionStart}
+              onCompositionEnd={handleCompositionEnd}
+              onPaste={handlePaste}
+              placeholder={'나를 움직이게 하는 이 순간에 대해 적어보세요.'}
+              className={classNames(
+                // MAX 도달 시 포커스와 무관하게 핑크
+                count >= MAX ? 'text-[#FF60B9]' : isActive ? 'text-[#222222]' : 'text-[#AEB1B6]',
+                'w-full h-auto text-center bg-transparent font-medium',
+                'placeholder-gray-400 focus:outline-none resize-none',
+                'text-[18px] leading-[150%] letterSpacing-[-0.36px]',
+                'md:text-[clamp(18px,calc(5.647px+3.43137vw),32px)] md:leading-[150%] md:letterSpacing-[-0.64px]',
+                'lg:text-[clamp(32px,calc(1.1429px+2.14286vw),56px)] lg:leading-[150%] lg:letterSpacing-[-0.64px]',
+                '2xl:text-[56px] 2xl:leading-[150%] 2xl:letterSpacing-[-1.12px]',
+              )}
+              disabled={isAnalyzing}
+              rows={1}
+            />
+
+            {/* 카운터 (보이는 글자 수 기준) */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isAnalyzing ? 0 : 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className={classNames(
+                'absolute right-0 md:right-[14px] bottom-[-30px] md:bottom-[14px] flex justify-between text-[#AEB1B6] font-medium',
+                'text-[15px]',
+                'lg:text-[clamp(15px,calc(0.85714px+0.982143vw),26px)]',
+                '2xl:text-[26px]',
+              )}
+            >
+              <span>
+                {count}/{MAX}
+              </span>
+            </motion.div>
+          </div>
+
+          <div
+            className={classNames(
+              'w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
+              'hidden md-landscape:block lg:block',
+              'bottom-[17.41%]',
+              'md:bottom-[15.32%]',
+              'lg:bottom-[13.58%]',
+              '2xl:bottom-[13.60%]',
+            )}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className={classNames(
+                'aspect-[62/14] h-auto',
+                'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
+                'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
+                '2xl:w-[62px]', // 2xl 이상 고정
+              )}
+              viewBox='0 0 62 14'
+              fill='none'
+            >
+              <circle cx='7' cy='7' r='7' fill={'#222222'} />
+              <circle cx='31' cy='7' r='7' fill={'#F2F2F2'} />
+              <circle cx='55' cy='7' r='7' fill={'#F2F2F2'} />
+            </svg>
+          </div>
         </div>
       </div>
 
