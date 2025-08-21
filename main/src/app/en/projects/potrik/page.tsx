@@ -28,6 +28,7 @@ import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -281,7 +282,9 @@ export default function Page() {
         muted={false}
         loop
       />
-      <ImageGallery images={['/images/projects/potrik/potrik_5.jpg', '/images/projects/potrik/potrik_6.jpg']} />
+      <CursorArea variant='right'>
+        <ImageGallery images={['/images/projects/potrik/potrik_5.jpg', '/images/projects/potrik/potrik_6.jpg']} />
+      </CursorArea>
 
       <TitleBody
         title={<>Driving Module</>}

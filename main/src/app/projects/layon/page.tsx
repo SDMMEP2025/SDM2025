@@ -28,6 +28,7 @@ import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -342,10 +343,13 @@ export default function Page() {
         muted
         loop
       />
-      <ImageGallery
-        images={['/images/projects/layon/layon_10.jpg', '/images/projects/layon/layon_11.jpg']}
-        alt='LAY.ON Image Gallery'
-      />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/layon/layon_10.jpg', '/images/projects/layon/layon_11.jpg']}
+          alt='LAY.ON Image Gallery'
+        />
+      </CursorArea>
+
       <MidBody
         align='center'
         content={
@@ -415,10 +419,13 @@ export default function Page() {
           </>
         }
       />
-      <ImageGallery
-        images={['/images/projects/layon/layon_16.jpg', '/images/projects/layon/layon_17.jpg']}
-        alt='LAY.ON Image Gallery'
-      />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/layon/layon_16.jpg', '/images/projects/layon/layon_17.jpg']}
+          alt='LAY.ON Image Gallery'
+        />
+      </CursorArea>
+
       <RightBody
         text={
           <>

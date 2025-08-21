@@ -91,7 +91,7 @@ export function PageTransitionWrapper({ children, isTransitioning }: PageTransit
                 className='text-center text-white text-3xl md:text-5xl font-semibold font-english leading-[1.1]'
               >
                 {textLines.map((line, index) => (
-                  <motion.div key={index} variants={lineVariants} className='overflow-hidden'>
+                  <motion.div key={index} variants={lineVariants}>
                     <div className=''>{line}</div>
                   </motion.div>
                 ))}

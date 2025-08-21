@@ -16,6 +16,7 @@ import { FloatingPhoto } from './Photo'
 import { MediaContainer } from '../projects'
 import AboutSectionWithoutLottie from '../about/AboutSectionWithoutLottie'
 import aboutAnim from '@/animation/about_1.json'
+import { CursorArea } from '../cursor/CursorArea'
 
 function useStableVh() {
   useEffect(() => {
@@ -39,7 +40,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 1, 2, 3, 1]
+const WEIGHTS: number[] = [1, 2, 3, 1]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -178,7 +179,7 @@ export function ScrollOrchestrator() {
     target: wrapRef,
     offset: ['start start', 'end start'],
   })
-  const [p0, p1,p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
+  const [p0, p1, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
   useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
@@ -325,227 +326,229 @@ export function ScrollOrchestrator() {
         }}
       >
         <div ref={wrapRef} style={{ height: '1300dvh' }}>
-          <section className='relative' style={{ height: '1300dvh' }}>
-            <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
-              <div className='relative w-full h-full bg-white'>
-                {/* 핑크 사각형 */}
-                <div className='absolute left-1/2 top-[45dvh] md:top-[45dvh] -translate-x-1/2 -translate-y-1/2'>
+          <CursorArea variant='down'>
+            <section className='relative' style={{ height: '1300dvh' }}>
+              <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
+                <div className='relative w-full h-full bg-white'>
+                  {/* 핑크 사각형 */}
+                  <div className='absolute left-1/2 top-[45dvh] md:top-[45dvh] -translate-x-1/2 -translate-y-1/2'>
+                    <motion.div
+                      ref={rectRef}
+                      initial={false}
+                      className='bg-[#FF60B9] w-[clamp(208px,17vw,256px)] xl:w-[419.5555419921875px] aspect-[236/120] h-auto'
+                      style={{
+                        borderRadius: '5px',
+                        scale: rectScale,
+                        opacity: rectOpacity,
+                        transformOrigin: 'center',
+                        willChange: 'transform',
+                      }}
+                    />
+                  </div>
+
+                  {/* Lottie */}
                   <motion.div
-                    ref={rectRef}
-                    initial={false}
-                    className='bg-[#FF60B9] w-[clamp(208px,17vw,256px)] xl:w-[419.5555419921875px] aspect-[236/120] h-auto'
-                    style={{
-                      borderRadius: '5px',
-                      scale: rectScale,
-                      opacity: rectOpacity,
-                      transformOrigin: 'center',
-                      willChange: 'transform',
-                    }}
-                  />
-                </div>
+                    className='absolute inset-0 overflow-hidden'
+                    aria-hidden
+                    style={{ opacity: lottieOpacity }}
+                  >
+                    <Lottie
+                      lottieRef={lottieRef}
+                      animationData={bgAnim}
+                      autoplay={false}
+                      loop={true}
+                      rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
+                      style={{ width: '100%', height: '100%' }}
+                      className='[&_svg]:w-full [&_svg]:h-full [&_svg]:block'
+                    />
+                  </motion.div>
 
-                {/* Lottie */}
-                <motion.div
-                  className='absolute inset-0 overflow-hidden'
-                  aria-hidden
-                  style={{ opacity: lottieOpacity }}
-                >
-                  <Lottie
-                    lottieRef={lottieRef}
-                    animationData={bgAnim}
-                    autoplay={false}
-                    loop={true}
-                    rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
-                    style={{ width: '100%', height: '100%' }}
-                    className='[&_svg]:w-full [&_svg]:h-full [&_svg]:block'
-                  />
-                </motion.div>
+                  {/* 모바일 타이틀 */}
+                  <div className='md:hidden absolute left-1/2 top-[45dvh] -translate-x-1/2 -translate-y-[90px] z-[9999] mix-blend-difference text-center text-white'>
+                    <div className='flex flex-col items-center gap-2 font-english'>
+                      <motion.span
+                        initial={false}
+                        style={{ scale: titleScale, y: titleLift }}
+                        className='font-semibold leading-none text-[clamp(30px,2.17vw,40px)]'
+                      >
+                        New Formative
+                      </motion.span>
+                      <motion.span
+                        initial={false}
+                        style={{ opacity: infoOpacity, y: titleLift }}
+                        className='font-medium whitespace-nowrap text-[18px] leading-[120%]'
+                      >
+                        Samsung Design Membership
+                        <br />
+                        Emergence Project
+                      </motion.span>
+                    </div>
+                  </div>
 
-                {/* 모바일 타이틀 */}
-                <div className='md:hidden absolute left-1/2 top-[45dvh] -translate-x-1/2 -translate-y-[90px] z-[9999] mix-blend-difference text-center text-white'>
-                  <div className='flex flex-col items-center gap-2 font-english'>
+                  <div className='md:hidden absolute left-1/2 top-[45dvh] -translate-x-1/2 translate-y-[0px] z-[9999] mix-blend-difference text-center text-white'>
+                    <div className='flex flex-col-reverse items-center gap-4 font-english'>
+                      <motion.span
+                        initial={false}
+                        style={{ scale: subtitleScale, y: subtitleLift }}
+                        className='font-semibold whitespace-nowrap leading-none text-[clamp(30px,2.77vw,40px)]'
+                      >
+                        Steady Movement
+                        <br />
+                        For Progress
+                      </motion.span>
+                      <motion.span
+                        initial={false}
+                        style={{ opacity: infoOpacity, y: subtitleLift }}
+                        className='font-medium text-[18px] leading-[120%]'
+                      >
+                        Aug 22 – 27 (Fri – Wed)
+                        <br />
+                        Open daily 10AM – 5PM
+                      </motion.span>
+                    </div>
+                  </div>
+
+                  {/* 데스크탑 타이틀/서브 */}
+                  <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] xl:w-[451px] xl:-translate-y-[120px] xl:leading-[210%] xl:w-[574px] z-[9999]'>
                     <motion.span
                       initial={false}
-                      style={{ scale: titleScale, y: titleLift }}
-                      className='font-semibold leading-none text-[clamp(30px,2.17vw,40px)]'
-                    >
-                      New Formative
-                    </motion.span>
-                    <motion.span
-                      initial={false}
-                      style={{ opacity: infoOpacity, y: titleLift }}
-                      className='font-medium whitespace-nowrap text-[18px] leading-[120%]'
+                      style={{ opacity: infoOpacity }}
+                      className='text-center whitespace-nowrap text-[16px] md:text-[25px] xl:text-[44px]'
                     >
                       Samsung Design Membership
                       <br />
                       Emergence Project
                     </motion.span>
                   </div>
-                </div>
 
-                <div className='md:hidden absolute left-1/2 top-[45dvh] -translate-x-1/2 translate-y-[0px] z-[9999] mix-blend-difference text-center text-white'>
-                  <div className='flex flex-col-reverse items-center gap-4 font-english'>
+                  <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43dvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] xl:-translate-y-[160px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
+                    <motion.span
+                      initial={false}
+                      style={{ scale: titleScale, y: titleLift }}
+                      className='block leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
+                    >
+                      New Formative
+                    </motion.span>
+                  </div>
+
+                  <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] lg:translate-y-[90px]  xl:translate-y-[150px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                     <motion.span
                       initial={false}
                       style={{ scale: subtitleScale, y: subtitleLift }}
-                      className='font-semibold whitespace-nowrap leading-none text-[clamp(30px,2.77vw,40px)]'
+                      className='block whitespace-nowrap leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
                     >
                       Steady Movement
                       <br />
                       For Progress
                     </motion.span>
+                  </div>
+
+                  <div className='hidden text-center md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] xl:w-[451px] xl:leading-[210%] xl:-translate-y-[120px] z-[9999]'>
                     <motion.span
                       initial={false}
-                      style={{ opacity: infoOpacity, y: subtitleLift }}
-                      className='font-medium text-[18px] leading-[120%]'
+                      style={{ opacity: infoOpacity }}
+                      className='block text-[16px] md:text-[25px] xl:text-[44px] whitespace-nowrap'
                     >
                       Aug 22 – 27 (Fri – Wed)
                       <br />
                       Open daily 10AM – 5PM
                     </motion.span>
                   </div>
-                </div>
 
-                {/* 데스크탑 타이틀/서브 */}
-                <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] xl:w-[451px] xl:-translate-y-[120px] xl:leading-[210%] xl:w-[574px] z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ opacity: infoOpacity }}
-                    className='text-center whitespace-nowrap text-[16px] md:text-[25px] xl:text-[44px]'
+                  <motion.div
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 1, repeat: 3, ease: 'easeInOut' }}
+                    style={{ opacity: arrowOpacity }}
+                    className='fixed left-1/2 top-[93dvh] -translate-x-1/2 text-white mix-blend-difference'
+                    aria-hidden
                   >
-                    Samsung Design Membership
-                    <br />
-                    Emergence Project
-                  </motion.span>
-                </div>
-
-                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43dvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] xl:-translate-y-[160px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ scale: titleScale, y: titleLift }}
-                    className='block leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
+                    <svg xmlns='http://www.w3.org/2000/svg' width='29' height='16' viewBox='0 0 29 16' fill='none'>
+                      <path
+                        d='M14.4974 16c-.407 0-.811-.155-1.12-.463L.4638 2.691A1.5 1.5 0 0 1 2.7076.461L14.5 12.193 26.2924.461a1.5 1.5 0 1 1 2.2438 2.23L15.6232 15.537A1.5 1.5 0 0 1 14.4974 16Z'
+                        fill='currentColor'
+                      />
+                    </svg>
+                  </motion.div>
+                  <motion.div
+                    className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center pointer-events-none overflow-hidden'
+                    aria-hidden
+                    style={{ opacity: vimeoOpacity, willChange: 'opacity' }}
                   >
-                    New Formative
-                  </motion.span>
-                </div>
-
-                <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] lg:translate-y-[90px]  xl:translate-y-[150px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ scale: subtitleScale, y: subtitleLift }}
-                    className='block whitespace-nowrap leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
-                  >
-                    Steady Movement
-                    <br />
-                    For Progress
-                  </motion.span>
-                </div>
-
-                <div className='hidden text-center md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] xl:w-[451px] xl:leading-[210%] xl:-translate-y-[120px] z-[9999]'>
-                  <motion.span
-                    initial={false}
-                    style={{ opacity: infoOpacity }}
-                    className='block text-[16px] md:text-[25px] xl:text-[44px] whitespace-nowrap'
-                  >
-                    Aug 22 – 27 (Fri – Wed)
-                    <br />
-                    Open daily 10AM – 5PM
-                  </motion.span>
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: [1, 0, 1] }}
-                  transition={{ duration: 1, repeat: 3, ease: 'easeInOut' }}
-                  style={{ opacity: arrowOpacity }}
-                  className='fixed left-1/2 top-[93dvh] -translate-x-1/2 text-white mix-blend-difference'
-                  aria-hidden
-                >
-                  <svg xmlns='http://www.w3.org/2000/svg' width='29' height='16' viewBox='0 0 29 16' fill='none'>
-                    <path
-                      d='M14.4974 16c-.407 0-.811-.155-1.12-.463L.4638 2.691A1.5 1.5 0 0 1 2.7076.461L14.5 12.193 26.2924.461a1.5 1.5 0 1 1 2.2438 2.23L15.6232 15.537A1.5 1.5 0 0 1 14.4974 16Z'
-                      fill='currentColor'
+                    <Lottie
+                      animationData={aboutAnim}
+                      autoplay={true}
+                      loop={true}
+                      rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
+                      className='w-full aspect-[1440/1100] md:aspect-[1440/1500] md:h-full md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
                     />
-                  </svg>
-                </motion.div>
-                <motion.div
-                  className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center pointer-events-none overflow-hidden'
-                  aria-hidden
-                  style={{ opacity: vimeoOpacity, willChange: 'opacity' }}
-                >
-                  <Lottie
-                    animationData={aboutAnim}
-                    autoplay={true}
-                    loop={true}
-                    rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
-                    className='w-full aspect-[1440/1100] md:aspect-[1440/1500] md:h-full md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
-                  />
-                </motion.div>
-              </div>
+                  </motion.div>
+                </div>
 
-              {/* 3D planes */}
-              <div className='absolute inset-0 flex items-center justify-center z-0'>
-                <motion.div
-                  className='relative w-[84vw] h-[42vw] max-w-[1440px]'
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    opacity: planesOpacity,
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                    x: '-50%',
-                    y: '-50%',
-                    perspective: 1400,
-                  }}
-                >
-                  <ThickPlane
-                    widthPct={isMdPortrait ? 90 : 90}
-                    heightPct={isMdPortrait ? 100 : 305}
-                    color='#FF60B9'
-                    radius={10}
-                    rotateX={planeTiltDeg}
-                    translateY={isMdPortrait ? 0 : 20}
-                    y={backYFinal}
-                    origin='center center'
-                  />
-                  <ThickPlane
-                    widthPct={isMdPortrait ? 80 : 80}
-                    heightPct={isMdPortrait ? 80 : 305}
-                    color='#FFF790'
-                    radius={10}
-                    rotateX={planeTiltDeg}
-                    translateY={isMdPortrait ? -40 : 0}
-                    y={midYFinal}
-                    origin='center center'
-                  />
-                  <ThickPlane
-                    widthPct={isMdPortrait ? 72 : 64}
-                    heightPct={isMdPortrait ? 72 : 305}
-                    color='#FF5E1F'
-                    radius={10}
-                    rotateX={planeTiltDeg}
-                    translateY={isMdPortrait ? -80 : -20}
-                    y={frontYFinal}
-                    origin='center center'
-                  />
-                </motion.div>
-              </div>
+                {/* 3D planes */}
+                <div className='absolute inset-0 flex items-center justify-center z-0'>
+                  <motion.div
+                    className='relative w-[84vw] h-[42vw] max-w-[1440px]'
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      opacity: planesOpacity,
+                      position: 'absolute',
+                      left: '50%',
+                      top: '50%',
+                      x: '-50%',
+                      y: '-50%',
+                      perspective: 1400,
+                    }}
+                  >
+                    <ThickPlane
+                      widthPct={isMdPortrait ? 90 : 90}
+                      heightPct={isMdPortrait ? 100 : 305}
+                      color='#FF60B9'
+                      radius={10}
+                      rotateX={planeTiltDeg}
+                      translateY={isMdPortrait ? 0 : 20}
+                      y={backYFinal}
+                      origin='center center'
+                    />
+                    <ThickPlane
+                      widthPct={isMdPortrait ? 80 : 80}
+                      heightPct={isMdPortrait ? 80 : 305}
+                      color='#FFF790'
+                      radius={10}
+                      rotateX={planeTiltDeg}
+                      translateY={isMdPortrait ? -40 : 0}
+                      y={midYFinal}
+                      origin='center center'
+                    />
+                    <ThickPlane
+                      widthPct={isMdPortrait ? 72 : 64}
+                      heightPct={isMdPortrait ? 72 : 305}
+                      color='#FF5E1F'
+                      radius={10}
+                      rotateX={planeTiltDeg}
+                      translateY={isMdPortrait ? -80 : -20}
+                      y={frontYFinal}
+                      origin='center center'
+                    />
+                  </motion.div>
+                </div>
 
-              {/* 떠다니는 사진 */}
-              <div className='inset-0 z-[100]' style={{ overflow: 'visible' }}>
-                <motion.div className='relative w-full h-full'>
-                  <FloatingPhoto
-                    p4={p3}
-                    src={isMdPortrait ? '/images/intro/pc.png' : '/images/intro/mo.png'}
-                    left='0'
-                    base={isMdPortrait ? 200 : 20}
-                    width='100vw'
-                    fade={[0, 1]}
-                  />
-                </motion.div>
+                {/* 떠다니는 사진 */}
+                <div className='inset-0 z-[100]' style={{ overflow: 'visible' }}>
+                  <motion.div className='relative w-full h-full'>
+                    <FloatingPhoto
+                      p4={p3}
+                      src={isMdPortrait ? '/images/intro/pc.png' : '/images/intro/mo.png'}
+                      left='0'
+                      base={isMdPortrait ? 200 : 20}
+                      width='100vw'
+                      fade={[0, 1]}
+                    />
+                  </motion.div>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </CursorArea>
 
           {/* About */}
           <section aria-label='About' className='relative bg-white md:mt-0'>

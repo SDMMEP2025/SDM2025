@@ -28,6 +28,7 @@ import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -272,10 +273,13 @@ export default function Page() {
           '합주에서 타이밍은 생명이기에, 온라인 합주에서는 딜레이 없는 환경이 필수입니다.\nCake 스테이션은 유선 이더넷을 통해 안정적인 네트워크 연결을 유지하며, 거리의 제한 없이 연주 중인 음원을 실시간으로 수신합니다. 또한 각 모듈은 스테이션과 2.4GHz RF 채널을 통해 각 세션이 연주 중인 음원을 전달받아 레이턴시 없는 온라인 합주 경험을 가능하게 합니다.'
         }
       />
-      <ImageGallery
-        images={['/images/projects/hotcake/hotcake_6.jpg', '/images/projects/hotcake/hotcake_7.jpg']}
-        alt='HOTCAKE Image Gallery'
-      />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/hotcake/hotcake_6.jpg', '/images/projects/hotcake/hotcake_7.jpg']}
+          alt='HOTCAKE Image Gallery'
+        />
+      </CursorArea>
+
       <TitleBody
         title={'음악에 텍스처를 입히다'}
         text={
@@ -389,10 +393,13 @@ export default function Page() {
           'Hotcake는 기존의 연주 방식을 해치지 않으면서, 누구나 쉽게 합주를 즐길 수 있는 접근성 중심의 플랫폼으로 확장됩니다. Butter의 뮤직 햅틱 기능은 소리를 온전히 듣기 어려운 사람도 리듬을 피부로 느끼며 합주에 참여할 수 있게 합니다. 또한, 헤드폰 기반 스튜디오 모드는 언제 어디서든 몰입감 있는 연주 환경을 제공하며, 개인의 감각적 표현이 콘텐츠가 되는 새로운 음악 생태계를 만들어갑니다.'
         }
       />
-      <ImageGallery
-        images={['/images/projects/hotcake/hotcake_16.jpg', '/images/projects/hotcake/hotcake_17.jpg']}
-        alt='HOTCAKE Image Gallery'
-      />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/hotcake/hotcake_16.jpg', '/images/projects/hotcake/hotcake_17.jpg']}
+          alt='HOTCAKE Image Gallery'
+        />
+      </CursorArea>
+
       <MidTitle align='center' text='Heat it, Play It, Groove It, Melt It, Drop It, Fade It, Link It, Hotcake' />
       <MediaContainer
         type='video'

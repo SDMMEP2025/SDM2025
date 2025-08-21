@@ -183,7 +183,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
               {/* 언어 드롭다운 */}
               <div className='relative'>
                 <div
-                  className='relative flex flex-row justify-start items-center cursor-pointer'
+                  className='relative flex flex-row justify-start items-center'
                   onClick={toggleDropdown}
                 >
                   <div className="left-0 top-0 px-[8.68px] justify-center text-center text-white text-2xl font-semibold font-['Pretendard'] leading-9">
@@ -208,7 +208,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
                       .map((l) => (
                         <div
                           key={l}
-                          className="left-0 top-0 text-center cursor-pointer text-2xl font-semibold font-['Pretendard'] transition-colors"
+                          className="left-0 top-0 text-center text-2xl font-semibold font-['Pretendard'] transition-colors"
                           onClick={(e) => {
                             e.stopPropagation()
                             selectLanguage(l)

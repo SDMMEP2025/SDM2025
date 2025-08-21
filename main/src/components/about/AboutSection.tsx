@@ -16,6 +16,7 @@ import {
 import { FooterDocked } from '@/components/projects'
 import classNames from 'classnames'
 import Link from 'next/link'
+import { CursorArea } from '../cursor/CursorArea'
 type Tutor = { name: string; englishName?: string }
 type ThanksSection = { title: string; tutors: Tutor[] }
 type Props = { embedded?: boolean }
@@ -123,7 +124,9 @@ export default function AboutSection({ embedded = false }: Props) {
         position='absolute'
       />
       {/* 여기에 인터랙션 */}
-      <GraphicPlay />
+      <CursorArea variant='drag'>
+        <GraphicPlay />
+      </CursorArea>
       <Divide title='Movement as a System' number='01' />
       <Image src='/images/about/about_3.jpg' alt='about_3.png' />
       <MediaContainer

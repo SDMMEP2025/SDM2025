@@ -21,6 +21,7 @@ import {
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -171,7 +172,11 @@ export default function Page() {
             take over your soul.
             <br />
             <br />
-            <a href='https://heyzine.com/flip-book/bf650f1c48.html#page/1g' className='underline font-semibold' target='_blank'>
+            <a
+              href='https://heyzine.com/flip-book/bf650f1c48.html#page/1g'
+              className='underline font-semibold'
+              target='_blank'
+            >
               ▶︎ More Detailed Story
             </a>
           </>
@@ -215,11 +220,12 @@ export default function Page() {
         ]}
         text='Perfect timing is very important for online jam sessions. Cake makes sure there is no delay or freezing, so everything feels smooth. Cake stays connected through a wired Ethernet, delivering real-time audio no matter the distance. Each module picks up the live sound from the station via a 2.4GHz RF channel, making sure your online jam feels smooth and perfectly in sync.'
       />
-      <ImageGallery
-        images={['/images/projects/hotcake/hotcake_6.jpg', '/images/projects/hotcake/hotcake_7.jpg']}
-        alt='HOTCAKE Image Gallery'
-      />
-
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/hotcake/hotcake_6.jpg', '/images/projects/hotcake/hotcake_7.jpg']}
+          alt='HOTCAKE Image Gallery'
+        />
+      </CursorArea>
       {/* 12,13 */}
       <TitleBody
         title={[
@@ -327,16 +333,18 @@ export default function Page() {
           <>
             Playing Together, <br className='hidden md:block' />
             For Everyone
-          </>
+          </>,
         ]}
         text='Hotcake becomes a platform where everyone can enjoy jamming, without changing how you normally play. For those who are deaf or hard of hearing, Butter’s music haptics help you feel the rhythm and join the session. Studio Mode headphones provide immersive playing anywhere. Your personal expression becomes part of a new music ecosystem.'
       />
 
       {/* 21 */}
-      <ImageGallery
-        images={['/images/projects/hotcake/hotcake_16.jpg', '/images/projects/hotcake/hotcake_17.jpg']}
-        alt='HOTCAKE Image Gallery'
-      />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/hotcake/hotcake_16.jpg', '/images/projects/hotcake/hotcake_17.jpg']}
+          alt='HOTCAKE Image Gallery'
+        />
+      </CursorArea>
 
       <MidTitle align='center' text='Heat it, Play It, Groove It, Melt It, Drop It, Fade It, Link It, Hotcake' />
 

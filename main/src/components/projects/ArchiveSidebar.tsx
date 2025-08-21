@@ -1,6 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { AnimatePresence, motion, useInView } from 'framer-motion'
+import { CursorArea } from '../cursor/CursorArea'
 
 const PANEL_W = 396
 const TAB_W = 54
@@ -56,54 +57,58 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, x: HIDDEN_OFFSET }}
-        animate={{
-          opacity: isVisible ? 1 : 0,
-          x: isExpanded ? 0 : HIDDEN_OFFSET,
-        }}
-        exit={{ opacity: 0, x: HIDDEN_OFFSET }}
-        transition={{ duration: 0.3 }}
-        className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[000] `}
-      >
-        <div className='w-[396px] h-full flex flex-row items-start '>
-          <div
-            className='left-0 w-[54px] h-full px-3.5 py-0 md:py-[18px] lg:py-0 cursor-pointer flex justify-center items-center md:items-start lg:items-start'
-            onClick={handleExpand}
-          >
-            <div className='absolute writingMode-vertical-lr pt-12 text-sm md:text-base lg:text-lg text-zinc-600 font-semibold leading-relaxed md:hover:opacity-70 active:scale-105 transition-all'>
-              Process Archive
-            </div>
-          </div>
-          <div className='w-full overflow-y-scroll  h-full pr-[16px] md:mt-[65px] md:pb-[90px] lg:mt-12 lg:pb-[80px] flex flex-col gap-1 items-start'>
-            {currentPoint?.images?.map((image, index) => (
-              <div
-                key={index}
-                className={`w-full h-fit flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
-              >
-                <HoverImageCard
-                  index={index}
-                  src={typeof image === 'string' ? image : image.src}
-                  label={
-                    currentPoint?.labels?.[index] ?? (typeof image !== 'string' ? image.label : undefined) ?? 'archive'
-                  }
-                />
+      <CursorArea variant='click' disabled={isExpanded}>
+        <motion.div
+          initial={{ opacity: 0, x: HIDDEN_OFFSET }}
+          animate={{
+            opacity: isVisible ? 1 : 0,
+            x: isExpanded ? 0 : HIDDEN_OFFSET,
+          }}
+          exit={{ opacity: 0, x: HIDDEN_OFFSET }}
+          transition={{ duration: 0.3 }}
+          className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[000] `}
+        >
+          <div className='w-[396px] h-full flex flex-row items-start '>
+            <div
+              className='left-0 w-[54px] h-full px-3.5 py-0 md:py-[18px] lg:py-0 flex justify-center items-center md:items-start lg:items-start'
+              onClick={handleExpand}
+            >
+              <div className='absolute writingMode-vertical-lr pt-12 text-sm md:text-base lg:text-lg text-zinc-600 font-semibold leading-relaxed '>
+                Process Archive
               </div>
-            ))}
+            </div>
+            <div className='w-full overflow-y-scroll  h-full pr-[16px] md:mt-[65px] md:pb-[90px] lg:mt-12 lg:pb-[80px] flex flex-col gap-1 items-start'>
+              {currentPoint?.images?.map((image, index) => (
+                <div
+                  key={index}
+                  className={`w-full h-fit flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
+                >
+                  <HoverImageCard
+                    index={index}
+                    src={typeof image === 'string' ? image : image.src}
+                    label={
+                      currentPoint?.labels?.[index] ??
+                      (typeof image !== 'string' ? image.label : undefined) ??
+                      'archive'
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={handleClose}
+              className='absolute top-[16px] right-[16px] w-6 h-6 flex items-center justify-center cursor-pointer md:hover:opacity-70 active:scale-105 transition-all duration-300 ease-in-out'
+            >
+              <svg xmlns='http://www.w3.org/2000/svg' className='w-full aspect-square' viewBox='0 0 24 25' fill='none'>
+                <path
+                  d='M19 6.91L17.59 5.5L12 11.09L6.41 5.5L5 6.91L10.59 12.5L5 18.09L6.41 19.5L12 13.91L17.59 19.5L19 18.09L13.41 12.5L19 6.91Z'
+                  fill='#222'
+                />
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={handleClose}
-            className='absolute top-[16px] right-[16px] w-6 h-6 flex items-center justify-center cursor-pointer md:hover:opacity-70 active:scale-105 transition-all duration-300 ease-in-out'
-          >
-            <svg xmlns='http://www.w3.org/2000/svg' className='w-full aspect-square' viewBox='0 0 24 25' fill='none'>
-              <path
-                d='M19 6.91L17.59 5.5L12 11.09L6.41 5.5L5 6.91L10.59 12.5L5 18.09L6.41 19.5L12 13.91L17.59 19.5L19 18.09L13.41 12.5L19 6.91Z'
-                fill='#222'
-              />
-            </svg>
-          </button>
-        </div>
-      </motion.div>
+        </motion.div>
+      </CursorArea>
 
       <motion.div
         ref={mobileScrollRef}

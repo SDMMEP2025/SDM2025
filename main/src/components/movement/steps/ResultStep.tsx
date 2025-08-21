@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useDeviceDetection } from '@/hooks/useDeviceDetection'
 import onBoardingAnim from '@/animation/onboarding.json'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 interface ResultStepProps {
   imageUrl: string
@@ -452,15 +453,17 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
         </div>
         {/* canvas */}
         <div className='flex flex-col justify-center items-center gap-[2dvh]'>
-          <div className='flex justify-center items-center'>
-            <ConcentricSquares
-              steps={values[0]}
-              brandColorHex={colorAnalysis.brandColor.hex}
-              refinedColorHex={colorAnalysis.refinedColor.hex}
-              onPositionsChange={handlePositionsChange}
-              motionParams={motionParams} // 모션 파라미터 전달
-            />
-          </div>
+          <CursorArea variant='drag'>
+            <div className='flex justify-center items-center'>
+              <ConcentricSquares
+                steps={values[0]}
+                brandColorHex={colorAnalysis.brandColor.hex}
+                refinedColorHex={colorAnalysis.refinedColor.hex}
+                onPositionsChange={handlePositionsChange}
+                motionParams={motionParams} // 모션 파라미터 전달
+              />
+            </div>
+          </CursorArea>
 
           {/* 기존 Range 컴포넌트는 그대로 유지 */}
 
