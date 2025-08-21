@@ -118,6 +118,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
 
   const lottieRef = useRef<LottieRefCurrentProps>(null)
 
+  //이곳에서 변수 수정
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
     speedBase: 0.01,
     followSpeedMultiplier: 2,
@@ -125,7 +126,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     colorInterpolationPower: 0.9,
     floatAmplitude: 8,
     floatSpeed: 0.02,
-    tiltSensitivity: 25,
+    tiltSensitivity: 30,
     hoverScale: 1.1,
     shadowIntensity: 0,
     borderRadiusOuter: 8,
