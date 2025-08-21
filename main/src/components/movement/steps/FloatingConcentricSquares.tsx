@@ -1,68 +1,91 @@
-import React, { useState, useEffect, useRef } from 'react'
+'use client'
 
-interface MotionParams {
-  speedBase: number;
-  followSpeedMultiplier: number;
-  followSpeedOffset: number;
-  colorInterpolationPower: number;
-  floatAmplitude: number;
-  floatSpeed: number;
-  tiltSensitivity: number;
-  hoverScale: number;
-  shadowIntensity: number;
-  borderRadiusOuter: number;
-  gyroSensitivity: number;
+import React, { useEffect, useRef, useState } from 'react'
+
+export type AxisLockMode = 'none' | 'x' | 'y' | 'dominant'
+
+export interface InteractMotionParams {
+  speedBase: number
+  followSpeedMultiplier: number
+  followSpeedOffset: number
+  colorInterpolationPower: number
+  floatAmplitude: number
+  floatSpeed: number
+  tiltSensitivity: number
+  hoverScale: number
+  shadowIntensity: number
+  borderRadiusOuter: number
+  gyroSensitivity: number
+  axisLock?: AxisLockMode
+  axisLockThreshold?: number
 }
 
 function interpolateColor(color1: string, color2: string, factor: number): string {
   const hexToRgb = (hex: string) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-    return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null
+    const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    return r ? { r: parseInt(r[1], 16), g: parseInt(r[2], 16), b: parseInt(r[3], 16) } : null
   }
   const rgbToHex = (r: number, g: number, b: number) =>
     '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
 
-  const rgb1 = hexToRgb(color1)
-  const rgb2 = hexToRgb(color2)
-  if (!rgb1 || !rgb2) return color1
-
-  const r = Math.round(rgb1.r + factor * (rgb2.r - rgb1.r))
-  const g = Math.round(rgb1.g + factor * (rgb2.g - rgb1.g))
-  const b = Math.round(rgb1.b + factor * (rgb2.b - rgb1.b))
-  return rgbToHex(r, g, b)
+  const a = hexToRgb(color1)
+  const b = hexToRgb(color2)
+  if (!a || !b) return color1
+  const rr = Math.round(a.r + factor * (b.r - a.r))
+  const gg = Math.round(a.g + factor * (b.g - a.g))
+  const bb = Math.round(a.b + factor * (b.b - a.b))
+  return rgbToHex(rr, gg, bb)
 }
 
-function FloatingConcentricSquares({
-  steps,
-  positions,
-  brandColorHex,
-  refinedColorHex,
-  interactionData,
-  motionParams = {
-    speedBase: 0.08,
-    followSpeedMultiplier: 0.4,
-    followSpeedOffset: 1.0,
-    colorInterpolationPower: 0.9,
-    floatAmplitude: 15,
-    floatSpeed: 0.02,
-    tiltSensitivity: 15,
-    hoverScale: 1.08,
-    shadowIntensity: 1.0,
-    borderRadiusOuter: 8,
-    gyroSensitivity: 1.0,
+// 우세축 히스테리시스 적용
+function makeAxisLocker() {
+  const lastAxisRef = { current: 'x' as 'x' | 'y' }
+  return function applyAxisLock(
+    x: number,
+    y: number,
+    mode: AxisLockMode,
+    thr: number, // 거리 기준
+  ) {
+    if (mode === 'x') return { x, y: 0 }
+    if (mode === 'y') return { x: 0, y }
+    if (mode === 'dominant') {
+      const ax = Math.abs(x)
+      const ay = Math.abs(y)
+      if (ax > ay + thr) lastAxisRef.current = 'x'
+      else if (ay > ax + thr) lastAxisRef.current = 'y'
+      return lastAxisRef.current === 'x' ? { x, y: 0 } : { x: 0, y }
+    }
+    return { x, y }
   }
-}: {
+}
+const applyAxisLock = makeAxisLocker()
+
+export interface FloatingConcentricSquaresProps {
   steps: number
   positions: Array<{ x: number; y: number }>
   brandColorHex: string
   refinedColorHex: string
-  interactionData: any
-  motionParams?: MotionParams
-}) {
-  // 기본 크기 (디자인 기준)
-  const baseMaxWidth = 420
-  const baseMaxHeight = 316
-  const baseStepReduction = 25
+  motionParams: InteractMotionParams
+  /** 컨테이너 바깥쪽 안내/버튼 UI를 직접 만들고 싶다면 false로 두세요 */
+  showMobileGyroUI?: boolean
+}
+
+/**
+ * 자이로 권한 → 즉시 리스너 부착, visibilitychange 재부착, 축 고정 지원
+ * 내부에 권한 버튼(UI)까지 포함 (showMobileGyroUI=true일 때)
+ */
+export default function FloatingConcentricSquares({
+  steps,
+  positions,
+  brandColorHex,
+  refinedColorHex,
+  motionParams,
+  showMobileGyroUI = true,
+}: FloatingConcentricSquaresProps) {
+  // 디자인 기준 값
+  const BASE_W = 420
+  const BASE_H = 316
+  const BASE_STEP = 25
 
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
@@ -71,268 +94,228 @@ function FloatingConcentricSquares({
   const [tiltOffset, setTiltOffset] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
 
-  // 마우스 따라 움직이는 positions
+  // 꼬리물기 포지션
   const [currentPositions, setCurrentPositions] = useState(positions)
   const targetRef = useRef({ x: 0, y: 0 })
   const mouseActiveRef = useRef(false)
 
-  // 모바일 및 자이로 센서 관련 state
+  // 모바일/자이로
   const [isMobile, setIsMobile] = useState(false)
-  const [gyroStatus, setGyroStatus] = useState<'pending' | 'granted' | 'denied' | 'error'>('pending')
+  const [gyroStatus, setGyroStatus] = useState<'pending' | 'granted' | 'denied'>('pending')
   const [isListening, setIsListening] = useState(false)
-  const [sensorData, setSensorData] = useState<{ beta: string; gamma: string }>({ beta: '0.0', gamma: '0.0' })
-
-  // 센서 리스닝 상태 추적
-  const listeningRef = useRef(false)
   const cleanupRef = useRef<(() => void) | null>(null)
+  const tickingRef = useRef(false)
 
-  // 부모 크기 기반 스케일 계산
+  // 부모 크기 기반 스케일
   useEffect(() => {
     const updateScale = () => {
       if (!containerRef.current?.parentElement) return
-
-      const parent = containerRef.current.parentElement
-      const parentRect = parent.getBoundingClientRect()
-
-      // 부모의 크기에서 여백을 제외한 사용 가능한 공간
-      const availableWidth = parentRect.width * 0.8 // 부모 너비의 80%
-      const availableHeight = parentRect.height * 0.6 // 부모 높이의 60%
-
-      // 가로/세로 비율을 유지하면서 맞는 스케일 계산
-      const widthScale = availableWidth / baseMaxWidth
-      const heightScale = availableHeight / baseMaxHeight
-
-      // 더 작은 스케일을 선택해서 부모를 벗어나지 않게 함
-      const newScale = Math.min(widthScale, heightScale, 2) // 최대 2배까지만
-
-      setScale(Math.max(0.3, newScale)) // 최소 0.3배는 유지
+      const p = containerRef.current.parentElement.getBoundingClientRect()
+      const wScale = (p.width * 0.8) / BASE_W
+      const hScale = (p.height * 0.6) / BASE_H
+      const s = Math.min(wScale, hScale, 2)
+      setScale(Math.max(0.3, s))
     }
-
-    // ResizeObserver로 부모 크기 변화 감지 (더 정확함)
-    let resizeObserver: ResizeObserver | null = null
-
+    let ro: ResizeObserver | null = null
     if (containerRef.current?.parentElement) {
-      resizeObserver = new ResizeObserver(updateScale)
-      resizeObserver.observe(containerRef.current.parentElement)
+      ro = new ResizeObserver(updateScale)
+      ro.observe(containerRef.current.parentElement)
     }
-
-    // 초기 스케일 설정
     updateScale()
-
-    // window resize도 같이 감지 (혹시 모를 경우)
-    window.addEventListener('resize', updateScale)
-
+    addEventListener('resize', updateScale)
     return () => {
-      if (resizeObserver) {
-        resizeObserver.disconnect()
-      }
-      window.removeEventListener('resize', updateScale)
+      ro?.disconnect()
+      removeEventListener('resize', updateScale)
     }
   }, [])
 
-  // 스케일에 따른 실제 크기들
-  const maxWidth = baseMaxWidth * scale
-  const maxHeight = baseMaxHeight * scale
-  const stepReduction = baseStepReduction * scale
+  const maxWidth = BASE_W * scale
+  const maxHeight = BASE_H * scale
+  const stepReduction = BASE_STEP * scale
 
-  // 모바일 환경 감지
+  // 모바일 감지 (권한 판정은 버튼에서)
   useEffect(() => {
-    const checkMobile = () => {
-      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
-      const userAgent = navigator.userAgent
-      const isIOS = /iPad|iPhone|iPod/.test(userAgent)
-
-      setIsMobile(isTouchDevice)
-
-      if (isTouchDevice && typeof DeviceOrientationEvent !== 'undefined') {
-        if (!isIOS) {
-          setGyroStatus('granted')
-        }
-      } else if (isTouchDevice) {
-        setGyroStatus('error')
-      }
+    const check = () => {
+      const touch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      setIsMobile(touch)
+      if (!touch) setGyroStatus('pending')
     }
-
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    check()
+    addEventListener('resize', check)
+    return () => removeEventListener('resize', check)
   }, [])
 
-  // 권한이 granted면 센서 활성화
+  // 떠다니는 애니메이션
   useEffect(() => {
-    if (gyroStatus === 'granted' && isMobile) {
-      const cleanup = enableGyroscope()
-      cleanupRef.current = cleanup
-      return cleanup
-    }
-  }, [gyroStatus, isMobile, motionParams.gyroSensitivity])
-
-  // 부유 애니메이션 (모션 파라미터 적용)
-  useEffect(() => {
-    let frame: number
-    let time = 0
-
-    const animate = () => {
-      time += motionParams.floatSpeed
+    let raf = 0
+    let t = 0
+    const tick = () => {
+      t += motionParams.floatSpeed
       setFloatOffset({
-        x: Math.sin(time) * motionParams.floatAmplitude * scale,
-        y: Math.cos(time * 0.8) * motionParams.floatAmplitude * 0.67 * scale,
+        x: Math.sin(t) * motionParams.floatAmplitude * scale,
+        y: Math.cos(t * 0.8) * motionParams.floatAmplitude * 0.67 * scale,
       })
-      frame = requestAnimationFrame(animate)
+      raf = requestAnimationFrame(tick)
     }
-
-    frame = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(frame)
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
   }, [scale, motionParams.floatAmplitude, motionParams.floatSpeed])
 
-  // 마우스 따라 움직이는 애니메이션 (모션 파라미터 적용)
+  // 꼬리물기 보간
   useEffect(() => {
-    let frame: number
-
-    const animate = () => {
-      setCurrentPositions((prev) => {
-        const newPositions = [...prev]
+    let raf = 0
+    const tick = () => {
+      setCurrentPositions(prev => {
+        const arr = [...prev]
         const target = targetRef.current
-
-        const lastIdx = steps - 1
-        if (lastIdx >= 0 && mouseActiveRef.current) {
-          const last = newPositions[lastIdx]
-          const newX = last.x + (target.x - last.x) * motionParams.speedBase
-          const newY = last.y + (target.y - last.y) * motionParams.speedBase
-          newPositions[lastIdx] = { x: newX, y: newY }
+        const last = steps - 1
+        if (last >= 0 && mouseActiveRef.current) {
+          const L = arr[last]
+          arr[last] = {
+            x: L.x + (target.x - L.x) * motionParams.speedBase,
+            y: L.y + (target.y - L.y) * motionParams.speedBase,
+          }
         }
-
-        for (let i = lastIdx - 1; i >= 0; i--) {
-          const current = newPositions[i]
-          const next = newPositions[i + 1]
-          const speed = motionParams.speedBase * (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
-          const newX = current.x + (next.x - current.x) * speed
-          const newY = current.y + (next.y - current.y) * speed
-          newPositions[i] = { x: newX, y: newY }
+        for (let i = last - 1; i >= 0; i--) {
+          const cur = arr[i]
+          const nxt = arr[i + 1]
+          const speed =
+            motionParams.speedBase *
+            (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
+          arr[i] = {
+            x: cur.x + (nxt.x - cur.x) * speed,
+            y: cur.y + (nxt.y - cur.y) * speed,
+          }
         }
-
-        return newPositions
+        return arr
       })
-
-      frame = requestAnimationFrame(animate)
+      raf = requestAnimationFrame(tick)
     }
-
-    frame = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(frame)
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
   }, [steps, motionParams.speedBase, motionParams.followSpeedMultiplier, motionParams.followSpeedOffset])
 
-  // 권한 요청 함수
-  const requestPermission = async () => {
-    try {
-      if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        const permissionResult = await (DeviceOrientationEvent as any).requestPermission()
-        setGyroStatus(permissionResult)
-      } else {
-        setGyroStatus('granted')
-      }
-    } catch (error: any) {
-      setGyroStatus('denied')
-    }
-  }
-
-  // 자이로스코프 활성화 (모션 파라미터 적용)
+  // 자이로 리스너
   const enableGyroscope = () => {
-    const handleOrientation = (event: DeviceOrientationEvent) => {
-      const beta = event.beta ?? 0
-      const gamma = event.gamma ?? 0
+    const onOri = (ev: DeviceOrientationEvent) => {
+      if (tickingRef.current) return
+      tickingRef.current = true
+      requestAnimationFrame(() => {
+        tickingRef.current = false
 
-      setSensorData({ beta: beta.toFixed(1), gamma: gamma.toFixed(1) })
+        const beta = ev.beta ?? 0    // 앞뒤
+        const gamma = ev.gamma ?? 0  // 좌우
 
-      if (!listeningRef.current) {
-        listeningRef.current = true
-        setIsListening(true)
-        mouseActiveRef.current = true
-      }
+        const nx = Math.max(-0.5, Math.min(0.5, gamma / 90)) * motionParams.gyroSensitivity
+        const ny = Math.max(-0.5, Math.min(0.5, beta / 180)) * motionParams.gyroSensitivity
 
-      const normalizedX = Math.max(-0.5, Math.min(0.5, gamma / 90)) * motionParams.gyroSensitivity
-      const normalizedY = Math.max(-0.5, Math.min(0.5, beta / 180)) * motionParams.gyroSensitivity
+        const maxTilt = motionParams.tiltSensitivity * scale
+        setTiltOffset({ x: ny * maxTilt * 2, y: nx * maxTilt * 2 })
 
-      // 틸트 효과 (모션 파라미터 적용)
-      const maxTilt = motionParams.tiltSensitivity * scale
-      const tiltX = normalizedY * maxTilt * 2
-      const tiltY = normalizedX * maxTilt * 2
-      setTiltOffset({ x: tiltX, y: tiltY })
-
-      // 움직임 효과 (모션 파라미터 적용)
-      const moveRange = 150 * scale * motionParams.gyroSensitivity
-      const moveX = normalizedX * moveRange * 2
-      const moveY = normalizedY * moveRange * 2
-      targetRef.current = { x: moveX, y: moveY }
+        const range = 150 * scale * motionParams.gyroSensitivity
+        let mx = nx * range * 2
+        let my = ny * range * 2
+        const locked = applyAxisLock(
+          mx,
+          my,
+          motionParams.axisLock ?? 'none',
+          (motionParams.axisLockThreshold ?? 0) * range,
+        )
+        targetRef.current = { x: locked.x, y: locked.y }
+      })
     }
 
-    window.addEventListener('deviceorientation', handleOrientation, true)
-
-    const timeoutId = window.setTimeout(() => {
-      if (!listeningRef.current) {
-        console.log('센서 데이터를 받지 못함. 기기를 움직여보세요.')
-      }
-    }, 3000)
+    window.addEventListener('deviceorientation', onOri, true)
+    setIsListening(true)
+    mouseActiveRef.current = true
 
     return () => {
-      window.removeEventListener('deviceorientation', handleOrientation, true)
-      clearTimeout(timeoutId)
-      listeningRef.current = false
+      window.removeEventListener('deviceorientation', onOri, true)
       setIsListening(false)
       mouseActiveRef.current = false
     }
   }
 
-  // 컴포넌트 언마운트 시 정리
+  // 권한 버튼(제스처) → 권한 OK ⇒ 즉시 부착
+  const handleGyroActivation = async () => {
+    try {
+      if (!window.isSecureContext) {
+        console.warn('iOS에서 모션 센서는 HTTPS(또는 localhost) 환경이 필요합니다.')
+      }
+      const anyDO = DeviceOrientationEvent as any
+      if (typeof anyDO?.requestPermission === 'function') {
+        const res = await anyDO.requestPermission()
+        if (res === 'granted') {
+          setGyroStatus('granted')
+          cleanupRef.current?.()
+          cleanupRef.current = enableGyroscope()
+        } else {
+          setGyroStatus('denied')
+        }
+      } else {
+        setGyroStatus('granted')
+        cleanupRef.current?.()
+        cleanupRef.current = enableGyroscope()
+      }
+    } catch {
+      setGyroStatus('denied')
+    }
+  }
+
+  // 권한 이미 OK면 자동 부착
   useEffect(() => {
-    return () => {
-      if (cleanupRef.current) {
-        cleanupRef.current()
+    if (gyroStatus === 'granted' && isMobile && !cleanupRef.current) {
+      cleanupRef.current = enableGyroscope()
+      return cleanupRef.current
+    }
+  }, [gyroStatus, isMobile]) // eslint-disable-line
+
+  // 화면 전환 복귀 시 재부착
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === 'visible') {
+        if (gyroStatus === 'granted' && isMobile && !cleanupRef.current) {
+          cleanupRef.current = enableGyroscope()
+        }
+      } else {
+        cleanupRef.current?.()
+        cleanupRef.current = null
       }
     }
-  }, [])
+    document.addEventListener('visibilitychange', onVis)
+    return () => document.removeEventListener('visibilitychange', onVis)
+  }, [gyroStatus, isMobile])
 
-  const handleGyroActivation = async () => {
-    if (gyroStatus === 'pending' || gyroStatus === 'error' || gyroStatus === 'denied') {
-      await requestPermission()
-    }
-  }
+  // 언마운트 정리
+  useEffect(() => () => cleanupRef.current?.(), [])
 
-  const resetPosition = () => {
-    targetRef.current = { x: 0, y: 0 }
-    setTiltOffset({ x: 0, y: 0 })
-  }
-
-  // 마우스 호버 효과 (모션 파라미터 적용)
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // 마우스(데스크탑)
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isMobile || !containerRef.current) return
-
     const rect = containerRef.current.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    const dx = e.clientX - cx
+    const dy = e.clientY - cy
 
-    const mouseX = e.clientX - centerX
-    const mouseY = e.clientY - centerY
-
-    // 틸트 효과 (모션 파라미터 적용)
     const maxTilt = motionParams.tiltSensitivity * scale
-    const tiltX = (mouseY / (rect.height / 2)) * maxTilt
-    const tiltY = (-mouseX / (rect.width / 2)) * maxTilt
-    setTiltOffset({ x: tiltX, y: tiltY })
+    setTiltOffset({
+      x: (dy / (rect.height / 2)) * maxTilt,
+      y: (-dx / (rect.width / 2)) * maxTilt,
+    })
 
-    // 마우스 따라가기 (스케일에 비례)
-    const moveRange = 80 * scale
-    const moveX = (mouseX / (rect.width / 2)) * moveRange
-    const moveY = (mouseY / (rect.height / 2)) * moveRange
-    targetRef.current = { x: moveX, y: moveY }
+    const range = 80 * scale
+    let mx = (dx / (rect.width / 2)) * range * 0.8
+    let my = (dy / (rect.height / 2)) * range
+    const locked = applyAxisLock(mx, my, motionParams.axisLock ?? 'none', (motionParams.axisLockThreshold ?? 0) * range)
+    targetRef.current = { x: locked.x, y: locked.y }
   }
-
-  const handleMouseEnter = () => {
+  const onEnter = () => {
     if (isMobile) return
     setIsHovered(true)
     mouseActiveRef.current = true
   }
-
-  const handleMouseLeave = () => {
+  const onLeave = () => {
     if (isMobile) return
     setIsHovered(false)
     mouseActiveRef.current = false
@@ -342,28 +325,27 @@ function FloatingConcentricSquares({
 
   return (
     <>
-      {/* 센서 UI들 */}
-      {isMobile && gyroStatus === 'pending' && (
-        <div className='absolute bottom-[22vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
+      {showMobileGyroUI && isMobile && gyroStatus !== 'granted' && (
+        <div className="relative z-50">
           <button
             onClick={handleGyroActivation}
-            className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
+            className="px-6 py-2 rounded-[100px] text-[#4B4F57] underline"
           >
-            <div className='text-[14px] underline'>Movement 움직이기</div>
+            Movement 움직이기
           </button>
         </div>
       )}
-
-      {isMobile && isListening && (
-        <div className='absolute bottom-[22vh] md:top-auto md:bottom-4 md-landscape:top-auto md-landscape:bottom-4 left-1/2 transform -translate-x-1/2 z-50'>
-          <div className='text-black font-semibold text-sm animate-pulse'>● 디바이스 움직임 감지 중</div>
+      {showMobileGyroUI && isMobile && isListening && (
+        <div className="z-50">
+          <div className="text-black font-semibold whitespace-nowrap text-sm animate-pulse">
+            ● 디바이스 움직임 감지 중
+          </div>
         </div>
       )}
 
-      {/* 메인 컨테이너 - 부모 크기에 맞게 자동 스케일링 */}
       <div
         ref={containerRef}
-        className='relative transition-all duration-500 ease-out'
+        className="relative transition-all duration-500 ease-out"
         style={{
           width: `${maxWidth}px`,
           height: `${maxHeight}px`,
@@ -376,34 +358,34 @@ function FloatingConcentricSquares({
           transformStyle: 'preserve-3d',
           transformOrigin: 'center center',
         }}
-        onMouseMove={!isMobile ? handleMouseMove : undefined}
-        onMouseEnter={!isMobile ? handleMouseEnter : undefined}
-        onMouseLeave={!isMobile ? handleMouseLeave : undefined}
+        onMouseMove={!isMobile ? onMouseMove : undefined}
+        onMouseEnter={!isMobile ? onEnter : undefined}
+        onMouseLeave={!isMobile ? onLeave : undefined}
       >
         {Array.from({ length: steps }).map((_, i) => {
           const factor = steps > 1 ? Math.pow(i / (steps - 1), motionParams.colorInterpolationPower) : 0
-          const width = maxWidth - stepReduction * i
-          const height = maxHeight - stepReduction * i
+          const w = maxWidth - stepReduction * i
+          const h = maxHeight - stepReduction * i
           const color = interpolateColor(brandColorHex, refinedColorHex, factor)
-          const position = currentPositions[i] || { x: 0, y: 0 }
+          const p = currentPositions[i] || { x: 0, y: 0 }
 
           return (
             <div
               key={i}
-              className='absolute transition-all duration-100 ease-out'
+              className="absolute transition-all duration-100 ease-out"
               style={{
-                width: `${width}px`,
-                height: `${height}px`,
+                width: `${w}px`,
+                height: `${h}px`,
                 backgroundColor: color,
                 borderRadius: i === 0 ? `${motionParams.borderRadiusOuter * scale}px` : '0px',
                 top: '50%',
                 left: '50%',
                 transform: `
-                  translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px))
+                  translate(calc(-50% + ${p.x}px), calc(-50% + ${p.y}px))
                   translateZ(${i * 4 * scale}px)
                 `,
                 boxShadow: isHovered
-                  ? `0 ${(15 + i * 8) * scale * motionParams.shadowIntensity}px ${(10 + i * 8) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.15)`
+                  ? `0 ${(15 + i * 8) * scale * motionParams.shadowIntensity}px ${(30 + i * 8) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.15)`
                   : `0 ${(5 + i * 2) * scale * motionParams.shadowIntensity}px ${(10 + i * 2) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.05)`,
               }}
             />
@@ -413,5 +395,3 @@ function FloatingConcentricSquares({
     </>
   )
 }
-
-export default FloatingConcentricSquares

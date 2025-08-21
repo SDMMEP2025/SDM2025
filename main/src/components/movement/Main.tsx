@@ -26,9 +26,9 @@ export function Main({ onUpload, className = '' }: MainProps) {
 
   const REPEAT = 5
   const bg_src = {
-    pc: 'images/movement/main_pc.svg',
-    tab: 'images/movement/main_tab.svg',
-    mo: 'images/movement/main_mo.svg',
+    pc: '/images/movement/main_pc.svg',
+    tab: '/images/movement/main_tab.svg',
+    mo: '/images/movement/main_mo.svg',
   }
 
   return (
