@@ -75,7 +75,7 @@ export function PageTransitionWrapper({ children, isTransitioning }: PageTransit
               opacity: 1,
             }}
             exit={{
-              padding: '0px',
+              padding: '0px', 
               opacity: 0,
             }}
             transition={{ duration: 0.4, ease: 'easeInOut' }}
