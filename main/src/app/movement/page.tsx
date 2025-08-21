@@ -10,6 +10,7 @@ import { UploadedImage } from '@/types/movement'
 import { ColorAnalysisResult } from '@/types/color'
 import { useState } from 'react'
 import classNames from 'classnames'
+import { MovementMedia } from '@/components/projects/MovementMedia'
 
 // 인터랙션 데이터 타입 정의
 interface InteractionData {
@@ -105,7 +106,7 @@ export default function Page() {
       {(step === 'edit' || step === 'result') && (
         <>
           <div className='absolute h-full lg:w-full overflow-hidden'>
-            <MediaContainer
+            <MovementMedia
               type='video'
               src='https://player.vimeo.com/video/1111874380?h=69848f162a'
               loop
