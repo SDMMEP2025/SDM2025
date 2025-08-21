@@ -173,6 +173,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
     </>
   )
 }
+
 const HoverImageCard = ({
   index,
   src,
@@ -185,7 +186,7 @@ const HoverImageCard = ({
   isMobile?: boolean
 }) => {
   const [isHover, setIsHover] = useState(false)
-  const [pressed, setPressed] = useState(false)
+  const [pressed, setPressed] = useState(false) // 모바일 토글 상태
   const [mouse, setMouse] = useState({ x: 0, y: 0 })
   const [lblSize, setLblSize] = useState({ w: 0, h: 0 })
   const ref = useRef<HTMLDivElement>(null)
@@ -201,9 +202,14 @@ const HoverImageCard = ({
     setLblSize({ w: rect.width, h: rect.height })
   }, [label])
 
-  const handlePointerDown = () => setPressed(true)
-  const clearPressed = () => setPressed(false)
+  // ★ 모바일: 탭으로 토글
+  const handleToggleMobile = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isMobile) return
+    e.preventDefault()
+    setPressed((v) => !v)
+  }
 
+  // 데스크탑: hover tracking
   const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!ref.current) return
     const wrap = ref.current.getBoundingClientRect()
@@ -230,27 +236,25 @@ const HoverImageCard = ({
           isEven ? 'ml-auto' : 'mr-auto',
           'md:cursor-none cursor-pointer',
         ].join(' ')}
-        onPointerDown={handlePointerDown}
-        onPointerUp={clearPressed}
-        onPointerCancel={clearPressed}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        onMouseMove={onMouseMove}
+        onClick={handleToggleMobile}
+        onMouseEnter={() => !isMobile && setIsHover(true)}
+        onMouseLeave={() => !isMobile && setIsHover(false)}
+        onMouseMove={(e) => !isMobile && onMouseMove(e)}
         role='button'
         aria-pressed={active}
       >
         <motion.img
           src={src}
           alt={src}
-          className='w-full h-auto block transform-gpu'
+          className='w-full h-auto block'
           style={{ transformOrigin: 'center' }}
           animate={{ scale: active ? 1.06 : 1 }}
           transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           whileTap={{ scale: 1.08 }}
           draggable={false}
         />
+        {isMobile && pressed && <div className='absolute inset-0 bg-black/20' />}
 
-        {/* 모바일: 점 + 텍스트 (누르는 동안) */}
         <AnimatePresence>
           {isMobile && pressed && (
             <motion.div
@@ -259,16 +263,12 @@ const HoverImageCard = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className='pointer-events-none absolute inset-0 z-10'
+              className='pointer-events-none absolute inset-0 z-20 mix-blend-difference'
             >
-              <div className='absolute inset-0 bg-black/20' />
               <div
-                className={[
-                  'absolute top-3 flex flex-row items-center gap-2',
-                  isEven ? 'left-3' : 'right-3',
-                ].join(' ')}
+                className={['absolute top-3 flex flex-row items-center gap-2', isEven ? 'left-3' : 'right-3'].join(' ')}
               >
-                <div className='w-[18px] h-[18px] rounded-full bg-white' />
+                <div className='w-[18px] h-[18px] rounded-full bg-white ' />
                 <div className='text-white text-[18px] font-medium capitalize tracking-[-0.36px] leading-[1.5]'>
                   {label ?? 'archive'}
                 </div>
