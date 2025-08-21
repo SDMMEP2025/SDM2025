@@ -162,7 +162,15 @@ export default function AboutSection({ embedded = false }: Props) {
         }
       />
       <Image src='/images/about/about_9.jpg' alt='about_9.jpg' />
-      <Image src='' alt='about_10.mp4' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111922823?h=ac59ec64c9'
+        preloadDelayMs={delayFor(5)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
       <TitleBody
         title={'Make your \nMovement'}
         text={
@@ -189,15 +197,6 @@ export default function AboutSection({ embedded = false }: Props) {
           Let's Move
         </Link>
       </div>
-      <MediaContainer
-        type='video'
-        src='https://player.vimeo.com/video/1111922823?h=ac59ec64c9'
-        preloadDelayMs={delayFor(5)}
-        prewarm
-        muted
-        loop
-        position='absolute'
-      />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1111698249?h=c3c60ea4e2'
@@ -244,11 +243,11 @@ export default function AboutSection({ embedded = false }: Props) {
         position='absolute'
       />
       <Image src='/images/about/about_16.webp' alt='about_16.gif' />
-      <Image src='/images/about/about_17.jpg' alt='about_17.jpg' aspect='aspect-[1440/1920]'/>
+      <Image src='/images/about/about_17.jpg' alt='about_17.jpg' aspect='aspect-[1440/1920]' />
       <Image src='/images/about/about_18.jpg' alt='about_18.jpg' />
       <Image src='/images/about/about_19.jpg' alt='about_19.jpg' />
       <Image src='/images/about/about_20.jpg' alt='about_20.jpg' />
-      <Image src='/images/about/about_21.webp' alt='about_21.gif' aspect='aspect-[1440/940]'/>
+      <Image src='/images/about/about_21.webp' alt='about_21.gif' aspect='aspect-[1440/940]' />
       <Image src='/images/about/about_22.jpg' alt='about_22.jpg' />
       <Image src='/images/about/about_23.jpg' alt='about_23.jpg' />
       <Image src='/images/about/about_24.jpg' alt='about_24.jpg' />
