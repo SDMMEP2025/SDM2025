@@ -73,6 +73,7 @@ export interface FloatingConcentricSquaresProps {
 /**
  * 자이로 권한 → 즉시 리스너 부착, visibilitychange 재부착, 축 고정 지원
  * 내부에 권한 버튼(UI)까지 포함 (showMobileGyroUI=true일 때)
+ * 자동 floating 애니메이션 제거됨 - 원점에 고정
  */
 export default function FloatingConcentricSquares({
   steps,
@@ -90,12 +91,12 @@ export default function FloatingConcentricSquares({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
 
-  const [floatOffset, setFloatOffset] = useState({ x: 0, y: 0 })
+  // floatOffset 상태 제거됨 - 더 이상 자동으로 움직이지 않음
   const [tiltOffset, setTiltOffset] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
 
-  // 꼬리물기 포지션
-  const [currentPositions, setCurrentPositions] = useState(positions)
+  // 꼬리물기 포지션 - 완전 고정모드에서는 사용안함
+  // const [currentPositions, setCurrentPositions] = useState(positions)
   const targetRef = useRef({ x: 0, y: 0 })
   const mouseActiveRef = useRef(false)
 
@@ -111,8 +112,8 @@ export default function FloatingConcentricSquares({
     const updateScale = () => {
       if (!containerRef.current?.parentElement) return
       const p = containerRef.current.parentElement.getBoundingClientRect()
-      const wScale = (p.width * 0.8) / BASE_W
-      const hScale = (p.height * 0.6) / BASE_H
+      const wScale = (p.width * 0.85) / BASE_W
+      const hScale = (p.height * 0.65) / BASE_H
       const s = Math.min(wScale, hScale, 2)
       setScale(Math.max(0.3, s))
     }
@@ -145,55 +146,9 @@ export default function FloatingConcentricSquares({
     return () => removeEventListener('resize', check)
   }, [])
 
-  // 떠다니는 애니메이션
-  useEffect(() => {
-    let raf = 0
-    let t = 0
-    const tick = () => {
-      t += motionParams.floatSpeed
-      setFloatOffset({
-        x: Math.sin(t) * motionParams.floatAmplitude * scale,
-        y: Math.cos(t * 0.8) * motionParams.floatAmplitude * 0.67 * scale,
-      })
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [scale, motionParams.floatAmplitude, motionParams.floatSpeed])
+  // 떠다니는 애니메이션 완전 제거됨
 
-  // 꼬리물기 보간
-  useEffect(() => {
-    let raf = 0
-    const tick = () => {
-      setCurrentPositions(prev => {
-        const arr = [...prev]
-        const target = targetRef.current
-        const last = steps - 1
-        if (last >= 0 && mouseActiveRef.current) {
-          const L = arr[last]
-          arr[last] = {
-            x: L.x + (target.x - L.x) * motionParams.speedBase,
-            y: L.y + (target.y - L.y) * motionParams.speedBase,
-          }
-        }
-        for (let i = last - 1; i >= 0; i--) {
-          const cur = arr[i]
-          const nxt = arr[i + 1]
-          const speed =
-            motionParams.speedBase *
-            (motionParams.followSpeedMultiplier + (i / steps) * motionParams.followSpeedOffset)
-          arr[i] = {
-            x: cur.x + (nxt.x - cur.x) * speed,
-            y: cur.y + (nxt.y - cur.y) * speed,
-          }
-        }
-        return arr
-      })
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [steps, motionParams.speedBase, motionParams.followSpeedMultiplier, motionParams.followSpeedOffset])
+  // 꼬리물기 보간 애니메이션 완전 제거됨 - 완전 고정모드
 
   // 자이로 리스너
   const enableGyroscope = () => {
@@ -350,13 +305,14 @@ export default function FloatingConcentricSquares({
           width: `${maxWidth}px`,
           height: `${maxHeight}px`,
           transform: `
-            translate3d(${floatOffset.x}px, ${floatOffset.y}px, 0)
+            translate3d(0px, 0px, 0)
             rotateX(${tiltOffset.x}deg) 
             rotateY(${tiltOffset.y}deg)
             scale(${isHovered ? motionParams.hoverScale : 1})
           `,
           transformStyle: 'preserve-3d',
           transformOrigin: 'center center',
+          perspective: '700px', 
         }}
         onMouseMove={!isMobile ? onMouseMove : undefined}
         onMouseEnter={!isMobile ? onEnter : undefined}
@@ -367,7 +323,8 @@ export default function FloatingConcentricSquares({
           const w = maxWidth - stepReduction * i
           const h = maxHeight - stepReduction * i
           const color = interpolateColor(brandColorHex, refinedColorHex, factor)
-          const p = currentPositions[i] || { x: 0, y: 0 }
+          // 완전 고정모드 - 모든 사각형이 원점 (0,0)에 고정됨
+          const p = { x: 0, y: 0 }
 
           return (
             <div
@@ -382,7 +339,7 @@ export default function FloatingConcentricSquares({
                 left: '50%',
                 transform: `
                   translate(calc(-50% + ${p.x}px), calc(-50% + ${p.y}px))
-                  translateZ(${i * 4 * scale}px)
+                  translateZ(${i * 20 * scale}px)
                 `,
                 boxShadow: isHovered
                   ? `0 ${(15 + i * 8) * scale * motionParams.shadowIntensity}px ${(30 + i * 8) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.15)`
