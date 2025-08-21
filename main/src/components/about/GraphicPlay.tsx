@@ -26,7 +26,7 @@ export function GraphicPlay() {
             rotatePerStepDeg: -1,
             rotateOffsetDeg: 0,
           }}
-          size={{ capW: 1200, capH: 630, parentW: 0.98, parentH: 0.86 }}
+          size={{ capW: 1200, capH: 630, parentW: 0.98, parentH: 0.75 }}
           
         />
       </div>

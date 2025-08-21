@@ -173,7 +173,8 @@ export default function AboutSection({ embedded = false }: Props) {
         title={
           <>
           Archive
-          <br/>
+          {' '}
+            <br className='hidden md:block'/>
           Movement
           </>
         }
@@ -233,7 +234,14 @@ export default function AboutSection({ embedded = false }: Props) {
         position='absolute'
       />
       <TitleBody
-        title={'Make your \nMovement'}
+      title={
+        <>
+        Make your 
+          {' '}
+          <br className='hidden md:block'/>
+        Movement
+        </>
+        }
         text={
           '당신을 움직이게 하는 순간은 무엇인가요?\n웹사이트에 이미지를 등록하고, 나만의 Formative Movement를 만들어 공유해보세요.'
         }

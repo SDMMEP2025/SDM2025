@@ -188,7 +188,7 @@ export function MediaContainer({
       {/* VIDEO */}
       {type === 'video' && finalSrc && !hasError && loaded && (
         <>
-          <div className='absolute w-full h-[90%] z-[100]' />
+          <div className='absolute w-full h-[90%] z-[10]' />
 
           <iframe
             ref={iframeRef}
