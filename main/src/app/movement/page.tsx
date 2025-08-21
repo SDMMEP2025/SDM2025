@@ -99,20 +99,26 @@ export default function Page() {
   return (
     <>
       <Header />
-
       {/* 단계별 화면 렌더링 */}
       {step === 'upload' && <Main onUpload={handleFileUpload} />}
 
-      {step === 'edit' && currentImage && (
+      {(step === 'edit' || step === 'result') && (
         <>
           <div className='absolute h-full lg:w-full overflow-hidden'>
             <MediaContainer
               type='video'
-              src='https://player.vimeo.com/video/1111874380?h=69848f162a'              
+              src='https://player.vimeo.com/video/1111874380?h=69848f162a'
               loop
               className='h-full lg:w-full lg:h-auto object-cover'
+              withMotion={false}
+              posterSrc='/images/movement/movement_background.png'
             />
           </div>
+        </>
+      )}
+
+      {step === 'edit' && currentImage && (
+        <>
           <EditStep
             currentData={currentData}
             imageUrl={currentImage.url}
@@ -122,17 +128,8 @@ export default function Page() {
           />
         </>
       )}
-
       {step === 'result' && currentImage && data.text && data.colorAnalysis && (
         <>
-          <div className='absolute h-full lg:w-full overflow-hidden'>
-            <MediaContainer
-              type='video'
-              src='https://player.vimeo.com/video/1111874380?h=69848f162a'
-              loop
-              className='h-full lg:w-full lg:h-auto object-cover'
-            />
-          </div>
           <ResultStep
             imageUrl={currentImage.url}
             text={data.text}
@@ -143,7 +140,6 @@ export default function Page() {
           />
         </>
       )}
-
       {step === 'interact' && interactionData && (
         <InteractPage interactionData={interactionData} onStartOver={handleStartOver} />
       )}

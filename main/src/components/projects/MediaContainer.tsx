@@ -18,6 +18,8 @@ interface MediaContainerProps {
   prewarm?: boolean
   position?: string
   className?: string
+  withMotion?: boolean
+  posterSrc?: string
 }
 
 export function MediaContainer({
@@ -34,6 +36,8 @@ export function MediaContainer({
   prewarm = true,
   position = 'relative',
   className = '',
+  withMotion = true,
+  posterSrc = ''
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -42,6 +46,8 @@ export function MediaContainer({
   const playerRef = useRef<Player | null>(null)
   const timerRef = useRef<number | null>(null)
   const inViewRef = useRef(false)
+  const [posterReady, setPosterReady] = useState(false)
+
 
   const saveData = typeof navigator !== 'undefined' && (navigator as any)?.connection?.saveData === true
   const reduceMotion =
@@ -65,6 +71,7 @@ export function MediaContainer({
     return url
   }
   const finalSrc = type === 'video' ? getEmbedSrc(src) : src
+  const Wrapper = withMotion ? InViewFrame : 'div'
 
   const getIframeSrc = (baseSrc: string) => {
     const q = new URLSearchParams()
@@ -173,7 +180,22 @@ export function MediaContainer({
   }, [type, loaded, threshold, loop, prewarm, muted, hasAudio, autoplay, saveData, reduceMotion])
 
   return (
-    <InViewFrame className={`w-full ${position} ${aspect} ${className} bg-zinc-600 overflow-hidden`}>
+    <Wrapper className={`w-full ${position} ${aspect} ${className} bg-black overflow-hidden`}>
+      {/* POSTER (video용) */}
+      {type === 'video' && posterSrc && (
+        <img
+          src={posterSrc}
+          alt=''
+          className={classNames(
+            'absolute inset-0 w-full h-full object-cover transition-opacity duration-300',
+            loaded ? 'opacity-0 pointer-events-none' : 'opacity-100',
+          )}
+          onLoad={() => setPosterReady(true)}
+          decoding='async'
+          loading='eager'
+        />
+      )}
+
       {/* IMAGE */}
       {type === 'image' && finalSrc && !hasError && (
         <img
@@ -193,6 +215,7 @@ export function MediaContainer({
             ref={iframeRef}
             src={getIframeSrc(finalSrc)}
             className='absolute inset-0 w-full h-full'
+            style={{ background: 'transparent' }}
             frameBorder='0'
             allow='autoplay; fullscreen; picture-in-picture; encrypted-media'
             allowFullScreen
@@ -213,6 +236,6 @@ export function MediaContainer({
           )}
         </>
       )}
-    </InViewFrame>
+    </Wrapper>
   )
 }

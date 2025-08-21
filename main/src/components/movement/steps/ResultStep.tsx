@@ -355,7 +355,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
   }, [shouldShowModal])
 
   return (
-    <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
+    <div className='w-full h-full flex flex-col justify-center items-center z-10'>
       {/* 온보딩 */}
       <AnimatePresence>
         {!isOnboardingComplete && shouldShowModal && (

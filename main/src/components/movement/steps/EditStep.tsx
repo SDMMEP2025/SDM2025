@@ -159,7 +159,7 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
   const hasError = textError || colorError
 
   return (
-    <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
+    <div className='w-full h-full flex flex-col justify-center items-center z-10'>
       {/* 에러 및 글자수 초과 모달 */}
       <AnimatePresence>
         {analyzeError ||
