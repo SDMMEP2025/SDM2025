@@ -37,21 +37,24 @@ export function MediaContainer({
   position = 'relative',
   className = '',
   withMotion = true,
-  posterSrc = ''
+  posterSrc = '',
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false)        // iframe 생성 타이밍 제어
   const [needsTap, setNeedsTap] = useState(false)
+  const [videoReady, setVideoReady] = useState(false) // 첫 프레임이 그려졌는지
+
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const playerRef = useRef<Player | null>(null)
   const timerRef = useRef<number | null>(null)
   const inViewRef = useRef(false)
-  const [posterReady, setPosterReady] = useState(false)
 
-
-  const saveData = typeof navigator !== 'undefined' && (navigator as any)?.connection?.saveData === true
+  const saveData =
+    typeof navigator !== 'undefined' && (navigator as any)?.connection?.saveData === true
   const reduceMotion =
-    typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   const getEmbedSrc = (url?: string) => {
     if (!url) return undefined
@@ -94,6 +97,7 @@ export function MediaContainer({
     return `${baseSrc}${sep}${q.toString()}`
   }
 
+  // iframe 생성 시점 제어 (초기 로딩 딜레이)
   useEffect(() => {
     if (type !== 'video' || !finalSrc) return
     const start = () => {
@@ -119,10 +123,19 @@ export function MediaContainer({
     }
   }
 
+  // Vimeo 제어 + 첫 프레임 감지로 flicker 제거
   useEffect(() => {
     if (type !== 'video' || !loaded || !iframeRef.current) return
+
     const player = new Player(iframeRef.current)
     playerRef.current = player
+
+    let disposed = false
+    const onTimeUpdate = () => {
+      if (disposed) return
+      setVideoReady(true)              // 첫 프레임 표시됨
+      player.off('timeupdate', onTimeUpdate)
+    }
 
     player.setLoop(loop).catch(() => {})
     player.setMuted(!hasAudio ? true : muted).catch(() => {})
@@ -132,6 +145,7 @@ export function MediaContainer({
     }
 
     player.ready().then(async () => {
+      player.on('timeupdate', onTimeUpdate)
       if (!saveData && !reduceMotion && inViewRef.current && (autoplay || prewarm)) {
         await tryPlay()
       }
@@ -170,6 +184,8 @@ export function MediaContainer({
     document.addEventListener('visibilitychange', onVis)
 
     return () => {
+      disposed = true
+      player.off('timeupdate', onTimeUpdate)
       io.disconnect()
       window.removeEventListener('pointerdown', resumeOnGesture)
       window.removeEventListener('keydown', resumeOnGesture)
@@ -181,18 +197,17 @@ export function MediaContainer({
 
   return (
     <Wrapper className={`w-full ${position} ${aspect} ${className} bg-black overflow-hidden`}>
-      {/* POSTER (video용) */}
+      {/* POSTER (video용) — 첫 프레임 나오기 전까지 유지 */}
       {type === 'video' && posterSrc && (
         <img
           src={posterSrc}
-          alt=''
+          alt=""
           className={classNames(
-            'absolute inset-0 w-full h-full object-cover transition-opacity duration-300',
-            loaded ? 'opacity-0 pointer-events-none' : 'opacity-100',
+            'absolute inset-0 w-full h-full object-cover transition-opacity duration-300 will-change-[opacity]',
+            videoReady ? 'opacity-0 pointer-events-none' : 'opacity-100',
           )}
-          onLoad={() => setPosterReady(true)}
-          decoding='async'
-          loading='eager'
+          decoding="async"
+          loading="eager"
         />
       )}
 
@@ -201,10 +216,10 @@ export function MediaContainer({
         <img
           src={finalSrc}
           alt={alt}
-          className='absolute inset-0 w-full h-full object-cover'
+          className="absolute inset-0 w-full h-full object-cover"
           onError={() => setHasError(true)}
-          loading='lazy'
-          decoding='async'
+          loading="lazy"
+          decoding="async"
         />
       )}
 
@@ -214,10 +229,18 @@ export function MediaContainer({
           <iframe
             ref={iframeRef}
             src={getIframeSrc(finalSrc)}
-            className='absolute inset-0 w-full h-full'
-            style={{ background: 'transparent' }}
-            frameBorder='0'
-            allow='autoplay; fullscreen; picture-in-picture; encrypted-media'
+            className={classNames(
+              'absolute inset-0 w-full h-full transition-opacity duration-300 will-change-[opacity]',
+              videoReady ? 'opacity-100' : 'opacity-0',
+            )}
+            style={{
+              background: 'transparent',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+              contain: 'paint',
+            }}
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen
             title={alt}
             loading={autoplay ? 'eager' : 'lazy'}
@@ -225,11 +248,11 @@ export function MediaContainer({
           />
           {needsTap && (
             <button
-              type='button'
+              type="button"
               onClick={tryPlay}
-              className='absolute inset-0 flex items-center justify-center bg-black/30 text-white'
+              className="absolute inset-0 flex items-center justify-center bg-black/30 text-white"
             >
-              <span className='px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30'>
+              <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30">
                 탭하여 재생
               </span>
             </button>
