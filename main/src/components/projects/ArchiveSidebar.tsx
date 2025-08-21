@@ -187,12 +187,10 @@ const HoverImageCard = ({
 }) => {
   const [isHover, setIsHover] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, {
-    amount: 0.1,
-    once: false,
-  })
+  const isInView = useInView(ref, { amount: 0.1, once: false })
 
   const showOverlay = isMobile || isHover
+  const isEven = index % 2 === 0
 
   return (
     <motion.div
@@ -202,44 +200,44 @@ const HoverImageCard = ({
       ref={ref}
       onHoverStart={() => setIsHover(true)}
       onHoverEnd={() => setIsHover(false)}
-      className='w-[100%] h-auto cursor-pointer z-0 relative overflow-hidden'
+      className='w-full h-auto cursor-pointer z-0'
     >
-      <AnimatePresence>
-        {showOverlay && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className='absolute z-10 inset-0 transition-opacity duration-300 ease-in-out'
-          >
-            {index % 2 === 0 ? (
-              <div className='absolute flex flex-row z-[2000] justify-start items-center gap-2 top-0 left-0'>
-                <div className='text-black text-lg font-semibold capitalize tracking-[-0.36px] leading-[1.5]'>
-                  {label ?? 'archive'}
-                </div>
-                <div className='w-[18px] h-[18px] rounded-full bg-black' />
-              </div>
-            ) : (
-              <div className='absolute flex flex-row justify-center items-center gap-2 top-0 right-0'>
-                <div className='w-[18px] h-[18px] rounded-full bg-black' />
-                <div className='text-black text-lg z-[2000] font-semibold capitalize tracking-[-0.36px] leading-[1.5'>
-                  {label ?? 'archive'}
-                </div>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ↓ overflow-hidden 추가해서 확대 시 가장자리 깔끔하게 클립 */}
+      <div
+        className={[
+          'relative w-[90%] h-auto overflow-hidden', // ★
+          isEven ? 'ml-auto' : 'mr-auto',
+        ].join(' ')}
+      >
+        <motion.img
+          initial={{ scale: 1 }}
+          animate={{ scale: isHover ? 1.1 : 1 }}
+          transition={{ duration: 0.3 }}
+          src={src}
+          alt={src}
+          className='w-full h-auto block transform-gpu' // ★
+          style={{ transformOrigin: 'center' }} // ★
+        />
 
-      <motion.img
-        initial={{ scale: 1 }}
-        animate={{ scale: isHover ? 1.1 : 1 }}
-        transition={{ duration: 0.3 }}
-        src={src}
-        alt={src}
-        className={`w-[90%] h-auto ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}
-      />
+        <AnimatePresence>
+          {showOverlay && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className='pointer-events-none absolute inset-0 z-10 mix-blend-difference'
+            >
+              <div className={['absolute top-3 flex items-center gap-2', isEven ? 'left-3' : 'right-3'].join(' ')}>
+                <div className='w-[16px] h-[16px] rounded-full bg-white' />
+                <div className='text-white text-[18px] font-medium capitalize tracking-[-0.36px] leading-[1.5]'>
+                  {label ?? 'archive'}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   )
 }
