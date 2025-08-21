@@ -101,7 +101,6 @@ const points = [
     labels: [
       'Experiment',
       'Experiment',
-      'Ideation',
       'Form Study',
       'Advisor Workshop',
       'Behind',

@@ -21,7 +21,7 @@ type Tutor = { name: string; englishName?: string }
 type ThanksSection = { title: string; tutors: Tutor[] }
 type Props = { embedded?: boolean }
 
-export default function AboutSectionWithoutLottie({ embedded = false }: Props) {
+export default function AboutSection({ embedded = false }: Props) {
   const thankstoData = [
     {
       subSections: [
@@ -191,7 +191,7 @@ export default function AboutSectionWithoutLottie({ embedded = false }: Props) {
       </div>
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1111698249?h=c3c60ea4e2'
+        src='https://player.vimeo.com/video/1111922823?h=ac59ec64c9'
         preloadDelayMs={delayFor(5)}
         prewarm
         muted
@@ -200,7 +200,7 @@ export default function AboutSectionWithoutLottie({ embedded = false }: Props) {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1111698280?h=2acd111ce5'
+        src='https://player.vimeo.com/video/1111698249?h=c3c60ea4e2'
         preloadDelayMs={delayFor(6)}
         prewarm
         muted
@@ -209,7 +209,7 @@ export default function AboutSectionWithoutLottie({ embedded = false }: Props) {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1111698334?h=1bbff8b3c0'
+        src='https://player.vimeo.com/video/1112031282?h=09ff3b19f0'
         preloadDelayMs={delayFor(7)}
         prewarm
         muted
@@ -218,8 +218,17 @@ export default function AboutSectionWithoutLottie({ embedded = false }: Props) {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1111698364/?h=ae4b7882d5'
+        src='https://player.vimeo.com/video/1111698334/?h=1bbff8b3c0'
         preloadDelayMs={delayFor(8)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698364?h=ae4b7882d5'
+        preloadDelayMs={delayFor(9)}
         prewarm
         muted
         loop
@@ -235,11 +244,11 @@ export default function AboutSectionWithoutLottie({ embedded = false }: Props) {
         position='absolute'
       />
       <Image src='/images/about/about_16.webp' alt='about_16.gif' />
-      <Image src='/images/about/about_17.jpg' alt='about_17.jpg' />
+      <Image src='/images/about/about_17.jpg' alt='about_17.jpg' aspect='aspect-[1440/1920]'/>
       <Image src='/images/about/about_18.jpg' alt='about_18.jpg' />
       <Image src='/images/about/about_19.jpg' alt='about_19.jpg' />
       <Image src='/images/about/about_20.jpg' alt='about_20.jpg' />
-      <Image src='/images/about/about_21.webp' alt='about_21.gif' />
+      <Image src='/images/about/about_21.webp' alt='about_21.gif' aspect='aspect-[1440/940]'/>
       <Image src='/images/about/about_22.jpg' alt='about_22.jpg' />
       <Image src='/images/about/about_23.jpg' alt='about_23.jpg' />
       <Image src='/images/about/about_24.jpg' alt='about_24.jpg' />

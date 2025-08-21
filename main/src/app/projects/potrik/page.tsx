@@ -89,6 +89,7 @@ const points = [
       'Photoshoot',
       'Ideation',
       'Mockup',
+      'Idea Sketch',
       'Prototyping',
       'Modeling',
       'Affinity diagram',
