@@ -18,7 +18,7 @@ export default function Page() {
       <div className='hidden md:block overflow-hidden'>
         <FooterOverlay />
       </div>
-      <ComingSoonSection />
+      {/* <ComingSoonSection /> */}
     </>
   )
 }

@@ -17,7 +17,7 @@ dayjs.extend(timezone)
 export default function ComingSoonSection() {
   const [mounted, setMounted] = useState(false)
 
-  const targetDate = useMemo(() => dayjs.tz('2025-08-22 06:46:00', 'Asia/Seoul'), [])
+  const targetDate = useMemo(() => dayjs.tz('2025-08-22 10:00:00', 'Asia/Seoul'), [])
   const [isHydrated, setIsHydrated] = useState(false)
   const isPhone = useIsPhone()
   const isLandscape = useIsLandscape()
@@ -103,7 +103,7 @@ export default function ComingSoonSection() {
           '
           >
             <ClientOnly>
-              <CountdownDigits targetISO='2025-08-22 06:46:00' tz='Asia/Seoul' showBars />
+              <CountdownDigits targetISO='2025-08-22 10:00:00' tz='Asia/Seoul' showBars />
             </ClientOnly>
           </div>
         </div>

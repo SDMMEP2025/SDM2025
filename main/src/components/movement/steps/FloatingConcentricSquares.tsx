@@ -288,9 +288,9 @@ export default function FloatingConcentricSquares({
       )}
       {showMobileGyroUI && isMobile && isListening && (
         <div className="z-50">
-          <div className="text-black font-semibold whitespace-nowrap text-sm animate-pulse">
-            ● 디바이스 움직임 감지 중
-          </div>
+          <button onClick={handleGyroActivation} className="text-black font-semibold whitespace-nowrap text-sm animate-pulse">
+            Reset Movement
+          </button>
         </div>
       )}
 
