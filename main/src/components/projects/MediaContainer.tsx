@@ -163,7 +163,6 @@ export function MediaContainer({
     document.addEventListener('visibilitychange', onVis)
 
     return () => {
-      io.disconnect()
       window.removeEventListener('pointerdown', resumeOnGesture)
       window.removeEventListener('keydown', resumeOnGesture)
       document.removeEventListener('visibilitychange', onVis)
@@ -189,6 +188,8 @@ export function MediaContainer({
       {/* VIDEO */}
       {type === 'video' && finalSrc && !hasError && loaded && (
         <>
+          <div className='absolute w-full h-[90%] z-[100]' />
+
           <iframe
             ref={iframeRef}
             src={getIframeSrc(finalSrc)}

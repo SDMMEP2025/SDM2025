@@ -471,7 +471,7 @@ export function ScrollOrchestrator() {
                     </svg>
                   </motion.div>
                   <motion.div
-                    className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center pointer-events-none overflow-hidden'
+                    className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center overflow-hidden'
                     aria-hidden
                     style={{ opacity: vimeoOpacity, willChange: 'opacity' }}
                   >
@@ -552,9 +552,9 @@ export function ScrollOrchestrator() {
 
           {/* About */}
           <section aria-label='About' className='relative bg-white md:mt-0'>
-            <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : 'pointer-events-none'}>
+            {/* <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : ''}> */}
               <AboutSectionWithoutLottie />
-            </motion.div>
+            {/* </motion.div> */}
           </section>
         </div>
       </div>

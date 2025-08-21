@@ -211,7 +211,7 @@ export function MovementMedia({
           className={classNames(
             coverCenterClass,
             'object-cover transition-opacity will-change-[opacity]',
-            videoReady ? 'opacity-0 pointer-events-none' : 'opacity-100',
+            videoReady ? 'opacity-0' : 'opacity-100',
           )}
           decoding="async"
           loading="eager"
@@ -240,7 +240,6 @@ export function MovementMedia({
               coverCenterClass,
               'transition-opacity will-change-[opacity]',
               videoReady ? 'opacity-100' : 'opacity-0',
-              !hasAudio ? 'pointer-events-none' : '',
             )}
             style={{
               background: 'transparent',
