@@ -44,7 +44,7 @@ export default function ComingSoonSection() {
   }
 
   return (
-    <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative overflow-hidden'>
+    <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black fixed overflow-hidden'>
       {showOverlay && (
          <div className='fixed inset-0 z-[100000] bg-black text-white flex flex-col items-center justify-center p-8 text-center'>
           <img className='pb-[20px]' src='/images/icon-error.svg' />
