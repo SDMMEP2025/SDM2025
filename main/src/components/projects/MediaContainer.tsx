@@ -33,7 +33,7 @@ export function MediaContainer({
   preloadDelayMs = 300,
   prewarm = true,
   position = 'relative',
-  className = ''
+  className = '',
 }: MediaContainerProps) {
   const [hasError, setHasError] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -42,7 +42,7 @@ export function MediaContainer({
   const playerRef = useRef<Player | null>(null)
   const timerRef = useRef<number | null>(null)
   const inViewRef = useRef(false)
-
+  const wrapPosition = position === 'absolute' ? 'absolute inset-0' : position
   const saveData = typeof navigator !== 'undefined' && (navigator as any)?.connection?.saveData === true
   const reduceMotion =
     typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -173,7 +173,7 @@ export function MediaContainer({
   }, [type, loaded, threshold, loop, prewarm, muted, hasAudio, autoplay, saveData, reduceMotion])
 
   return (
-    <InViewFrame className={`w-full ${position} ${aspect} ${className} bg-white overflow-hidden`}>
+    <InViewFrame className={`w-full ${position} ${wrapPosition} ${aspect} ${className} bg-white overflow-hidden`}>
       {/* IMAGE */}
       {type === 'image' && finalSrc && !hasError && (
         <img
