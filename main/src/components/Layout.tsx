@@ -12,19 +12,30 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   // 페이지 전환 애니메이션을 적용하는 로직을 추가합니다.
   useEffect(() => {
+    // 홈페이지('/')인 경우 전환 애니메이션 없이 바로 표시
+    if (pathname === '/') {
+      setIsTransitioning(false)
+      setDisplayChildren(children)
+      return
+    }
+
     // 경로가 변경되면 전환 애니메이션 시작
     setIsTransitioning(true)
 
-    // PageTransitionWrapper 애니메이션 타이밍에 맞춰 조정
-    // 0.8초 후에 새로운 콘텐츠로 업데이트 (모든 텍스트가 등장 완료되는 시점)
+    // pathname에 따라 다른 타이밍 적용
+    const isAboutPage = pathname === '/about'
+    const updateDelay = isAboutPage ? 3000 : 800 // /about: 3초, 기타: 0.8초
+    const finishDelay = isAboutPage ? 6000 : 1600 // /about: 6초, 기타: 1.6초
+
+    // 새로운 콘텐츠로 업데이트
     const updateTimer = setTimeout(() => {
       setDisplayChildren(children)
-    }, 800)
+    }, updateDelay)
 
-    // 전체 애니메이션 완료 후 전환 상태 해제 (1.6초)
+    // 전체 애니메이션 완료 후 전환 상태 해제
     const finishTimer = setTimeout(() => {
       setIsTransitioning(false)
-    }, 1600)
+    }, finishDelay)
 
     return () => {
       clearTimeout(updateTimer)
@@ -39,7 +50,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <PageTransitionWrapper isTransitioning={isTransitioning}>{displayChildren}</PageTransitionWrapper>
+      <PageTransitionWrapper isTransitioning={isTransitioning} pathname={pathname}>
+        {displayChildren}
+      </PageTransitionWrapper>
     </>
   )
 }
