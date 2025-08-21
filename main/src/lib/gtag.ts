@@ -1,0 +1,1 @@
+export const GTM_ID = "G-ZCB655NDY9"
