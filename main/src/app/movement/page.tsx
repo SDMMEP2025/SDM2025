@@ -105,11 +105,13 @@ export default function Page() {
 
       {(step === 'upload' || step === 'edit' || step === 'result') && (
         <>
-          <div className='absolute h-full w-full  md:h-full md-landscape-coming:w-full lg:w-full overflow-hidden'>
+          <div className='absolute h-full w-full md:h-full md-landscape-coming:w-full lg:w-full overflow-hidden'>
             <MovementMedia
               type='video'
               src='https://player.vimeo.com/video/1111874380?h=69848f162a'
               loop
+              prewarm
+              preloadDelayMs={100}
               className='h-full lg:w-full lg:h-auto object-cover'
               withMotion={false}
               posterSrc='/images/movement/movement_background.png'
