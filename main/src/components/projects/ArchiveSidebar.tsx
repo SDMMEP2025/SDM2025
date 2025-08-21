@@ -173,7 +173,6 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
     </>
   )
 }
-
 const HoverImageCard = ({
   index,
   src,
@@ -186,53 +185,122 @@ const HoverImageCard = ({
   isMobile?: boolean
 }) => {
   const [isHover, setIsHover] = useState(false)
+  const [pressed, setPressed] = useState(false)
+  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+  const [lblSize, setLblSize] = useState({ w: 0, h: 0 })
   const ref = useRef<HTMLDivElement>(null)
+  const lblRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { amount: 0.1, once: false })
 
-  const showOverlay = isMobile || isHover
   const isEven = index % 2 === 0
+  const active = isMobile ? pressed : isHover
+
+  useEffect(() => {
+    if (!lblRef.current) return
+    const rect = lblRef.current.getBoundingClientRect()
+    setLblSize({ w: rect.width, h: rect.height })
+  }, [label])
+
+  const handlePointerDown = () => setPressed(true)
+  const clearPressed = () => setPressed(false)
+
+  const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!ref.current) return
+    const wrap = ref.current.getBoundingClientRect()
+    let x = e.clientX - wrap.left
+    let y = e.clientY - wrap.top
+    const halfW = lblSize.w / 2
+    const halfH = lblSize.h / 2
+    x = Math.max(halfW + 2, Math.min(wrap.width - halfW - 2, x))
+    y = Math.max(halfH + 2, Math.min(wrap.height - halfH - 2, y))
+    setMouse({ x, y })
+  }
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: isInView ? 1 : 0 }}
       transition={{ duration: 0.3 }}
-      ref={ref}
-      onHoverStart={() => setIsHover(true)}
-      onHoverEnd={() => setIsHover(false)}
-      className='w-full h-auto cursor-pointer z-0'
+      className='w-full h-auto z-0'
     >
-      {/* ↓ overflow-hidden 추가해서 확대 시 가장자리 깔끔하게 클립 */}
       <div
+        ref={ref}
         className={[
-          'relative w-[90%] h-auto overflow-hidden', // ★
+          'relative w-[90%] h-auto overflow-hidden select-none touch-manipulation',
           isEven ? 'ml-auto' : 'mr-auto',
+          'md:cursor-none cursor-pointer',
         ].join(' ')}
+        onPointerDown={handlePointerDown}
+        onPointerUp={clearPressed}
+        onPointerCancel={clearPressed}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        onMouseMove={onMouseMove}
+        role='button'
+        aria-pressed={active}
       >
         <motion.img
-          initial={{ scale: 1 }}
-          animate={{ scale: isHover ? 1.1 : 1 }}
-          transition={{ duration: 0.3 }}
           src={src}
           alt={src}
-          className='w-full h-auto block transform-gpu' // ★
-          style={{ transformOrigin: 'center' }} // ★
+          className='w-full h-auto block transform-gpu'
+          style={{ transformOrigin: 'center' }}
+          animate={{ scale: active ? 1.06 : 1 }}
+          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          whileTap={{ scale: 1.08 }}
+          draggable={false}
         />
 
+        {/* 모바일: 점 + 텍스트 (누르는 동안) */}
         <AnimatePresence>
-          {showOverlay && (
+          {isMobile && pressed && (
             <motion.div
+              key='overlay-mobile'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className='pointer-events-none absolute inset-0 z-10 mix-blend-difference'
+              transition={{ duration: 0.18 }}
+              className='pointer-events-none absolute inset-0 z-10'
             >
-              <div className={['absolute top-3 flex items-center gap-2', isEven ? 'left-3' : 'right-3'].join(' ')}>
-                <div className='w-[16px] h-[16px] rounded-full bg-white' />
+              <div className='absolute inset-0 bg-black/20' />
+              <div
+                className={[
+                  'absolute top-3 flex flex-row items-center gap-2',
+                  isEven ? 'left-3' : 'right-3',
+                ].join(' ')}
+              >
+                <div className='w-[18px] h-[18px] rounded-full bg-white' />
                 <div className='text-white text-[18px] font-medium capitalize tracking-[-0.36px] leading-[1.5]'>
                   {label ?? 'archive'}
                 </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* 데스크탑: 커서 팔로워 (점 + 텍스트) */}
+        <AnimatePresence>
+          {!isMobile && isHover && (
+            <motion.div
+              key='cursor-label'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.12 }}
+              className='pointer-events-none absolute inset-0 z-20 mix-blend-difference'
+            >
+              <div
+                ref={lblRef}
+                className='absolute flex items-center gap-2 whitespace-nowrap'
+                style={{
+                  left: mouse.x,
+                  top: mouse.y,
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <div className='w-[18px] h-[18px] rounded-full bg-white' />
+                <span className='text-white text-[18px] font-medium capitalize tracking-[-0.36px] leading-[1.5]'>
+                  {label ?? 'archive'}
+                </span>
               </div>
             </motion.div>
           )}
