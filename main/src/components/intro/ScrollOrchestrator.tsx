@@ -270,7 +270,7 @@ export function ScrollOrchestrator() {
   )
 
   // ---------- Section 5 ----------
-  const planeLiftMd = isMdUp ? -1570 : -2000
+  const planeLiftMd = isMdUp ? -6570 : -2000
   const planesLiftUp = useTransform(p3, [0, 0.5], [0, planeLiftMd])
   const backYFinal = useTransform([backY, planesLiftUp], ([b, u]: [number, number]) => b + u)
   const midYFinal = useTransform([midY, planesLiftUp], ([m, u]: [number, number]) => m + u)
@@ -333,7 +333,7 @@ export function ScrollOrchestrator() {
                   <motion.div
                     ref={rectRef}
                     initial={false}
-                    className='bg-[#FF60B9] w-[clamp(208px,17vw,256px)] aspect-[236/120] h-auto'
+                    className='bg-[#FF60B9] w-[clamp(208px,17vw,256px)] xl:w-[419.5555419921875px] aspect-[236/120] h-auto'
                     style={{
                       borderRadius: '5px',
                       scale: rectScale,
@@ -407,11 +407,11 @@ export function ScrollOrchestrator() {
                 </div>
 
                 {/* 데스크탑 타이틀/서브 */}
-                <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] z-[9999]'>
+                <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] xl:w-[451px] xl:-translate-y-[120px] xl:leading-[210%] xl:w-[574px] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ opacity: infoOpacity }}
-                    className='text-center text-[16px] md:text-[25px]'
+                    className='text-center whitespace-nowrap text-[16px] md:text-[25px] xl:text-[44px]'
                   >
                     Samsung Design Membership
                     <br />
@@ -419,21 +419,21 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43dvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
+                <div className='hidden md:block absolute whitespace-nowrap left-1/2 top-[43dvh] md:-translate-y-[80px] -translate-x-1/2 lg:-translate-y-[100px] xl:-translate-y-[160px] font-english mix-blend-difference text-center text-white font-semibold z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: titleScale, y: titleLift }}
-                    className='block leading-none text-[26px] lg:text-[40px]'
+                    className='block leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
                   >
                     New Formative
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] lg:translate-y-[90px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
+                <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] lg:translate-y-[90px]  xl:translate-y-[150px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ scale: subtitleScale, y: subtitleLift }}
-                    className='block whitespace-nowrap leading-none text-[26px] lg:text-[40px]'
+                    className='block whitespace-nowrap leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
                   >
                     Steady Movement
                     <br />
@@ -441,11 +441,11 @@ export function ScrollOrchestrator() {
                   </motion.span>
                 </div>
 
-                <div className='hidden md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] z-[9999]'>
+                <div className='hidden text-center md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] xl:w-[451px] xl:leading-[210%] xl:-translate-y-[120px] z-[9999]'>
                   <motion.span
                     initial={false}
                     style={{ opacity: infoOpacity }}
-                    className='block text-[16px] md:text-[25px]'
+                    className='block text-[16px] md:text-[25px] xl:text-[44px] whitespace-nowrap'
                   >
                     Aug 22 – 27 (Fri – Wed)
                     <br />
