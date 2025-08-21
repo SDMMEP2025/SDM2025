@@ -36,7 +36,6 @@ type SnapOptions = {
     toIdx: number,
     ctx: { direction: 'forward' | 'backward'; pointer: 'coarse' | 'fine'; fastSwipe: boolean },
   ) => number | undefined
-  /** ★ 섹션 기준(예: 3번 섹션일 때) */
   sectionDurations?: Partial<Record<number, SectionDurationRule>>
 }
 
@@ -54,6 +53,7 @@ export function useSnapP0toP4(
   const touchStartY = useRef<number | null>(null)
   const snapRaf = useRef<number | null>(null)
   const prevOverscroll = useRef<string | null>(null)
+  const prevTouchAction = useRef<string | null>(null)
 
   // i->j로 이어지는 스냅 밴드 목록
   const snapBands: [number, number][] = []
@@ -70,14 +70,28 @@ export function useSnapP0toP4(
   const setOverscroll = (on: boolean) => {
     const el = scrollerEl()
     if (!el) return
+
+    const target = el as HTMLElement
+
     if (on) {
-      if (prevOverscroll.current == null) prevOverscroll.current = el.style.overscrollBehavior || ''
-      el.style.overscrollBehavior = 'contain'
-      document.body.style.pointerEvents = 'none'
+      if (prevOverscroll.current == null) prevOverscroll.current = target.style.overscrollBehavior || ''
+      if (prevTouchAction.current == null) prevTouchAction.current = target.style.touchAction || ''
+      target.style.overscrollBehavior = 'contain'
+      target.style.touchAction = 'none'
     } else {
-      if (prevOverscroll.current != null) el.style.overscrollBehavior = prevOverscroll.current
-      prevOverscroll.current = null
-      document.body.style.pointerEvents = ''
+      if (prevOverscroll.current != null) {
+        target.style.overscrollBehavior = prevOverscroll.current
+        prevOverscroll.current = null
+      } else {
+        target.style.overscrollBehavior = ''
+      }
+
+      if (prevTouchAction.current != null) {
+        target.style.touchAction = prevTouchAction.current
+        prevTouchAction.current = null
+      } else {
+        target.style.touchAction = ''
+      }
     }
   }
 
@@ -172,7 +186,7 @@ export function useSnapP0toP4(
         base = Math.max(60, base - 120)
       }
     }
-    return base 
+    return base
   }
   useEffect(() => {
     let targetEl: HTMLElement | Window | null = null
@@ -258,7 +272,7 @@ export function useSnapP0toP4(
       if (animating.current) return
       const [i, j] = band
       const a = cuts[i].start
-      const fastSwipe = Math.abs(dy) > 40
+      const fastSwipe = Math.abs(dy) > 80
       if (dy > 0) {
         const dur = resolveDuration(i, j, { direction: 'forward', pointer: 'coarse', fastSwipe })
         animateTo(progressToTop(cuts[j].start), dur)

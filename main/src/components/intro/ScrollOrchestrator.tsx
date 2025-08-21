@@ -40,7 +40,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 2, 2, 0.6]
+const WEIGHTS: number[] = [1, 2, 2, 0.5]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
