@@ -40,7 +40,7 @@ function useStableVh() {
 }
 
 type Cut = { start: number; end: number }
-const WEIGHTS: number[] = [1, 2, 3, 1]
+const WEIGHTS: number[] = [1, 2, 2, 1]
 
 function makeCuts(weights: number[]): Cut[] {
   const total = weights.reduce((a, b) => a + b, 0)
@@ -89,8 +89,11 @@ export function ScrollOrchestrator() {
 
   const cuts = useMemo(() => makeCuts(WEIGHTS), [])
 
-  const stageIndexByName = { main: 1 } as const
-  type StageName = keyof typeof stageIndexByName
+  const stageAnchorByName = {
+    main: { idx: 0, t: 0.998 },
+  } as const
+  type StageName = keyof typeof stageAnchorByName
+
   useLayoutEffect(() => {
     if (!boxRef.current) return
     if (!hasStageRef.current) {
@@ -113,19 +116,23 @@ export function ScrollOrchestrator() {
     return () => window.removeEventListener('pageshow', onPageShow)
   }, [])
 
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * Math.max(0, Math.min(1, t))
+
   const jumpToStage = useCallback(
     (stage: string) => {
       const wrapEl = wrapRef.current
       const scrollerEl = boxRef.current
       if (!wrapEl || !stage || !scrollerEl) return
+
       const key = stage.toLowerCase() as StageName
-      const idx = stageIndexByName[key]
-      if (idx == null) return
-      const { start, end } = cuts[idx]
-      const center = (start + end) / 2
+      const conf = stageAnchorByName[key]
+      if (!conf) return
+
+      const { start, end } = cuts[conf.idx]
+      const target = lerp(start, end, conf.t) // ← 여기!
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          scrollToProgress(scrollerEl, wrapEl, center)
+          scrollToProgress(scrollerEl, wrapEl, target)
         })
       })
     },
@@ -179,7 +186,7 @@ export function ScrollOrchestrator() {
     target: wrapRef,
     offset: ['start start', 'end start'],
   })
-  const [p0, p1, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
+  const [p0, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
   useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
@@ -553,7 +560,7 @@ export function ScrollOrchestrator() {
           {/* About */}
           <section aria-label='About' className='relative bg-white md:mt-0'>
             {/* <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : ''}> */}
-              <AboutSectionWithoutLottie />
+            <AboutSectionWithoutLottie />
             {/* </motion.div> */}
           </section>
         </div>

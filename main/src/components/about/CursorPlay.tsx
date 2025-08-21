@@ -16,8 +16,6 @@ const IMAGES = [
   '/images/about/group/10.jpg',
   '/images/about/group/11.jpg',
   '/images/about/group/12.jpg',
-  '/images/about/group/13.jpg',
-  '/images/about/group/14.jpg',
   '/images/about/group/15.jpg',
   '/images/about/group/16.jpg',
   '/images/about/group/17.jpg',
