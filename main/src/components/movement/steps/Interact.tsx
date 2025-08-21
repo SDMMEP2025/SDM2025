@@ -279,7 +279,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
           'w-fit h-full flex flex-col items-center justify-center relative',
           'left-1/2 transform -translate-x-1/2 ',
           'top-[18vh] gap-[7px] md:gap-[10px] lg:gap-[12px] 2xl:gap-[15px]',
-          'md:top-[20vh] md-landscape:top-[15vh] lg:top-[10vh] 2xl:top-[10vh]',
+          'md:top-[20vh] md-landscape:top-[15vh] lg:top-[15vh] 2xl:top-[15vh]',
         )}
       >
         <motion.div
