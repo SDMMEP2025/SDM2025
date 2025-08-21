@@ -17,6 +17,10 @@ import { FooterDocked } from '@/components/projects'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { CursorArea } from '../cursor/CursorArea'
+import { useIsPhone } from '@/hooks/useIsPhone'
+import mainAnim from '@/animation/main.json'
+import Lottie from 'lottie-react'
+
 type Tutor = { name: string; englishName?: string }
 type ThanksSection = { title: string; tutors: Tutor[] }
 type Props = { embedded?: boolean }
@@ -81,6 +85,7 @@ export default function AboutSection({ embedded = false }: Props) {
       tutors: [{ name: '김세희', englishName: 'Sehee Kim' }],
     },
   ]
+  const isPhone = useIsPhone()
 
   const delayFor = (i: number, base = 400) => i * base
   return (
@@ -124,9 +129,24 @@ export default function AboutSection({ embedded = false }: Props) {
         position='absolute'
       />
       {/* 여기에 인터랙션 */}
-      <CursorArea variant='drag'>
-        <GraphicPlay />
-      </CursorArea>
+
+      {isPhone && (
+        <Lottie
+          animationData={mainAnim}
+          autoplay={true}
+          loop={true}
+          rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
+          style={{ width: '100%', height: '100%' }}
+          className='[&_svg]:w-full [&_svg]:h-full [&_svg]:block'
+        />
+      )}
+
+      {!isPhone && (
+        <CursorArea variant='drag'>
+          <GraphicPlay />
+        </CursorArea>
+      )}
+
       <Divide title='Movement as a System' number='01' />
       <Image src='/images/about/about_3.jpg' alt='about_3.png' />
       <MediaContainer
@@ -155,7 +175,19 @@ export default function AboutSection({ embedded = false }: Props) {
           '전시 준비 과정에서 움직임의 궤적을 놓치지 않기 위해, 형성의 과정에서 만들어진 사진과 영상을 아카이빙합니다. 수많은 시도와 탐색의 과정은 물론, 멈칫하거나 전환되는 순간의 과정까지 움직임의 일부로 포착합니다.'
         }
       />
-      <CursorPlay />
+
+      {isPhone && (
+        <MediaContainer
+          type='video'
+          src='https://player.vimeo.com/video/1112046440?h=104236d545'
+          preloadDelayMs={0}
+          prewarm
+          muted
+          loop
+        />
+      )}
+
+      {!isPhone && <CursorPlay />}
       <Divide title='Identities' number='03' />
       <SpecialMidBody
         content={
