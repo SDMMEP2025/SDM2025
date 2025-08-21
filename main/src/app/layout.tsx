@@ -5,6 +5,7 @@ import { pretendard, saans } from '@/theme/font'
 import '@/styles/globals.css'
 import { Layout } from '@/components/Layout'
 import { CursorProvider } from '@/components/cursor/CursorProvider'
+import { Analytics } from "@/components/Analytics"
 
 export const metadata: Metadata = {
   alternates: {
@@ -104,6 +105,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} ${saans.variable} antialiased`}>
         <Layout>
           <CursorProvider>{children}</CursorProvider>
+          <Analytics /> 
         </Layout>
       </body>
     </html>
