@@ -40,9 +40,9 @@ export function MovementMedia({
   posterSrc = '',
 }: MovementMediaProps) {
   const [hasError, setHasError] = useState(false)
-  const [loaded, setLoaded] = useState(false)        // iframe 생성 타이밍 제어
+  const [loaded, setLoaded] = useState(false)
   const [needsTap, setNeedsTap] = useState(false)
-  const [videoReady, setVideoReady] = useState(false) // 첫 프레임이 그려졌는지
+  const [videoReady, setVideoReady] = useState(false)
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
   const playerRef = useRef<Player | null>(null)
@@ -56,6 +56,7 @@ export function MovementMedia({
     window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+  // Vimeo 링크 처리
   const getEmbedSrc = (url?: string) => {
     if (!url) return undefined
     const ps = [
@@ -76,6 +77,7 @@ export function MovementMedia({
   const finalSrc = type === 'video' ? getEmbedSrc(src) : src
   const Wrapper = withMotion ? InViewFrame : 'div'
 
+  // Vimeo 파라미터 조합
   const getIframeSrc = (baseSrc: string) => {
     const q = new URLSearchParams()
     const isBackground = !hasAudio
@@ -97,7 +99,7 @@ export function MovementMedia({
     return `${baseSrc}${sep}${q.toString()}`
   }
 
-  // iframe 생성 시점 제어 (초기 로딩 딜레이)
+  // iframe 로딩 타이밍 제어
   useEffect(() => {
     if (type !== 'video' || !finalSrc) return
     const start = () => {
@@ -123,7 +125,7 @@ export function MovementMedia({
     }
   }
 
-  // Vimeo 제어 + 첫 프레임 감지로 flicker 제거
+  // Vimeo 제어
   useEffect(() => {
     if (type !== 'video' || !loaded || !iframeRef.current) return
 
@@ -133,7 +135,7 @@ export function MovementMedia({
     let disposed = false
     const onTimeUpdate = () => {
       if (disposed) return
-      setVideoReady(true)              // 첫 프레임 표시됨
+      setVideoReady(true)
       player.off('timeupdate', onTimeUpdate)
     }
 
@@ -192,18 +194,23 @@ export function MovementMedia({
       document.removeEventListener('visibilitychange', onVis)
       player.unload().catch(() => {})
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, loaded, threshold, loop, prewarm, muted, hasAudio, autoplay, saveData, reduceMotion])
 
+  // cover: 화면 꽉 차는 공식 (16:9 기준)
+  const coverCenterClass =
+    'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ' +
+    'w-[max(100vw,177.78vh)] h-[max(56.25vw,100vh)]'
+
   return (
-    <Wrapper className={`w-full ${position} ${aspect} ${className} bg-black overflow-hidden`}>
-      {/* POSTER (video용) — 첫 프레임 나오기 전까지 유지 */}
+    <Wrapper className={`absolute inset-0 bg-black overflow-hidden ${className}`}>
+      {/* POSTER */}
       {type === 'video' && posterSrc && (
         <img
           src={posterSrc}
           alt=""
           className={classNames(
-            'absolute inset-0 w-full h-full object-cover transition-opacity will-change-[opacity]',
+            coverCenterClass,
+            'object-cover transition-opacity will-change-[opacity]',
             videoReady ? 'opacity-0 pointer-events-none' : 'opacity-100',
           )}
           decoding="async"
@@ -216,7 +223,7 @@ export function MovementMedia({
         <img
           src={finalSrc}
           alt={alt}
-          className="absolute inset-0 w-full h-full object-cover"
+          className={classNames(coverCenterClass, 'object-cover')}
           onError={() => setHasError(true)}
           loading="lazy"
           decoding="async"
@@ -230,13 +237,15 @@ export function MovementMedia({
             ref={iframeRef}
             src={getIframeSrc(finalSrc)}
             className={classNames(
-              'absolute inset-0 w-full h-full transition-opacity will-change-[opacity]',
+              coverCenterClass,
+              'transition-opacity will-change-[opacity]',
               videoReady ? 'opacity-100' : 'opacity-0',
+              !hasAudio ? 'pointer-events-none' : '',
             )}
             style={{
               background: 'transparent',
               backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
+              transform: 'translate(-50%, -50%) translateZ(0)',
               contain: 'paint',
             }}
             frameBorder="0"
