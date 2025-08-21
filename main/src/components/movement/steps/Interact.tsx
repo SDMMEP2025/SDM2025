@@ -402,12 +402,12 @@ function FloatingConcentricSquares({
       
       {/* 센서 UI들 */}
       {isMobile && gyroStatus === 'pending' && (
-        <div className='absolute z-50 top-20'>
+        <div className='relative z-50 '>
           <button
             onClick={handleGyroActivation}
-            className='px-6 py-2 rounded-[100px] bg-[#222222] hover:bg-[#333333] text-white font-medium'
+            className='px-6 py-2 rounded-[100px] text-[#4B4F57]'
           > 
-            <div className='text-[14px]'>디바이스로 움직이기</div>
+            <div className='text-[14px] underline'>Movement 움직이기</div>
           </button>
         </div>
       )}

@@ -7,6 +7,8 @@ import { Range, getTrackBackground } from 'react-range'
 import { MotionControlPanel, MotionParams } from '../MotionControlPanel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useDeviceDetection } from '@/hooks/useDeviceDetection'
+import onBoardingAnim from '@/animation/onboarding.json'
+import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 
 interface ResultStepProps {
   imageUrl: string
@@ -349,7 +351,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
     if (shouldShowModal) {
       const timer = setTimeout(() => {
         setIsOnboardingComplete(true)
-      }, 1000)
+      }, 2000)
       return () => clearTimeout(timer)
     }
   }, [shouldShowModal])
@@ -366,9 +368,11 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
             exit={{ opacity: 0 }}
             onClick={() => setIsOnboardingComplete(true)}
           >
-            <div className='w-fit h-fit flex flex-col gap-4 justify-center items-center gap-2'>
-              <div className='w-36 h-auto aspect-square bg-white'></div>
-              <span className='text-white'>드래그하여 Movement를 움직여보세요!</span>
+            <div className='w-[30%] h-fit flex flex-col gap-4 justify-center items-center gap-2'>
+              <Lottie animationData={onBoardingAnim} loop={true} autoplay={true} className='w-full h-full' />
+              <span className='text-white font-semibold whitespace-nowrap text-[16px] text-center'>
+                드래그하여 Movement를 움직여보세요!
+              </span>
             </div>
           </motion.div>
         )}
@@ -381,10 +385,11 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
           'top-[14.17%]',
           'gap-[30px]', // 모바일
           //tablet
-          'md:top-[15%]',
+          'md:top-[47%]',
+          'md:-translate-y-1/2',
           'md:gap-[50px]', // md
           'md-landscape:gap-[20px]', // md-landscape 조건
-          'md-landscape:top-[18%]',
+          'md-landscape:bottom-[14.30%]',
           //desktop
           'lg:bottom-[15.30%]',
           'lg:gap-[30px]', // lg~2xl fluid
@@ -545,10 +550,10 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
         className={classNames(
           'absolute flex justify-center items-center',
           'left-[calc(50vw-60px)] bottom-[10.3%] inset-y-auto',
-          isMobile ? 'md:bottom-[10.3%]' : 'md:bottom-[50%]',
-          isMobile ? 'md:left-[calc(50vw-80px)]' : 'md:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)]',
+          'md:bottom-[20.7%]',
+          'md:left-[calc(50vw-60px)]',
           'md:inset-y-auto',
-          'md-landscape:left-[40px] md-landscape:inset-y-0', // md-landscape 전용
+          'md-landscape-coming:left-[40px] md-landscape-coming:inset-y-0', // md-landscape 전용
           'lg:left-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
           '2xl:left-[100px] 2xl:inset-y-0', // 2xl 이상 고정
         )}
@@ -596,10 +601,11 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
         className={classNames(
           'absolute flex justify-center items-center',
           'right-[calc(50vw-60px)] bottom-[10.3%] inset-y-auto',
-          isMobile ? 'md:bottom-[10.3%]' : 'md:bottom-[50%]',
-          isMobile ? 'md:right-[calc(50vw-80px)]' : 'md:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)]',
+          'md:bottom-[20.7%]',
+          'md:right-[calc(50vw-60px)]',
           'md:inset-y-auto',
-          'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
+          'md-landscape-coming:right-[40px] md-landscape-coming:inset-y-0',
+          'md-landscape:inset-y-0', // md-landscape 전용
           'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
           '2xl:right-[100px] 2xl:inset-y-0', // 2xl 이상 고정
         )}
