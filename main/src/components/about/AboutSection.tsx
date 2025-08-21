@@ -103,7 +103,7 @@ export default function AboutSection({ embedded = false }: Props) {
           prewarm
           muted
           loop
-          position='relative'
+          position='absolute'
           aspect='aspect-[1920/1700]'
         />
       </div>
@@ -143,7 +143,6 @@ export default function AboutSection({ embedded = false }: Props) {
         muted
         loop
         position='absolute'
-        aspect='aspect-[1440/1440]'
       />
       <Divide title='Archive' number='02' />
       <TitleBody
