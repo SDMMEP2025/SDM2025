@@ -94,10 +94,10 @@ export default function AboutSection({ embedded = false }: Props) {
         <Blank />
       </div>
       <div className='relative w-full aspect-[1440/1275] font-english font-semibold'>
-        <h1 className='hidden md:block absolute text-white z-[1000] md:top-[71.3px] lg:top-[68px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
+        <h1 className='hidden md:block absolute text-white z-[10] md:top-[71.3px] lg:top-[68px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
           New Formative
         </h1>
-        <h2 className='hidden md:block absolute text-white z-[1000] md:top-[134px] lg:top-[186px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
+        <h2 className='hidden md:block absolute text-white z-[10] md:top-[134px] lg:top-[186px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
           Steady Movement
           <br />
           For Progress
@@ -170,7 +170,13 @@ export default function AboutSection({ embedded = false }: Props) {
       />
       <Divide title='Archive' number='02' />
       <TitleBody
-        title={'Archive\nMovement'}
+        title={
+          <>
+          Archive
+          <br/>
+          Movement
+          </>
+        }
         text={
           '전시 준비 과정에서 움직임의 궤적을 놓치지 않기 위해, 형성의 과정에서 만들어진 사진과 영상을 아카이빙합니다. 수많은 시도와 탐색의 과정은 물론, 멈칫하거나 전환되는 순간의 과정까지 움직임의 일부로 포착합니다.'
         }
