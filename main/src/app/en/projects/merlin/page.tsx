@@ -198,7 +198,7 @@ export default function Page() {
       <Divide number='02' title='Target' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1111960960h=2da6c4cc3b'
+        src='https://player.vimeo.com/video/1111960960?h=2da6c4cc3b'
         preloadDelayMs={0}
         prewarm
         muted
@@ -327,7 +327,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/11111961150?h=3b51cb2e6b'
+        src='https://player.vimeo.com/video/1111961150?h=3b51cb2e6b'
         preloadDelayMs={0}
         prewarm
         loop
