@@ -10,12 +10,16 @@ interface PageTransitionWrapperProps {
   children: ReactNode
   isTransitioning: boolean
   pathname?: string
+  aboutPageLoaded?: boolean // About 페이지 로드 상태 추가
 }
 
-export function PageTransitionWrapper({ children, isTransitioning, pathname }: PageTransitionWrapperProps) {
+export function PageTransitionWrapper({
+  children,
+  isTransitioning,
+  pathname,
+  aboutPageLoaded = false,
+}: PageTransitionWrapperProps) {
   const textLines = ['Steady', 'Movement For', 'Progress']
-
-  // 홈페이지이거나 전환 중이 아닐 때는 애니메이션이 완료된 것으로 시작
   const [animationComplete, setAnimationComplete] = useState(!isTransitioning)
 
   // pathname에 따른 배경색 결정
@@ -31,7 +35,6 @@ export function PageTransitionWrapper({ children, isTransitioning, pathname }: P
     if (isTransitioning) {
       setAnimationComplete(false)
     } else {
-      // 전환 중이 아닐 때는 바로 완료 상태로 설정 (홈페이지 등)
       setAnimationComplete(true)
     }
   }, [isTransitioning])
@@ -88,11 +91,16 @@ export function PageTransitionWrapper({ children, isTransitioning, pathname }: P
               className='fixed inset-0 z-[9999] bg-white flex items-center justify-center'
             >
               <Lottie
-                onComplete={() => setAnimationComplete(true)}
                 animationData={textAnim}
-                loop={false} // 한 번만 재생하도록 변경
+                loop={!aboutPageLoaded} // 페이지가 로드될 때까지 루프
                 autoplay={true}
                 className='w-full h-full'
+                onComplete={() => {
+                  // 루프가 아닐 때만 (즉, 페이지가 로드된 후) 애니메이션 완료 처리
+                  if (aboutPageLoaded) {
+                    setAnimationComplete(true)
+                  }
+                }}
               />
             </motion.div>
           ) : (
