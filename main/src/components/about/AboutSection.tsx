@@ -98,12 +98,11 @@ export default function AboutSection({ embedded = false }: Props) {
         </h2>
         <MediaContainer
           type='video'
-          src='https://player.vimeo.com/video/1111520640?h=e5f32a5864'
+          src='https://player.vimeo.com/video/1111913882?h=c5f34e58dc'
           preloadDelayMs={delayFor(0)}
           prewarm
           muted
           loop
-          aspect='aspect-[1440/1500]'
           position='absolute'
         />
       </div>
@@ -113,13 +112,38 @@ export default function AboutSection({ embedded = false }: Props) {
           '새로움을 만드는 데 필요한 것은 대단한 변화나 특별한 순간이 아닌, 자신만의 방향을 탐색하며 꾸준히 움직이는 에너지입니다. 2025 MEP 〈New Formative〉는 새로운 형성을 위해 나아가며 각자의 에너지가 만들어내는 꾸준한 움직임의 과정을 담고 있습니다.'
         }
       />
-      <Image src='' alt='main image' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698129?h=054df76750'
+        preloadDelayMs={delayFor(1)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
       {/* 여기에 인터랙션 */}
       <GraphicPlay />
       <Divide title='Movement as a System' number='01' />
-      <Image src='' alt='about_3.png' />
-      <Image src='' alt='about_4.mp4' />
-      <Image src='' alt='about_5.mp4' />
+      <Image src='/images/about/about_3.jpg' alt='about_3.png' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698151?h=6558b4a627'
+        preloadDelayMs={delayFor(2)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698170?h=1605b05f58'
+        preloadDelayMs={delayFor(3)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+        aspect='aspect-[1440/1440]'
+      />
       <Divide title='Archive' number='02' />
       <TitleBody
         title={'Archive\nMovement'}
@@ -136,7 +160,15 @@ export default function AboutSection({ embedded = false }: Props) {
         align='center'
       />
       <HeaderBody title={'9Teams are Formative'} />
-      <Image src='' alt='about_6.mp4' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111923208?h=8ffe13e711'
+        preloadDelayMs={delayFor(4)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
       <TitleBody
         title={'New Formative \nBegins Here'}
         text='2025 MEP 〈New Formative〉 전시 공간에서는 여러분의 감각과 해석으로 완성되어 가는 여정을 경험할 수 있습니다. 형성이라는 태도가 우리의 사고와 감각으로 어떻게 확장될 수 있는지, 이곳에서 함께 포착해 보세요.'
@@ -176,12 +208,52 @@ export default function AboutSection({ embedded = false }: Props) {
           Let's Move
         </Link>
       </div>
-      <Image src='' alt='about_11.mp4' />
-      <Image src='' alt='about_12.mp4' />
-      <Image src='' alt='about_13.mp4' />
-      <Image src='' alt='about_14.mp4' />
-      <Image src='' alt='about_15.mp4' />
-      <Image src='' alt='about_16.gif' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698249?h=c3c60ea4e2'
+        preloadDelayMs={delayFor(5)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698280?h=2acd111ce5'
+        preloadDelayMs={delayFor(6)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698334?h=1bbff8b3c0'
+        preloadDelayMs={delayFor(7)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111698364/?h=ae4b7882d5'
+        preloadDelayMs={delayFor(8)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1111745680?h=557e6bfee9'
+        preloadDelayMs={delayFor(9)}
+        prewarm
+        muted
+        loop
+        position='absolute'
+      />
+      <Image src='/images/about/about_16.webp' alt='about_16.gif' />
       <Image src='' alt='about_17.mp4' />
       <Image src='' alt='about_18.jpg' />
       <Image src='' alt='about_19.jpg' />
