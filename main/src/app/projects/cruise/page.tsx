@@ -260,7 +260,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708889?h=dec440477b'
+        src='https://player.vimeo.com/video/11113003216?h=95d107c331'
         preloadDelayMs={0}
         prewarm
         muted
@@ -269,7 +269,7 @@ export default function Page() {
       <RightBody text='부담 없이 아늑한 2인승부터, 친구들 모두가 같이 여행을 떠날 수 있는 다인승까지, CRUISE는 그 어떤 차량 공간 안이라도 자연스럽게 녹아듭니다. 가장 편안한 자세에서 지나가는 외부 공간과 Dash의 정보를 동시에 확인할 수 있고, Handle을 언제든지 꺼내 들고 조작할 수 있죠.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708908?h=2fda5e80b8'
+        src='https://player.vimeo.com/video/1111300387?h=7edabbd9bc'
         preloadDelayMs={delayFor(1)}
         hasAudio={true}
         muted={false}
@@ -283,10 +283,10 @@ export default function Page() {
       <TitleBody
         title={'오늘의 여정, 어떤 분위기로\n시작해 볼까요?'}
         text='항해를 떠나기 전, 지도를 펼쳐 경로를 탐색하는 항해사처럼 친구들과 지도를 펼쳐 탐색을 시작합니다. AI가 탑승자들을 인식하여 알고리즘 반경을 생성하고, 우리만을 위한 특별한 경로를 만들 수 있도록 제안하죠. 이처럼 여정 자체가 우리의 개성을 담은 Signature Map이 됩니다.'
-      />
+      />6
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708949?h=fa86847bc0'
+        src='https://player.vimeo.com/video/1111300528?h=c33e0e50d3'
         preloadDelayMs={delayFor(2)}
         prewarm
         muted
@@ -305,7 +305,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110838360?h=212d7faad8'
+        src='https://player.vimeo.com/video/1111300591?h=153e96920f'
         preloadDelayMs={delayFor(3)}
         prewarm
         muted
@@ -313,7 +313,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110838382?h=85299bb0cd'
+        src='https://player.vimeo.com/video/1111300631?h=b495fd2006'
         preloadDelayMs={delayFor(4)}
         prewarm
         muted
@@ -331,7 +331,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110708985?h=f47f8b49f2'
+        src='https://player.vimeo.com/video/1111300652?h=336ac8888b'
         preloadDelayMs={delayFor(5)}
         prewarm
         muted
@@ -349,7 +349,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110709027?h=7a7125da0c'
+        src='https://player.vimeo.com/video/1111300736?h=b13f251b97'
         preloadDelayMs={delayFor(6)}
         prewarm
         muted
