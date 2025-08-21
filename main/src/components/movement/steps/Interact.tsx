@@ -423,7 +423,7 @@ function FloatingConcentricSquares({
 }
 
 export function InteractPage({ interactionData, onStartOver }: InteractPageProps) {
-  const { steps, positions, brandColorName, brandColorHex, refinedColorHex, text } = interactionData
+  const { steps, positions, brandColorName, brandColorHex, refinedColorName, refinedColorHex, text } = interactionData
   const [isLoadingDone, setIsLoadingDone] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
@@ -690,7 +690,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
               'font-medium text-black text-[18px] z-[40] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
             )}
           >
-            <p className='block md:hidden break-keep z-[40]'>{'Original\n' + brandColorName}</p>
+            <p className='block md:hidden break-keep z-[40]'>{refinedColorName}</p>
             <p className='hidden md:block break-keep z-[40]'>{text}</p>
           </motion.div>
 
@@ -706,9 +706,9 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
             )}
           >
             <div className='block md:hidden'>Rgb</div>
-            <div className='block md:hidden'>{hexToRgb(brandColorHex).replace('rgb(', '').replace(')', '')}</div>
-            <div className='hidden md:block whitespace-nowrap'>{brandColorName}</div>
-            <div className='hidden md:block whitespace-nowrap'>{hexToRgb(brandColorHex)}</div>
+            <div className='block md:hidden'>{hexToRgb(refinedColorHex).replace('rgb(', '').replace(')', '')}</div>
+            <div className='hidden md:block whitespace-nowrap'>{refinedColorName}</div>
+            <div className='hidden md:block whitespace-nowrap'>{hexToRgb(refinedColorHex)}</div>
           </motion.div>
         </div>
 
