@@ -248,12 +248,11 @@ const HoverImageCard = ({
           alt={src}
           className='w-full h-auto block'
           style={{ transformOrigin: 'center' }}
-          animate={{ scale: active ? 1.06 : 1 }}
+          animate={{ scale: active ? 1.1 : 1 }}
           transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-          whileTap={{ scale: 1.08 }}
           draggable={false}
         />
-        {isMobile && pressed && <div className='absolute inset-0 bg-black/20' />}
+        {isMobile && pressed && <div className='absolute inset-0' />}
 
         <AnimatePresence>
           {isMobile && pressed && (
