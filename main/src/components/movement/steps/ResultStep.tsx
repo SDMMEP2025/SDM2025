@@ -329,6 +329,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
   }
 
   const handleSubmit = () => {
+    console.log('ResultStep - currentPositions:', currentPositions)
     onComplete({
       steps: values[0],
       positions: currentPositions,

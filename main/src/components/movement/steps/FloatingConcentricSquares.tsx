@@ -319,8 +319,15 @@ export default function FloatingConcentricSquares({
           const w = maxWidth - stepReduction * i
           const h = maxHeight - stepReduction * i
           const color = interpolateColor(brandColorHex, refinedColorHex, factor)
-          // 완전 고정모드 - 모든 사각형이 원점 (0,0)에 고정됨
-          const p = { x: 0, y: 0 }
+
+          const basePosition = positions[i] || { x: 0, y: 0 }
+          const interactionX = targetRef.current.x * (i / Math.max(1, steps - 1)) * 0.5
+          const interactionY = targetRef.current.y * (i / Math.max(1, steps - 1)) * 0.5
+
+          const finalPosition = {
+            x: basePosition.x + interactionX,
+            y: basePosition.y + interactionY,
+          }
 
           return (
             <div
@@ -333,10 +340,15 @@ export default function FloatingConcentricSquares({
                 borderRadius: i === 0 ? `${motionParams.borderRadiusOuter * scale}px` : '0px',
                 top: '50%',
                 left: '50%',
-                transform: `
-                  translate(calc(-50% + ${p.x}px), calc(-50% + ${p.y}px))
-                  translateZ(${i * 20 * scale}px)
-                `,
+                transform: isHovered
+                  ? `
+          translate(calc(-50% + ${finalPosition.x}px), calc(-50% + ${finalPosition.y}px))
+          translateZ(${i * 15 * scale}px)
+        `
+                  : `
+          translate(calc(-50% + ${finalPosition.x}px), calc(-50% + ${finalPosition.y}px))
+          translateZ(${0}px)
+        `,
                 boxShadow: isHovered
                   ? `0 ${(15 + i * 8) * scale * motionParams.shadowIntensity}px ${(30 + i * 8) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.15)`
                   : `0 ${(5 + i * 2) * scale * motionParams.shadowIntensity}px ${(10 + i * 2) * scale * motionParams.shadowIntensity}px rgba(0,0,0,0.05)`,
