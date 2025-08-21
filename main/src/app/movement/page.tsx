@@ -114,7 +114,7 @@ export default function Page() {
               preloadDelayMs={100}
               className='h-full lg:w-full lg:h-auto object-cover'
               withMotion={false}
-              // posterSrc='/images/movement/movement_background.png'
+              posterSrc='/images/movement/movement_background.png'
             />
           </div>
         </>
