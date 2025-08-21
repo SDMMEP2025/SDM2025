@@ -7,6 +7,10 @@ export default {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'aspect-[1920/1700]', // 여기에 직접 추가
+    { pattern: /aspect-\[\d+\/\d+\]/ },
+  ],
   theme: {
     fontSize: {
       xxxs: '0.6rem', // 10px
@@ -42,6 +46,7 @@ export default {
 
         lg: '1440px',
         xl: '1920px',
+        '2xl': '2560px',
       },
       colors: {},
       fontFamily: {

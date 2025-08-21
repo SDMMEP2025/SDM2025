@@ -3,6 +3,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { InViewFrame } from '../InViewFrame'
 
 interface ImageGalleryProps {
   images: string[]
@@ -59,7 +60,7 @@ export function ImageGallery({
   }
 
   return (
-    <div
+    <InViewFrame
       className='w-full aspect-[16/9] relative overflow-hidden bg-zinc-600'
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -90,6 +91,6 @@ export function ImageGallery({
           ))}
         </div>
       )}
-    </div>
+    </InViewFrame>
   )
 }

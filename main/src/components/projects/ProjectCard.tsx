@@ -12,6 +12,7 @@ type Project = {
   id: string
   title: string
   thumbnail: { pc: string; mobile: string }
+  color: string
 }
 
 interface ProjectCardProps {
@@ -22,72 +23,49 @@ interface ProjectCardProps {
 
 function useViewportSize() {
   const [size, setSize] = useState({ w: 0, h: 0 })
-  
+
   const updateSize = useCallback(() => {
     const w = Math.round(window.visualViewport?.width ?? window.innerWidth)
     const h = Math.round(window.visualViewport?.height ?? window.innerHeight)
-    setSize(prev => {
-      // 값이 실제로 변경된 경우에만 상태 업데이트
-      if (prev.w !== w || prev.h !== h) {
-        return { w, h }
-      }
-      return prev
-    })
+    setSize((prev) => (prev.w !== w || prev.h !== h ? { w, h } : prev))
   }, [])
 
   useLayoutEffect(() => {
     updateSize()
-    
-    const handleResize = () => {
-      // orientationchange의 경우 약간의 지연을 두어 정확한 값 확보
-      setTimeout(updateSize, 100)
-    }
-
-    const handleOrientationChange = () => {
-      // 화면 회전 시 더 긴 지연으로 안정적인 값 확보
-      setTimeout(updateSize, 300)
-    }
-    
+    const handleOrientationChange = () => setTimeout(updateSize, 300)
     window.visualViewport?.addEventListener('resize', updateSize, { passive: true })
     window.addEventListener('resize', updateSize, { passive: true })
     window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
-    
     return () => {
       window.visualViewport?.removeEventListener('resize', updateSize as any)
       window.removeEventListener('resize', updateSize as any)
       window.removeEventListener('orientationchange', handleOrientationChange as any)
     }
   }, [updateSize])
-  
+
   return size
 }
 
 function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
   const [w, setW] = useState(0)
-  
   const updateWidth = useCallback((el: HTMLElement) => {
     const newWidth = Math.round(el.getBoundingClientRect().width)
-    setW(prev => prev !== newWidth ? newWidth : prev)
+    setW((prev) => (prev !== newWidth ? newWidth : prev))
   }, [])
-  
   useEffect(() => {
     if (!ref.current) return
-    
     const el = ref.current
     updateWidth(el)
-    
     const ro = new ResizeObserver((entries) => {
       const cr = entries[0]?.contentRect
       if (cr) {
         const newWidth = Math.round(cr.width)
-        setW(prev => prev !== newWidth ? newWidth : prev)
+        setW((prev) => (prev !== newWidth ? newWidth : prev))
       }
     })
-    
     ro.observe(el)
     return () => ro.disconnect()
   }, [ref, updateWidth])
-  
   return w
 }
 
@@ -95,37 +73,39 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
   const total = projects.length
   const boxRef = useRef<HTMLDivElement>(null)
 
-  // 모든 Hook을 최상단에 배치
+  // viewport & container width
   const { w: vw, h: vh } = useViewportSize()
   const isLandscape = useIsLandscape()
   const isPhone = useIsPhone()
   const W = useElementWidth(boxRef)
-  
-  // 반응형 조건들을 useMemo로 최적화
+
+  // —— 레이아웃 플래그
   const layoutConfig = useMemo(() => {
     const md = vw >= 768 && vw < 1440
-    const isMdLandscape = isLandscape
+    const isMdLandscape = isLandscape && isPhone
     const isMdPortrait = !isLandscape
     const isMobile = isPhone || (!md && vw < 768)
-    
+    const isLG = vw >= 1440 && !isPhone
     return {
       md,
       isMdLandscape,
       isMdPortrait,
       isMobile,
-      isRow: !isMobile && !isMdPortrait
+      isLG,
+      isRow: !isMdPortrait,
     }
   }, [vw, isLandscape, isPhone])
 
-  // 레이아웃 계산을 useMemo로 최적화
+  // —— 치수 계산
   const dimensions = useMemo(() => {
     const MOBILE_COLLAPSED_H = 60
     const MOBILE_EXPANDED_H = 446
     const DESKTOP_MIN_EXP_FRAC = 0.7
     const DESKTOP_COLLAPSED_MIN = 22
     const DESKTOP_COLLAPSED_MAX = 109
+    const HEADER_LG = 120
 
-    const { isMobile, isMdPortrait, isMdLandscape } = layoutConfig
+    const { isMobile, isMdPortrait, isMdLandscape, isLG } = layoutConfig
 
     const desktopCollapsedW = Math.min(
       DESKTOP_COLLAPSED_MAX,
@@ -137,12 +117,17 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
     const collapsedW = desktopCollapsedW
     const expandedW = desktopExpandedW
 
-    const aspectH = (() => {
+    // 기본 비율 기반 높이
+    const rawAspectH = (() => {
       if (isMobile) return MOBILE_EXPANDED_H
       if (isMdPortrait) return MOBILE_EXPANDED_H
-      const base = isMdLandscape ? 486 / 666 : 690 / 977
-      return Math.round(expandedW * base)
+      const ratio = isMdLandscape ? 486 / 666 : 710 / 977 // 요청 반영: PC 977/710
+      return Math.round(expandedW * ratio)
     })()
+
+    // lg에서는 화면(100dvh) - 헤더(80px)를 넘지 않도록 클램프
+    const maxLGHeight = Math.max(0, Math.round(vh - HEADER_LG))
+    const aspectH = isLG ? Math.min(rawAspectH, maxLGHeight) : rawAspectH
 
     return {
       collapsedW,
@@ -150,14 +135,15 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
       deltaW,
       aspectH,
       MOBILE_COLLAPSED_H,
-      MOBILE_EXPANDED_H
+      MOBILE_EXPANDED_H,
     }
-  }, [W, total, layoutConfig])
+  }, [W, total, layoutConfig, vh])
 
+  // —— 각 카드 위치/크기
   const positions = useMemo(() => {
     const { isRow } = layoutConfig
     const { collapsedW, expandedW, deltaW, aspectH, MOBILE_COLLAPSED_H, MOBILE_EXPANDED_H } = dimensions
-    
+
     return projects.map((_, i) => {
       if (isRow) {
         const left = i * collapsedW + (i > index ? deltaW : 0)
@@ -176,49 +162,60 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
     })
   }, [projects, layoutConfig, dimensions, index, W])
 
+  // —— 컨테이너 높이
   const containerStyle = useMemo((): React.CSSProperties => {
     const { isRow } = layoutConfig
     const { aspectH, MOBILE_COLLAPSED_H, MOBILE_EXPANDED_H } = dimensions
-    
     return isRow
-      ? { position: 'relative', width: W, height: aspectH }
+      ? { position: 'relative', width: W, height: aspectH, overflow: 'hidden' } // lg에서 aspectH는 이미 100dvh-80으로 클램프됨
       : {
           position: 'relative',
           width: W,
           height: projects.length * MOBILE_COLLAPSED_H + (MOBILE_EXPANDED_H - MOBILE_COLLAPSED_H),
+          overflow: 'hidden',
         }
   }, [layoutConfig, dimensions, W, projects.length])
 
-  const handleTapExpandThenNavigate = useCallback((e: React.MouseEvent, i: number) => {
-    const { isMobile, isMdLandscape, isMdPortrait } = layoutConfig
-    if (!(isMobile || isMdLandscape || isMdPortrait)) return true
-    e.preventDefault()
-    if (index === i) window.location.href = `/projects/${projects[i].id}`
-    else setIndex(i)
-    return false
-  }, [layoutConfig, index, projects, setIndex])
+  // —— 상호작용
+  const handleTapExpandThenNavigate = useCallback(
+    (e: React.MouseEvent, i: number) => {
+      const { isMobile, isMdLandscape, isMdPortrait } = layoutConfig
+      if (!(isMobile || isMdLandscape || isMdPortrait)) return true
+      e.preventDefault()
+      if (index === i) window.location.href = `/projects/${projects[i].id}`
+      else setIndex(i)
+      return false
+    },
+    [layoutConfig, index, projects, setIndex],
+  )
 
-  const getBorderClasses = useCallback((isExpanded: boolean) => {
-    if (isExpanded) return 'rounded-[5px] border-none'
+  //펼쳐진 카드의 옆 카드는 보더를 없애기
+  const getBorderClasses = useCallback((isExpanded: boolean, isAdjacent: boolean, isRow: boolean) => {
+    if (isExpanded || isAdjacent) return 'rounded-[5px] border-none'
     let c = 'border-stone-300 border-b'
     c += ' md:border-b md:border-t-0 md:border-l-0'
+    if (isRow) {
+      c += ' border-b-0 border-l'
+    }
     c += ' md-landscape-coming:border-b-0 md-landscape-coming:border-l'
     c += ' lg:border-b-0 lg:border-l'
     return c
   }, [])
 
-  const getClipPath = useCallback((isExpanded: boolean, origin: 'left' | 'right') =>
-    isExpanded ? 'inset(0 0 0 0)' : origin === 'right' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)'
-  , [])
+  const getClipPath = useCallback(
+    (isExpanded: boolean, origin: 'left' | 'right') =>
+      isExpanded ? 'inset(0 0 0 0)' : origin === 'right' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)',
+    [],
+  )
 
-  // 상수들
-  const slide = { type: 'spring', stiffness: 420, damping: 42 }
+  // 애니메이션 설정
+  const slide = { type: 'spring', stiffness: 160, damping: 42 }
   const fade = { duration: 0.22, ease: 'easeOut' }
   const { isMdLandscape, isMdPortrait, isMobile, isRow } = layoutConfig
   const { expandedW, aspectH } = dimensions
   const originSide = isRow ? 'right' : 'left'
 
-  // 로딩 상태 처리
+  // 로딩 플레이스홀더
   if (W === 0 || vw === 0 || vh === 0) {
     return (
       <div ref={boxRef} className='w-full h-96 flex items-center justify-center'>
@@ -256,13 +253,21 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
       <div style={containerStyle}>
         {projects.map((project, i) => {
           const isExpanded = index === i
+          let isAdjacent
+          if (isMdPortrait) {
+            //바로 왼쪽 카드의 순번
+            isAdjacent = i === index - 1
+          } else {
+            //바로 오른쪽 카드의 순번
+            isAdjacent = i === index + 1
+          }
           const p = positions[i]
           const imgW = isRow ? expandedW : W
           const imgH = isRow ? aspectH : dimensions.MOBILE_EXPANDED_H
           return (
             <motion.div
               key={project.id}
-              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded))}
+              className={classNames('absolute', 'overflow-hidden', getBorderClasses(isExpanded, isAdjacent, isRow))}
               animate={{ left: p.left, top: p.top, width: p.width, height: p.height }}
               transition={slide}
             >
@@ -273,20 +278,24 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                     style={{ width: imgW, height: imgH }}
                   >
                     <motion.div
-                      className='w-full h-full'
+                      className='w-full h-full relative'
                       initial={false}
                       animate={{ clipPath: getClipPath(isExpanded, originSide as 'left' | 'right') }}
                       transition={slide}
                     >
                       <img
-                        src={project.thumbnail.pc}
+                        src={isMdPortrait ? project.thumbnail.mobile : project.thumbnail.pc}
                         alt={project.title}
                         className='block w-full h-full object-cover'
-                        loading='lazy'
                         draggable={false}
                       />
+
+                      {isMdPortrait && isExpanded && (
+                        <div className='pointer-events-none absolute inset-0 bg-gradient-to-b from-neutral-800/0 to-neutral-800/30' />
+                      )}
                     </motion.div>
                   </div>
+
                   {(isMobile || isMdLandscape || isMdPortrait) && isExpanded && (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -298,16 +307,21 @@ export function ProjectCard({ projects, setIndex, index }: ProjectCardProps) {
                     </motion.div>
                   )}
                 </div>
+
                 <motion.h3
                   className={classNames(
                     'absolute font-semibold whitespace-nowrap pointer-events-none',
-                    'text-2xl md:text-[22px] md-landscape-coming:text-[22px] lg:text-[28px]',
-                    isRow ? 'md-landscape-coming:right-0 lg:right-1 top-7 [writing-mode:vertical-rl]' : 'left-3 bottom-3',
+                    'text-2xl md:text-[22px] md-landscape-coming:text-[1.5vw] lg:text-[1.5vw]',
+                    isRow
+                      ? 'text-[1.5vw] right-[0.6vw] md-landscape-coming:right-[0.6vw] lg:right-[0.6vw] top-7 [writing-mode:vertical-rl]'
+                      : 'left-3 bottom-3',
                     isExpanded ? 'text-white' : 'text-zinc-[#666666]',
                   )}
                   initial={false}
-                  animate={{ opacity: isExpanded ? 1 : 0.75 }}
                   transition={fade}
+                  style={{
+                    color: !isExpanded ? '#4B4F57' : isMdPortrait ? '#FFF' : project.color,
+                  }}
                 >
                   {project.title}
                 </motion.h3>

@@ -1,7 +1,6 @@
-// components/movement/steps/EditStep.tsx
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import classNames from 'classnames'
 import { useImageAnalysis } from '@/hooks/useImageAnalysis'
 import { useColorAnalysis } from '@/hooks/useColorAnalysis'
@@ -9,6 +8,7 @@ import { ColorAnalysisResult } from '@/types/color'
 import Lottie, { LottieRefCurrentProps } from 'lottie-react'
 import animationData from '@/animation/edit_loading.json'
 import { AnimatePresence, motion } from 'framer-motion'
+import GraphemeSplitter from 'grapheme-splitter'
 
 interface EditStepProps {
   currentData: {
@@ -22,6 +22,9 @@ interface EditStepProps {
   onComplete: (text: string, colorAnalysis: ColorAnalysisResult) => void
 }
 
+const splitter = new GraphemeSplitter()
+const MAX = 33
+
 export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete }: EditStepProps) {
   const [text, setText] = useState('')
   const [colorAnalysis, setColorAnalysis] = useState<ColorAnalysisResult | null>(null)
@@ -31,45 +34,123 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
   const { analyzeImageColors, isAnalyzing: isAnalyzingColor, error: colorError } = useColorAnalysis()
 
   const [isActive, setIsActive] = useState(false)
-  const [analyzeError, setAnalyzeError] = useState<boolean>(false)
+  const prevTextRef = useRef('')
 
-  // 컴포넌트 마운트 시 AI 텍스트 분석 + 색상 분석 동시 실행
+  const [analyzeError, setAnalyzeError] = useState<boolean>(false)
+  const [isComposing, setIsComposing] = useState(false) // ← 한글 IME 보호
+
+  const count = useMemo(() => splitter.countGraphemes(text), [text])
+
+  const isTextReady = !!text.trim() && !isAnalyzingText
+  const isDimmed = !isTextReady
+
+  useEffect(() => {
+    if (!isComposing && count > MAX) {
+      const clamped = splitter.splitGraphemes(text).slice(0, MAX).join('')
+      if (clamped !== text) {
+        setText(clamped)
+        prevTextRef.current = clamped
+      }
+    }
+  }, [isComposing, count, text])
+
+  const handlePaste: React.ClipboardEventHandler<HTMLTextAreaElement> = (e) => {
+    e.preventDefault()
+    const paste = e.clipboardData.getData('text')
+    const next = text + paste
+    const gs = splitter.splitGraphemes(next)
+    const clamped = gs.slice(0, MAX).join('')
+    setText(clamped)
+    prevTextRef.current = clamped
+  }
+
+  const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    const raw = e.target.value
+
+    if (isComposing) {
+      // 조합 중엔 즉시 자르지 않되, 초과되면 직전값으로 롤백
+      const gs = splitter.splitGraphemes(raw)
+      if (gs.length > MAX) {
+        // 롤백
+        setText(prevTextRef.current)
+        // IME 커서 튀는 현상 완화
+        queueMicrotask(() => {
+          const el = e.target
+          const end = prevTextRef.current.length
+          try {
+            el.setSelectionRange(end, end)
+          } catch {}
+        })
+        return
+      }
+      setText(raw)
+      prevTextRef.current = raw
+      return
+    }
+
+    // 조합 상태 아님: 바로 클램프
+    const clamped = splitter.splitGraphemes(raw).slice(0, MAX).join('')
+    setText(clamped)
+    prevTextRef.current = clamped
+  }
+
+  const handleCompositionStart = () => setIsComposing(true)
+  const handleCompositionEnd: React.CompositionEventHandler<HTMLTextAreaElement> = (e) => {
+    setIsComposing(false)
+    // 조합 종료 시 최종 확정 텍스트를 한번 더 클램프
+    const raw = e.currentTarget.value
+    const clamped = splitter.splitGraphemes(raw).slice(0, MAX).join('')
+    if (clamped !== text) {
+      setText(clamped)
+    }
+    prevTextRef.current = clamped
+  }
+
+  // 초기 데이터/분석
   useEffect(() => {
     if (currentData.initialize) {
       setText(currentData.text || '')
       setColorAnalysis(currentData.colorAnalysis || null)
-    } else {
-      const runAnalysis = async () => {
-        try {
-          // 환경변수로 AI 분석 제어
-          const isAiDisabled = process.env.NEXT_PUBLIC_DISABLE_AI === 'false'
-
-          if (isAiDisabled) {
-            console.log('🛑 AI Analysis disabled for development')
-            setText('이 순간에 대해 말해주세요...')
-          } else {
-            // AI 텍스트 분석 실행
-            const aiText = await analyzeImage(imageFile, 'ko')
-
-            // aiText가 ERROR라는 단어가 있다면
-            if (aiText.includes('ERROR')) {
-              setAnalyzeError(true)
-              setText('이 순간에 대해 말해주세요...')
-            } else {
-              setText(aiText)
-            }
-          }
-
-          // 색상 분석은 항상 실행 (로컬이라 무료)
-          const colors = await analyzeImageColors(imageUrl)
-          setColorAnalysis(colors)
-        } catch (err) {
-          console.error('Analysis failed:', err)
-        }
-      }
-      runAnalysis()
+      return
     }
-  }, [imageFile, imageUrl, analyzeImage, analyzeImageColors])
+
+    const runAnalysis = async () => {
+      try {
+        // 환경변수로 AI 분석 비활성화 제어 (true면 비활성화)
+        const isAiDisabled = process.env.NEXT_PUBLIC_DISABLE_AI === 'true'
+
+        if (isAiDisabled) {
+          console.log('🛑 AI Analysis disabled for development')
+          setText('이 순간에 대해 말해주세요...')
+        } else {
+          const aiText = await analyzeImage(imageFile, 'en')
+          if (aiText.includes('ERROR')) {
+            setAnalyzeError(true)
+            setText('이 순간에 대해 말해주세요.')
+          } else {
+            const cleaned = aiText.replace(/[.,!?]+$/, '').trim()
+            setText(cleaned)
+          }
+        }
+
+        // 색상 분석은 항상 실행
+        const colors = await analyzeImageColors(imageUrl)
+        setColorAnalysis(colors)
+      } catch (err) {
+        console.error('Analysis failed:', err)
+      }
+    }
+
+    runAnalysis()
+  }, [
+    currentData.initialize,
+    currentData.text,
+    currentData.colorAnalysis,
+    imageFile,
+    imageUrl,
+    analyzeImage,
+    analyzeImageColors,
+  ])
 
   const handleSubmit = () => {
     if (text.trim() && colorAnalysis) {
@@ -81,43 +162,7 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
   const hasError = textError || colorError
 
   return (
-    <div className='w-full h-full flex flex-col justify-center items-center z-10 bg-white'>
-      {/* 뒤로가기 버튼 */}
-      {/* <button
-          onClick={onBack}
-          className="mb-6 flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          다시 선택하기 
-        </button> */}
-
-      {/* 이미지 */}
-      {/* <div className="mb-6">
-          <img
-            src={imageUrl}
-            alt="업로드된 이미지"
-            className="w-full rounded-lg max-h-96 object-cover"
-          />
-        </div> */}
-
-      {/* 분석 상태 및 색상 미리보기 */}
-      <div className='absolute top-20 left-1/2 -translate-x-1/2'>
-        {/* 로딩 상태 */}
-        {/* {isAnalyzing && (
-            <div className="flex items-center gap-2 text-blue-400 text-sm">
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-400 border-t-transparent"></div>
-              {isAnalyzingText && isAnalyzingColor ? 'AI 분석 및 색상 추출 중...' :
-               isAnalyzingText ? 'AI가 텍스트를 생성하고 있습니다...' :
-               '이미지에서 색상을 추출하고 있습니다...'}
-            </div>
-          )} */}
-
-        {/* 에러 상태 */}
-        {/* {hasError && <div className='text-red-400 text-sm'>{textError || colorError}</div>} */}
-      </div>
-
+    <div className='w-full h-full flex flex-col justify-center items-center z-10'>
       {/* 에러 및 글자수 초과 모달 */}
       <AnimatePresence>
         {analyzeError ||
@@ -141,31 +186,19 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
                   }}
                   className={classNames(
                     'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
-                    // mobile
-                    'h-[46px]',
-                    'w-[150px]',
-                    // tablet
-                    'md:h-[56px]',
-                    'md:w-[160px]',
-                    // desktop
-                    'lg:h-[56px]',
-                    'lg:w-[200px]',
-                    // large desktop
-                    '2xl:w-[200px]',
-                    '2xl:h-[56px]',
+                    'h-[46px] w-[150px]',
+                    'md:h-[56px] md:w-[160px]',
+                    'lg:h-[56px] lg:w-[200px]',
+                    '2xl:w-[200px] 2xl:h-[56px]',
                     'cursor-pointer',
                   )}
                 >
                   <div
                     className={classNames(
                       'text-white font-medium',
-                      // 모바일
                       'text-[18px]',
-                      // tablet
                       'md:text-[20px]',
-                      // desktop
                       'lg:text-[22px]',
-                      // large desktop
                       '2xl:text-[24px]',
                     )}
                   >
@@ -181,33 +214,20 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
       <div
         className={classNames(
           'absolute flex flex-col justify-center items-center inset-x-0 w-full',
-          //mobile
-          'top-[16.66%]',
-          'gap-[102px]', // 모바일
-          //tablet
+          'bottom-[40.30%] gap-[102px] inset-y-auto',
           'md-landscape:top-[34.9%]',
-          'md:top-[27.01%]',
-          'md:gap-[42px]', // md
-          'md-landscape:gap-[66px]', // md-landscape 조건
-          //desktop
-          'lg:top-[28.64%]',
-          'lg:gap-[clamp(54px,calc(-11.428px+4.55357vw),105px)]', // lg~2xl fluid
-          // large desktop
-          '2xl:top-[28.58%]',
-          '2xl:gap-[105px]', // 2xl 이상
+          'md:top-[27.01%] md:gap-[42px] md-landscape:gap-[66px]',
+          'lg:top-[28.64%] lg:gap-[clamp(54px,calc(-11.428px+4.55357vw),105px)]',
+          '2xl:top-[28.58%] 2xl:gap-[105px]',
         )}
       >
         <div
           className={classNames(
             'flex flex-col justify-center items-center w-full',
-            //mobile
-            'gap-[10px]', // 모바일
-            //tablet
+            'gap-[10px]',
             'md:gap-[10px]',
-            //desktop
             'lg:gap-[10px]',
-            // large desktop
-            '2xl:gap-[17px]', // 2xl 이상 고정
+            '2xl:gap-[17px]',
           )}
         >
           <motion.div
@@ -217,13 +237,9 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
             transition={{ duration: 0.3 }}
             className={classNames(
               'text-center text-[#FF60B9] font-medium font-english',
-              // 모바일
               'text-[17px] leading-[100%] letterSpacing-[-0.34px]',
-              // tablet
               'md:text-[clamp(17px,calc(16.118px+0.2451vw),18px)] md:leading-[130%] md:letterSpacing-[-0.36px]',
-              // desktop
               'lg:text-[clamp(20px,calc(-0.571px+1.42857vw),36px)] lg:leading-[130%] lg:letterSpacing-[-0.4px]',
-              // large desktop
               '2xl:text-[36px] 2xl:leading-[130%] 2xl:letterSpacing-[-0.72px]',
             )}
           >
@@ -235,14 +251,10 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
             exit={{ opacity: 0.2 }}
             transition={{ duration: 0.3 }}
             className={classNames(
-              'text-center text-[#FFF] font-bold mix-blend-difference',
-              // 모바일
+              'text-center text-[#222] font-bold',
               'text-[30px] leading-[140%] letterSpacing-[-0.6px]',
-              // tablet
               'md:text-[clamp(30px,calc(28.235px+0.4902vw),32px)] md:leading-[140%] md:letterSpacing-[-0.64px]',
-              // desktop
               'lg:text-[clamp(36px,calc(0px+2.5vw),64px)] lg:leading-[140%] lg:letterSpacing-[-0.72px]',
-              // large desktop
               '2xl:text-[64px] 2xl:leading-[140%] 2xl:letterSpacing-[-1.28px]',
             )}
           >
@@ -251,96 +263,116 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
           </motion.div>
         </div>
 
-        {/* textarea */}
-        <div
-          className={classNames(
-            'relative flex justify-center items-center',
-            'bg-white rounded-[8px]',
-            // 모바일
-            'w-[358px] max-w-[320px] md:max-w-none h-[70px]',
-            // tablet
-            'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)]',
-            'md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
-            // desktop
-            'lg:w-[clamp(984px,calc(37.714px+65.7143vw),1720px)]',
-            'lg:h-[clamp(126px,calc(25.7143px+6.96429vw),204px)]',
-            // large desktop
-            '2xl:w-[1720px]',
-            '2xl:h-[204px]',
-          )}
-        >
-          {/* GPT 로딩  */}
-          <AnimatePresence>
-            {isAnalyzing && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isAnalyzing ? 1 : 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className={classNames('absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2', '')}
-              >
-                <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}>
-                  <Lottie
-                    lottieRef={lottieRef}
-                    animationData={animationData}
-                    loop={true}
-                    autoplay={true}
-                    className='w-full h-full'
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <motion.textarea
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isAnalyzing ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            value={
-              //text에 온점 제거
-              text.replace(/(\.|,|!|\?)/g, '').trim()
-            }
-            onFocus={() => {
-              !isActive && setIsActive(true)
-            }}
-            onChange={(e) => setText(e.target.value)}
-            placeholder={'나를 움직이게 하는 이 순간에 대해 적어보세요...'}
+        {/* textarea 래퍼 */}
+
+        <div className='flex flex-col justify-center items-center gap-[4dvh]'>
+          <div
             className={classNames(
-              isActive ? (text.length >= 22 ? 'text-[#FF60B9]' : 'text-[#222222]') : 'text-[#AEB1B6]',
-              'w-full h-auto text-center bg-transparent  font-medium',
-              'placeholder-gray-400 focus:outline-none resize-none',
-              // 모바일
-              'text-[18px] leading-[150%] letterSpacing-[-0.36px]',
-              // tablet
-              'md:text-[clamp(18px,calc(5.647px+3.43137vw),32px)] md:leading-[150%] md:letterSpacing-[-0.64px]',
-              // desktop
-              'lg:text-[clamp(32px,calc(1.1429px+2.14286vw),56px)] lg:leading-[150%] lg:letterSpacing-[-0.64px]',
-              // large desktop
-              '2xl:text-[56px] 2xl:leading-[150%] 2xl:letterSpacing-[-1.12px]',
-            )}
-            maxLength={22}
-            disabled={isAnalyzing}
-            rows={1}
-          />
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isAnalyzing ? 0 : 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className={classNames(
-              'absolute right-0 md:right-[14px] bottom-[-30px] md:bottom-[14px] flex justify-between text-[#AEB1B6] font-medium',
-              // 모바일
-              'text-[15px]',
-              // tablet
-              'text-[15px]',
-              // desktop
-              'lg:text-[clamp(15px,calc(0.85714px+0.982143vw),26px)]',
-              // large desktop
-              '2xl:text-[26px]',
+              'relative flex justify-center items-center',
+              'rounded-[8px]',
+              'w-[358px] max-w-[320px] md:max-w-none h-[70px]',
+              'md:w-[clamp(736px,calc(452.571px+36.9048vw),984px)] md:h-[clamp(112px,calc(96px+2.08333vw),126px)]',
+              'lg:w-[clamp(984px,calc(37.714px+65.7143vw),1720px)] lg:h-[clamp(126px,calc(25.7143px+6.96429vw),204px)]',
+              '2xl:w-[1720px] 2xl:h-[204px]',
+              isDimmed ? 'bg-white/20' : 'bg-white',
             )}
           >
-            <span>{text.length}/22</span>
-          </motion.div>
+            {/* 로딩 애니메이션 */}
+            <AnimatePresence>
+              {isAnalyzing && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isAnalyzing ? 1 : 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                >
+                  <div className={classNames('w-[100px] h-[10px]', 'md:w-[200px] md:h-[20px]', 'bg-black')}>
+                    <Lottie
+                      lottieRef={lottieRef}
+                      animationData={animationData}
+                      loop={true}
+                      autoplay={true}
+                      className='w-full h-full'
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* 입력 */}
+            <motion.textarea
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isAnalyzing ? 0 : 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              value={text}
+              onFocus={() => setIsActive(true)}
+              onBlur={() => setIsActive(false)}
+              onChange={handleChange}
+              onCompositionStart={handleCompositionStart}
+              onCompositionEnd={handleCompositionEnd}
+              onPaste={handlePaste}
+              placeholder={'나를 움직이게 하는 이 순간에 대해 적어보세요.'}
+              className={classNames(
+                // MAX 도달 시 포커스와 무관하게 핑크
+                count >= MAX ? 'text-[#FF60B9]' : isActive ? 'text-[#222222]' : 'text-[#AEB1B6]',
+                'w-full h-auto text-center bg-transparent font-medium',
+                'placeholder-gray-400 focus:outline-none resize-none',
+                'text-[18px] leading-[150%] letterSpacing-[-0.36px]',
+                'md:text-[clamp(18px,calc(5.647px+3.43137vw),32px)] md:leading-[150%] md:letterSpacing-[-0.64px]',
+                'lg:text-[clamp(32px,calc(1.1429px+2.14286vw),56px)] lg:leading-[150%] lg:letterSpacing-[-0.64px]',
+                '2xl:text-[56px] 2xl:leading-[150%] 2xl:letterSpacing-[-1.12px]',
+              )}
+              disabled={isAnalyzing}
+              rows={1}
+            />
+
+            {/* 카운터 (보이는 글자 수 기준) */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isAnalyzing ? 0 : 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className={classNames(
+                'absolute right-0 md:right-[14px] bottom-[-30px] md:bottom-[14px] flex justify-between text-[#AEB1B6] font-medium',
+                'text-[15px]',
+                'lg:text-[clamp(15px,calc(0.85714px+0.982143vw),26px)]',
+                '2xl:text-[26px]',
+              )}
+            >
+              <span>
+                {count}/{MAX}
+              </span>
+            </motion.div>
+          </div>
+
+          <div
+            className={classNames(
+              'w-fit h-fit flex justify-center items-center z-0 pointer-events-none',
+              'hidden md-landscape:block lg:block',
+              'bottom-[17.41%]',
+              'md:bottom-[15.32%]',
+              'lg:bottom-[13.58%]',
+              '2xl:bottom-[13.60%]',
+            )}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className={classNames(
+                'aspect-[62/14] h-auto',
+                'w-[clamp(32px,calc(39.529px-0.980392vw),36px)]', // 모바일→md 감소
+                'lg:w-[clamp(40px,calc(11.714px+1.9642857vw),62px)]', // lg→2xl 증가
+                '2xl:w-[62px]', // 2xl 이상 고정
+              )}
+              viewBox='0 0 62 14'
+              fill='none'
+            >
+              <circle cx='7' cy='7' r='7' fill={'#222222'} />
+              <circle cx='31' cy='7' r='7' fill={'#F2F2F2'} />
+              <circle cx='55' cy='7' r='7' fill={'#F2F2F2'} />
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -350,32 +382,24 @@ export function EditStep({ currentData, imageUrl, imageFile, onBack, onComplete 
           'absolute flex justify-center items-center',
           'right-auto bottom-[14.30%] inset-y-auto',
           'md:right-auto md:bottom-[20.7%] md:inset-y-auto',
-          'md-landscape:right-[40px] md-landscape:inset-y-0', // md-landscape 전용
-          'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0', // lg~2xl fluid
-          '2xl:right-[100px] 2xl:inset-y-0', // 2xl 이상 고정
+          'md-landscape:right-[40px] md-landscape:inset-y-0',
+          'lg:right-[clamp(54px,calc(-5.14286px+4.10714vw),100px)] lg:inset-y-0',
+          '2xl:right-[100px] 2xl:inset-y-0',
         )}
       >
         <motion.button
           type='button'
           initial={{ opacity: 0 }}
-          animate={{ opacity: text.length < 22 && text.trim() && colorAnalysis && !isAnalyzing ? 1 : 0.2 }}
+          animate={{ opacity: count <= MAX && text.trim() && colorAnalysis && !isAnalyzing ? 1 : 0.2 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            handleSubmit()
-          }}
-          disabled={!text.trim() || !colorAnalysis || isAnalyzing || text.length >= 22}
+          onClick={handleSubmit}
+          disabled={!text.trim() || !colorAnalysis || isAnalyzing || count > MAX}
           className={classNames(
             'bg-black text-white rounded-full flex justify-center items-center transition-all duration-200 md:hover:bg-neutral-700',
-            'h-auto aspect-square',
-            'disabled:cursor-not-allowed',
-            //mobile
-            'w-[46px]',
-            //tablet & desktop & large desktop
-            'md:w-[46px]',
-            'lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)]',
-            '2xl:w-[74px]',
+            'h-auto aspect-square disabled:cursor-not-allowed',
+            'w-[46px] md:w-[46px] lg:w-[clamp(46px,calc(0.85714px+2.14286vw),74px)] 2xl:w-[74px]',
             text.trim() && colorAnalysis && !isAnalyzing ? 'cursor-pointer' : 'cursor-not-allowed',
           )}
         >

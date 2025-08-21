@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -67,7 +68,7 @@ const thankstoData = [
     ],
   },
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [
       { name: '김도아', englishName: 'Doa Kim' },
       { name: '박기령', englishName: 'Giryeong Park' },
@@ -85,11 +86,29 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/newbe/archive/1.jpg',
+      '/images/projects/newbe/archive/2.jpg',
+      '/images/projects/newbe/archive/3.jpg',
+      '/images/projects/newbe/archive/4.jpg',
+      '/images/projects/newbe/archive/5.jpg',
+      '/images/projects/newbe/archive/6.jpg',
+      '/images/projects/newbe/archive/7.jpg',
+      '/images/projects/newbe/archive/8.jpg',
+      '/images/projects/newbe/archive/9.jpg',
+      '/images/projects/newbe/archive/10.jpg',
+      
+    ],
+    labels: [
+      'Experiment',
+      'Experiment',
+      'Form Study',
+      'Advisor Workshop',
+      'Behind',
+      'Experiment',
+      'Experiment',
+      'Behind',
+      'Modeling',
+      'Tutoring'
     ],
   },
 ]
@@ -100,30 +119,28 @@ export default function Page() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
-  const [currentPoint, setCurrentPoint] = useState(
-    points[0], // 초기값으로 첫 번째 포인트 설정
-  )
+  const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
 
   const inView = useInView(designedByRef, {
-    amount: 0.1, // 10%가 보일 때 inView 상태 변경
-    once: false, // 한번만 감지하지 않도록 설정
+    amount: 0.1,
+    once: false,
   })
 
   useEffect(() => {
     if (inView) {
-      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
+      setIsSidebarShown(false)
     } else {
-      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
+      setIsSidebarShown(true)
     }
   }, [inView, setIsSidebarShown])
 
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
-      setIsMobile(width < 768) // 768px 미만은 모바일
-      setIsTablet(width >= 768 && width < 1440) // 768px 이상 1440px 미만은 테블릿
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1440)
     }
 
     checkDeviceType()
@@ -134,47 +151,40 @@ export default function Page() {
     }
   }, [])
 
-  // 마우스 위치 추적 (PC에서만)
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // 모바일이나 테블릿이면 마우스 추적하지 않음
       if (isMobile || isTablet) return
-
       const windowWidth = window.innerWidth
       const mouseX = event.clientX
-
-      // 오른쪽 1/3 지점 계산 (화면 너비의 2/3 지점부터)
       const rightThirdThreshold = windowWidth * (2 / 3)
-
       setIsMouseInRightThird(mouseX >= rightThirdThreshold)
     }
 
-    // 마우스 이동 이벤트 리스너 추가
     window.addEventListener('mousemove', handleMouseMove)
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [isMobile, isTablet])
 
-  // 사이드바 확장 상태 변경 핸들러
   const handleSidebarExpandedChange = (expanded: boolean) => {
     setIsSidebarExpanded(expanded)
   }
 
-  // 사이드바 표시 여부 결정:
-  // - 모바일에서는 항상 true
-  // - 테블릿에서는 항상 true (새로 추가된 조건)
-  // - PC에서는 마우스가 오른쪽 1/3에 있거나 확장된 상태일 때
   const shouldShowSidebar = isMobile || isTablet || isMouseInRightThird || isSidebarExpanded
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/NewBe_logo.svg'
-        title={['NewBe', 'The New Hair Station, Made to Fit You']}
+        title={['NewBe', 
+          <>
+            The New Hair Station,
+            <br/>
+            Made to Fit You
+          </>
+        ]}
         description={
           <>
             NewBe is a hair styling station. Take a seat when you want to freshen up your look. Explore different hair
@@ -182,15 +192,19 @@ export default function Page() {
           </>
         }
         credits='Chaewon Lee, Yehyeon Yoon, Dongheon Kang, Siwoo Kim, Chaeyoung Jung'
-        className='w-[142px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
+        className='w-[142px] md:w-[142px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <MainImage />
-      <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
+
+      {/* HERO */}
+      <MainImage Image='/images/projects/newbe/newbe_main.jpg' />
+
+      <Divide title='Background' number='01' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
             The Moment You
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             Need Style, Now
           </>
         }
@@ -203,13 +217,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Target' number='02' className='text-[#7C8A8D]'/>
+      <Image Image='/images/projects/newbe/newbe_1.webp' />
+
+      <Divide title='Target' number='02' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
             I Want to Be New,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Styling’s Always ON
           </>
         }
@@ -222,7 +238,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_2.jpg' />
+
       <RightBody
         text={
           <>
@@ -231,11 +248,14 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Problem' number='03' className='text-[#7C8A8D]'/>
+
+      <Divide title='Problem' number='03' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
-            Styling, <br />
+            Styling,
+             {' '}
+            <br className='hidden md:block' />
             Stuck in Skill
           </>
         }
@@ -246,7 +266,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_3.webp' />
+
       <RightBody
         text={
           <>
@@ -255,7 +276,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_4.jpg' />
+
       <MidBody
         align='center'
         content={
@@ -280,14 +302,27 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Solution' number='04' className='text-[#7C8A8D]'/>
+
+      <Divide title='Solution' number='04' className='text-[#7C8A8D]' />
       <MidTitle align='center' text=' With NewBe, just staying turns into effortless styling' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+
+      {/* KEY VIDEO */}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696517?h=428d2ad897'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
+      />
+
       <TitleBody
         title={
           <>
             New Station,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             New Style
           </>
         }
@@ -298,9 +333,11 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_6.jpg' />
+
       <MidTitle align='center' text='#0 Meet My Hair Combo' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_7.jpg' />
+
       <TitleBody
         title={
           <>
@@ -315,14 +352,24 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Scenario' number='05' className='text-[#7C8A8D]'/>
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696594?h=7ba0530ce0'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
+      <Divide title='Scenario' number='05' className='text-[#7C8A8D]' />
       <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
+
       <TitleBody
         title={
           <>
             Signature Style,
-            <br />
+            {' '}
+            <br className='hidden md:block' />
             Crafted by Me
           </>
         }
@@ -333,7 +380,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696620?h=812fda0809'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <RightBody
         text={
           <>
@@ -342,12 +397,21 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696638?h=16e5dc3df6'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <TitleBody
         title={
           <>
             Where I Stay,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Style Happens
           </>
         }
@@ -358,7 +422,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_11.webp' />
+
       <MidBody
         align='center'
         content={
@@ -378,7 +443,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696671?h=aaf756f866'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <MidBody
         align='center'
         content={
@@ -391,13 +464,22 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696722?h=023bb05217'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <MidTitle align='center' padding={false} text='#2 New-Ing, Keep it fun.' />
       <TitleBody
         title={
           <>
             NewBe, Always Fits
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Always Me
           </>
         }
@@ -408,12 +490,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_14.jpg' />
+
       <TitleBody
         title={
           <>
             Keep the Styles
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             You Love
           </>
         }
@@ -427,13 +511,22 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696762?h=801d824d82'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <MidTitle align='center' padding={false} text='#3 Evolving Our Hair Styling Scene' />
       <TitleBody
         title={
           <>
             That Hair,
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Now New Me
           </>
         }
@@ -445,19 +538,30 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Expectation' number='06' className='text-[#7C8A8D]'/>
+      {/* Same highlight reel used again in KR version */}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696762?h=801d824d82'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
+      <Divide title='Expectation' number='06' className='text-[#7C8A8D]' />
       <MidTitle
         align='center'
         text={
           <>
             NewBe
-            <br />
+             {' '}
+            <br className='hidden md:block' />
             Styling for Tomorrow
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_17.webp' />
+
       <MidBody
         align='center'
         content={
@@ -471,17 +575,20 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_18.webp' />
+
       <MidBody
         align='center'
         content={
           <>
-            It is no longer just about making your hair look a certain way.<br/>Embrace natural hair and turn it into a
-            unique style. This is a new way to express who you really are through hairstyling.
+            It is no longer just about making your hair look a certain way.
+            <br />
+            Embrace natural hair and turn it into a unique style. This is a new way to express who you really are
+            through hairstyling.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit
@@ -554,7 +661,7 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/potrik/potrik_thumbnail_1.jpg',
             englishName: 'Potrik',
             koreanName: '포트릭',
             linkUrl: '/en/projects/potrik',
@@ -562,7 +669,7 @@ export default function Page() {
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/layon/layon_thumbnail_1.jpg',
             englishName: 'Lay.On',
             koreanName: '레이온',
             linkUrl: '/en/projects/layon',

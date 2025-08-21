@@ -22,11 +22,13 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -55,7 +57,7 @@ const thankstoData = [
     tutors: [{ name: '권진형', englishName: 'Jinhyeong Kwon' }],
   },
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [
       { name: '노영하', englishName: 'Youngha Rho' },
       { name: '서아현', englishName: 'A hyun Seo' },
@@ -71,11 +73,28 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/potrik/archive/1.jpg',
+      '/images/projects/potrik/archive/2.jpg',
+      '/images/projects/potrik/archive/3.jpg',
+      '/images/projects/potrik/archive/4.jpg',
+      '/images/projects/potrik/archive/5.jpg',
+      '/images/projects/potrik/archive/6.jpg',
+      '/images/projects/potrik/archive/7.jpg',
+      '/images/projects/potrik/archive/8.jpg',
+      '/images/projects/potrik/archive/9.jpg',
+      '/images/projects/potrik/archive/10.jpg',
+    ],
+    labels: [
+      'Form Study',
+      'Photoshoot',
+      'Ideation',
+      'Mockup',
+      'Idea Sketch',
+      'Prototyping',
+      'Modeling',
+      'Affinity diagram',
+      'Behind',
+      'Prototyping',
     ],
   },
 ]
@@ -86,30 +105,28 @@ export default function Page() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
-  const [currentPoint, setCurrentPoint] = useState(
-    points[0], // 초기값으로 첫 번째 포인트 설정
-  )
+  const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
 
   const inView = useInView(designedByRef, {
-    amount: 0.1, // 10%가 보일 때 inView 상태 변경
-    once: false, // 한번만 감지하지 않도록 설정
+    amount: 0.1,
+    once: false,
   })
 
   useEffect(() => {
     if (inView) {
-      setIsSidebarShown(false) // 'Designed By' 섹션이 보일 때 사이드바 숨김
+      setIsSidebarShown(false)
     } else {
-      setIsSidebarShown(true) // 'Designed By' 섹션이 보이지 않을 때 사이드바 표시
+      setIsSidebarShown(true)
     }
   }, [inView, setIsSidebarShown])
 
   useEffect(() => {
     const checkDeviceType = () => {
       const width = window.innerWidth
-      setIsMobile(width < 768) // 768px 미만은 모바일
-      setIsTablet(width >= 768 && width < 1440) // 768px 이상 1440px 미만은 테블릿
+      setIsMobile(width < 768)
+      setIsTablet(width >= 768 && width < 1440)
     }
 
     checkDeviceType()
@@ -120,47 +137,40 @@ export default function Page() {
     }
   }, [])
 
-  // 마우스 위치 추적 (PC에서만)
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      // 모바일이나 테블릿이면 마우스 추적하지 않음
       if (isMobile || isTablet) return
-
       const windowWidth = window.innerWidth
       const mouseX = event.clientX
-
-      // 오른쪽 1/3 지점 계산 (화면 너비의 2/3 지점부터)
       const rightThirdThreshold = windowWidth * (2 / 3)
-
       setIsMouseInRightThird(mouseX >= rightThirdThreshold)
     }
 
-    // 마우스 이동 이벤트 리스너 추가
     window.addEventListener('mousemove', handleMouseMove)
-
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [isMobile, isTablet])
 
-  // 사이드바 확장 상태 변경 핸들러
   const handleSidebarExpandedChange = (expanded: boolean) => {
     setIsSidebarExpanded(expanded)
   }
 
-  // 사이드바 표시 여부 결정:
-  // - 모바일에서는 항상 true
-  // - 테블릿에서는 항상 true (새로 추가된 조건)
-  // - PC에서는 마우스가 오른쪽 1/3에 있거나 확장된 상태일 때
   const shouldShowSidebar = isMobile || isTablet || isMouseInRightThird || isSidebarExpanded
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['POTRIK', 'No pack, No stop. Just POTRIK']}
+        title={[
+          'POTRIK',
+          <>
+            'No pack, No stop. <br className='md:hidden' />
+            Just POTRIK'
+          </>,
+        ]}
         description={
           <>
             POTRIK offers a new way of living—one where you no longer have to carry your baggage by hand. No more
@@ -172,15 +182,18 @@ export default function Page() {
           </>
         }
         credits='Yungwon Kang, Hyogyeong Park, Hyeonji Yang, Jueun Lee, Hyeongjoon Joo'
-        className='w-[144px] md:w-[180px] lg:w-[clamp(180px,21.3vw,308px)]'
+        className='w-[144px] md:w-[144px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
-      <MainImage />
+
+      {/* HERO */}
+      <Image isFirst Image='/images/projects/potrik/potrik_main.jpg' />
+
       <Divide title='Background' number='01' className='text-[#09C17A]' />
       <TitleBody
         title={
           <>
-            Free to Move,
-            <br /> Heavy to Carry
+            Free to Move, <br className='hidden md:block' />
+            Heavy to Carry
           </>
         }
         text={
@@ -194,7 +207,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_1.webp' />
+
       <Divide title='New Lifestyle' number='02' className='text-[#09C17A]' />
       <TitleBody
         title={
@@ -225,7 +239,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_2.webp' />
+
       <Divide title='Solution' number='03' className='text-[#09C17A]' />
       <MidTitle align='center' padding={false} text='[Here] to [Here]' className='text-[#09C17A]' />
       <MidBody
@@ -240,7 +255,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838249?h=90094e419f'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <Divide title='System' number='04' className='text-[#09C17A]' />
       <TitleBody
         title={<>POTRIK</>}
@@ -251,14 +274,19 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <ImageGallery
-        images={[
-          '/images/projects/cruise/cruise_2.jpg',
-          '/images/projects/cruise/cruise_2.jpg',
-          '/images/projects/cruise/cruise_2.jpg',
-        ]}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679279?h=743bbc4061'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
       />
+      <CursorArea variant='right'>
+        <ImageGallery images={['/images/projects/potrik/potrik_5.jpg', '/images/projects/potrik/potrik_6.jpg']} />
+      </CursorArea>
+
       <TitleBody
         title={<>Driving Module</>}
         text={
@@ -271,7 +299,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_7.webp' />
+
       <TitleBody
         title={<>Storage Module</>}
         text={
@@ -285,15 +314,17 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_8.webp' />
+
       <MidTitle align='center' text=' Ready to experience POTRIK?' padding={true} className='text-[#09C17A]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_9.jpg' />
+
       <Divide title='Scenario' number='05' className='text-[#09C17A]' />
       <TitleBody
         title={
           <>
-            S1.
-            <br /> Shopping During Trip
+            S1. <br className='hidden md:block' />
+            Shopping During Trip
           </>
         }
         text={
@@ -310,7 +341,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838275?h=68e0552247'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <Divide title='How to use' number='06' className='text-[#09C17A]' />
       <TitleBody
         title={<>❶ Call & Send</>}
@@ -325,7 +364,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679295?h=4876bbe421'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <TitleBody
         title={<>❷ Move</>}
         text={
@@ -338,7 +385,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679309?h=eb8a3101fb'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <TitleBody
         title={<>❸ Receive</>}
         text={
@@ -349,11 +404,19 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679326?h=078a6f5ad4'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <TitleBody
         title={
           <>
-            S2. <br />
+            S2. <br className='hidden md:block' />
             After shopping, your hands-free
           </>
         }
@@ -370,7 +433,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679343?h=9669b8cb9c'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <TitleBody
         title={<>S3. Marketplace</>}
         text={
@@ -387,7 +458,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679347?h=1697312987'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <Divide title='Vision' number='07' className='text-[#09C17A]' />
       <MidTitle align='center' padding={false} text='Start [Blank], End [Blank].' className='text-[#09C17A]' />
       <MidBody
@@ -396,18 +475,18 @@ export default function Page() {
           <>
             No more moving things from place to place.
             <br />
-            POTRIK works like a new personal and flexible delivery system.
-            <br />
+            POTRIK works like a new personal and flexible delivery system. <br className='hidden md:block' />
             From [Here] to [Here], POTRIK moves with you.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_16.webp' />
       <MidTitle align='center' text='POTRIK, the personal delivery system that lightens every moment.' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_17.jpg' />
+
       <Divide title='Branding' number='08' className='text-[#09C17A]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_18.jpg' />
+      <Image Image='/images/projects/potrik/potrik_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit
@@ -480,7 +559,7 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/silmul/silmul_thumbnail_1.jpg',
             englishName: 'Silmul',
             koreanName: '실물',
             linkUrl: '/en/projects/silmul',
@@ -488,7 +567,7 @@ export default function Page() {
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/newbe/newbe_thumbnail_1.jpg',
             englishName: 'Newbe',
             koreanName: '뉴비',
             linkUrl: '/en/projects/newbe',

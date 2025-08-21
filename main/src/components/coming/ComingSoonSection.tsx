@@ -39,6 +39,10 @@ export default function ComingSoonSection() {
     return () => clearInterval(timer)
   }, [targetDate])
 
+  if (secondsLeft <= 0) {
+    return null 
+  }
+
   return (
     <section className='w-[100vw] h-[100dvh] bg-[#FFF790] text-black relative overflow-hidden'>
       {showOverlay && (

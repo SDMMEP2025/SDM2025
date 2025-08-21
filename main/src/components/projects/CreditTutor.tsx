@@ -46,7 +46,7 @@ export function CreditTutor({ title = 'Tutor', sections }: CreditTutorProps) {
       className={classNames(
         'w-full bg-white',
         //mobile
-        'px-[4.10vw] py-[56px]',
+        'px-[35px] py-[56px]',
         //tablet
         'md:px-[5.2vw] md:py-[56px]',
         //desktop

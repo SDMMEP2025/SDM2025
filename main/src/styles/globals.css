@@ -5,8 +5,14 @@
 @layer base {
   * {
     box-sizing: border-box;
+    cursor: none !important;
   }
-
+  body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
   div {
     white-space: pre-wrap;
     word-break: keep-all;

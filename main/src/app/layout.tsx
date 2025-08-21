@@ -3,7 +3,8 @@ import { METADATA } from './metadata'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { pretendard, saans } from '@/theme/font'
 import '@/styles/globals.css'
-import { Layout } from '@/components/projects/Layout'
+import { Layout } from '@/components/Layout'
+import { CursorProvider } from '@/components/cursor/CursorProvider'
 
 export const metadata: Metadata = {
   alternates: {
@@ -99,9 +100,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='ko' >
+    <html lang='ko'>
       <body className={`${pretendard.variable} ${saans.variable} antialiased`}>
-        <Layout>{children}</Layout>
+        <Layout>
+          <CursorProvider>{children}</CursorProvider>
+        </Layout>
       </body>
     </html>
   )

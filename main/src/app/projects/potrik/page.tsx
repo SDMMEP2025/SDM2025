@@ -22,11 +22,13 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -55,7 +57,7 @@ const thankstoData = [
     tutors: [{ name: '권진형', englishName: 'Jinhyeong Kwon' }],
   },
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [
       { name: '노영하', englishName: 'Youngha Rho' },
       { name: '서아현', englishName: 'A hyun Seo' },
@@ -71,11 +73,28 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/potrik/archive/1.jpg',
+      '/images/projects/potrik/archive/2.jpg',
+      '/images/projects/potrik/archive/3.jpg',
+      '/images/projects/potrik/archive/4.jpg',
+      '/images/projects/potrik/archive/5.jpg',
+      '/images/projects/potrik/archive/6.jpg',
+      '/images/projects/potrik/archive/7.jpg',
+      '/images/projects/potrik/archive/8.jpg',
+      '/images/projects/potrik/archive/9.jpg',
+      '/images/projects/potrik/archive/10.jpg',
+    ],
+    labels: [
+      'Form Study',
+      'Photoshoot',
+      'Ideation',
+      'Mockup',
+      'Idea Sketch',
+      'Prototyping',
+      'Modeling',
+      'Affinity diagram',
+      'Behind',
+      'Prototyping',
     ],
   },
 ]
@@ -157,10 +176,17 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Potrik_logo.svg'
-        title={['포트릭', 'No pack, No stop. Just POTRIK']}
+        title={[
+          '포트릭',
+          <>
+            'No pack, No stop. <br className='md:hidden' />
+            Just POTRIK'
+          </>,
+        ]}
         description={
           <>
             POTRIK은 손에 들고 다니는 짐이 사라진 새로운 라이프스타일을 제공합니다. 복잡한 예약도, 물건을 들고 이동할
@@ -172,14 +198,14 @@ export default function Page() {
           </>
         }
         credits='강윤권, 박효경, 양현지, 이주은, 주형준'
-        className='w-[144px] md:w-[180px] lg:w-[clamp(180px,21.3vw,308px)]'
+        className='w-[144px] md:w-[144px] lg:w-[clamp(180px,21.3vw,308px)]'
       />
-      <MainImage />
+      <Image isFirst Image='/images/projects/potrik/potrik_main.jpg' />
       <Divide title='Background' number='01' className='text-[#09C17A]' />
       <TitleBody
         title={
           <>
-            자유로운 이동, <br />
+            자유로운 이동, <br className='hidden md:block' />
             여전히 무거운 짐
           </>
         }
@@ -196,7 +222,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_1.webp' />
       <Divide title='New Lifestyle' number='02' className='text-[#09C17A]' />
       <TitleBody
         title={
@@ -225,7 +251,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_2.webp' />
       <Divide title='Solution' number='03' className='text-[#09C17A]' />
       <MidTitle align='center' padding={false} text='[Here] to [Here]' className='text-[#09C17A]' />
       <MidBody
@@ -239,7 +265,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838249?h=90094e419f'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='System' number='04' className='text-[#09C17A]' />
       <TitleBody
         title={<>POTRIK</>}
@@ -250,14 +283,18 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <ImageGallery
-        images={[
-          '/images/projects/cruise/cruise_2.jpg',
-          '/images/projects/cruise/cruise_2.jpg',
-          '/images/projects/cruise/cruise_2.jpg',
-        ]}
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679279?h=743bbc4061'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
       />
+      <CursorArea variant='right'>
+        <ImageGallery images={['/images/projects/potrik/potrik_5.jpg', '/images/projects/potrik/potrik_6.jpg']} />
+      </CursorArea>
       <TitleBody
         title={<>Driving Module</>}
         text={
@@ -271,7 +308,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_7.webp' />
       <TitleBody
         title={<>Storage Module</>}
         text={
@@ -285,9 +322,9 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_8.webp' />
       <MidTitle align='center' text='그럼 POTRIK을 사용해 볼까요?' padding={true} className='text-[#09C17A]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_9.jpg' />
       <Divide title='Scenario' number='05' className='text-[#09C17A]' />
       <TitleBody
         title={<>S1. 여행 중 쇼핑</>}
@@ -305,7 +342,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110838275?h=68e0552247'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='How to use' number='06' className='text-[#09C17A]' />
       <TitleBody
         title={<>❶ Call & Send</>}
@@ -320,7 +364,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679295?h=4876bbe421'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>❷ Move</>}
         text={
@@ -333,7 +384,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679309?h=eb8a3101fb'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>❸ Receive</>}
         text={
@@ -344,7 +402,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679326?h=078a6f5ad4'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>S2. 장본 뒤 놀이터</>}
         text={
@@ -361,7 +426,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679343?h=9669b8cb9c'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={<>S3. 중고 거래</>}
         text={
@@ -377,7 +449,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110679347?h=1697312987'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <Divide title='Vision' number='07' className='text-[#09C17A]' />
       <MidTitle align='center' padding={false} text='Start [Blank], End [Blank].' className='text-[#09C17A]' />
       <MidBody
@@ -386,17 +465,25 @@ export default function Page() {
           <>
             이제 물건은 단순히 장소에서 장소로 이동하지 않습니다.
             <br />
-            POTRIK은 내가 있는 순간[Here]에서, 필요한 순간[Here]으로,
-            <br />더 유연하고 개인화된 새로운 딜리버리 시스템을 제안합니다.
+            POTRIK은 내가 있는 순간[Here]에서, 필요한 순간[Here]으로, <br className='hidden md:block' />더 유연하고
+            개인화된 새로운 딜리버리 시스템을 제안합니다.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidTitle align='center' text='당신의 순간을 가볍게 하는 퍼스널 딜리버리 시스템, POTRIK' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_16.webp' />
+      <MidTitle
+        align='center'
+        text={[
+          <>
+            당신의 순간을 가볍게 하는 <br className='md:hidden' />
+            퍼스널 딜리버리 시스템, POTRIK
+          </>,
+        ]}
+      />
+      <Image Image='/images/projects/potrik/potrik_17.jpg' />
       <Divide title='Branding' number='08' className='text-[#09C17A]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/potrik/potrik_18.jpg' />
+      <Image Image='/images/projects/potrik/potrik_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit
@@ -469,7 +556,7 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
+            imageUrl: '/images/projects/silmul/silmul_thumbnail_1.jpg',
             englishName: 'Silmul',
             koreanName: '실물',
             linkUrl: '/projects/silmul',
@@ -477,7 +564,7 @@ export default function Page() {
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
+            imageUrl: '/images/projects/newbe/newbe_thumbnail_1.jpg',
             englishName: 'Newbe',
             koreanName: '뉴비',
             linkUrl: '/projects/newbe',

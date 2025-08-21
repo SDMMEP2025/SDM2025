@@ -22,11 +22,13 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import { useInView } from 'framer-motion'
+import { CursorArea } from '@/components/cursor/CursorArea'
 
 const tutorData = [
   {
@@ -65,11 +67,25 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/layon/archive/1.jpg',
+      '/images/projects/layon/archive/2.jpg',
+      '/images/projects/layon/archive/3.jpg',
+      '/images/projects/layon/archive/4.jpg',
+      '/images/projects/layon/archive/5.jpg',
+      '/images/projects/layon/archive/6.jpg',
+      '/images/projects/layon/archive/7.jpg',
+      '/images/projects/layon/archive/8.jpg',
+    ],
+    labels: [
+      'Ideation',
+      'Form Study',
+      'Idea Sketch',
+      'Form Study',
+      'Form Study',
+      'Form Study',
+      'Behind',
+      'Behind',
+      'Behind',
     ],
   },
 ]
@@ -151,6 +167,7 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Layon_logo.svg'
@@ -168,14 +185,15 @@ export default function Page() {
           </>
         }
         credits='유해리, 김서현, 김민희, 서유빈, 최완혁'
-        className='w-[133px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
+        className='w-[133px] md:w-[133px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <MainImage />
+      <Image isFirst Image='/images/projects/layon/layon_main.jpg' />
       <Divide title='Background' number='01' className='text-[#417EB4]' />
+      <Image Image='/images/projects/layon/layon_01.jpg' />
       <TitleBody
         title={
           <>
-            인간과 닮은 방식으로 <br />
+            인간과 닮은 방식으로 <br className='hidden md:block' />
             세상을 이해하는 AI
           </>
         }
@@ -191,11 +209,12 @@ export default function Page() {
         }
       />
       <Divide title='Problem' number='02' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_02.webp' />
+
       <TitleBody
         title={
           <>
-            미래로 나아가기 <br />
+            미래로 나아가기 <br className='hidden md:block' />
             위한 준비
           </>
         }
@@ -210,7 +229,14 @@ export default function Page() {
       />
       <Divide title='Project Overview' number='03' className='text-[#417EB4]' />
       <MidTitle align='center' text='Get your layer on, LAY.ON' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694544?h=be020ad889'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='left'
         content={
@@ -223,11 +249,11 @@ export default function Page() {
         }
       />
       <Divide title='Design Strategy' number='04' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_04.jpg' />
       <TitleBody
         title={
           <>
-            필요한 만큼, <br />
+            필요한 만큼, <br className='hidden md:block' />
             거슬리지 않는
           </>
         }
@@ -259,22 +285,29 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694602?h=5a3ef9adbc'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='left'
         content={
           <>
             비전 데이터를 수집하기 위해서는 디바이스가 우리의 눈과 가까운 곳에 있어야 합니다. 따라서 미래에 대중화될
-            차세대 디바이스로 손꼽히는 'AR 글래스'는 비전 데이터 수집에 중요한 역할을 맡게 될 것입니다. 이 AR 글래스는
-            어떤 기술을 담고, 또 어떤 형태여야 할까요?
+            차세대 디바이스로 손꼽히는 'AR 글래스'는 비전 데이터 수집에 중요한 역할을 맡게 될 것입니다.
+            <br />이 AR 글래스는 어떤 기술을 담고, 또 어떤 형태여야 할까요?
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_06.jpg' />
       <TitleBody
         title={
           <>
-            꼭 필요한 기술만을 <br />
+            꼭 필요한 기술만을 <br className='hidden md:block' />
             가볍게 담아.
           </>
         }
@@ -285,12 +318,12 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_07.jpg' />
+      <Image Image='/images/projects/layon/layon_08.jpg' />
       <TitleBody
         title={
           <>
-            오늘의 나에게 <br />
+            오늘의 나에게 <br className='hidden md:block' />
             가장 어울리는 선택.
           </>
         }
@@ -302,26 +335,36 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <ImageGallery
-        images={['/images/projects/cruise/cruise_2.jpg', '/images/projects/cruise/cruise_2.jpg']}
-        alt='LAY.ON Image Gallery'
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694665?h=3f29f60aef'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
       />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/layon/layon_10.jpg', '/images/projects/layon/layon_11.jpg']}
+          alt='LAY.ON Image Gallery'
+        />
+      </CursorArea>
+
       <MidBody
         align='center'
         content={
           <>
             오늘의 코디와 내 기분에 맞춰 마음에 드는 Face를 끼워보세요. 다양한 스타일의 Face는 내가 어떤 곳에 가든,{' '}
-            <br />
+            <br className='hidden lg:block' />
             무슨 옷을 입고 있든 비전 데이터를 수집할 수 있게 해줍니다.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_12.jpg' />
       <TitleBody
         title={
           <>
-            쓰지 않을 때조차 <br />
+            쓰지 않을 때조차 <br className='hidden md:block' />
             즐거운.
           </>
         }
@@ -333,10 +376,18 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_13.jpg' />
       <Divide title='Our OS' number='06' className='text-[#417EB4]' />
       <LeftTitle text={<>필요한 경험이 먼저 제안되는 새로운 질서</>} />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110694674?h=0d98a04f83'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
+      />
       <MidBody
         align='left'
         content={
@@ -358,7 +409,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_15.webp' />
       <TitleBody
         title={<>트리거가 되는 시선.</>}
         text={
@@ -368,10 +419,13 @@ export default function Page() {
           </>
         }
       />
-      <ImageGallery
-        images={['/images/projects/cruise/cruise_2.jpg', '/images/projects/cruise/cruise_2.jpg']}
-        alt='LAY.ON Image Gallery'
-      />
+      <CursorArea variant='right'>
+        <ImageGallery
+          images={['/images/projects/layon/layon_16.jpg', '/images/projects/layon/layon_17.jpg']}
+          alt='LAY.ON Image Gallery'
+        />
+      </CursorArea>
+
       <RightBody
         text={
           <>
@@ -380,12 +434,11 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_18.jpg' />
       <TitleBody
         title={
           <>
-            가장 필요한 것,
-            <br />그 하나를 위한 선택지.
+            가장 필요한 것, <br className='hidden md:block' />그 하나를 위한 선택지.
           </>
         }
         text={
@@ -395,11 +448,11 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/layon/layon_19.jpg' />
       <TitleBody
         title={
           <>
-            자연스러운, <br />
+            자연스러운, <br className='hidden md:block ' />
             그러나 분명하게.
           </>
         }
@@ -412,8 +465,8 @@ export default function Page() {
         }
       />
       <Divide title='Our Vision' number='07' className='text-[#417EB4]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      {/* 이미지 세트 */}
+      <Image Image={['/images/projects/layon/layon_20.jpg', '/images/projects/layon/layon_21.jpg']} />
 
       <div ref={designedByRef}>
         <Credit
@@ -488,16 +541,16 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'NEWBE',
+            imageUrl: '/images/projects/newbe/newbe_thumbnail_1.jpg',
+            englishName: 'Newbe',
             koreanName: '뉴비',
             linkUrl: '/projects/newbe',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'HOTCAKE',
+            imageUrl: '/images/projects/hotcake/hotcake_thumbnail_1.jpg',
+            englishName: 'Hotcake',
             koreanName: '핫케익',
             linkUrl: '/projects/hotcake',
           }}

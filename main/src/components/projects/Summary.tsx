@@ -1,7 +1,7 @@
 import classNames from "classnames"
 
 interface SummaryProps {
-  title?: string[]
+  title?: React.ReactNode[]
   description?: string | React.ReactNode
   credits?: string
   SVGLogo?: React.ComponentType<{ className?: string }> // 기존 그대로 유지
@@ -31,7 +31,7 @@ export function Summary({
             <img
               src={svgSrc}
               alt=''
-              className={classNames('block w-auto max-w-full overflow-visible', className)}
+              className={classNames('block max-w-full overflow-visible', className)}
               draggable={false}
             />
           ) : SVGLogo ? (

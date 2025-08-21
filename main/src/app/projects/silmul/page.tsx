@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -63,7 +64,7 @@ const thankstoData = [
   },
 
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [{ name: '김현준', englishName: 'Hyeonjun Kim' }],
   },
 ]
@@ -74,12 +75,15 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/silmul/archive/1.jpg',
+      '/images/projects/silmul/archive/2.jpg',
+      '/images/projects/silmul/archive/3.jpg',
+      '/images/projects/silmul/archive/4.jpg',
+      '/images/projects/silmul/archive/5.jpg',
+      '/images/projects/silmul/archive/6.jpg',
+      '/images/projects/silmul/archive/7.jpg',
     ],
+    labels: ['Idea Sketch', 'Ideation', 'Form Study', 'Form Study', 'Prototyping', 'Visual Study', 'Behind'],
   },
 ]
 
@@ -92,6 +96,7 @@ export default function Page() {
   const [currentPoint, setCurrentPoint] = useState(points[0])
 
   const designedByRef = useRef<HTMLDivElement>(null)
+  const delayFor = (i: number, base = 200) => i * base
 
   const inView = useInView(designedByRef, {
     amount: 0.1,
@@ -147,10 +152,17 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Silmul_logo.svg'
-        title={['실물', 'Turning real senses into real objects']}
+        title={[
+          '실물',
+          <>
+            'Turning real senses <br className='block md:hidden' />
+            into real objects'
+          </>,
+        ]}
         description={
           <>
             Silmul은 자신의 실제 감각과 경험을 실물로 구현할 수 있는 새로운 창작 과정을 제안합니다. 나의 감각과 경험이
@@ -159,9 +171,9 @@ export default function Page() {
           </>
         }
         credits='김선일, 현수련, 박세연, 서현빈, 윤현경'
-        className='w-[74px] md:w-[96px] lg:w-[clamp(96px,8.75vw,130px)]'
+        className='w-[74px] md:w-[74px] lg:w-[clamp(96px,8.75vw,130px)]'
       />
-      <MainImage />
+      <Image isFirst Image='/images/projects/silmul/silmul_main.jpg' />
       <Divide title='Background' number='01' className='text-[#E30D2D]' />
       <RightTitleBody
         title='창작을 망설이게 하는 심리적 부담감'
@@ -177,7 +189,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_1.webp' />
       <Divide title='Discover' number='02' className='text-[#E30D2D]' />
       <MidBody
         align='left'
@@ -195,13 +207,13 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_2.webp' />
       <Divide title='Limitation' number='03' className='text-[#E30D2D]' />
       <MidBody align='center' content={<>그러나, 디지털 시대의 창작에 대한 아쉬움의 목소리는 여전히 존재합니다.</>} />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_3.webp' />
       <LeftTitle
         text={
-          <a href='https://bio.link/silmul' className='underline font-semibold' target='_blank'>
+          <a href='https://heyzine.com/flip-book/b1700327c4.html' className='underline font-semibold' target='_blank'>
             ▶︎ A more detailed story of Silmul
           </a>
         }
@@ -211,7 +223,10 @@ export default function Page() {
       <LeftTitle
         text={
           <>
-            Turning real senses into real objects , Silmul <br />
+            Turning real senses
+            <br className='block md:hidden' />
+            into real objects , Silmul
+            <br />
             실감을 실물로 구현하다
           </>
         }
@@ -228,7 +243,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683335?h=f11057a475'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <RightTitleBody
         title='실감을 실물로 구현하는 창작 경험'
         text={
@@ -251,15 +274,23 @@ export default function Page() {
         content={
           <>
             3D 프린터는 근미래에 가정에서도 사용할 수 있을 만큼 발전하고 있지만,
-            <br />
+            <br className='hidden md:block' />
             여전히 가정 환경에서 창작 도구로 활용하기에 형태나 사용 방식은 적합하지 않습니다.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_5.webp' />
       <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683367?h=168d4cbe88'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        loop
+        muted={false}
+      />
+      <Image Image='/images/projects/silmul/silmul_7.jpg' />
       <RightTitleBody
         title='Product, ‘Sense’ ¹'
         text={
@@ -274,18 +305,25 @@ export default function Page() {
       />
       <Divide title='User Scenario' number='07' className='text-[#E30D2D]' />
       <MidTitle align='center' text='Sense: The easiest way to start creating' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683387?h=8e744e1286'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
           <>
             일상에서 마주하는 모든 감각[실감]은 창작의 밑거름이 됩니다.
-            <br />
+            <br className='hidden md:block' />
             Sense를 활용하면 ‘무엇을 어떻게 만들지’ 고민하지 않아도 자연스럽게 창작을 시작할 수 있습니다.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_9.webp' />
       <RightTitleBody
         title={null}
         text={
@@ -296,8 +334,14 @@ export default function Page() {
         }
       />
       <MidTitle align='center' text='Service: Generate experiences through Gen-AI' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683395?h=844ef70dd2'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightTitleBody
         title={null}
         text={
@@ -308,29 +352,75 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683901?h=7e32a7979c'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody align='center' content={<>원하는 결과물이 만들어졌다면, 이제는 진짜 실물로 출력해 보죠!</>} />
-      <MidTitle align='center' text='Realize: From experience to real object' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_12.webp' />
+      <MidTitle
+        align='center'
+        text={
+          <>
+            Realize: From experience
+            {' '}
+            <br className='block md:hidden' />
+            to real object
+          </>
+        }
+        className='text-[#E30D2D]'
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683419?h=ca560c55e3'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683432?h=9ee46753e1'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
           <>
             실물로 출력하기 위해서는 필라멘트와 잉크만 준비하면 됩니다.
-            <br />
+            <br className='hidden md:block' />
             상상 속 이미지가 실물로 구현되는 과정을 지켜보며, 창작의 즐거움에 푹 빠져보세요!
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_15.webp' />
       <Divide title='Extra Value' number='08' className='text-[#E30D2D]' />
+
       <MidTitle
         align='center'
-        text='Tagging: Not the end of making - the beginning of expanding'
+        text={
+          <>
+            Tagging: Not the end of making
+            <br className='block md:hidden' />- the beginning of expanding
+          </>
+        }
         className='text-[#E30D2D]'
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683441?h=cb28511544'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightTitleBody
         title={null}
         text={
@@ -341,7 +431,7 @@ export default function Page() {
         }
       />
       <MidTitle align='center' text='Melting: Sustainable cycle of Silmul' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_17.webp' />
       <MidBody
         align='center'
         content={
@@ -352,9 +442,11 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_18.webp' />
+
+      {/* 하나의 이미지 세트 */}
+      <Image Image={['/images/projects/silmul/silmul_19.jpg', '/images/projects/silmul/silmul_20.jpg']} />
+
       <MidTitle align='center' text='Turning real senses into real objects, Silmul' className='text-[#E30D2D]' />
 
       <div ref={designedByRef}>
@@ -428,16 +520,16 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'Cruise',
+            imageUrl: '/images/projects/cruise/cruise1_thumbnail_1.jpg',
+            englishName: 'CRUISE',
             koreanName: '크루즈',
             linkUrl: '/projects/cruise',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'Potrik',
+            imageUrl: '/images/projects/potrik/potrik_thumbnail_1.jpg',
+            englishName: 'PORTIK',
             koreanName: '포트릭',
             linkUrl: '/projects/potrik',
           }}

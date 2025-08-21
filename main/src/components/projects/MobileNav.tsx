@@ -4,13 +4,15 @@ import { useRouter, usePathname } from 'next/navigation'
 
 interface MovileNavProps {
   isOpen: boolean
-  language: string
+  lang: string
   toggleDropdown: () => void
   selectLanguage: (lang: string) => void
   isDropdownOpen: boolean
 }
 
-export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, isDropdownOpen }: MovileNavProps) {
+type Lang = 'KR' | 'EN'
+
+export function MobileNav({ isOpen, lang, toggleDropdown, selectLanguage, isDropdownOpen }: MovileNavProps) {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const router = useRouter()
   const pathname = usePathname()
@@ -57,7 +59,7 @@ export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, is
               let textColorClass = 'text-zinc-600'
 
               if (isClicked && isCurrentPage) {
-                textColorClass = 'text-[#222222]'
+                textColorClass = 'text-black'
               } else if (isClicked && !isCurrentPage) {
                 textColorClass = 'text-pink-400'
               }
@@ -79,18 +81,18 @@ export function MobileNav({ isOpen, language, toggleDropdown, selectLanguage, is
 
           <div className='relative'>
             <div className='flex flex-row gap-[8px] bg-white leading-10'>
-              {['KR', 'EN'].map((lang) => (
+              {(['KR', 'EN'] as Lang[]).map((l) => (
                 <button
-                  key={lang}
+                  key={l}
                   onClick={(e) => {
                     e.stopPropagation()
-                    selectLanguage(lang)
+                    selectLanguage(l)
                   }}
                   className={`text-left text-3xl font-semibold font-english rounded-md transition-colors ${
-                    language === lang ? 'text-zinc-600' : 'text-stone-300'
+                    lang === l ? 'text-zinc-600' : 'text-stone-300'
                   }`}
                 >
-                  {lang}
+                  {l}
                 </button>
               ))}
             </div>

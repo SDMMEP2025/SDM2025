@@ -4,7 +4,7 @@
 import { Header, Footer, MainImage, Divide, MidBody, CreditThanksTo } from '@/components/projects'
 import { HeaderBody, Credit, SolutionSentence, TitleBody, Image } from '@/components/about'
 import classNames from 'classnames'
-import AboutSection from '@/components/about/AboutSection'
+import AboutSection from '@/components/en/AboutSection'
 
 export default function AboutPage() {
   const thankstoData = [

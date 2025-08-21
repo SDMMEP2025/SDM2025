@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -67,15 +68,16 @@ const thankstoData = [
     ],
   },
   {
-    title: 'Adviser',
+    title: 'Hair Design Advisor',
+    tutors: [{ name: '고병찬', englishName: 'Byungchan Ko' }],
+  },
+  {
+    title: 'Advisor',
     tutors: [
       { name: '김도아', englishName: 'Doa Kim' },
       { name: '박기령', englishName: 'Giryeong Park' },
+      { name: '손건후', englishName: 'Geonhoo Son' },
     ],
-  },
-  {
-    title: 'Hair Design Advisor',
-    tutors: [{ name: '고병찬', englishName: 'Byungchan Ko' }],
   },
 ]
 
@@ -85,11 +87,28 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/newbe/archive/1.jpg',
+      '/images/projects/newbe/archive/2.jpg',
+      '/images/projects/newbe/archive/3.jpg',
+      '/images/projects/newbe/archive/4.jpg',
+      '/images/projects/newbe/archive/5.jpg',
+      '/images/projects/newbe/archive/6.jpg',
+      '/images/projects/newbe/archive/7.jpg',
+      '/images/projects/newbe/archive/8.jpg',
+      '/images/projects/newbe/archive/9.jpg',
+      '/images/projects/newbe/archive/10.jpg',
+    ],
+    labels: [
+      'Experiment',
+      'Experiment',
+      'Form Study',
+      'Advisor Workshop',
+      'Behind',
+      'Experiment',
+      'Experiment',
+      'Behind',
+      'Modeling',
+      'Tutoring'
     ],
   },
 ]
@@ -171,10 +190,18 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/NewBe_logo.svg'
-        title={['뉴비', 'The New Hair Station, Made to Fit You']}
+        title={[
+          '뉴비',
+          <>
+            The New Hair Station,
+            <br />
+            Made to Fit You
+          </>,
+        ]}
         description={
           <>
             NewBe는 머무르는 순간 자연스럽게 시작되는 나만의 새로운 헤어 스타일링 스테이션입니다. 스타일링이 필요한
@@ -183,15 +210,14 @@ export default function Page() {
           </>
         }
         credits='이채원, 윤예현, 강동헌, 김시우, 정채영'
-        className='w-[142px] md:w-[196px] lg:w-[clamp(196px,21.3vw,308px)]'
+        className='w-[142px] md:w-[142px] lg:w-[clamp(196px,21.3vw,308px)]'
       />
-      <MainImage />
-      <Divide title='Background' number='01' className='text-[#7C8A8D]'/>
+      <Image isFirst Image='/images/projects/newbe/newbe_main.jpg' />
+      <Divide title='Background' number='01' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
-            헤어 스타일링이
-            <br />
+            헤어 스타일링이 <br className='hidden md:block' />
             필요한 순간, 지금 NOW
           </>
         }
@@ -204,8 +230,8 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Target' number='02' className='text-[#7C8A8D]'/>
+      <Image Image='/images/projects/newbe/newbe_1.webp' />
+      <Divide title='Target' number='02' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
@@ -221,7 +247,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_2.jpg' />
       <RightBody
         text={
           <>
@@ -230,12 +256,11 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Problem' number='03' className='text-[#7C8A8D]'/>
+      <Divide title='Problem' number='03' className='text-[#7C8A8D]' />
       <TitleBody
         title={
           <>
-            숙련도에 갇힌
-            <br />
+            숙련도에 갇힌 <br className='hidden md:block' />
             헤어 스타일링 경험
           </>
         }
@@ -247,7 +272,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_3.webp' />
       <RightBody
         text={
           <>
@@ -256,7 +281,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_4.jpg' />
       <MidBody
         align='center'
         content={
@@ -276,13 +301,21 @@ export default function Page() {
           </>
         }
       />
-      <Divide title='Solution' number='04' className='text-[#7C8A8D]'/>
+      <Divide title='Solution' number='04' className='text-[#7C8A8D]' />
       <MidTitle align='center' text='머무름 자체가 곧 스타일링이 되는 NewBe' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696517?h=428d2ad897'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        muted={false}
+        loop
+      />
       <TitleBody
         title={
           <>
-            나만의 새로운 <br />
+            나만의 새로운 <br className='hidden md:block' />
             헤어 스타일링 스테이션
           </>
         }
@@ -294,13 +327,13 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_6.jpg' />
       <MidTitle align='center' text='#0 Meet My Hair Combo' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_7.jpg' />
       <TitleBody
         title={
           <>
-            New-Know Catching <br />: 나를 가장 잘 아는 콤보
+            New-Know Catching <br />: 나를 잘 아는 콤보
           </>
         }
         text={
@@ -311,14 +344,20 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Scenario' number='05' className='text-[#7C8A8D]'/>
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696594?h=7ba0530ce0'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <Divide title='Scenario' number='05' className='text-[#7C8A8D]' />
       <MidTitle align='center' padding={false} text='#1 How to Use NewBe' />
       <TitleBody
         title={
           <>
-            나만의 헤어 스타일링
-            <br />
+            나만의 헤어 스타일링 <br className='hidden md:block' />
             생성하기
           </>
         }
@@ -330,7 +369,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696620?h=812fda0809'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightBody
         text={
           <>
@@ -339,12 +385,18 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696638?h=16e5dc3df6'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <TitleBody
         title={
           <>
-            내가 머무는 곳이
-            <br />곧 스타일링
+            내가 머무는 곳이 <br className='hidden md:block' />곧 스타일링
           </>
         }
         text={
@@ -355,7 +407,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_11.webp' />
       <MidBody
         align='center'
         content={
@@ -374,7 +426,14 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696671?h=aaf756f866'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
@@ -385,12 +444,19 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696722?h=023bb05217'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidTitle align='center' padding={false} text='#2 우리의 New-Ing이 계속 즐거울 수 있게' />
       <TitleBody
         title={
           <>
-            NewBe는 언제든 <br />내 머리에 Fit하니까
+            NewBe는 언제든 <br className='hidden md:block' />내 머리에 Fit하니까
           </>
         }
         text={
@@ -400,7 +466,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_14.jpg' />
       <TitleBody
         title={
           <>
@@ -416,12 +482,19 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696762?h=801d824d82'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidTitle align='center' padding={false} text='#3 확장되는 우리의 헤어 스타일링 씬' />
       <TitleBody
         title={
           <>
-            그 머리, 이제 <br />내 머리에도 New Me
+            그 머리, 이제 <br className='hidden md:block' />내 머리에도 New Me
           </>
         }
         text={
@@ -434,8 +507,15 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Divide title='Expectation' number='06' className='text-[#7C8A8D]'/>
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110696762?h=801d824d82'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <Divide title='Expectation' number='06' className='text-[#7C8A8D]' />
       <MidTitle
         align='center'
         text={
@@ -445,7 +525,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_17.webp' />
       <MidBody
         align='center'
         content={
@@ -456,7 +536,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_18.webp' />
       <MidBody
         align='center'
         content={
@@ -466,7 +546,7 @@ export default function Page() {
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/newbe/newbe_19.jpg' />
 
       <div ref={designedByRef}>
         <Credit
@@ -539,16 +619,16 @@ export default function Page() {
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'Potrik',
+            imageUrl: '/images/projects/potrik/potrik_thumbnail_1.jpg',
+            englishName: 'PORTIK',
             koreanName: '포트릭',
             linkUrl: '/projects/potrik',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'Lay.On',
+            imageUrl: '/images/projects/layon/layon_thumbnail_1.jpg',
+            englishName: 'LAY.ON',
             koreanName: '레이온',
             linkUrl: '/projects/layon',
           }}

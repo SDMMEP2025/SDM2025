@@ -22,6 +22,7 @@ import {
   ArchivePoint,
   ArchiveImage,
   Image,
+  Blank,
 } from '@/components/projects'
 import { useScrollAtBottom } from '@/hooks'
 import { AnimatePresence } from 'framer-motion'
@@ -63,7 +64,7 @@ const thankstoData = [
   },
 
   {
-    title: 'Adviser',
+    title: 'Advisor',
     tutors: [{ name: '김현준', englishName: 'Hyeonjun Kim' }],
   },
 ]
@@ -74,12 +75,15 @@ const points = [
     top: '50%',
     left: '50%',
     images: [
-      '/images/archive-process-1.png',
-      '/images/archive-process-2.png',
-      '/images/archive-process-3.png',
-      '/images/archive-process-4.png',
-      '/images/archive-process-5.png',
+      '/images/projects/silmul/archive/1.jpg',
+      '/images/projects/silmul/archive/2.jpg',
+      '/images/projects/silmul/archive/3.jpg',
+      '/images/projects/silmul/archive/4.jpg',
+      '/images/projects/silmul/archive/5.jpg',
+      '/images/projects/silmul/archive/6.jpg',
+      '/images/projects/silmul/archive/7.jpg',
     ],
+    labels: ['Idea Sketch', 'Ideation', 'Form Study', 'Form Study', 'Prototyping', 'Visual Study', 'Behind'],
   },
 ]
 
@@ -93,17 +97,12 @@ export default function Page() {
 
   const designedByRef = useRef<HTMLDivElement>(null)
 
-  const inView = useInView(designedByRef, {
-    amount: 0.1,
-    once: false,
-  })
+  const inView = useInView(designedByRef, { amount: 0.1, once: false })
 
   useEffect(() => {
-    if (inView) {
-      setIsSidebarShown(false)
-      setIsSidebarShown(true)
-    }
-  }, [inView, setIsSidebarShown])
+    // Fix: show sidebar unless the credit section is in view
+    setIsSidebarShown(!inView)
+  }, [inView])
 
   useEffect(() => {
     const checkDeviceType = () => {
@@ -111,10 +110,8 @@ export default function Page() {
       setIsMobile(width < 768)
       setIsTablet(width >= 768 && width < 1440)
     }
-
     checkDeviceType()
     window.addEventListener('resize', checkDeviceType)
-
     return () => {
       window.removeEventListener('resize', checkDeviceType)
     }
@@ -123,17 +120,10 @@ export default function Page() {
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       if (isMobile || isTablet) return
-
-      const windowWidth = window.innerWidth
-      const mouseX = event.clientX
-
-      const rightThirdThreshold = windowWidth * (2 / 3)
-
-      setIsMouseInRightThird(mouseX >= rightThirdThreshold)
+      const rightThirdThreshold = window.innerWidth * (2 / 3)
+      setIsMouseInRightThird(event.clientX >= rightThirdThreshold)
     }
-
     window.addEventListener('mousemove', handleMouseMove)
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
@@ -147,69 +137,87 @@ export default function Page() {
 
   return (
     <>
+      <Blank />
       <Header />
       <Summary
         svgSrc='/images/logo/Silmul_logo.svg'
-        title={['Silmul', 'Turning real senses into real objects']}
+        title={[
+          'Silmul',
+          <>
+            'Turning real senses <br className='block md:hidden' />
+            into real objects'
+          </>,
+        ]}
         description={
           <>
             Enjoy a new way to create. Turn your senses and experiences into physical products. If you could touch your
-            senses and experiences, creating would not be difficult anymore.<br></br>Turning real senses into real
-            objects, SILMUL
+            senses and experiences, creating would not be difficult anymore.
+            <br />
+            Turning real senses into real objects, SILMUL.
           </>
         }
         credits='Sunil Kim, Suryun Hyeon, Seyeon Park, Hyunbin Seo, Hyeongyeong Yun'
-        className='w-[74px] md:w-[96px] lg:w-[clamp(96px,8.75vw,130px)]'
+        className='w-[74px] md:w-[74px] lg:w-[clamp(96px,8.75vw,130px)]'
       />
-      <MainImage />
+      <MainImage Image='/images/projects/silmul/silmul_main.jpg' />
+
       <Divide title='Background' number='01' className='text-[#E30D2D]' />
       <RightTitleBody
         title='Psychological pressure blocks creativity'
         text={
           <>
-            Everyone has the desire to create. <br />
+            Everyone has the desire to create.
             <br />
-            But many believe that creativity is reserved for the talented, making it hard to take the first step. <br />
+            <br />
+            But many believe that creativity is reserved for the talented, making it hard to take the first step.
+            <br />
             <br />
             Because we see creating as something extraordinary—an act of making something out of nothing.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_1.webp' />
+
       <Divide title='Discover' number='02' className='text-[#E30D2D]' />
       <MidBody
         align='left'
         content={
           <>
-            Is creating really about making something out of nothing? No, creation is about evolving something into
-            something else—like a reflection of your hidden experiences.
+            Is creating really about making something out of nothing? No. Creation evolves what already exists—the sum
+            of our senses and experiences—into new forms.
             <br />
             <br />
-            Most creations do not begin on a blank page. Look at how AI generates images today—it's clear: creativity
-            flows from what already exists. <br />
-            <br /> And as these tools evolve, the barriers to creating are fading.
+            Most creations don’t begin on a blank page. As seen in today’s AI workflows, creativity clearly flows from
+            existing contexts and memories.
+            <br />
+            <br /> And as tools evolve, the barriers to creating continue to fade.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_2.webp' />
+
       <Divide title='Limitation' number='03' className='text-[#E30D2D]' />
-      <MidBody
-        align='center'
-        content={<>However, there's still something missing when it comes to creativity in the digital era.</>}
-      />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidBody align='center' content={<>Still, something is missing in the digital era of creativity.</>} />
+      <Image Image='/images/projects/silmul/silmul_3.webp' />
+
       <LeftTitle
         text={
-          <a href='https://bio.link/silmul' className='underline text-[#E30D2D] font-semibold' target='_blank'>
+          <a
+            href='https://heyzine.com/flip-book/b1700327c4.html'
+            className='underline text-[#E30D2D] font-semibold'
+            target='_blank'
+          >
             ▶︎ A more detailed story of Silmul
           </a>
         }
       />
+
       <Divide title='Concept' number='04' className='text-[#E30D2D]' />
       <LeftTitle
         text={
           <>
-            Turning real senses into real objects , Silmul <br />
+            Turning real senses into real objects, Silmul
+            <br />
             Bring your senses to life.
           </>
         }
@@ -222,11 +230,19 @@ export default function Page() {
           <>
             Silgam ¹ : All the senses, memories, and preferences that make up your personal experience.
             <br />
-            Silmul ² : The act of shaping scattered experiences into tangible forms you can see and touch.
+            Silmul ² : Shaping scattered experiences into tangible forms you can see and touch.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683335?h=f11057a475'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+
       <RightTitleBody
         title='A creative journey from sensation to reality'
         text={
@@ -234,130 +250,198 @@ export default function Page() {
             Silmul is a new tool that brings the sensory experience of creation to life.
             <br />
             <br />
-            Bring your creations into the real world — touch, interact with, and experience them more directly than ever
-            before.
+            Bring your creations into the real world—touch, interact with, and experience them directly.
             <br />
             <br />
-            To make this possible, Silmul combines generative Artificial Intelligence with 3D printing technology.
+            To make this possible, Silmul combines Generative AI with 3D printing technology.
           </>
         }
       />
+
       <Divide title='Technical problem' number='05' className='text-[#E30D2D]' />
       <MidBody
         align='center'
         content={
           <>
-            3D printers are becoming more common at home,
-            <br />
-            but their design and how they work still aren’t suitable for everyday use.
+            3D printers are evolving toward home use,
+            <br className='hidden md:block' />
+            but their forms and usage still aren’t friendly as everyday creative tools.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_5.webp' />
+
       <Divide title='New Creation Paradigm' number='06' className='text-[#E30D2D]' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683367?h=168d4cbe88'
+        preloadDelayMs={0}
+        hasAudio={true}
+        prewarm
+        loop
+        muted={false}
+      />
+      <Image Image='/images/projects/silmul/silmul_7.jpg' />
+
       <RightTitleBody
-        title='Product, ‘Sense’ ¹'
+        title='Product, “Sense” ¹'
         text={
           <>
-            Use simple gestures to check the size and sync color, shape, and other details seamlessly into digital data.
+            Check dimensions with gestures in real space and seamlessly link elements—color, shape, and more—into
+            digital data.
           </>
         }
       />
-      <RightTitleBody
-        title='Product, ‘Realize’ ²'
-        text={<>Bring your creation to life—print a object that you can touch and feel.</>}
-      />
+      <RightTitleBody title='Product, “Realize” ²' text={<>Print the tangible object you can hold and feel.</>} />
+
       <Divide title='User Scenario' number='07' className='text-[#E30D2D]' />
       <MidTitle align='center' className='text-[#E30D2D]' text='Sense: The easiest way to start creating' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683387?h=8e744e1286'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
           <>
-            Every sensation sparks creativity in daily life.
-            <br />
-            With Sense, you can start creating without worrying about how to make it.
+            Every sensation in daily life becomes the seed of creativity.
+            <br className='hidden md:block' />
+            With Sense, you can start creating naturally—without worrying about “what” or “how.”
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_9.webp' />
       <RightTitleBody
         title={null}
         text={
           <>
-            Measure sizes easily with a simple gesture. It used to be hard to measure. Plus, you can instantly bring
-            vibrant colors and shapes to life. No extra tools required.
+            With Sense, even tricky dimensions are easy with a single gesture. Colors and shapes you encounter every day
+            can be captured and used instantly—no extra devices needed.
           </>
         }
       />
-      <MidTitle align='center' className='text-[#E30D2D]' text='Service: Generate experiences through Gen-AI' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <RightTitleBody
-        title={null}
-        text={
-          <>
-            Feelings and experiences are invisible. But with Sense, you can turn them into data and connect seamlessly
-            to the Silmul App. Gather the fragments of your senses and experiences, and use generative AI to create
-            images of the physical objects you want to make. This way, you craft a truly unique creation, shaped
-            entirely by your own experience.
-          </>
-        }
-      />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <MidBody align='center' content={<>Now, bring your design to life by turning it into a real object.</>} />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
 
-      <MidTitle align='center' className='text-[#E30D2D]' text='Realize: From experience to real object' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MidTitle align='center' className='text-[#E30D2D]' text='Service: Generate experiences through Gen-AI' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683395?h=844ef70dd2'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <RightTitleBody
+        title={null}
+        text={
+          <>
+            Feelings and experiences are invisible. Sense turns them into data and syncs with the Silmul App. Combine
+            the fragments of your senses and generate the image of the object you want with Gen-AI—creating a
+            one-of-a-kind result, born from your own experiences.
+          </>
+        }
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683901?h=7e32a7979c'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <MidBody align='center' content={<>Got it? Now, let’s make it real.</>} />
+      <Image Image='/images/projects/silmul/silmul_12.webp' />
+
+      <MidTitle
+        align='center'
+        className='text-[#E30D2D]'
+        text={[
+          <>
+            Realize: From experience
+            {' '}
+            <br className='block md:hidden' />
+            to real object
+          </>,
+        ]}
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683419?h=ca560c55e3'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683432?h=9ee46753e1'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <MidBody
         align='center'
         content={
           <>
-            To print real objects, all you need is filament and ink.
-            <br />
-            Enjoy the process of turning your ideas into physical form and bringing your imagination to life.
+            All you need to print is filament and ink.
+            <br className='hidden md:block' />
+            Watch your imagination take physical form—and enjoy the joy of making.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_15.webp' />
+
       <Divide title='Extra Value' number='08' className='text-[#E30D2D]' />
       <MidTitle
         align='center'
         className='text-[#E30D2D]'
-        text='Tagging: Not the end of making - the beginning of expanding'
+        text={[
+          <>
+            Tagging: Not the end of making
+            <br className='block md:hidden' />- the beginning of expanding
+          </>,
+        ]}
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <MediaContainer
+        type='video'
+        src='https://player.vimeo.com/video/1110683441?h=cb28511544'
+        preloadDelayMs={0}
+        prewarm
+        muted
+        loop
+      />
       <RightTitleBody
         title={null}
         text={
           <>
-            Each printed piece is marked with a tag you can scan to see memories and experiences from your creative
-            work. New experiences are added in real time as you use the tagging system. It means your creative
-            experience can keep expanding.
+            A tag is embedded into each print. Scan it to relive memories and process from creation. You can keep adding
+            new experiences as you use the object—the creative journey keeps expanding.
           </>
         }
       />
+
       <MidTitle align='center' className='text-[#E30D2D]' text='Melting: Sustainable cycle of Silmul' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_17.webp' />
       <MidBody
         align='center'
         content={
           <>
-            Do you feel tired of your objects?
+            Done with an object—or tastes have changed?
             <br />
-            Try the Melting System: melt them down and recycle into eco-friendly filament.
+            Use the Melting System to recycle it into eco-friendly filament.
             <br />
             That’s sustainable creativity.
           </>
         }
       />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
-      <Image Image='/images/projects/cruise/cruise_2.jpg' />
+      <Image Image='/images/projects/silmul/silmul_18.webp' />
+
+      <Image Image={['/images/projects/silmul/silmul_19.jpg', '/images/projects/silmul/silmul_20.jpg']} />
+
       <MidTitle align='center' className='text-[#E30D2D]' text='Turning real senses into real objects, Silmul' />
 
       <div ref={designedByRef}>
@@ -423,28 +507,31 @@ export default function Page() {
         />
         <CreditTutor title='Tutor' sections={tutorData} />
         <CreditThanksTo title='Thanks to' sections={thankstoData} />
+
         <MobileNavigation
           previousItem={{ label: 'Previous', url: '/en/projects/cruise' }}
           nextItem={{ label: 'Next', url: '/en/projects/potrik' }}
         />
+
         <ProjectNavigation
           leftProject={{
             id: '1',
             title: 'Left Project',
-            imageUrl: '/images/previous_image.png',
-            englishName: 'Cruise',
+            imageUrl: '/images/projects/cruise/cruise1_thumbnail_1.jpg',
+            englishName: 'CRUISE',
             koreanName: '크루즈',
             linkUrl: '/en/projects/cruise',
           }}
           rightProject={{
             id: '2',
             title: 'Right Project',
-            imageUrl: '/images/next_image.png',
-            englishName: 'Potrik',
+            imageUrl: '/images/projects/potrik/potrik_thumbnail_1.jpg',
+            englishName: 'POTRIK',
             koreanName: '포트릭',
             linkUrl: '/en/projects/potrik',
           }}
         />
+
         <AnimatePresence>
           {shouldShowSidebar && (
             <ArchiveSidebar

@@ -30,15 +30,13 @@ export async function POST(request: NextRequest) {
               type: 'text',
               text: `
               You are an image caption generator.
-              
-1. Analyze the provided image.
-2. If you cannot understand or analyze the image content, respond exactly with: "ERROR: Analysis failed".
-3. If you can analyze it, write ONE short, emotional, and personal text in English.
-4. The text must:
-    - Fit the theme: "The moment that moves me"
-    - Must Be under 12 English characters (including spaces and punctuation)
-    - Written in adjective phrase form
-5. Output ONLY the text. Do not explain.
+              1. Analyze the provided image.
+              2. If you cannot understand or analyze the image content, respond exactly with: "ERROR: Analysis failed".
+              3. If you can analyze it, write ONE short, emotional, and personal text in English.
+              4. The text must:
+                  - Fit the theme: "Express the image poetically but intuitively"
+                  - Must Be under 30 English characters (including spaces and punctuation, this is really important)
+              5. Output ONLY the text. Do not explain.
               `,
             },
             {

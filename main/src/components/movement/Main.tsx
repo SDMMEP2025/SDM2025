@@ -26,9 +26,9 @@ export function Main({ onUpload, className = '' }: MainProps) {
 
   const REPEAT = 5
   const bg_src = {
-    pc: 'images/movement/main_pc.svg',
-    tab: 'images/movement/main_tab.svg',
-    mo: 'images/movement/main_mo.svg',
+    pc: '/images/movement/main_pc.svg',
+    tab: '/images/movement/main_tab.svg',
+    mo: '/images/movement/main_mo.svg',
   }
 
   return (
@@ -131,8 +131,10 @@ export function Main({ onUpload, className = '' }: MainProps) {
         )}
       >
         <div
+          style={{ isolation: 'isolate' }}
           className={classNames(
-            'text-center text-gray-200 font-medium capitalize mix-blend-difference',
+            'text-center font-medium transform-gpu',
+            'text-gray-200 mix-blend-difference',
             //mobile
             'text-[14px] leading-[100%] letterSpacing-[-0.28px]',
             // tablet
@@ -146,7 +148,6 @@ export function Main({ onUpload, className = '' }: MainProps) {
           *업로드한 이미지는 데이터에 저장되지 않습니다
         </div>
         <button
-          style={{ isolation: 'isolate' /* 새로운 레이어 생성 */ }}
           onClick={handleUploadClick}
           className={classNames(
             'bg-neutral-800 rounded-[100px] inline-flex justify-center items-center gap-[5.11px] overflow-hidden transition-all duration-200 hover:bg-neutral-700',
