@@ -112,10 +112,10 @@ export default function FloatingConcentricSquares({
     const updateScale = () => {
       if (!containerRef.current?.parentElement) return
       const p = containerRef.current.parentElement.getBoundingClientRect()
-      const wScale = (p.width * 0.85) / BASE_W
+      const wScale = (p.width * 0.8) / BASE_W
       const hScale = (p.height * 0.65) / BASE_H
-      const s = Math.min(wScale, hScale, 2)
-      setScale(Math.max(0.3, s))
+      const s = Math.min(wScale, hScale, 1.5)
+      setScale(Math.max(0.4, s))
     }
     let ro: ResizeObserver | null = null
     if (containerRef.current?.parentElement) {

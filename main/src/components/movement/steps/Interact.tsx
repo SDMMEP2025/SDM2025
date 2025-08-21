@@ -50,14 +50,8 @@ export function InteractMotionControlPanel({
   onMotionParamsChange: (p: InteractMotionParams) => void
 }) {
   return (
-    <div className="fixed right-4 bottom-4 z-[200]">
-      <button
-        className="px-3 py-2 rounded-full bg-black text-white"
-        onClick={onToggle}
-      >
-        {isVisible ? 'Hide Motion' : 'Show Motion'}
-      </button>
-    </div>
+    <>
+    </>
   )
 }
 
@@ -139,7 +133,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
     axisLock: 'dominant',       // ← 축 고정 기본값
     axisLockThreshold: 0.1,     // ← 우세 축 전환 히스테리시스
   })
-  const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(false)
+  const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(true)
 
   // 로딩 타이머
   useEffect(() => {
@@ -311,7 +305,6 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
               'font-medium text-black text-[18px] z-[40] md:text-[17px] md-landscape:text-[24px] lg:text-[28px] leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
             )}
           >
-            <p className="block md:hidden break-keep z-[40]">{refinedColorName}</p>
             <p className="hidden md:block break-keep z-[40]">{text}</p>
           </motion.div>
 
@@ -323,8 +316,6 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
               'font-medium text-black text-[18px] md:text-[17px] md-landscape:text-[24px] lg:text-[28px]  leading-[1.3] md:leading-[1.5] md-landscape:leading-[1.2] lg:leading-[1.2] mix-blend-difference',
             )}
           >
-            <div className="block md:hidden">Rgb</div>
-            <div className="block md:hidden">{hexToRgb(refinedColorHex).replace('rgb(', '').replace(')', '')}</div>
             <div className="hidden md:block whitespace-nowrap">{refinedColorName}</div>
             <div className="hidden md:block whitespace-nowrap">{hexToRgb(refinedColorHex)}</div>
           </motion.div>
@@ -357,7 +348,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: isLoadingDone ? 1 : 0 }} exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className={classNames('absolute flex bottom-[14.3%] left-1/2 transform -translate-x-1/2', 'gap-4 md:gap-4 lg:gap-4 2xl:gap-5')}
+        className={classNames('absolute flex bottom-[10.3%] lg:bottom-[14.3%] left-1/2 transform -translate-x-1/2', 'gap-4 md:gap-4 lg:gap-4 2xl:gap-5')}
       >
         <motion.button
           type="button"
