@@ -204,7 +204,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110984418?h=fa502d17c2'
+        src='https://player.vimeo.com/video/1111960931?h=fb09eea3c1'
         preloadDelayMs={0}
         prewarm
         muted
@@ -218,7 +218,7 @@ export default function Page() {
       <Divide number='02' title='Target' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110984446?h=68d550246a'
+        src='https://player.vimeo.com/video/1111960960?h=2da6c4cc3b'
         preloadDelayMs={0}
         prewarm
         muted
@@ -302,7 +302,7 @@ export default function Page() {
       <Divide number='07' title='Scenario' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680696?h=deddf9c47a'
+        src='https://player.vimeo.com/video/11111960980?h=0a89930560'
         preloadDelayMs={0}
         hasAudio={true}
         prewarm
@@ -322,7 +322,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680719?h=578ca2f36a'
+        src='https://player.vimeo.com/video/1111961087?h=404534867b'
         preloadDelayMs={0}
         prewarm
         loop
@@ -339,7 +339,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680726?h=34144850a1'
+        src='https://player.vimeo.com/video/1111961101?h=51e370ec6f'
         preloadDelayMs={0}
         prewarm
         loop
@@ -347,7 +347,7 @@ export default function Page() {
       <RightBody text='사용자의 시간, 위치, 습관을 인식해 상황에 맞춰 최적화된 기능 모음이 자동으로 구성됩니다. 중복된 앱 탐색 없이, 지금 필요한 기능 모음이 한 화면에서 곧바로 열리며 복잡한 탐색 없이 곧바로 원하는 결과에 도달할 수 있습니다.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680730?h=e5b347252a'
+        src='https://player.vimeo.com/video/1111961127?h=17bef297fd'
         preloadDelayMs={0}
         prewarm
         loop
@@ -364,7 +364,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680738?h=3a7f1783f6'
+        src='https://player.vimeo.com/video/1111961150?h=3b51cb2e6b'
         preloadDelayMs={0}
         prewarm
         loop
@@ -372,7 +372,7 @@ export default function Page() {
       <RightBody text='조작 과정에서의 방해나 몰입을 끊는 요소 없이 모바일 경험이 하나의 흐름으로 이어집니다. 계층 구조를 오르내리거나 분절된 단계를 거치지 않고, 앱을 전환하거나 메뉴를 헤맬 필요가 없습니다. 여러 앱을 거치지 않고 필요한 과정을 한 화면에서 연속적으로 해결할 수 있죠.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680745?h=4bc8cbf305'
+        src='https://player.vimeo.com/video/1111961177?h=511535a925'
         preloadDelayMs={0}
         prewarm
         loop
@@ -383,7 +383,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680752?h=4ce0509902'
+        src='https://player.vimeo.com/video/1111961206?h=239374371b'
         preloadDelayMs={0}
         prewarm
         loop
@@ -391,7 +391,7 @@ export default function Page() {
       <RightBody text='사용자의 손 위치, 습관, 인터랙션 패턴을 바탕으로 필요한 컨트롤러를 재구성해, 사용자는 최소한의 동작으로 원하는 액션에 바로 접근할 수 있습니다.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680764?h=b30313eef1'
+        src='https://player.vimeo.com/video/1111961222?h=15b2af81c7'
         preloadDelayMs={0}
         prewarm
         loop

@@ -186,7 +186,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110984418?h=fa502d17c2'
+        src='https://player.vimeo.com/video/1111960931?h=fb09eea3c1'
         preloadDelayMs={0}
         prewarm
         muted
@@ -198,7 +198,7 @@ export default function Page() {
       <Divide number='02' title='Target' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110984446?h=68d550246a'
+        src='https://player.vimeo.com/video/1111960960h=2da6c4cc3b'
         preloadDelayMs={0}
         prewarm
         muted
@@ -280,7 +280,7 @@ export default function Page() {
       <Divide number='07' title='Scenario' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680696?h=deddf9c47a'
+        src='https://player.vimeo.com/video/1111960980?h=0a89930560'
         preloadDelayMs={0}
         hasAudio={true}
         prewarm
@@ -293,7 +293,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680719?h=578ca2f36a'
+        src='https://player.vimeo.com/video/1111961087?h=404534867b'
         preloadDelayMs={0}
         prewarm
         loop
@@ -306,7 +306,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680726?h=34144850a1'
+        src='https://player.vimeo.com/video/1111961101?h=51e370ec6f'
         preloadDelayMs={0}
         prewarm
         loop
@@ -314,7 +314,7 @@ export default function Page() {
       <RightBody text='By recognizing your time, location, and habits, Merlin automatically assembles the right tools. No redundant app hopping—what you need opens together on one screen.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680730?h=e5b347252a'
+        src='https://player.vimeo.com/video/1111961127?h=17bef297fd'
         preloadDelayMs={0}
         prewarm
         loop
@@ -327,7 +327,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680738?h=3a7f1783f6'
+        src='https://player.vimeo.com/video/11111961150?h=3b51cb2e6b'
         preloadDelayMs={0}
         prewarm
         loop
@@ -335,7 +335,7 @@ export default function Page() {
       <RightBody text='No laddering through hierarchies or switching between containers. The entire process happens in sequence on one screen—frictionless, distraction-free.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680745?h=4bc8cbf305'
+        src='https://player.vimeo.com/video/1111961177?h=511535a925'
         preloadDelayMs={0}
         prewarm
         loop
@@ -348,7 +348,7 @@ export default function Page() {
       />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680752?h=4ce0509902'
+        src='https://player.vimeo.com/video/1111961206?h=239374371b'
         preloadDelayMs={0}
         prewarm
         loop
@@ -356,7 +356,7 @@ export default function Page() {
       <RightBody text='Controls recompose around your hand position, habits, and patterns—so you reach intended actions with minimal movement.' />
       <MediaContainer
         type='video'
-        src='https://player.vimeo.com/video/1110680764?h=b30313eef1'
+        src='https://player.vimeo.com/video/1111961222?h=15b2af81c7'
         preloadDelayMs={0}
         prewarm
         loop
