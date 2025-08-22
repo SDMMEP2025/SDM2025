@@ -8,7 +8,7 @@ const TAB_W = 54
 const HIDDEN_OFFSET = PANEL_W - TAB_W
 
 const CUT_TOP_DESKTOP = 65
-const CUT_TOP_MOBILE = 58
+const CUT_TOP_MOBILE = 48
 
 interface ArchiveSidebarProps {
   isVisible?: boolean
@@ -66,7 +66,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
           }}
           exit={{ opacity: 0, x: HIDDEN_OFFSET }}
           transition={{ duration: 0.3 }}
-          className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[10] `}
+          className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[20] `}
         >
           <div className='w-[396px] h-full flex flex-row items-start '>
             <div
@@ -116,11 +116,11 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
         animate={!isVisible ? 'hidden' : isExpanded ? 'open' : 'collapsed'}
         variants={{
           hidden: { y: '100%', opacity: 0 },
-          collapsed: { y: `calc(100% - ${CUT_TOP_MOBILE}px)`, opacity: 1 },
-          open: { y: '0%', opacity: 1 },
+          collapsed: { y: `calc(100dvh - ${CUT_TOP_MOBILE}px)`, opacity: 1 },
+          open: { y: CUT_TOP_MOBILE * 1, opacity: 1 }, // ← 여기 수정
         }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
-        className='md:hidden fixed bottom-0 left-0 right-0 z-[10] w-full backdrop-blur-md '
+        className='md:hidden fixed bottom-0 left-0 right-0 z-[10] w-full backdrop-blur-md'
       >
         <div
           onClick={() => setIsExpanded(!isExpanded)}
@@ -267,7 +267,7 @@ const HoverImageCard = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className='pointer-events-none absolute inset-0 z-20 mix-blend-difference'
+              className='pointer-events-none absolute inset-0 z-[20] mix-blend-difference'
             >
               <div
                 className={['absolute top-3 flex flex-row items-center gap-2', isEven ? 'left-3' : 'right-3'].join(' ')}
