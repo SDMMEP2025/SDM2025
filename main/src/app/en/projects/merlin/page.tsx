@@ -150,7 +150,7 @@ export default function Page() {
       <Blank />
       <Header />
       <Summary
-        svgSrc='/images/logo/Merlin_logo.svg'
+        svgSrc='/images/logo/Merlin_logo1.svg'
         className='w-[150px] md:w-[150px] lg:w-[clamp(150px,20vw,200px)]'
         title={[
           'Merlin',

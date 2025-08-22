@@ -177,7 +177,7 @@ export default function Page() {
       <Blank />
       <Header />
       <Summary
-        svgSrc='/images/logo/Merlin_logo.svg'
+        svgSrc='/images/logo/Merlin_logo1.svg'
         className='w-[150px] md:w-[150px] lg:w-[clamp(150px,20vw,200px)]'
         title={['멀린', 'Into Your Flow, Merlin OS']}
         description='Merlin OS는 앱 전환과 복잡한 탐색을 줄여 사용자가 빠르게 목표에 도달하도록 돕는 흐름 중심 운영체제입니다. 사용자 상황을 실시간으로 인식하고, 여러 앱에 흩어진 기능을 하나의 흐름으로 연결해 기존의 정적이고 앱 중심적인 UI를 넘어 보다 유연하게 몰입하는 경험을 제공합니다. 흐름을 조율하는 새로운 운영체제, Merlin과 함께 미래의 디지털 여정을 시작해보세요.'

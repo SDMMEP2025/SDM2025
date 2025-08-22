@@ -388,7 +388,7 @@ export default function AboutSection({ embedded = false }: Props) {
         ]}
       />
       <CreditThanksTo title='Thanks to' sections={thankstoData} />
-      <FooterDocked />
+      {/* <FooterDocked /> */}
     </>
   )
 }

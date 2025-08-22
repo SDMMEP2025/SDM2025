@@ -30,7 +30,7 @@ export function MobileNav({ isOpen, lang, toggleDropdown, selectLanguage, isDrop
       animate={{ x: 0 }}
       exit={{ x: '100%' }}
       transition={{ type: 'tween', duration: 0.4 }}
-      className='fixed inset-0 z-[60] bg-white overflow-y-auto pl-[20px] pr-[16px] py-3 md:py-4 md:px-[40px]'
+      className='fixed inset-0 z-[40] bg-white overflow-y-auto pl-[20px] pr-[16px] py-3 md:py-4 md:px-[40px]'
     >
       <div className='flex flex-col gap-[64px]'>
         <div className='flex justify-end'>
