@@ -144,11 +144,19 @@ export default function AboutSection({ embedded = false }: Props) {
       />
       <Divide title='Archive' number='02' />
       <TitleBody
-        title={'Archive\nMovement'}
+        title={
+          <>
+          Archive
+          {' '}
+            <br className='hidden md:block'/>
+          Movement
+          </>
+        }
         text={
           '전시 준비 과정에서 움직임의 궤적을 놓치지 않기 위해, 형성의 과정에서 만들어진 사진과 영상을 아카이빙합니다. 수많은 시도와 탐색의 과정은 물론, 멈칫하거나 전환되는 순간의 과정까지 움직임의 일부로 포착합니다.'
         }
       />
+
       {isPhone && (
         <MediaContainer
           type='video'
@@ -199,8 +207,15 @@ export default function AboutSection({ embedded = false }: Props) {
         loop
         position='absolute'
       />
-      <TitleBody
-        title={'Make your \nMovement'}
+     <TitleBody
+      title={
+        <>
+        Make your 
+          {' '}
+          <br className='hidden md:block'/>
+        Movement
+        </>
+        }
         text={
           '당신을 움직이게 하는 순간은 무엇인가요?\n웹사이트에 이미지를 등록하고, 나만의 Formative Movement를 만들어 공유해보세요.'
         }
