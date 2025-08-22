@@ -283,7 +283,7 @@ export default function Page() {
       <TitleBody
         title={'오늘의 여정, 어떤 분위기로\n시작해 볼까요?'}
         text='항해를 떠나기 전, 지도를 펼쳐 경로를 탐색하는 항해사처럼 친구들과 지도를 펼쳐 탐색을 시작합니다. AI가 탑승자들을 인식하여 알고리즘 반경을 생성하고, 우리만을 위한 특별한 경로를 만들 수 있도록 제안하죠. 이처럼 여정 자체가 우리의 개성을 담은 Signature Map이 됩니다.'
-      />6
+      />
       <MediaContainer
         type='video'
         src='https://player.vimeo.com/video/1111300528?h=c33e0e50d3'
