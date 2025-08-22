@@ -1,11 +1,12 @@
 export function FooterContent() {
   return (
     <>
-      <div className='flex text-sm text-white mb-6 md:mb-0 text-center font-normal capitalize leading-normal md:text-left'>
+      <div className='flex flex-col text-sm text-white mb-6 md:mb-0 text-center font-normal capitalize leading-normal md:text-left'>
+      <div className='left-[40px] top-[28px] justify-start text-sm text-white mb-3 md:mb-0 text-center font-normal capitalize leading-normal md:text-left'>
         © 2025 Samsung Design Membership<span className='md:hidden'>.</span>
-        <br className='block md-landscape-coming:hidden' />
-        <span className='hidden md:inline'> </span>
-        <span className="block md:block md-landscape-coming:block lg:hidden">All rights reserved</span>
+        <br className='md:hidden' />
+        <span className='hidden md:inline'> </span>All rights reserved
+      </div>      
       </div>
 
       <div className='w-fit h-6 inline-flex justify-center items-center gap-10'>
