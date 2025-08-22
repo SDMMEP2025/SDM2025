@@ -114,26 +114,26 @@ export function CursorProvider({
   const Default = {
     base: () => (
       <div
-        className='w-4 h-4 rounded-full bg-white mix-blend-difference'
+        className='w-4 h-4 z-[50] rounded-full bg-white mix-blend-difference'
         style={{ transform: 'translate(-50%,-50%)' }}
       />
     ),
     drag: () => (
-      <div className='w-14 h-14 -translate-x-1/2 -translate-y-1/2 px-3 py-4 bg-white rounded-[30px] inline-flex flex-col justify-center items-center gap-2.5'>
+      <div className='w-14 h-14 z-[50] -translate-x-1/2 -translate-y-1/2 px-3 py-4 bg-white rounded-[30px] inline-flex flex-col justify-center items-center gap-2.5'>
         <div className="text-center justify-start text-black text-base font-medium font-english leading-snug">
           Drag
         </div>
       </div>
     ),
     click: () => (
-      <div className='w-14 h-14 -translate-x-1/2 -translate-y-1/2 px-3 py-4 bg-white rounded-[30px] inline-flex flex-col justify-center items-center gap-2.5'>
+      <div className='w-14 h-14 z-[50] -translate-x-1/2 -translate-y-1/2 px-3 py-4 bg-white rounded-[30px] inline-flex flex-col justify-center items-center gap-2.5'>
         <div className="text-center justify-start text-black text-base font-medium font-english leading-snug">
           Click
         </div>
       </div>
     ),
     right: () => (
-      <div className='w-14 h-14 -translate-x-1/2 -translate-y-1/2'>
+      <div className='w-14 h-14 -translate-x-1/2 -translate-y-1/2 z-[50]'>
         <svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60' fill='none'>
           <g clipPath='url(#clip0_903_2721)'>
             <rect width='60' height='60' rx='30' fill='white' />
@@ -151,7 +151,7 @@ export function CursorProvider({
       </div>
     ),
     down: () => (
-      <div className='w-14 h-14'>
+      <div className='w-14 h-14 z-[50]'>
         <svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60' fill='none'>
           <g clipPath='url(#clip0_903_2713)'>
             <rect width='60' height='60' rx='30' fill='white' />
@@ -182,7 +182,7 @@ export function CursorProvider({
             ref={elRef}
             aria-hidden
             data-variant={current}
-            className={['fixed top-0 left-0 z-[9999] pointer-events-none will-change-transform mix-blend-difference'].join(' ')}
+            className={['fixed top-0 left-0 z-[50] pointer-events-none will-change-transform mix-blend-difference'].join(' ')}
           >
             {(R[current] ?? Default[current])!({ active: true })}
           </div>,

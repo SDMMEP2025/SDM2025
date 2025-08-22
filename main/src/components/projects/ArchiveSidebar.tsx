@@ -120,11 +120,11 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
           open: { y: '0%', opacity: 1 },
         }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
-        className='md:hidden fixed bottom-0 left-0 right-0 z-50 w-full backdrop-blur-md '
+        className='md:hidden fixed bottom-0 left-0 right-0 z-[10] w-full backdrop-blur-md '
       >
         <div
           onClick={() => setIsExpanded(!isExpanded)}
-          className='w-full sticky top-0 z-10 backdrop-blur-md flex items-center justify-between px-4 bg-white/50 '
+          className='w-full sticky top-0 z-[10] backdrop-blur-md flex items-center justify-between px-4 bg-white/50 '
           style={{ height: `${CUT_TOP_MOBILE}px` }}
         >
           <span className='text-[#4B4F57] text-[18px] font-semibold leading-[1.5] tracking-[-0.36px]'>
@@ -290,7 +290,7 @@ const HoverImageCard = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.12 }}
-              className='pointer-events-none absolute inset-0 z-20 mix-blend-difference'
+              className='pointer-events-none absolute inset-0 z-[20] mix-blend-difference'
             >
               <div
                 ref={lblRef}
