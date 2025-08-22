@@ -205,11 +205,8 @@ export function MediaContainer({
             <button
               type='button'
               onClick={tryPlay}
-              className='absolute inset-0 flex items-center justify-center text-white'
+              className='absolute inset-0 flex items-center justify-center'
             >
-              <span className='px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/30'>
-                탭하여 재생
-              </span>
             </button>
           )}
         </>
