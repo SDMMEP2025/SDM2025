@@ -66,7 +66,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
           }}
           exit={{ opacity: 0, x: HIDDEN_OFFSET }}
           transition={{ duration: 0.3 }}
-          className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[000] `}
+          className={`hidden fixed w-[396px] md:flex md:top-[150px] md:h-[calc(100dvh-150px)] lg:top-[80px] lg:h-[calc(100dvh-80px)] bg-white/50 backdrop-blur-md right-0 z-[10] `}
         >
           <div className='w-[396px] h-full flex flex-row items-start '>
             <div
