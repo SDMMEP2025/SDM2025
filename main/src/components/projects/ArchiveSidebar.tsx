@@ -117,7 +117,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
         variants={{
           hidden: { y: '100%', opacity: 0 },
           collapsed: { y: `calc(100dvh - ${CUT_TOP_MOBILE}px)`, opacity: 1 },
-          open: { y: CUT_TOP_MOBILE * 1, opacity: 1 }, // ← 여기 수정
+          open: { y: CUT_TOP_MOBILE * 1, opacity: 1 },
         }}
         transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
         className='md:hidden fixed bottom-0 left-0 right-0 z-[10] w-full backdrop-blur-md'
