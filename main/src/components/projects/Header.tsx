@@ -97,10 +97,10 @@ export function Header({ useBlendMode = true }: HeaderProps) {
   }
 
   return (
-    <div className='w-full h-0 z-30'>
+    <div className='w-full h-0 z-[50]'>
       <div
         key={repaintFlip ? 'blendA' : 'blendB'}
-        className={`fixed inset-x-0 top-0 z-50 ${
+        className={`fixed inset-x-0 top-0 z-[20] ${
           blendMode === 'difference' ? 'mix-blend-difference' : 'mix-blend-normal'
         }`}
         style={{ pointerEvents: 'none' }}
@@ -198,7 +198,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
                 </div>
 
                 {isDropdownOpen && (
-                  <div className='absolute px-[8.68px] top-8 left-0 bg-white z-30'>
+                  <div className='absolute px-[8.68px] top-8 left-0 bg-white z-[30]'>
                     {(['KR', 'EN'] as Lang[])
                       .filter((l) => l !== lang)
                       .map((l) => (

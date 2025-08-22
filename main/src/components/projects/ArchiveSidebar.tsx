@@ -150,7 +150,7 @@ export function ArchiveSidebar({ isVisible, currentPoint, onExpandedChange, colo
         </div>
 
         <div
-          className='w-full px-4 pb-[env(safe-area-inset-bottom)] bg-white/50'
+          className='w-full px-4 pb-[60px] bg-white/50'
           style={{
             maxHeight: `calc(100dvh - ${CUT_TOP_MOBILE}px)`,
             overflowY: 'auto',

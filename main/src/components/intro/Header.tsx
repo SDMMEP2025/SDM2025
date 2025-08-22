@@ -58,7 +58,7 @@ export function Header() {
   return (
     <motion.div
       style={{ opacity: headerOpacity, y: headerY, pointerEvents: pe }}
-      className={`w-full h-fit fixed top-0 z-200 transition-all duration-300 ${
+      className={`w-full h-fit fixed top-0 z-[20] transition-all duration-300 ${
         blendMode === 'difference' ? 'mix-blend-difference' : 'mix-blend-normal'
       }`}
     >
@@ -119,7 +119,7 @@ export function Header() {
             </div>
 
             {isDropdownOpen && (
-              <div className='absolute px-[8.68px] top-8 left-0 bg-white z-30'>
+              <div className='absolute px-[8.68px] top-8 left-0 bg-white z-[30]'>
                 {['KR', 'EN']
                   .filter((lang) => lang !== language)
                   .map((lang) => (
