@@ -20,7 +20,7 @@ export function MobileNavigation({
   return (
     <>
       {/* Mobile Navigation */}
-      <div className='w-full px-4 py-[14px] bg-white flex flex-row justify-between items-center overflow-hidden md:hidden lg:hidden'>
+      <div className='w-full z-[20] px-4 py-[14px] bg-white flex flex-row justify-between items-center overflow-hidden md:hidden lg:hidden'>
         <Link href={previousItem.url} className='flex justify-start items-center cursor-pointer'>
           <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
             <g clipPath='url(#clip0_50_2186)'>
