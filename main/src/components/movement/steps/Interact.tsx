@@ -11,12 +11,7 @@ import FloatingConcentricSquares from './FloatingConcentricSquares'
 // 타입들
 // ──────────────────────────────────────────────────────────────────────────────
 export interface InteractMotionParams {
-  speedBase: number
-  followSpeedMultiplier: number
-  followSpeedOffset: number
   colorInterpolationPower: number
-  floatAmplitude: number
-  floatSpeed: number
   tiltSensitivity: number
   hoverScale: number
   shadowIntensity: number
@@ -109,22 +104,19 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
   const [isSharing, setIsSharing] = useState(false)
 
   const lottieRef = useRef<LottieRefCurrentProps>(null)
+  const hitRef = useRef<HTMLDivElement>(null)
+
 
   //이곳에서 변수 수정
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
-    speedBase: 0.05,
-    followSpeedMultiplier: 2,
-    followSpeedOffset: 1,
     colorInterpolationPower: 0.9,
-    floatAmplitude: 8,
-    floatSpeed: 0.02,
-    tiltSensitivity: 30,
+    tiltSensitivity: 29,
     hoverScale: 1.1,
     shadowIntensity: 0,
     borderRadiusOuter: 8,
-    gyroSensitivity: 2.0,
-    axisLock: 'dominant', // ← 축 고정 기본값
-    axisLockThreshold: 0.1, // ← 우세 축 전환 히스테리시스
+    gyroSensitivity: 2.75,
+    axisLock: 'none',
+    axisLockThreshold: 0, // ← 우세 축 전환 히스테리시스
   })
   const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(true)
 
@@ -358,7 +350,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
         className={classNames(
-          'absolute flex bottom-[10.3%] lg:bottom-[14.3%] left-1/2 transform -translate-x-1/2',
+          'absolute flex bottom-[14.3%] lg:bottom-[14.3%] left-1/2 transform -translate-x-1/2',
           'gap-4 md:gap-4 lg:gap-4 2xl:gap-5',
         )}
       >

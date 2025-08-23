@@ -64,7 +64,9 @@ export default function AboutSection({ embedded = false }: Props) {
         },
         {
           title: 'Space Tutor',
-          tutors: [{ name: '이달우', englishName: 'Dalwoo Lee' }],
+          tutors: [{ name: '이달우', englishName: 'Dalwoo Lee' },
+            { name: '손건후', englishName: 'Geonhoo Son' }
+          ],
         },
       ],
     },

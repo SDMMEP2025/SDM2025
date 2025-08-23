@@ -384,8 +384,9 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
         className={classNames(
           'absolute flex flex-col justify-center items-center inset-x-0 w-full',
           //mobile
-          'top-[14.17%]',
+          'top-1/2',
           'gap-[30px]', // 모바일
+          '-translate-y-[60%]',
           //tablet
           'md:top-[47%]',
           'md:-translate-y-1/2',
@@ -553,7 +554,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'left-[calc(50vw-60px)] bottom-[10.3%] inset-y-auto',
+          'left-[calc(50vw-60px)] bottom-[14.3%] inset-y-auto',
           'md:bottom-[20.7%]',
           'md:left-[calc(50vw-60px)]',
           'md:inset-y-auto',
@@ -604,7 +605,7 @@ export function ResultStep({ imageUrl, text, colorAnalysis, onStartOver, onBack,
       <div
         className={classNames(
           'absolute flex justify-center items-center',
-          'right-[calc(50vw-60px)] bottom-[10.3%] inset-y-auto',
+          'right-[calc(50vw-60px)] bottom-[14.3%] inset-y-auto',
           'md:bottom-[20.7%]',
           'md:right-[calc(50vw-60px)]',
           'md:inset-y-auto',
