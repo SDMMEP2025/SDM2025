@@ -63,7 +63,10 @@ export default function AboutSection({ embedded = false }: Props) {
         },
         {
           title: 'Space Tutor',
-          tutors: [{ name: '이달우', englishName: 'Dalwoo Lee' }],
+          tutors: [
+            { name: '이달우', englishName: 'Dalwoo Lee' },
+            { name: '손건후', englishName: 'Geonhoo Son' },
+          ],
         },
       ],
     },
@@ -146,10 +149,8 @@ export default function AboutSection({ embedded = false }: Props) {
       <TitleBody
         title={
           <>
-          Archive
-          {' '}
-            <br className='hidden md:block'/>
-          Movement
+            Archive <br className='hidden md:block' />
+            Movement
           </>
         }
         text={
@@ -207,14 +208,12 @@ export default function AboutSection({ embedded = false }: Props) {
         loop
         position='absolute'
       />
-     <TitleBody
-      title={
-        <>
-        Make your 
-          {' '}
-          <br className='hidden md:block'/>
-        Movement
-        </>
+      <TitleBody
+        title={
+          <>
+            Make your <br className='hidden md:block' />
+            Movement
+          </>
         }
         text={
           '당신을 움직이게 하는 순간은 무엇인가요?\n웹사이트에 이미지를 등록하고, 나만의 Formative Movement를 만들어 공유해보세요.'

@@ -64,7 +64,10 @@ export default function AboutSection({ embedded = false }: Props) {
         },
         {
           title: 'Space Tutor',
-          tutors: [{ name: '이달우', englishName: 'Dalwoo Lee' }],
+          tutors: [
+            { name: '이달우', englishName: 'Dalwoo Lee' },
+            { name: '손건후', englishName: 'Geonhoo Son' },
+          ],
         },
       ],
     },
@@ -172,10 +175,8 @@ export default function AboutSection({ embedded = false }: Props) {
       <TitleBody
         title={
           <>
-          Archive
-          {' '}
-            <br className='hidden md:block'/>
-          Movement
+            Archive <br className='hidden md:block' />
+            Movement
           </>
         }
         text={
@@ -234,17 +235,13 @@ export default function AboutSection({ embedded = false }: Props) {
         position='absolute'
       />
       <TitleBody
-      title={
-        <>
-        Make your 
-          {' '}
-          <br className='hidden md:block'/>
-        Movement
-        </>
+        title={
+          <>
+            Make your <br className='hidden md:block' />
+            Movement
+          </>
         }
-        text={
-          'What moment moves you?\nAdd your image, create your Formative Movement, and share it.'
-        }
+        text={'What moment moves you?\nAdd your image, create your Formative Movement, and share it.'}
       />
       <div
         className={classNames(
