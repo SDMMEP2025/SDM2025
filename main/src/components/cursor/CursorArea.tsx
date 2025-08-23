@@ -15,9 +15,9 @@ export function CursorArea({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const tokenRef = useRef<symbol | null>(null)
-  const { push, pop, pos } = useCursor() // pos: {x,y}
+  const { push, pop, pos } = useCursor()
 
-  // disabled가 되면 즉시 pop
+  // disabled 전환 시 pop
   useEffect(() => {
     if (disabled && tokenRef.current) {
       pop(tokenRef.current)
@@ -39,26 +39,19 @@ export function CursorArea({
       }
     }
 
-    // 기본 포인터 경계 감지
     el.addEventListener('pointerenter', enter)
     el.addEventListener('pointerleave', leave)
     el.addEventListener('pointercancel', leave)
 
-    // 마운트 시 이미 hover면 즉시 적용
     if (el.matches(':hover')) enter()
 
-    // 스크롤/리사이즈 보정 (경계 근처 떨림 완화용)
+    // 경계 떨림 보정
     const MARGIN = 4
     const within = () => {
       const r = el.getBoundingClientRect()
       const x = pos.x, y = pos.y
       if (x === -9999 && y === -9999) return false
-      return (
-        x >= r.left - MARGIN &&
-        x <= r.right + MARGIN &&
-        y >= r.top - MARGIN &&
-        y <= r.bottom + MARGIN
-      )
+      return x >= r.left - MARGIN && x <= r.right + MARGIN && y >= r.top - MARGIN && y <= r.bottom + MARGIN
     }
 
     let raf = 0
@@ -75,7 +68,7 @@ export function CursorArea({
     window.addEventListener('resize', recheck, { passive: true })
     document.addEventListener('wheel', recheck, { passive: true })
 
-    // 🔥 iframe-safe: :hover 폴링(부모 matches(':hover')로 감지)
+    // iframe 위 호버 누락 방지(폴링)
     let rafHover = 0
     let wasHover = el.matches(':hover')
     const pollHover = () => {

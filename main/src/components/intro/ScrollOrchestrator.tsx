@@ -78,6 +78,7 @@ export function ScrollOrchestrator() {
   const wrapRef = useRef<HTMLDivElement>(null)
   const rectRef = useRef<HTMLDivElement>(null)
   const lottieRef = useRef<LottieRefCurrentProps>(null)
+  const aboutlottieRef = useRef<LottieRefCurrentProps>(null)
   const hasStageRef = useRef<boolean>(typeof window !== 'undefined' && !!getStageFromURL())
 
   const isLandscape = useIsLandscape()
@@ -129,7 +130,7 @@ export function ScrollOrchestrator() {
       if (!conf) return
 
       const { start, end } = cuts[conf.idx]
-      const target = lerp(start, end, conf.t) // ← 여기!
+      const target = lerp(start, end, conf.t)
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           scrollToProgress(scrollerEl, wrapEl, target)
@@ -244,6 +245,15 @@ export function ScrollOrchestrator() {
     }
   })
 
+  const [aboutlottiePlayed, setAboutLottiePlayed] = useState(false)
+    useMotionValueEvent(p2, 'change', (v) => {
+    if (v >= 0.99 && !lottiePlayed) {
+      lottieRef.current?.play()
+      setAboutLottiePlayed(true)
+    }
+  })
+  
+
   // ---------- Section 2 ----------
   const lottieHardCut = useTransform(p2, (v) => (v > 0.1 ? 0 : 1))
   const lottieOpacity = useTransform([opacityScale, lottieHardCut], ([a, b]) => Number(a) * Number(b))
@@ -286,8 +296,8 @@ export function ScrollOrchestrator() {
   // ---------- Section 6 ----------
   const arrowOpacity = useTransform(p3, [0, 0.5], [1, 0], { ease: easeInOut, clamp: true })
   const MdtitleLift_p5 = isMdUp ? -80 : 0
-  const MdsubtitleLift_p5 = isMdUp ? -240 : 0
-  const MdtitleScale_p5 = isMdUp ? 0.5 : 1
+  const MdsubtitleLift_p5 = isMdUp ? -240 : 95
+  const MdtitleScale_p5 = isMdUp ? 0.6 : 1
   const titleShrink_p4 = useTransform(p3, [0.8, 1], [1, 1])
   const subtitleShrink_p4 = useTransform(p3, [0.8, 1], [1, 1])
 
@@ -416,7 +426,7 @@ export function ScrollOrchestrator() {
                   </div>
 
                   {/* 데스크탑 타이틀/서브 */}
-                  <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] xl:w-[451px] xl:-translate-y-[120px] xl:leading-[210%] xl:w-[574px] z-[9999]'>
+                  <div className='hidden md:block absolute left-1/2 top-[50dvh] -translate-y-[32svh] md:left-1/4 md:top-1/2 -translate-x-1/2 md:-translate-y-[110px] md-landscape-coming:-translate-y-[80px] lg:-translate-y-[80px] font-english mix-blend-difference text-center text-white font-medium w-fit leading-[120%] md:leading-[160%] xl:w-[451px] xl:-translate-y-[120px] xl:leading-[210%] xl:w-[574px] z-[9999]'>
                     <motion.span
                       initial={false}
                       style={{ opacity: infoOpacity }}
@@ -432,17 +442,17 @@ export function ScrollOrchestrator() {
                     <motion.span
                       initial={false}
                       style={{ scale: titleScale, y: titleLift }}
-                      className='block leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
+                      className='block leading-none text-[26px] md:text-[32px] lg:text-[40px] xl:text-[72px]'
                     >
                       New Formative
                     </motion.span>
                   </div>
 
-                  <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] lg:translate-y-[90px]  xl:translate-y-[150px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
+                  <div className='hidden md:block absolute left-1/2 top-[43dvh] -translate-x-1/2 md:translate-y-[100px] md-landscape-coming:translate-y-[80px] lg:translate-y-[95px]  xl:translate-y-[140px] font-english mix-blend-difference text-center text-white font-semibold leading-none md-landscape-coming:leading-[270%] z-[9999]'>
                     <motion.span
                       initial={false}
                       style={{ scale: subtitleScale, y: subtitleLift }}
-                      className='block whitespace-nowrap leading-none text-[26px] lg:text-[40px] xl:text-[72px]'
+                      className='block whitespace-nowrap leading-none text-[26px] md:text-[32px] lg:text-[40px] xl:text-[72px]'
                     >
                       Steady Movement
                       <br />
@@ -450,7 +460,7 @@ export function ScrollOrchestrator() {
                     </motion.span>
                   </div>
 
-                  <div className='hidden text-center md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[90px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] xl:w-[451px] xl:leading-[210%] xl:-translate-y-[120px] z-[9999]'>
+                  <div className='hidden text-center md:block absolute text-[20px] left-1/2 top-1/2 leading-[140%] md:left-3/4 -translate-x-1/2 md:-translate-y-[110px] md-landscape-coming:-translate-y-[80px] lg:-translate-y-[80px] font-english mix-blend-difference text-center text-white font-medium w-[305px] leading-[120%] md:leading-[160%] xl:w-[451px] xl:leading-[210%] xl:-translate-y-[120px] z-[9999]'>
                     <motion.span
                       initial={false}
                       style={{ opacity: infoOpacity }}
@@ -478,16 +488,17 @@ export function ScrollOrchestrator() {
                     </svg>
                   </motion.div>
                   <motion.div
-                    className='h-full -translate-y-1/2 top-[45dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center overflow-hidden'
+                    className='h-full -translate-y-1/2 top-[50dvh] md:-translate-y-0 md:top-0 md:w-full md-landscape-coming:h-auto lg:h-auto absolute flex justify-center items-center overflow-hidden'
                     aria-hidden
                     style={{ opacity: vimeoOpacity, willChange: 'opacity' }}
                   >
                     <Lottie
+                      lottieRef={aboutlottieRef}
                       animationData={aboutAnim}
                       autoplay={true}
                       loop={true}
                       rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
-                      className='w-full aspect-[1440/1100] md:aspect-[1440/1500] md:h-full md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
+                      className='w-full aspect-[1440/1500] md:aspect-[1440/1500] md:h-full md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
                     />
                   </motion.div>
                 </div>
@@ -508,32 +519,32 @@ export function ScrollOrchestrator() {
                     }}
                   >
                     <ThickPlane
-                      widthPct={isMdPortrait ? 90 : 90}
-                      heightPct={isMdPortrait ? 100 : 305}
+                      widthPct={isMdUp ? 90 : 90}
+                      heightPct={isMdUp ? 100 : 305}
                       color='#FF60B9'
                       radius={10}
                       rotateX={planeTiltDeg}
-                      translateY={isMdPortrait ? 0 : 20}
+                      translateY={isMdUp ? 0 : 20}
                       y={backYFinal}
                       origin='center center'
                     />
                     <ThickPlane
-                      widthPct={isMdPortrait ? 80 : 80}
-                      heightPct={isMdPortrait ? 80 : 305}
+                      widthPct={isMdUp ? 80 : 80}
+                      heightPct={isMdUp ? 80 : 305}
                       color='#FFF790'
                       radius={10}
                       rotateX={planeTiltDeg}
-                      translateY={isMdPortrait ? -40 : 0}
+                      translateY={isMdUp ? -40 : 0}
                       y={midYFinal}
                       origin='center center'
                     />
                     <ThickPlane
-                      widthPct={isMdPortrait ? 72 : 64}
-                      heightPct={isMdPortrait ? 72 : 305}
+                      widthPct={isMdUp ? 72 : 64}
+                      heightPct={isMdUp ? 72 : 305}
                       color='#FF5E1F'
                       radius={10}
                       rotateX={planeTiltDeg}
-                      translateY={isMdPortrait ? -80 : -20}
+                      translateY={isMdUp ? -80 : -20}
                       y={frontYFinal}
                       origin='center center'
                     />

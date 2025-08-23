@@ -7,6 +7,21 @@
     box-sizing: border-box;
     cursor: none !important;
   }
+
+  html.cursor-none,
+  html.cursor-none body,
+  html.cursor-none body * {
+    cursor: none !important;
+  }
+
+  html.cursor-none a,
+  html.cursor-none button,
+  html.cursor-none [role='button'],
+  html.cursor-none [tabindex],
+  html.cursor-none label {
+    cursor: none !important;
+  }
+
   body {
     -webkit-user-select: none;
     -moz-user-select: none;
