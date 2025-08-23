@@ -37,6 +37,8 @@ export function CursorProvider({
   const [current, setCurrent] = useState<CursorVariant>('base')
   const pos = useRef({ x: -9999, y: -9999 })
   const elRef = useRef<HTMLDivElement | null>(null)
+  const [isVisible, setIsVisible] = useState(true) // 커서 가시성 상태
+  
   const prefersReduced =
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
@@ -65,6 +67,11 @@ export function CursorProvider({
   const isCoarse = typeof window !== 'undefined' ? (window.matchMedia?.('(pointer: coarse)').matches ?? false) : false
   const enabled = !(disabledOnCoarse && isCoarse)
 
+  const isInViewport = (x: number, y: number) => {
+    const margin = 10 
+    return x >= -margin && x <= window.innerWidth + margin && y >= -margin && y <= window.innerHeight + margin
+  }
+
   useEffect(() => {
     if (!mounted || !enabled) return
     const el = elRef.current
@@ -74,11 +81,35 @@ export function CursorProvider({
       const any = e as any
       const x = any.clientX ?? 0
       const y = any.clientY ?? 0
-      if (x || y) {
+      
+      if (typeof x === 'number' && typeof y === 'number') {
         pos.current.x = x
         pos.current.y = y
+        
+        const inView = isInViewport(x, y)
+        setIsVisible(inView)
+
       }
     }
+
+    const onBodyMouseLeave = () => {
+      setIsVisible(false)
+    }
+
+    const onBodyMouseEnter = () => {
+      setIsVisible(true)
+    }
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        setIsVisible(false)
+      } else {
+        setIsVisible(true)
+      }
+    }
+
+    const onWindowBlur = () => setIsVisible(false)
+    const onWindowFocus = () => setIsVisible(true)
 
     const preventDragStart = (e: DragEvent) => e.preventDefault()
 
@@ -93,24 +124,36 @@ export function CursorProvider({
       raf = requestAnimationFrame(step)
     }
 
-    // pointer 계열 + dragover
-    window.addEventListener('pointermove', onMove as any, { passive: true })
-    window.addEventListener('dragover', onMove as any, { passive: true })
-    document.addEventListener('dragstart', preventDragStart) // 네이티브 드래그 비활성화
+    document.addEventListener('pointermove', onMove as any, { passive: true })
+    document.addEventListener('mousemove', onMove as any, { passive: true })
+    document.addEventListener('dragover', onMove as any, { passive: true })
+    
+    document.body.addEventListener('mouseleave', onBodyMouseLeave, { passive: true })
+    document.body.addEventListener('mouseenter', onBodyMouseEnter, { passive: true })
+    
+    document.addEventListener('visibilitychange', onVisibilityChange, { passive: true })
+    window.addEventListener('blur', onWindowBlur, { passive: true })
+    window.addEventListener('focus', onWindowFocus, { passive: true })
+    document.addEventListener('dragstart', preventDragStart)
     document.documentElement.classList.add('cursor-none')
 
     raf = requestAnimationFrame(step)
 
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('pointermove', onMove as any)
-      window.removeEventListener('dragover', onMove as any)
+      document.removeEventListener('pointermove', onMove as any)
+      document.removeEventListener('mousemove', onMove as any)
+      document.removeEventListener('dragover', onMove as any)
+      document.body.removeEventListener('mouseleave', onBodyMouseLeave)
+      document.body.removeEventListener('mouseenter', onBodyMouseEnter)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('blur', onWindowBlur)
+      window.removeEventListener('focus', onWindowFocus)
       document.removeEventListener('dragstart', preventDragStart)
       document.documentElement.classList.remove('cursor-none')
     }
   }, [mounted, enabled, smoothMs, prefersReduced])
 
-  //이 곳은 커서 모음집
   const Default = {
     base: () => (
       <div
@@ -182,7 +225,10 @@ export function CursorProvider({
             ref={elRef}
             aria-hidden
             data-variant={current}
-            className={['fixed top-0 left-0 z-[50] pointer-events-none will-change-transform mix-blend-difference'].join(' ')}
+            className={[
+              'fixed top-0 left-0 z-[50] pointer-events-none will-change-transform mix-blend-difference transition-opacity duration-200',
+              isVisible ? 'opacity-100' : 'opacity-0'
+            ].join(' ')}
           >
             {(R[current] ?? Default[current])!({ active: true })}
           </div>,

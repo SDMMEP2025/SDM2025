@@ -14,7 +14,7 @@ type InViewFrameProps = React.ComponentProps<typeof motion.div> & {
 
 export function InViewFrame({ children, className, ...rest }: InViewFrameProps) {
   const ref = useRef(null)
-  const inView = useInView(ref, { amount: 0.3, once: true })
+  const inView = useInView(ref, { amount: 0.2, once: true })
 
   return (
     <motion.div
