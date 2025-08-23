@@ -110,7 +110,7 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
   //이곳에서 변수 수정
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
     colorInterpolationPower: 0.9,
-    tiltSensitivity: 20,
+    tiltSensitivity: 24,
     hoverScale: 1.1,
     shadowIntensity: 0,
     borderRadiusOuter: 8,
