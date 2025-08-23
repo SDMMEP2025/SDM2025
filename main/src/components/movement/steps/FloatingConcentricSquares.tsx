@@ -5,12 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 export type AxisLockMode = 'none' | 'x' | 'y' | 'dominant'
 
 export interface InteractMotionParams {
-  speedBase: number
-  followSpeedMultiplier: number
-  followSpeedOffset: number
   colorInterpolationPower: number
-  floatAmplitude: number
-  floatSpeed: number
   tiltSensitivity: number
   hoverScale: number
   shadowIntensity: number
@@ -85,11 +80,11 @@ export default function FloatingConcentricSquares({
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
 
-  // floatOffset 상태 제거됨 - 더 이상 자동으로 움직이지 않음
+  // tilt / hover
   const [tiltOffset, setTiltOffset] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
 
-  // 꼬리물기 포지션 - 완전 고정모드에서는 사용안함
+  // 꼬리물기 포지션 - (현 버전에서는 base만 사용)
   const [currentPositions, setCurrentPositions] = useState(positions)
   const targetRef = useRef({ x: 0, y: 0 })
   const mouseActiveRef = useRef(false)
@@ -109,6 +104,20 @@ export default function FloatingConcentricSquares({
   const [isListening, setIsListening] = useState(false)
   const cleanupRef = useRef<(() => void) | null>(null)
   const tickingRef = useRef(false)
+
+  // ★ 자이로 기준(베이스라인) & 마지막 이벤트 저장
+  const baselineRef = useRef<{ beta: number; gamma: number } | null>(null) // 기준값
+  const lastEventRef = useRef<DeviceOrientationEvent | null>(null) // 최근 이벤트
+
+  // ★ 현재 자세를 즉시 기준으로 재설정
+  const calibrateNow = () => {
+    const ev = lastEventRef.current
+    if (ev) {
+      const beta = ev.beta ?? 0
+      const gamma = ev.gamma ?? 0
+      baselineRef.current = { beta, gamma }
+    }
+  }
 
   // 부모 크기 기반 스케일
   useEffect(() => {
@@ -151,21 +160,42 @@ export default function FloatingConcentricSquares({
 
   // 자이로 리스너
   const enableGyroscope = () => {
+    // ★ 버튼을 누를 때마다 기준을 새로 잡도록, 우선 기준을 비운다.
+    //   (첫 이벤트가 들어오는 순간의 자세가 기준이 된다.)
+    if (!baselineRef.current) {
+      // noop — handleGyroActivation에서 null로 만들어 둠
+    }
+
     const onOri = (ev: DeviceOrientationEvent) => {
+      lastEventRef.current = ev // ★ 항상 최신 이벤트 저장
+
       if (tickingRef.current) return
       tickingRef.current = true
       requestAnimationFrame(() => {
         tickingRef.current = false
 
-        const beta = ev.beta ?? 0 // 앞뒤
-        const gamma = ev.gamma ?? 0 // 좌우
+        // 원시 센서값
+        const rawBeta = ev.beta ?? 0 // 앞뒤(기기 세로 회전)
+        const rawGamma = ev.gamma ?? 0 // 좌우(기기 가로 회전)
 
+        // ★ 첫 신호가 왔고 기준이 없으면 지금을 기준으로 고정
+        if (!baselineRef.current) {
+          baselineRef.current = { beta: rawBeta, gamma: rawGamma }
+        }
+
+        // ★ 기준 대비 델타 계산
+        const beta = rawBeta - (baselineRef.current?.beta ?? 0)
+        const gamma = rawGamma - (baselineRef.current?.gamma ?? 0)
+
+        // 정규화 & 감도
         const nx = Math.max(-0.5, Math.min(0.5, gamma / 90)) * motionParams.gyroSensitivity
         const ny = Math.max(-0.5, Math.min(0.5, beta / 180)) * motionParams.gyroSensitivity
 
+        // 기울기(3D 카드 틸트)
         const maxTilt = motionParams.tiltSensitivity * scale
         setTiltOffset({ x: ny * maxTilt * 2, y: nx * maxTilt * 2 })
 
+        // 평면 이동 타깃
         const range = 150 * scale * motionParams.gyroSensitivity
         let mx = nx * range * 2
         let my = ny * range * 2
@@ -197,6 +227,10 @@ export default function FloatingConcentricSquares({
         console.warn('iOS에서 모션 센서는 HTTPS(또는 localhost) 환경이 필요합니다.')
       }
       const anyDO = DeviceOrientationEvent as any
+
+      // ★ 버튼을 누른 시점 이후의 첫 이벤트를 기준으로 삼기 위해 초기화
+      baselineRef.current = null
+
       if (typeof anyDO?.requestPermission === 'function') {
         const res = await anyDO.requestPermission()
         if (res === 'granted') {
@@ -279,20 +313,43 @@ export default function FloatingConcentricSquares({
 
   return (
     <>
-      {showMobileGyroUI && isMobile && gyroStatus !== 'granted' && (
-        <div className='relative z-50'>
-          <button onClick={handleGyroActivation} className='px-6 py-2 rounded-[100px] text-[#4B4F57] underline'>
-            Movement 움직이기
-          </button>
+      {showMobileGyroUI && isMobile && (
+        <div className='relative z-50 flex items-center gap-3'>
+          {gyroStatus !== 'granted' ? (
+            <button
+              onClick={handleGyroActivation}
+              className='px-6 py-2 rounded-[100px] text-[#4B4F57] underline'
+              title='이 버튼을 누른 직후의 기기 자세가 기준이 됩니다.'
+            >
+              Movement 움직이기
+            </button>
+          ) : (
+            <>
+              {/* ★ 센서 동작 중일 때 기준 재설정 버튼 */}
+              <button
+                onClick={calibrateNow}
+                className='px-4 py-2 rounded-[100px] text-[#4B4F57] underline'
+                title='현재 자세를 기준으로 재설정'
+              >
+                Reset Movement
+              </button>
+              {/* (원한다면 끄기 버튼도 제공) */}
+              {isListening && (
+                <button
+                  onClick={() => {
+                    cleanupRef.current?.()
+                    cleanupRef.current = null
+                  }}
+                  className='px-3 py-2 rounded-[100px] text-[#8B8F97]'
+                  title='자이로 입력 끄기'
+                >
+                  Turn off Movement
+                </button>
+              )}
+            </>
+          )}
         </div>
       )}
-      {/* {showMobileGyroUI && isMobile && isListening && (
-        <div className="z-50">
-          <div className="text-black font-semibold whitespace-nowrap text-sm animate-pulse">
-            ● 디바이스 움직임 감지 중
-          </div>
-        </div>
-      )} */}
 
       <div
         ref={containerRef}
