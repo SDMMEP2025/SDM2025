@@ -106,15 +106,16 @@ export function InteractPage({ interactionData, onStartOver }: InteractPageProps
   const lottieRef = useRef<LottieRefCurrentProps>(null)
   const hitRef = useRef<HTMLDivElement>(null)
 
+
   //이곳에서 변수 수정
   const [motionParams, setMotionParams] = useState<InteractMotionParams>({
     colorInterpolationPower: 0.9,
-    tiltSensitivity: 26,
+    tiltSensitivity: 20,
     hoverScale: 1.1,
     shadowIntensity: 0,
     borderRadiusOuter: 8,
-    gyroSensitivity: 1.0,
-    axisLock: 'none', // ← 축 고정 기본값
+    gyroSensitivity: 2.0,
+    axisLock: 'none',
     axisLockThreshold: 0, // ← 우세 축 전환 히스테리시스
   })
   const [isMotionPanelVisible, setIsMotionPanelVisible] = useState(true)

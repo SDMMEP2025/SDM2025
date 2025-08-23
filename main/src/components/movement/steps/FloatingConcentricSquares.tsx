@@ -380,19 +380,6 @@ export default function FloatingConcentricSquares({
               >
                 Reset Movement
               </button>
-              {/* (원한다면 끄기 버튼도 제공) */}
-              {isListening && (
-                <button
-                  onClick={() => {
-                    cleanupRef.current?.()
-                    cleanupRef.current = null
-                  }}
-                  className='px-3 py-2 rounded-[100px] text-[#8B8F97]'
-                  title='자이로 입력 끄기'
-                >
-                  Turn off Movement
-                </button>
-              )}
             </>
           )}
         </div>
@@ -400,7 +387,7 @@ export default function FloatingConcentricSquares({
 
       <div
         ref={containerRef}
-        className='relative transition-all duration-500 ease-out'
+        className='relative duration-500 ease-out'
         style={{
           width: `${maxWidth}px`,
           height: `${maxHeight}px`,
@@ -436,7 +423,7 @@ export default function FloatingConcentricSquares({
           return (
             <div
               key={i}
-              className='absolute transition-all duration-100 ease-out'
+              className='absolute duration-100 ease-out'
               style={{
                 width: `${w}px`,
                 height: `${h}px`,
