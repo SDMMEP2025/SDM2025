@@ -213,8 +213,8 @@ export default function FloatingConcentricSquares({
         const dGamma = rawGamma - (baselineRef.current?.gamma ?? 0)
 
         // 정규화 + 감도
-        const nxRaw = Math.max(-0.5, Math.min(0.5, dGamma / 90)) * motionParams.gyroSensitivity
-        const nyRaw = Math.max(-0.5, Math.min(0.5, dBeta / 180)) * motionParams.gyroSensitivity
+        const nxRaw = Math.max(-0.5, Math.min(0.5, dGamma / 90))
+        const nyRaw = Math.max(-0.5, Math.min(0.5, dBeta / 180))
 
         // (A) EMA 스무딩
         nxFiltRef.current = nxFiltRef.current + EMA_ALPHA * (nxRaw - nxFiltRef.current)
@@ -228,6 +228,8 @@ export default function FloatingConcentricSquares({
         nx = Math.round(nx / QUANT) * QUANT
         ny = Math.round(ny / QUANT) * QUANT
 
+        const gyroGain = motionParams.gyroSensitivity ?? 1
+
         // 틸트(보간 적용)
         const maxTilt = motionParams.tiltSensitivity * scale
         const tx = ny * maxTilt * 2
@@ -237,7 +239,7 @@ export default function FloatingConcentricSquares({
         setTiltOffset({ x: tiltRef.current.x, y: tiltRef.current.y })
 
         // 평면 이동 (축락/히스테리시스 적용 후에도 보간)
-        const range = 150 * scale * motionParams.gyroSensitivity
+        const range = 150 * scale 
         let mx = nx * range * 2
         let my = ny * range * 2
 
