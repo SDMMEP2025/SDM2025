@@ -329,7 +329,7 @@ export function ScrollOrchestrator() {
     if (aboutInteractive && v < 0.1) setAboutInteractive(false)
   })
 
-  const vimeoFadeIn = useTransform(p3, [0.9, 0.93], [0, 1], { clamp: true })
+  const vimeoFadeIn = useTransform(p3, [0.9, 0.91], [0, 1], { clamp: true })
   const vimeoOpacity = useTransform([opacityScale, vimeoFadeIn], ([a, b]) => Number(a) * Number(b))
 
   return (
