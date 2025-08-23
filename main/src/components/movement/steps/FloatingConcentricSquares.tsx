@@ -146,6 +146,28 @@ export default function FloatingConcentricSquares({
   const maxHeight = BASE_H * scale
   const stepReduction = BASE_STEP * scale
 
+  const EMA_ALPHA = 0.18 // 0.1~0.3 권장 (낮을수록 부드러움)
+  const DEADZONE = 0.02 // 0~0.04 권장 (정규화 후 기준)
+  const QUANT = 0.0025 // 0.001~0.005 (값을 이 스텝으로 계단화)
+  const TILT_EASE = 0.15 // 0.1~0.25 (틸트 오프셋 easing)
+  const TARGET_EASE = 0.12 // 0.08~0.2 (타깃 위치 easing)
+
+  // 필터 상태 보관
+  const nxFiltRef = useRef(0)
+  const nyFiltRef = useRef(0)
+
+  // tiltOffset을 setState 전에 누적 보간할 버퍼
+  const tiltRef = useRef({ x: 0, y: 0 })
+
+  // 가로/세로 방향 매핑
+  const orientMap = (beta: number, gamma: number) => {
+    const so = (screen as any)?.orientation?.type || (window as any)?.orientation
+    const isLandscape = typeof so === 'string' ? so.includes('landscape') : Math.abs(Number(so)) === 90
+    // 단순 매핑: 가로모드에선 축을 스왑하고 한쪽 부호 반전
+    if (isLandscape) return { beta: gamma, gamma: -beta }
+    return { beta, gamma }
+  }
+
   // 모바일 감지 (권한 판정은 버튼에서)
   useEffect(() => {
     const check = () => {
@@ -167,45 +189,68 @@ export default function FloatingConcentricSquares({
     }
 
     const onOri = (ev: DeviceOrientationEvent) => {
-      lastEventRef.current = ev // ★ 항상 최신 이벤트 저장
-
+      lastEventRef.current = ev
       if (tickingRef.current) return
       tickingRef.current = true
+
       requestAnimationFrame(() => {
         tickingRef.current = false
 
-        // 원시 센서값
-        const rawBeta = ev.beta ?? 0 // 앞뒤(기기 세로 회전)
-        const rawGamma = ev.gamma ?? 0 // 좌우(기기 가로 회전)
+        // 원시값
+        let rawBeta = ev.beta ?? 0
+        let rawGamma = ev.gamma ?? 0
 
-        // ★ 첫 신호가 왔고 기준이 없으면 지금을 기준으로 고정
+        // 화면 방향에 맞게 축 보정
+        ;({ beta: rawBeta, gamma: rawGamma } = orientMap(rawBeta, rawGamma))
+
+        // 기준 잡기
         if (!baselineRef.current) {
           baselineRef.current = { beta: rawBeta, gamma: rawGamma }
         }
 
-        // ★ 기준 대비 델타 계산
-        const beta = rawBeta - (baselineRef.current?.beta ?? 0)
-        const gamma = rawGamma - (baselineRef.current?.gamma ?? 0)
+        // 기준 대비 델타
+        const dBeta = rawBeta - (baselineRef.current?.beta ?? 0)
+        const dGamma = rawGamma - (baselineRef.current?.gamma ?? 0)
 
-        // 정규화 & 감도
-        const nx = Math.max(-0.5, Math.min(0.5, gamma / 90)) * motionParams.gyroSensitivity
-        const ny = Math.max(-0.5, Math.min(0.5, beta / 180)) * motionParams.gyroSensitivity
+        // 정규화 + 감도
+        const nxRaw = Math.max(-0.5, Math.min(0.5, dGamma / 90)) * motionParams.gyroSensitivity
+        const nyRaw = Math.max(-0.5, Math.min(0.5, dBeta / 180)) * motionParams.gyroSensitivity
 
-        // 기울기(3D 카드 틸트)
+        // (A) EMA 스무딩
+        nxFiltRef.current = nxFiltRef.current + EMA_ALPHA * (nxRaw - nxFiltRef.current)
+        nyFiltRef.current = nyFiltRef.current + EMA_ALPHA * (nyRaw - nyFiltRef.current)
+
+        // (B) 데드존
+        let nx = Math.abs(nxFiltRef.current) < DEADZONE ? 0 : nxFiltRef.current
+        let ny = Math.abs(nyFiltRef.current) < DEADZONE ? 0 : nyFiltRef.current
+
+        // (C) 양자화(계단화)로 미세 떨림 억제
+        nx = Math.round(nx / QUANT) * QUANT
+        ny = Math.round(ny / QUANT) * QUANT
+
+        // 틸트(보간 적용)
         const maxTilt = motionParams.tiltSensitivity * scale
-        setTiltOffset({ x: ny * maxTilt * 2, y: nx * maxTilt * 2 })
+        const tx = ny * maxTilt * 2
+        const ty = nx * maxTilt * 2
+        tiltRef.current.x += TILT_EASE * (tx - tiltRef.current.x)
+        tiltRef.current.y += TILT_EASE * (ty - tiltRef.current.y)
+        setTiltOffset({ x: tiltRef.current.x, y: tiltRef.current.y })
 
-        // 평면 이동 타깃
+        // 평면 이동 (축락/히스테리시스 적용 후에도 보간)
         const range = 150 * scale * motionParams.gyroSensitivity
         let mx = nx * range * 2
         let my = ny * range * 2
+
         const locked = applyAxisLock(
           mx,
           my,
           motionParams.axisLock ?? 'none',
           (motionParams.axisLockThreshold ?? 0) * range,
         )
-        targetRef.current = { x: locked.x, y: locked.y }
+
+        // 목표점으로 천천히 수렴
+        targetRef.current.x += TARGET_EASE * (locked.x - targetRef.current.x)
+        targetRef.current.y += TARGET_EASE * (locked.y - targetRef.current.y)
       })
     }
 
