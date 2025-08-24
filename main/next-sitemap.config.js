@@ -1,4 +1,4 @@
 module.exports = {
-  siteUrl: 'https://newformative.com',
+  siteUrl: 'https://www.newformative.com',
   generateRobotsTxt: true,
 }
