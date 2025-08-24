@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      noimageindex: true,
+      // noimageindex: true,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
@@ -76,6 +76,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: '/favicon.ico' },
       { url: '/icons/apple-touch-icon.png' },
       { url: '/icons/favicon-16x16.png', sizes: '16x16' },
       { url: '/icons/favicon-32x32.png', sizes: '32x32' },
