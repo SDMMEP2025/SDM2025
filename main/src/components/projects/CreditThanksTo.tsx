@@ -196,9 +196,9 @@ export function CreditThanksTo({ title = 'Thanks to', sections }: CreditTutorPro
         // mobile
         'px-[35px] pt-0 pb-[112px]',
         // tablet
-        'md:px-[5.2vw] md:pb-[112px]',
+        'md:px-[5.2vw] md:py-[56px]',
         // desktop
-        'lg:px-[16.32vw] lg:pb-[168px]',
+        'lg:px-[16.32vw] lg:py-[84px]',
         // xl
         'xl:px-[16.67vw]',
       )}
