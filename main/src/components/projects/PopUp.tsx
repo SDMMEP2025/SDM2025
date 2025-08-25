@@ -185,7 +185,7 @@ export function PopUp({
                 rel='noopener noreferrer'
                 className='w-[194px] h-14 px-6 bg-neutral-800 hover:bg-neutral-900 active:bg-neutral-900 rounded-[100px] flex justify-center items-center'
                 onClick={() => {
-                  persist({ [HIDE_FOREVER]: false })
+                  persist({ [HIDE_FOREVER]: true })
                   handleClose()
                 }}
               >
