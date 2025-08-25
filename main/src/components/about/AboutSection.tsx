@@ -92,14 +92,14 @@ export default function AboutSection({ embedded = false }: Props) {
   const delayFor = (i: number, base = 400) => i * base
   return (
     <>
-      <div className='relative w-full h-fit md:hidden lg:block'>
+      <div className='relative w-full h-fit md:hidden'>
         <Blank />
       </div>
       <div className='relative w-full aspect-[1440/1275] font-english font-semibold'>
-        <h1 className='hidden md:block absolute text-white z-[10] md:top-[71.3px] lg:top-[68px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
+        <h1 className='hidden md:block absolute text-white z-[10] md:top-[139.3px] lg:top-[148px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
           New Formative
         </h1>
-        <h2 className='hidden md:block absolute text-white z-[10] md:top-[134px] lg:top-[186px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
+        <h2 className='hidden md:block absolute text-white z-[10] md:top-[202px] lg:top-[266px] left-1/2 -translate-x-1/2 text-[clamp(25.6px,3.3vw,48px)] text-center mix-blend-difference leading-none'>
           Steady Movement
           <br />
           For Progress

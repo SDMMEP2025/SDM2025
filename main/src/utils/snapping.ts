@@ -136,7 +136,7 @@ export function useSnapP0toP4(
     for (const [i, j] of snapBands) {
       const a = cuts[i].start
       const b = cuts[j].start
-      if (p >= a - 0.0002 && p < b - 0.0002) return [i, j]
+      if (p >= a - 0.00015 && p < b - 0.00015) return [i, j]
     }
     return null
   }
