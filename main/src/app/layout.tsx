@@ -107,6 +107,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
+    <head>
+      <link rel="icon" href="/icons/favicon-48x48.png" sizes="48x48" />
+      <link rel="icon" href="/icons/favicon-96x96.png" sizes="96x96" />
+    </head>
       <body className={`${pretendard.variable} ${saans.variable} antialiased`}>
         <Layout>
           <CursorProvider>{children}</CursorProvider>
