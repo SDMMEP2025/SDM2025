@@ -19,7 +19,7 @@ const SNOOZE_UNTIL = 'snoozeUntil'
 export function PopUp({
   surveyUrl,
   storageKey = 'mep_survey_popup',
-  triggerVisit = 3,
+  triggerVisit = 4,
   pageKey,
   defaultOpen,
   forceOpen,
@@ -73,7 +73,7 @@ export function PopUp({
       }
     } catch {}
 
-    // 3번째 방문에만 표시
+    // 4번째 방문에만 표시
     if (count >= triggerVisit) setOpen(true)
     else setOpen(false)
   }, [defaultOpen, forceOpen, storageKey, pageKey, triggerVisit])
@@ -144,7 +144,7 @@ export function PopUp({
         aria-modal='true'
         aria-labelledby='survey-title'
         aria-describedby='survey-desc'
-        className='relative mx-4 w-[403px] md:w-[580px] rounded-[10px] bg-white px-14 py-7 md:px-[98px] md:py-10 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.15)]'
+        className='relative mx-4 w-[332px] md:w-[580px] rounded-[10px] bg-white px-14 py-7 md:px-[98px] md:py-10 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.15)]'
       >
 
         <div className='flex flex-col items-center gap-[46px] md:gap-[40px]'>
@@ -185,7 +185,7 @@ export function PopUp({
                 rel='noopener noreferrer'
                 className='w-[194px] h-14 px-6 bg-neutral-800 hover:bg-neutral-900 active:bg-neutral-900 rounded-[100px] flex justify-center items-center'
                 onClick={() => {
-                  persist({ [HIDE_FOREVER]: true })
+                  persist({ [HIDE_FOREVER]: false })
                   handleClose()
                 }}
               >
