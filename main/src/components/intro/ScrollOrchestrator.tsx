@@ -343,7 +343,7 @@ export function ScrollOrchestrator() {
           willChange: 'transform',
         }}
       >
-        <div ref={wrapRef} className='checking' style={{ height: '1100dvh' }}>
+        <div ref={wrapRef} style={{ height: '1100dvh' }}>
           <CursorArea variant='down'>
             <section className='relative' style={{ height: '1100dvh' }}>
               <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
