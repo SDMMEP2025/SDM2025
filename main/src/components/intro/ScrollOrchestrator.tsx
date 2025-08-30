@@ -246,13 +246,12 @@ export function ScrollOrchestrator() {
   })
 
   const [aboutlottiePlayed, setAboutLottiePlayed] = useState(false)
-    useMotionValueEvent(p2, 'change', (v) => {
+  useMotionValueEvent(p2, 'change', (v) => {
     if (v >= 0.99 && !lottiePlayed) {
       lottieRef.current?.play()
       setAboutLottiePlayed(true)
     }
   })
-  
 
   // ---------- Section 2 ----------
   const lottieHardCut = useTransform(p2, (v) => (v > 0.1 ? 0 : 1))
@@ -376,7 +375,6 @@ export function ScrollOrchestrator() {
                       loop={true}
                       rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
                       style={{ width: '100%', height: '100%' }}
-                      className='[&_svg]:w-full [&_svg]:h-full [&_svg]:block'
                     />
                   </motion.div>
 
@@ -567,14 +565,13 @@ export function ScrollOrchestrator() {
               </div>
             </section>
           </CursorArea>
-
-          {/* About */}
-          <section aria-label='About' className='relative bg-white md:mt-0'>
-            {/* <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : ''}> */}
-            <AboutSectionWithoutLottie />
-            {/* </motion.div> */}
-          </section>
         </div>
+        {/* About */}
+        <section aria-label='About' className='relative bg-white md:mt-0'>
+          {/* <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : ''}> */}
+          <AboutSectionWithoutLottie />
+          {/* </motion.div> */}
+        </section>
       </div>
     </>
   )
