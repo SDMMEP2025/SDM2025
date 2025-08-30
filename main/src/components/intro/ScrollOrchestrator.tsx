@@ -195,6 +195,7 @@ export function ScrollOrchestrator() {
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
     scrollerRef: boxRef,
   })
+  
 
   // ---------- Section 1 ----------
   const clampPx = (min: number, ideal: number, max: number) => Math.max(min, Math.min(ideal, max))
@@ -246,12 +247,13 @@ export function ScrollOrchestrator() {
   })
 
   const [aboutlottiePlayed, setAboutLottiePlayed] = useState(false)
-  useMotionValueEvent(p2, 'change', (v) => {
+    useMotionValueEvent(p2, 'change', (v) => {
     if (v >= 0.99 && !lottiePlayed) {
       lottieRef.current?.play()
       setAboutLottiePlayed(true)
     }
   })
+  
 
   // ---------- Section 2 ----------
   const lottieHardCut = useTransform(p2, (v) => (v > 0.1 ? 0 : 1))
@@ -341,9 +343,9 @@ export function ScrollOrchestrator() {
           willChange: 'transform',
         }}
       >
-        <div ref={wrapRef} style={{ height: '1300dvh' }}>
+        <div ref={wrapRef} className='checking' style={{ height: '1100dvh' }}>
           <CursorArea variant='down'>
-            <section className='relative' style={{ height: '1300dvh' }}>
+            <section className='relative' style={{ height: '1100dvh' }}>
               <div className='sticky top-0' style={{ height: '100dvh', contain: 'layout style' }}>
                 <div className='relative w-full h-full bg-white'>
                   {/* 핑크 사각형 */}
@@ -565,13 +567,13 @@ export function ScrollOrchestrator() {
               </div>
             </section>
           </CursorArea>
+          {/* About */}
+          <section aria-label='About' className='relative bg-white md:mt-0'>
+            {/* <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : ''}> */}
+            <AboutSectionWithoutLottie />
+            {/* </motion.div> */}
+          </section>
         </div>
-        {/* About */}
-        <section aria-label='About' className='relative bg-white md:mt-0'>
-          {/* <motion.div initial={false} className={aboutInteractive ? 'pointer-events-auto' : ''}> */}
-          <AboutSectionWithoutLottie />
-          {/* </motion.div> */}
-        </section>
       </div>
     </>
   )
