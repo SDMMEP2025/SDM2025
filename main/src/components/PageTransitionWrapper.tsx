@@ -1,16 +1,15 @@
-// PageTransitionWrapper.tsx
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import textAnim from '@/animation/text_transition.json'
-import Lottie, { LottieRefCurrentProps } from 'lottie-react'
+import Lottie from 'lottie-react'
 
 interface PageTransitionWrapperProps {
   children: ReactNode
   isTransitioning: boolean
   pathname?: string
-  aboutPageLoaded?: boolean // About 페이지 로드 상태 추가
+  aboutPageLoaded?: boolean
 }
 
 export function PageTransitionWrapper({
@@ -22,15 +21,66 @@ export function PageTransitionWrapper({
   const textLines = ['Steady', 'Movement For', 'Progress']
   const [animationComplete, setAnimationComplete] = useState(!isTransitioning)
 
-  // pathname에 따른 배경색 결정
+  const unlockRef = useRef<null | (() => void)>(null)
+  useEffect(() => {
+    if (!isTransitioning) {
+      if (unlockRef.current) {
+        unlockRef.current()
+        unlockRef.current = null
+      }
+      return
+    }
+    const body = document.body
+    const docEl = document.documentElement
+    const scrollY = window.scrollY || window.pageYOffset || 0
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+      overscrollBehaviorY: body.style.overscrollBehaviorY,
+      touchAction: body.style.touchAction,
+    }
+    body.style.position = 'fixed'
+    body.style.top = `-${scrollY}px`
+    body.style.left = '0'
+    body.style.right = '0'
+    body.style.width = '100%'
+    body.style.overflow = 'hidden'
+    body.style.overscrollBehaviorY = 'contain'
+    body.style.touchAction = 'none'
+    const prevDocOverflow = docEl.style.overflow
+    docEl.style.overflow = 'hidden'
+    unlockRef.current = () => {
+      body.style.position = prev.position
+      body.style.top = prev.top
+      body.style.left = prev.left
+      body.style.right = prev.right
+      body.style.width = prev.width
+      body.style.overflow = prev.overflow
+      body.style.overscrollBehaviorY = prev.overscrollBehaviorY
+      body.style.touchAction = prev.touchAction
+      docEl.style.overflow = prevDocOverflow
+      const y = Math.abs(parseInt(prev.top || '0', 10)) || scrollY
+      window.scrollTo(0, y)
+    }
+    return () => {
+      if (unlockRef.current) {
+        unlockRef.current()
+        unlockRef.current = null
+      }
+    }
+  }, [isTransitioning])
+
   const getBackgroundColor = () => {
     if (pathname?.startsWith('/projects') && pathname !== '/projects') {
-      return 'bg-[#FF5E1F]' // projects 하위 페이지는 주황색
+      return 'bg-[#FF5E1F]'
     }
-    return 'bg-[#FF60B9]' // 기본 핑크색
+    return 'bg-[#FF60B9]'
   }
 
-  // isTransitioning이 변경될 때 애니메이션 완료 상태 관리
   useEffect(() => {
     if (isTransitioning) {
       setAnimationComplete(false)
@@ -42,45 +92,29 @@ export function PageTransitionWrapper({
   const containerVariants = {
     hidden: {},
     visible: {
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.4,
-      },
+      transition: { staggerChildren: 0.2, delayChildren: 0.4 },
     },
     exit: {
-      transition: {
-        staggerChildren: 0.15,
-        staggerDirection: -1,
-      },
+      transition: { staggerChildren: 0.15, staggerDirection: -1 },
     },
   }
 
   const lineVariants = {
-    hidden: {
-      y: 0,
-      opacity: 0,
-    },
+    hidden: { y: 0, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        duration: 0.3,
-        ease: [0.16, 1, 0.3, 1],
-      },
+      transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
     },
     exit: {
       y: 0,
       opacity: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
-      },
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
     },
   }
 
   return (
     <>
-      {/* 페이지 전환 커버 */}
       <AnimatePresence>
         {isTransitioning &&
           (pathname === '/about' ? (
@@ -89,37 +123,29 @@ export function PageTransitionWrapper({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               className='fixed inset-0 z-[9999] bg-white flex items-center justify-center'
+              onWheel={(e) => e.preventDefault()}
+              onTouchMove={(e) => e.preventDefault()}
             >
               <Lottie
                 animationData={textAnim}
-                loop={!aboutPageLoaded} // 페이지가 로드될 때까지 루프
-                autoplay={true}
+                loop={!aboutPageLoaded}
+                autoplay
                 className='w-full h-full'
                 onComplete={() => {
-                  // 루프가 아닐 때만 (즉, 페이지가 로드된 후) 애니메이션 완료 처리
-                  if (aboutPageLoaded) {
-                    setAnimationComplete(true)
-                  }
+                  if (aboutPageLoaded) setAnimationComplete(true)
                 }}
               />
             </motion.div>
           ) : (
             <motion.div
-              initial={{
-                padding: '0px',
-                opacity: 1,
-              }}
-              animate={{
-                padding: '5vw',
-                opacity: 1,
-              }}
-              exit={{
-                padding: '0px',
-                opacity: 0,
-              }}
+              initial={{ padding: '0px', opacity: 1 }}
+              animate={{ padding: '5vw', opacity: 1 }}
+              exit={{ padding: '0px', opacity: 0 }}
               transition={{ duration: 0.4, ease: 'easeInOut' }}
               onAnimationComplete={() => setAnimationComplete(true)}
               className='fixed inset-0 z-[9999] bg-white flex items-center justify-center'
+              onWheel={(e) => e.preventDefault()}
+              onTouchMove={(e) => e.preventDefault()}
             >
               <motion.div
                 className={`${getBackgroundColor()} w-full h-full flex items-center justify-center overflow-hidden`}
@@ -133,7 +159,7 @@ export function PageTransitionWrapper({
                 >
                   {textLines.map((line, index) => (
                     <motion.div key={index} variants={lineVariants}>
-                      <div className=''>{line}</div>
+                      <div>{line}</div>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -142,18 +168,13 @@ export function PageTransitionWrapper({
           ))}
       </AnimatePresence>
 
-      {/* 페이지 콘텐츠 */}
       <AnimatePresence>
         {animationComplete && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-            }}
-            transition={{
-              duration: 0.3,
-              ease: 'easeOut',
-            }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            aria-hidden={isTransitioning}
           >
             {children}
           </motion.div>
