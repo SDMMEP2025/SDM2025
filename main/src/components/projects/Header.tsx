@@ -174,9 +174,9 @@ export function Header({ useBlendMode = true }: HeaderProps) {
 
             <div className='justify-start items-center gap-40 hidden lg:flex'>
               <div className='flex justify-start items-center gap-[26px]'>
-                <AnimatedNavItem label='About,' href={`${langPrefix}/about`} />
-                <AnimatedNavItem label='Project,' href={`${langPrefix}/projects`} />
-                <AnimatedNavItem label='Movement' href={`${langPrefix}/movement`} />
+                <AnimatedNavItem label='About,' href={`${langPrefix}/about`} isActive={restPath.startsWith('/about')}/>
+                <AnimatedNavItem label='Project,' href={`${langPrefix}/projects`} isActive={restPath.startsWith('/projects')}/>
+                <AnimatedNavItem label='Movement' href={`${langPrefix}/movement`} isActive={restPath.startsWith('/movement')}/>
               </div>
 
               {/* 언어 드롭다운 */}
