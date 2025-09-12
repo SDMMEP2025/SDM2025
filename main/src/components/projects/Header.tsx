@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, useMotionValueEvent } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { AnimatedNavItem } from '../AnimatedNavItem'
@@ -22,6 +22,7 @@ export function Header({ useBlendMode = true }: HeaderProps) {
 
   const [blendMode, setBlendMode] = useState<'difference' | 'normal'>('difference')
   const [repaintFlip, setRepaintFlip] = useState(false)
+  const [aboutActiveOnHome, setAboutActiveOnHome] = useState(false)
 
   const { lang, langPrefix, restPath } = useMemo(() => {
     const parts = pathname.split('/').filter(Boolean)
@@ -174,9 +175,21 @@ export function Header({ useBlendMode = true }: HeaderProps) {
 
             <div className='justify-start items-center gap-40 hidden lg:flex'>
               <div className='flex justify-start items-center gap-[26px]'>
-                <AnimatedNavItem label='About,' href={`${langPrefix}/about`} isActive={restPath.startsWith('/about')}/>
-                <AnimatedNavItem label='Project,' href={`${langPrefix}/projects`} isActive={restPath.startsWith('/projects')}/>
-                <AnimatedNavItem label='Movement' href={`${langPrefix}/movement`} isActive={restPath.startsWith('/movement')}/>
+                <AnimatedNavItem
+                  label='About,'
+                  href={`${langPrefix}/about`}
+                  isActive={aboutActiveOnHome || restPath.startsWith('/about')}
+                />
+                <AnimatedNavItem
+                  label='Project,'
+                  href={`${langPrefix}/projects`}
+                  isActive={restPath.startsWith('/projects')}
+                />
+                <AnimatedNavItem
+                  label='Movement'
+                  href={`${langPrefix}/movement`}
+                  isActive={restPath.startsWith('/movement')}
+                />
               </div>
 
               {/* 언어 드롭다운 */}
