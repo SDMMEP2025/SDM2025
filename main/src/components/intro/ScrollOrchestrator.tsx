@@ -72,7 +72,8 @@ function scrollToProgress(scrollerEl: HTMLElement, wrapEl: HTMLElement, progress
 }
 
 export function ScrollOrchestrator() {
-  useStableVh() // 주소창 들림/하단 여백 방지
+  useStableVh()
+  const ABOUT_ACTIVE_THRESHOLD = 0.1
 
   const boxRef = useRef<HTMLDivElement>(null) // ★ 내부 스크롤 컨테이너
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -190,12 +191,10 @@ export function ScrollOrchestrator() {
   const [p0, p2, p3] = cuts.map((c) => useSectionProgress(scrollYProgress, c))
 
   useMotionValueEvent(p0, 'change', (v) => chromeProgress.set(v))
-  useMotionValueEvent(p3, 'change', (v) => aboutPhase.set(v))
 
   useSnapP0toP4(wrapRef, scrollYProgress, cuts, {
     scrollerRef: boxRef,
   })
-  
 
   // ---------- Section 1 ----------
   const clampPx = (min: number, ideal: number, max: number) => Math.max(min, Math.min(ideal, max))
@@ -247,13 +246,12 @@ export function ScrollOrchestrator() {
   })
 
   const [aboutlottiePlayed, setAboutLottiePlayed] = useState(false)
-    useMotionValueEvent(p2, 'change', (v) => {
+  useMotionValueEvent(p2, 'change', (v) => {
     if (v >= 0.99 && !lottiePlayed) {
       lottieRef.current?.play()
       setAboutLottiePlayed(true)
     }
   })
-  
 
   // ---------- Section 2 ----------
   const lottieHardCut = useTransform(p2, (v) => (v > 0.1 ? 0 : 1))
@@ -325,7 +323,9 @@ export function ScrollOrchestrator() {
   )
 
   const [aboutInteractive, setAboutInteractive] = useState(false)
+
   useMotionValueEvent(p3, 'change', (v) => {
+    aboutPhase.set(v)
     if (!aboutInteractive && v >= 0.1) setAboutInteractive(true)
     if (aboutInteractive && v < 0.1) setAboutInteractive(false)
   })

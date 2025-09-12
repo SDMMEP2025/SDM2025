@@ -1,2 +1,4 @@
+'use client'
+
 import { motionValue } from 'framer-motion'
-export const aboutPhase = motionValue(0) 
+export var aboutPhase = motionValue(0)
