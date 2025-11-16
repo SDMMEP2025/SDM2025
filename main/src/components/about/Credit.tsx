@@ -43,7 +43,7 @@ export function Credit({ title = 'Designed By', members }: CreditProps) {
         </div>
 
         {/* 멤버 그리드 */}
-        <div className='w-full grid grid-cols-2 md:grid-cols-5 lg:grid-cols-6 gap-3.5 xs:gap-x-[14px] xs:gap-y-[36px] md:gap-x-[7px] md:gap-y-[24px] lg:gap-[10px] flex-wrap'>
+        <div className='w-full grid grid-cols-2 md:grid-cols-5 lg:grid-cols-6 gap-x-[14px] gap-y-9 md:gap-x-[7px] md:gap-y-6 lg:gap-[10px]'>
           {members.map((member, index) => (
             <div
               key={index}
@@ -51,7 +51,7 @@ export function Credit({ title = 'Designed By', members }: CreditProps) {
             >
               {/* 프로필 이미지 */}
               <div className='w-full aspect-[176/240] xs:aspect-[176/240] md:aspect-[132/182] lg:aspect-[190/254] relative bg-white overflow-hidden'>
-                <img src={member.profileImage} alt={`${member.name} 프로필`} className='w-full h-full object-cover' />
+                <img src={member.profileImage} alt={`${member.name} 프로필`} className='w-full object-cover' />
               </div>
 
               {/* 멤버 정보 */}

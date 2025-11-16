@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 
 export type CursorVariant = 'base' | 'right' | 'click' | 'drag' | 'down'
@@ -37,29 +37,36 @@ export function CursorProvider({
   const [current, setCurrent] = useState<CursorVariant>('base')
   const pos = useRef({ x: -9999, y: -9999 })
   const elRef = useRef<HTMLDivElement | null>(null)
-  const [isVisible, setIsVisible] = useState(true) // 커서 가시성 상태
+  const [isVisible, setIsVisible] = useState(false)
+  const lastVisibleRef = useRef(false)
+  const hasInitialPos = useRef(false)
   
   const prefersReduced =
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+  // useCallback으로 메모이제이션
+  const push = useCallback((v: CursorVariant) => {
+    const token = Symbol()
+    stackRef.current.push({ token, v })
+    setCurrent(stackRef.current[stackRef.current.length - 1].v)
+    return token
+  }, [])
+
+  const pop = useCallback((token: CursorToken) => {
+    const s = stackRef.current
+    const i = s.findIndex((x) => x.token === token)
+    if (i >= 0) s.splice(i, 1)
+    setCurrent(s.length ? s[s.length - 1].v : 'base')
+  }, [])
 
   const api = useMemo<CursorCtx>(
     () => ({
       current,
       pos: pos.current,
-      push: (v) => {
-        const token = Symbol()
-        stackRef.current.push({ token, v })
-        setCurrent(stackRef.current[stackRef.current.length - 1].v)
-        return token
-      },
-      pop: (token) => {
-        const s = stackRef.current
-        const i = s.findIndex((x) => x.token === token)
-        if (i >= 0) s.splice(i, 1)
-        setCurrent(s.length ? s[s.length - 1].v : 'base')
-      },
+      push,
+      pop,
     }),
-    [current],
+    [current, push, pop],
   )
 
   useEffect(() => setMounted(true), [])
@@ -67,49 +74,76 @@ export function CursorProvider({
   const isCoarse = typeof window !== 'undefined' ? (window.matchMedia?.('(pointer: coarse)').matches ?? false) : false
   const enabled = !(disabledOnCoarse && isCoarse)
 
-  const isInViewport = (x: number, y: number) => {
-    const margin = 10 
+  const isInViewport = useCallback((x: number, y: number) => {
+    const margin = 10
     return x >= -margin && x <= window.innerWidth + margin && y >= -margin && y <= window.innerHeight + margin
-  }
+  }, [])
 
   useEffect(() => {
     if (!mounted || !enabled) return
     const el = elRef.current
     if (!el) return
 
-    const onMove = (e: PointerEvent | MouseEvent | DragEvent) => {
-      const any = e as any
-      const x = any.clientX ?? 0
-      const y = any.clientY ?? 0
+    // 통합된 이벤트 핸들러
+    const onMove = (e: PointerEvent) => {
+      const x = e.clientX ?? 0
+      const y = e.clientY ?? 0
       
-      if (typeof x === 'number' && typeof y === 'number') {
+      // 초기 위치 설정
+      if (!hasInitialPos.current) {
         pos.current.x = x
         pos.current.y = y
-        
-        const inView = isInViewport(x, y)
+        hasInitialPos.current = true
+        // 초기 위치를 바로 적용 (애니메이션 없이)
+        el.style.transform = `translate3d(${x}px, ${y}px, 0)`
+      } else {
+        pos.current.x = x
+        pos.current.y = y
+      }
+      
+      const inView = isInViewport(x, y)
+      // 이전 상태와 다를 때만 업데이트
+      if (inView !== lastVisibleRef.current) {
+        lastVisibleRef.current = inView
         setIsVisible(inView)
-
       }
     }
 
     const onBodyMouseLeave = () => {
-      setIsVisible(false)
+      if (lastVisibleRef.current) {
+        lastVisibleRef.current = false
+        setIsVisible(false)
+      }
     }
 
     const onBodyMouseEnter = () => {
-      setIsVisible(true)
-    }
-
-    const onVisibilityChange = () => {
-      if (document.hidden) {
-        setIsVisible(false)
-      } else {
+      if (!lastVisibleRef.current) {
+        lastVisibleRef.current = true
         setIsVisible(true)
       }
     }
 
-    const onWindowBlur = () => setIsVisible(false)
-    const onWindowFocus = () => setIsVisible(true)
+    const onVisibilityChange = () => {
+      const shouldBeVisible = !document.hidden
+      if (shouldBeVisible !== lastVisibleRef.current) {
+        lastVisibleRef.current = shouldBeVisible
+        setIsVisible(shouldBeVisible)
+      }
+    }
+
+    const onWindowBlur = () => {
+      if (lastVisibleRef.current) {
+        lastVisibleRef.current = false
+        setIsVisible(false)
+      }
+    }
+
+    const onWindowFocus = () => {
+      if (!lastVisibleRef.current) {
+        lastVisibleRef.current = true
+        setIsVisible(true)
+      }
+    }
 
     const preventDragStart = (e: DragEvent) => e.preventDefault()
 
@@ -124,13 +158,10 @@ export function CursorProvider({
       raf = requestAnimationFrame(step)
     }
 
-    document.addEventListener('pointermove', onMove as any, { passive: true })
-    document.addEventListener('mousemove', onMove as any, { passive: true })
-    document.addEventListener('dragover', onMove as any, { passive: true })
-    
+    // pointermove만 사용 (더 현대적이고 효율적)
+    document.addEventListener('pointermove', onMove, { passive: true })
     document.body.addEventListener('mouseleave', onBodyMouseLeave, { passive: true })
     document.body.addEventListener('mouseenter', onBodyMouseEnter, { passive: true })
-    
     document.addEventListener('visibilitychange', onVisibilityChange, { passive: true })
     window.addEventListener('blur', onWindowBlur, { passive: true })
     window.addEventListener('focus', onWindowFocus, { passive: true })
@@ -141,9 +172,7 @@ export function CursorProvider({
 
     return () => {
       cancelAnimationFrame(raf)
-      document.removeEventListener('pointermove', onMove as any)
-      document.removeEventListener('mousemove', onMove as any)
-      document.removeEventListener('dragover', onMove as any)
+      document.removeEventListener('pointermove', onMove)
       document.body.removeEventListener('mouseleave', onBodyMouseLeave)
       document.body.removeEventListener('mouseenter', onBodyMouseEnter)
       document.removeEventListener('visibilitychange', onVisibilityChange)
@@ -151,10 +180,11 @@ export function CursorProvider({
       window.removeEventListener('focus', onWindowFocus)
       document.removeEventListener('dragstart', preventDragStart)
       document.documentElement.classList.remove('cursor-none')
+      hasInitialPos.current = false
     }
-  }, [mounted, enabled, smoothMs, prefersReduced])
+  }, [mounted, enabled, smoothMs, prefersReduced, isInViewport])
 
-  const Default = {
+  const Default = useMemo(() => ({
     base: () => (
       <div
         className='w-4 h-4 z-[50] rounded-full bg-white mix-blend-difference'
@@ -211,9 +241,12 @@ export function CursorProvider({
         </svg>
       </div>
     ),
-  } as RendererMap
+  }), []) as RendererMap
 
   const R = (renderers ?? {}) as RendererMap
+
+  // 클래스명 계산 - hasInitialPos 체크 추가
+  const cursorClassName = `fixed top-0 left-0 z-[50] pointer-events-none will-change-transform mix-blend-difference transition-opacity duration-200 ${isVisible && hasInitialPos.current ? 'opacity-100' : 'opacity-0'}`
 
   return (
     <Ctx.Provider value={api}>
@@ -225,10 +258,7 @@ export function CursorProvider({
             ref={elRef}
             aria-hidden
             data-variant={current}
-            className={[
-              'fixed top-0 left-0 z-[50] pointer-events-none will-change-transform mix-blend-difference transition-opacity duration-200',
-              isVisible ? 'opacity-100' : 'opacity-0'
-            ].join(' ')}
+            className={cursorClassName}
           >
             {(R[current] ?? Default[current])!({ active: true })}
           </div>,
