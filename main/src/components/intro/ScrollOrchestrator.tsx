@@ -498,7 +498,7 @@ export function ScrollOrchestrator() {
                       autoplay={true}
                       loop={true}
                       rendererSettings={{ preserveAspectRatio: 'xMidYMid slice' }}
-                      className='w-full aspect-[1440/1500] md:aspect-[1440/1500] md:h-full md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
+                      className='w-screen md-landscape-coming:h-auto md-landscape-coming:w-full lg:h-auto lg:w-full [&_svg]:w-full [&_svg]:h-full [&_svg]:block'
                     />
                   </motion.div>
                 </div>
